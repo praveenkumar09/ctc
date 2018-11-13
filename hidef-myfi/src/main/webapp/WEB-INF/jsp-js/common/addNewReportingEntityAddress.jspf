@@ -1,0 +1,101 @@
+<!-- For Name Modal start -->
+<div class="modal fade" id="addNewReportingEntityAddress" tabindex="-1"
+	role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header" id="popUpModelHeader">
+				<h5 class="modal-title" id="exampleModalLabel">
+					<strong><font color="white">ADD NEW ADDRESS</font></strong>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="clearfix"></div>
+				<div class="form-group col-md-6">
+					<label for="">Country Code<font color='red'>*</font>:</label> <select class="form-control"
+						id="countryCodeReportingFI">
+						<option value="0">--Choose Country code--</option>
+						<option value="1">MY</option>
+						<option value="2">SG</option>
+						<option value="3">CN</option>
+						<option value="4">AU</option>
+						<option value="5">US</option>
+					</select>
+				</div>
+				<div class="clearfix"></div>
+				<div class="form-group col-md-6">
+					<label for="">Address Type<font color='red'>*</font>:</label> <select class="form-control"
+						id="addressTypeReportingEntity">
+						<option value="0">--Choose Address Type--</option>
+						<option value="1">Address Free</option>
+						<option value="2">Address Fix And Fix Free</option>
+					</select>
+				</div>
+				<div class="clearfix"></div>
+				<div class="form-group col-md-11" id="addressFreeEntityTextField">
+					<label>Address Free:</label>
+					<textarea class="form-control" rows="5" id="addressFree"
+						placeholder="Add Address Free"></textarea>
+				</div>
+				<div class="clearfix"></div>
+				<div id="addressFixEntityContent">
+				    <div class="form-group col-md-6">
+					<label for="language">Street:</label> <input
+						class="form-control" id="Street" placeholder="Street"
+						name="language">
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Building Identifier:</label> <input
+						class="form-control" id="buildingIdentifier" placeholder="Building Identifier"
+						name="language">
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Suite Identifier:</label> <input
+						class="form-control" id="suiteIdentifier" placeholder="Suite Identifier"
+						name="language">
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Floor Identifier:</label> <input
+						class="form-control" id="floorIdentifier" placeholder="Floor Identifier"
+						name="language">
+				    </div>
+				     <div class="form-group col-md-6">
+					<label for="language">District Name:</label> <input
+						class="form-control" id="districtName" placeholder="District Name"
+						name="language">
+				    </div>
+				     <div class="form-group col-md-6">
+					<label for="language">POB:</label> <input
+						class="form-control" id="pob" placeholder="POB"
+						name="language">
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Post Code:</label> <input
+						class="form-control" id="postCode" placeholder="Post Code"
+						name="language">
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">City<font color='red'>*</font>:</label> <input
+						class="form-control" id="city" placeholder="City"
+						name="language">
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Country Sub Entity:</label> <input
+						class="form-control" id="countrySubEntity" placeholder="Country Sub Entity"
+						name="language">
+				    </div>				
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				<button type="button" onClick="saveNewReportingEntityAddressClicked();" class="btn btn-primary" data-dismiss="modal">Save</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- For Name Modal end -->

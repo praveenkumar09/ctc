@@ -1,0 +1,100 @@
+<!-- For Name Modal start -->
+<div class="modal fade" id="addAccountHolderName" tabindex="-1"
+	role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header" id="popUpModelHeader">
+				<h5 class="modal-title" id="exampleModalLabel">
+					<strong><font color="white">ADD NEW NAME</font></strong>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="clearfix"></div>
+				<br/>
+				<div class="form-group col-md-6">
+					<label for="language">Name:</label> <input
+						class="form-control" id="name" placeholder="Name"
+						name="Name">
+				 </div>
+				 <div class="form-group col-md-6">
+					<label for="">Name Type:</label> <select class="form-control"
+						id="countryCodeReportingFI">
+						<option value="0">--Choose Name Type--</option>
+						<option value="1">OECD201</option>
+						<option value="2">OECD202</option>
+						<option value="3">OECD203</option>
+						<option value="4">OECD204</option>
+						<option value="5">OECD205</option>
+						<option value="6">OECD206</option>
+						<option value="7">OECD207</option>
+						<option value="8">OECD208</option>
+					</select>
+				</div>
+				<div class="clearfix"></div>		
+				<div class="form-group col-md-6">
+					<label for="language">Preceding Title:</label> <input
+						class="form-control" id="precedingTitle" placeholder="Preceding Title"
+						name="precedingTitle">
+				 </div>	
+				 <div class="form-group col-md-6">
+					<label for="language">First Name:</label> <input
+						class="form-control" id="firstName" placeholder="First Name"
+						name="firstName">
+				 </div>		
+				 <div class="clearfix"></div>		
+				 <br/>
+				<div class="form-group col-md-6">
+					<div id="accountHolderNameTitleGrid"></div>
+					<div id="pager"></div>
+				</div>
+				 <div class="clearfix"></div>		
+				 <br/>
+				 <div class="form-group col-md-6">
+					<div id="accountHolderNameMiddleNameGrid"></div>
+					<div id="pager"></div>
+				</div>
+				<div class="clearfix"></div>		
+				 <br/>
+				 <div class="form-group col-md-6">
+					<label for="language">Name Prefix:</label> <input
+						class="form-control" id="namePrefix" placeholder="Name Prefix"
+						name="namePrefix">
+				 </div>	
+				 <div class="form-group col-md-6">
+					<label for="language">Last Name:</label> <input
+						class="form-control" id="lastName" placeholder="Last Name"
+						name="lastName">
+				 </div>		
+				 <div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<div id="accountHolderNameGenerationIdentifierGrid"></div>
+					<div id="pager"></div>
+				</div>
+				 <div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<div id="accountHolderNameSuffixGrid"></div>
+					<div id="pager"></div>
+				</div>
+				<div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<label for="language">General Suffix:</label> <input
+						class="form-control" id="generalSuffix" placeholder="General Suffix"
+						name="generalSuffix">
+				 </div>	
+			</div>
+			<div class="clearfix"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				<button type="button" onClick="saveNewAccountHolderName();" class="btn btn-primary" data-dismiss="modal">Save</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- For Name Modal end -->

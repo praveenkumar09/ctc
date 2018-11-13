@@ -1,0 +1,98 @@
+<!-- For Name Modal start -->
+<link type="text/css" href="/css/controllingPersonModel.css"
+	rel="stylesheet">
+<div class="modal fade" id="addNewAccountHolderControllingPerson"
+	tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header" id="popUpModelHeader">
+				<h5 class="modal-title" id="exampleModalLabel">
+					<strong><font color="white">ADD NEW CONTROLLING
+							PERSON</font></strong>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="clearfix"></div>
+				<br />
+				<div class="form-group col-md-6">
+					<label for="language">Controlling Person Type: </label><select
+						class="form-control" id="controllingPersonType">
+						<option value="0">Choose Controlling Person Type</option>
+						<option value="1">CRS801</option>
+						<option value="2">CRS802</option>
+						<option value="3">CRS803</option>
+						<option value="4">CRS804</option>
+						<option value="5">CRS805</option>
+						<option value="6">CRS806</option>
+						<option value="7">CRS807</option>
+						<option value="8">CRS808</option>
+						<option value="9">CRS809</option>
+						<option value="10">CRS810</option>
+						<option value="11">CRS811</option>
+						<option value="12">CRS812</option>
+						<option value="13">CRS813</option>
+					</select>
+				</div>
+				<div class="clearfix"></div>
+				<br />
+				<div class="form-group col-md-6">
+					<div id="accountHolderControlingPersonResidentCountryGrid"></div>
+					<div id="pager"></div>
+				</div>
+				<div class="clearfix"></div>
+				<br />
+				<div class="form-group col-md-6">
+					<div id="accountHolderControllingPersonTNGrid"></div>
+					<div id="pager"></div>
+				</div>
+				<div class="clearfix"></div>
+				<br />
+				<div class="form-group col-md-6">
+					<div id="accountHolderControllingPersonNameGrid"></div>
+					<div id="pager"></div>
+				</div>
+				<div class="clearfix"></div>
+				<br />
+				<div class="form-group col-md-6">
+					<div id="accountHolderControllingPersonAddressGrid"></div>
+					<div id="pager"></div>
+				</div>
+				<div class="clearfix"></div>
+				<br />
+				<div class="form-group col-md-6">
+					<label for="language">Nationality: </label><select
+						class="form-control" id="cpNationality">
+						<option value="0">--Choose Nationality--</option>
+						<option value="1">AD</option>
+						<option value="2">AF</option>
+						<option value="3">US</option>
+						<option value="4">MY</option>
+						<option value="5">AU</option>
+					</select>
+				</div>
+					<div class="clearfix"></div>
+				<br />
+				<div class="form-group col-md-6">
+						<div id="accountHolderControllingPersonBirthInfoGrid"></div>
+						<div id="pager"></div>
+					</div>
+						<div class="clearfix"></div>
+				<br />
+
+			</div>
+			<div class="clearfix"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				<button type="button"
+					onClick="saveNewAccountHolderControllingPersonClicked();"
+					class="btn btn-primary" data-dismiss="modal">Save</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- For Name Modal end -->

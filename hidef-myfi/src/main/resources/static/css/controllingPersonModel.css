@@ -1,0 +1,10 @@
+.modal-dialog {
+   width: 1250px; 
+} 
+
+.modal-backdrop {
+    visibility: hidden !important;
+}
+.modal.in {
+    background-color: rgba(0,0,0,0.5);
+}
