@@ -14,6 +14,7 @@ import com.censof.myfi.hidefmyfi.entity.Cbcmessagetypeindic;
 import com.censof.myfi.hidefmyfi.entity.Cbcnametype;
 import com.censof.myfi.hidefmyfi.entity.Cbcreportingrole;
 import com.censof.myfi.hidefmyfi.entity.Cbcsummaryreference;
+import com.censof.myfi.hidefmyfi.entity.Crsmessagetypeindic;
 import com.censof.myfi.hidefmyfi.entity.Ctscommunicationtypecd;
 import com.censof.myfi.hidefmyfi.entity.Docrefid;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
@@ -51,4 +52,5 @@ public interface CtccommonDropdownService {
 	
 	public Senderfileid findSenderFileIdByDate(String date);
 	public List<Cbcmessagetypeindic> findAllCbcmessagetypeindic();
+	public List<Crsmessagetypeindic> findAllCrsMessageTypeIndic();
 }

@@ -18,6 +18,7 @@ import com.censof.myfi.hidefmyfi.entity.Cbcmessagetypeindic;
 import com.censof.myfi.hidefmyfi.entity.Cbcnametype;
 import com.censof.myfi.hidefmyfi.entity.Cbcreportingrole;
 import com.censof.myfi.hidefmyfi.entity.Cbcsummaryreference;
+import com.censof.myfi.hidefmyfi.entity.Crsmessagetypeindic;
 import com.censof.myfi.hidefmyfi.entity.Ctscommunicationtypecd;
 import com.censof.myfi.hidefmyfi.entity.Docrefid;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
@@ -31,6 +32,7 @@ import com.censof.myfi.hidefmyfi.repository.CbcbizactivitiesreferenceRepository;
 import com.censof.myfi.hidefmyfi.repository.CbcmessagetypeindicRepository;
 import com.censof.myfi.hidefmyfi.repository.CbcsummaryreferenceRepository;
 import com.censof.myfi.hidefmyfi.repository.CommunicationTypeRepository;
+import com.censof.myfi.hidefmyfi.repository.CrsmessagetypeindicRepository;
 import com.censof.myfi.hidefmyfi.repository.DocrefidRepository;
 import com.censof.myfi.hidefmyfi.repository.DocumentTypeIndicatorRepository;
 import com.censof.myfi.hidefmyfi.repository.FileFormatCdRepository;
@@ -91,6 +93,9 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService{
 	
 	@Autowired
 	private CbcmessagetypeindicRepository cbcmessagetypeindicRepository;
+	
+	@Autowired
+	private CrsmessagetypeindicRepository crsmessagetypeindicRepository;
 	
 	
 	@Override
@@ -289,6 +294,14 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService{
 		// TODO Auto-generated method stub
 		List<Cbcmessagetypeindic> messageTypeIndic = cbcmessagetypeindicRepository.findAllMessageTypeIndicator();
 		return messageTypeIndic;
+	}
+
+
+	@Override
+	public List<Crsmessagetypeindic> findAllCrsMessageTypeIndic() {
+		// TODO Auto-generated method stub
+		List<Crsmessagetypeindic> crsMessageTypeIndic = crsmessagetypeindicRepository.findAllCrsMessageTypeIndic();
+		return crsMessageTypeIndic;
 	}
 
 }

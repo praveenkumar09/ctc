@@ -49,13 +49,21 @@
 				<br />
 				<div class="form-group">
 					<div class="form-group col-md-6">
-						<form:label path ="crsmetadata.messageTypeIndic">Message Type Indicator:</form:label> <form:input type="text" path ="crsmetadata.messageTypeIndic"
-							class="form-control" id="msgType"
-							placeholder="Message Type Indicator"></form:input>
+						<form:label path ="crsmetadata.messageTypeIndic">Message Type Indicator:</form:label>	
+						<form:select path ="crsmetadata.messageTypeIndic"
+							class="form-control" id="msgType">
+							<form:option value="0" >Please choose</form:option>
+						
+							<c:forEach items="${messageTypeIndic}" var="msftypeindic">
+							<form:option value="${msftypeindic.indic}">
+								${msftypeindic.indic}
+							</form:option>
+						</c:forEach>
+						</form:select>
 					</div>
 					<div class="form-group col-md-6">
 						<label>Message Type:</label> <form:input type="text" path ="crsmetadata.messageType"
-							class="form-control" id="sendContactEmailAddress" value="CRS"
+							class="form-control" id="messageType" value="CRS"
 							placeholder="Message Type" readonly="true"></form:input>
 					</div>
 				</div>
@@ -79,18 +87,18 @@
 					<div class="form-group col-md-6">
 						<label class="">Reporting Period:</label> <form:input type="text"
 							class="form-control" id="reportingPeriod"
-							placeholder="Reporting Period" path ="crsmetadata.reportingPeriod"></form:input>
+							placeholder="Reporting Period" path ="crsmetadata.reportingPeriod" maxlength="4" onkeypress='validate(event)'></form:input>
 					</div>
 					<div class="form-group col-md-6">
 						<label class="">Tax Year:</label> <form:input type="text"
-							class="form-control" id="taxYear" placeholder="Tax Year" path ="crsmetadata.taxYear"></form:input>
+							class="form-control" id="taxYear" placeholder="Tax Year" path ="crsmetadata.taxYear" maxlength="4" onkeypress='validate(event)'></form:input>
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="form-group col-md-6">
 						<label class="">File Creation Time Stamp:</label> <form:input
 							type="text" class="form-control" id="formCreationTimeStamp"
-							placeholder="File Creation Timestamp" path ="crsmetadata.fileCreationTimestramp"></form:input>
+							placeholder="File Creation Timestamp" path ="crsmetadata.fileCreationTimestramp" onclick='generateTimestramp();'></form:input>
 					</div>
 					<div class="form-group col-md-6">
 						<label class="">Communication Type:</label> <form:input type="text"
@@ -107,11 +115,18 @@
 					<div class="form-group col-md-6">
 						<label for="">File Format Code:</label> <form:select
 							class="form-control" id="fileFormatCode" path ="crsmetadata.fileFormatCode">
-							<option>JPG</option>
-							<option>PDF</option>
-							<option>RTF</option>
-							<option>TXT</option>
-							<option>XML</option>
+							<form:option value="0">Please choose</form:option>
+								<%-- 	<form:option value="1">MY</form:option>
+							<form:option value="2">SG</form:option>
+							<form:option value="3">CN</form:option>
+							<form:option value="4">AU</form:option>
+							<form:option value="5">US</form:option> --%>
+								<c:forEach items="${fileformatcodeList}"
+									var="fileformatcodeList">
+									<form:option value="${fileformatcodeList.CBCFileFormatType}">
+								${fileformatcodeList.CBCFileFormatType}
+							</form:option>
+								</c:forEach>
 						</form:select>
 					</div>
 				</div>
@@ -119,8 +134,18 @@
 					<div class="form-group col-md-6">
 						<label for="">Binary Encoding:</label> <form:select
 							class="form-control" id="binaryEncoding" path ="crsmetadata.binaryEncoding">
-							<option>BASE64</option>
-							<option>NONE</option>
+							<form:option value="0">Please choose</form:option>
+								<%-- 	<form:option value="1">MY</form:option>
+							<form:option value="2">SG</form:option>
+							<form:option value="3">CN</form:option>
+							<form:option value="4">AU</form:option>
+							<form:option value="5">US</form:option> --%>
+								<c:forEach items="${binaryencodingList}"
+									var="binaryencodingList">
+									<form:option value="${binaryencodingList.type}">
+								${binaryencodingList.type}
+							</form:option>
+								</c:forEach>
 						</form:select>
 					</div>
 					<div class="form-group col-md-6">
