@@ -1,5 +1,5 @@
-<link type="text/css" href="/css/panel-border.css" rel="stylesheet">
-<script type="text/javascript" src="/js/crsAccountHolder.js"></script>
+<link type="text/css" href="${pageContext.request.contextPath}/css/panel-border.css" rel="stylesheet">
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/crsAccountHolder.js"></script>
 <div class="container">
 	<div class="row">
 		<br /> <br />

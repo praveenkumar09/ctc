@@ -1,5 +1,5 @@
-<link type="text/css" href="/css/panel-border.css" rel="stylesheet">
-<script type="text/javascript" src="/js/crsreportingfi.js"></script>
+<link type="text/css" href="${pageContext.request.contextPath}/css/panel-border.css" rel="stylesheet">
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/crsreportingfi.js"></script>
 <div class="container">
 	<div class="row">
 		<br /> <br />
@@ -74,10 +74,10 @@
 				<div class="form-group">
 					<div class="text-center">
 						<button id="singlebutton" name="singlebutton"
-							onClick="metaDataOnClick();" class="btn btn-warning">Previous</button>
+							onClick="ReportingFiPrevious();return false;" class="btn btn-warning">Previous</button>
 							&nbsp;&nbsp;
 						<button id="singlebutton" name="singlebutton"
-							onClick="showAccountHolder();" class="btn btn-primary">Next</button>
+							onClick="ReportingFiNext();return false;" class="btn btn-primary">Next</button>
 					</div>
 				</div>
 			</div>

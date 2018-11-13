@@ -31,7 +31,8 @@ public class HidefVo {
 	private String payloadFileName;
 	private String docRefId;
 	private String docRefIdStaticText;
-	private String isSummaryView;
+	private String isSummaryView;	
+	private CrsMetadataVo crsmetadata;
 	
 	
 
@@ -194,7 +195,7 @@ public class HidefVo {
 	public void setDocRefIdStaticText(String docRefIdStaticText) {
 		this.docRefIdStaticText = docRefIdStaticText;
 	}
-
+	
 	public String getIsSummaryView() {
 		return isSummaryView;
 	}
@@ -202,6 +203,17 @@ public class HidefVo {
 	public void setIsSummaryView(String isSummaryView) {
 		this.isSummaryView = isSummaryView;
 	}
+
+	public CrsMetadataVo getCrsmetadata() {
+		return crsmetadata;
+	}
+
+	public void setCrsmetadata(CrsMetadataVo crsmetadata) {
+		this.crsmetadata = crsmetadata;
+	}
+	
+
+	
 	
 	
 
