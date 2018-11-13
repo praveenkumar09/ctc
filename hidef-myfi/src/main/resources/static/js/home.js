@@ -63,6 +63,15 @@ function newCBCOnClick() {
 	cbcMetaDataOnClick();
 }
 
+function viewCBCOnClick(){
+	$("#cbcbreadcrumb").show();
+	$("#crsbreadcrumb").hide();
+	$("#userProfile").hide();
+	$("#summary").hide();
+	viewCBCMetaDataOnClick();
+
+}
+
 function newNewCBCOnClick() {
 	$("#cbcbreadcrumb").show();
 	$("#crsbreadcrumb").hide();
@@ -294,6 +303,29 @@ function userProfileOnClick() {
 			});
 }
 
+function viewCBCMetaDataOnClick(){
+	$("#userProfile").hide();
+	$("#reportingEntity").removeClass("active");
+	$("#cbcMetaDataBtn").addClass("active");
+	$("#cbcReports").removeClass("active");
+	$("#cbcAddInfo").removeClass("active");
+	$.ajax({
+
+		url : 'cbc/main',
+		type : 'GET',
+		success : function(data) {
+			$("#metaData").show();
+			$("#metaData").html(data);
+			$("#cbcmetadata *").prop('disabled',true);
+			$("#metaDataButton").prop('disabled', false);
+
+		},
+		error : function(request, error) {
+			alert("Request: " + JSON.stringify(request));
+		}
+	});
+}
+
 function cbcMetaDataOnClick() {
 	$("#userProfile").hide();
 	$("#reportingEntity").removeClass("active");
@@ -379,6 +411,333 @@ function viewSummaryGrid() {
 			alert("Request: " + JSON.stringify(request));
 		}
 	});
+}
+
+function viewReportingEntity() {
+
+	var clients = [];
+	var errorFlag = false;
+
+	if (!errorFlag) {
+		$("#metaData").hide();
+		$("#reportingEntity").addClass("active");
+		$("#cbcMetaDataBtn").removeClass("active");
+		$("#cbcReports").removeClass("active");
+		$("#cbcAddInfo").removeClass("active");
+		var form_data = $('#cbcmetadata').serialize();
+
+		$
+				.ajax({
+
+					url : 'cbc/metadataNext?next1=next',
+					type : 'POST',
+					data : form_data,
+					success : function(response) {
+						$("#metaData").show();
+						$("#metaData").html(response);
+
+						var residentCountryCode = $("#residentCountry").val();
+						residentCountryCode = $.parseJSON(residentCountryCode);
+						var issuedBy = residentCountryCode;
+						var nameType = $("#nameTypedropdown").val();
+						nameType = $.parseJSON(nameType);
+
+						$("#reportingentity *").prop('disabled',true);
+						$("#reportingEntityViewNext").prop('disabled',false);
+
+						$("#reportingEntityResidentCountryGrid")
+								.jsGrid(
+										{
+											width : "205%",
+											inserting : true,
+											editing : true,
+											sorting : true,
+											paging : true,
+											pageSize : 5,
+											pageButtonCount : 5,
+											autoload : true,
+											controller : {
+
+												loadData : function() {
+													var d = $.Deferred();
+													$
+															.ajax({
+																type : 'GET',
+																url : 'cbc/loadResidentCountryGrid',
+																mimeType : 'application/json',
+																contentType : 'application/json',
+																success : function(
+																		data) {
+																	d
+																			.resolve(data);
+																},
+																error : function(
+																		e) {
+																	alert("error: "
+																			+ e.responseText);
+																}
+															});
+
+													return d.promise();
+													/*return
+													[{"id":"1","residentCountryCode":6},{"id":"1","residentCountryCode":6}];*/
+												}
+											},
+											invalidNotify : function(args) {
+												$("#validateTextHere").text("");
+												$("#validateTextHere")
+														.text(
+																"Please fill in all the mandatory fields");
+												$('#crsNameModal')
+														.modal('show');
+											},
+											fields : [
+													{
+														title : "No.<font color='red'>*</font>",
+														name : "id",
+														type : "number",
+														width : 150,
+														validate : "required",
+														visible : false
+													},
+													{
+														title : "Resident Country Code",
+														name : "residentCountryCode",
+														type : "select",
+														items : residentCountryCode,
+														valueField : "id",
+														textField : "name",
+													} ]
+										});
+
+						$("#reportingEntityNameGrid")
+								.jsGrid(
+										{
+											width : "205%",
+											inserting : true,
+											editing : true,
+											sorting : true,
+											paging : true,
+											pageSize : 5,
+											pageButtonCount : 5,
+											autoload : true,
+											controller : {
+												loadData : function() {
+													var d = $.Deferred();
+
+													$
+															.ajax({
+																type : 'GET',
+																url : 'cbc/loadNameGrid',
+																mimeType : 'application/json',
+																contentType : "application/json; charset=utf-8",
+																success : function(
+																		data) {
+																	d
+																			.resolve(data);
+																},
+																error : function(
+																		e) {
+																	alert("error: "
+																			+ e.responseText);
+																}
+															});
+
+													return d.promise();
+												}
+											},
+											data : clients,
+											invalidNotify : function(args) {
+
+											},
+											fields : [
+													{
+														title : "No.<font color='red'>*</font>",
+														name : "id",
+														type : "text",
+														width : 150,
+														validate : "required",
+														visible : false
+													},
+
+													{
+														title : "Organisation Name<font color='red'>*</font>",
+														name : "firstName",
+														type : "text",
+														validate : "required",
+														align : "center"
+													},
+													{
+														title : "Last Name",
+														name : "lastName",
+														type : "text",
+														width : 150,
+														visible : false
+													},
+													{
+														title : "Organisation Type<font color='red'>*</font>",
+														name : "nameType",
+														type : "select",
+														width : 150,
+														items : nameType,
+														valueField : "id",
+														textField : "name",
+														visible : false
+													} ]
+										});
+
+						$("#reportingEntityOrgINGrid")
+								.jsGrid(
+										{
+											width : "205%",
+											inserting : true,
+											editing : true,
+											sorting : true,
+											paging : true,
+											pageSize : 5,
+											pageButtonCount : 5,
+											autoload : true,
+											controller : {
+												loadData : function() {
+													var d = $.Deferred();
+
+													$
+															.ajax({
+																type : 'GET',
+																url : 'cbc/loadOrganisationGrid',
+																mimeType : 'application/json',
+																contentType : "application/json; charset=utf-8",
+																success : function(
+																		data) {
+																	d
+																			.resolve(data);
+																},
+																error : function(
+																		e) {
+																	alert("error: "
+																			+ e.responseText);
+																}
+															});
+
+													return d.promise();
+												}
+											},
+											data : clients,
+											invalidNotify : function(args) {
+
+											},
+											fields : [
+													{
+														title : "No.<font color='red'>*</font>",
+														name : "id",
+														type : "text",
+														width : 150,
+														validate : "required",
+														visible : false
+													},
+													{
+														title : "IN",
+														name : "in",
+														width : 150,
+														type : "text",
+														align : "center",
+														validate : "required"
+													},
+													{
+														title : "IN Type<font color='red'>*</font>",
+														name : "inType",
+														type : "text",
+														width : 150
+													},
+													{
+														title : "IN Issued By",
+														name : "issuedBy",
+														type : "select",
+														items : residentCountryCode,
+														valueField : "id",
+														textField : "name",
+													} ]
+										});
+
+						var object = {};
+
+						$("#reportingEntityAddressGrid")
+								.jsGrid(
+										{
+											width : "205%",
+											inserting : false,
+											editing : false,
+											sorting : false,
+											paging : true,
+											pageSize : 6,
+											pageButtonCount : 5,
+											autoload : true,
+											controller : {
+												loadData : function() {
+													var d = $.Deferred();
+
+													$
+															.ajax({
+																type : 'GET',
+																url : 'cbc/loadReportingEntityAddress',
+																mimeType : 'application/json',
+																contentType : "application/json; charset=utf-8",
+																success : function(
+																		data) {
+																	d
+																			.resolve(data);
+																},
+																error : function(
+																		e) {
+																	alert("error: "
+																			+ e.responseText);
+																}
+															});
+
+													return d.promise();
+												}
+											},
+											/* controller: object,*/
+											datatype : 'json',
+											invalidNotify : function(args) {
+
+											},
+											fields : [
+													{
+														name : "id",
+														title : "id",
+														type : "text",
+														visible : false,
+														width : 10
+													/* items: object.id*/
+													},
+													{
+														title : "Address Type",
+														name : "addressType",
+														type : "text",
+														width : 150,
+														items : object.addressType,
+														visible : true
+													},
+													{
+														title : "Country Code",
+														name : "countryCode",
+														type : "text",
+														width : 150,
+														items : object.countryCode,
+														visible : true
+													}
+												 ]
+										});
+
+					},
+					error : function(request, error) {
+						alert("Request: " + JSON.stringify(request));
+					}
+				});
+
+	}//end if
+
 }
 
 function showReportingEntity() {
@@ -2072,6 +2431,7 @@ function showCbcReports(newForm, editForm, viewForm) {
 							$("#saveCBCReportButton").show();
 							$("#editReportsDone").hide();
 							$("#editCancelReportsDone").hide();
+							$("#viewNextTab").hide();
 						} else if (newForm == 0 && editForm == 0
 								&& viewForm == 1) {
 							$("#saveCBCReportButton").hide();
@@ -2082,12 +2442,14 @@ function showCbcReports(newForm, editForm, viewForm) {
 							$('#cbcreports *').prop('disabled', true);
 							$("#viewReportsDone").prop('disabled', false);
 							$("#gridCbcReportsList").prop('disabled', false);
+							$("#viewNextTab").prop('disabled',false);
 						} else if (newForm == 0 && editForm == 1
 								&& viewForm == 0) {
 							$("#viewReportsDone").hide();
 							$("#saveCBCReportButton").hide();
 							$("#editReportsDone").show();
 							$("#editCancelReportsDone").show();
+							$("#viewNextTab").hide();
 						}
 						var residentCountryCode = $("#residentCountry").val();
 						residentCountryCode = $.parseJSON(residentCountryCode);
@@ -5309,6 +5671,7 @@ function showCbcAddInfo(newForm, editForm, viewForm) {
 									false);
 							$("#addInfoResidentCountryGrid").prop('disabled',
 									false);
+							$("#addInfoViewButton").hide();
 						} else if (newForm == 0 && editForm == 0
 								&& viewForm == 1) {
 							$("#form :input").prop("disabled", true);
@@ -5324,6 +5687,7 @@ function showCbcAddInfo(newForm, editForm, viewForm) {
 									true);
 							$("#addInfoResidentCountryGrid").prop('disabled',
 									true);
+							$("#addInfoViewButton").prop('disabled',false);
 						} else if (newForm == 0 && editForm == 1
 								&& viewForm == 0) {
 							$("#viewAddInfoDone").hide();
@@ -5334,6 +5698,7 @@ function showCbcAddInfo(newForm, editForm, viewForm) {
 									false);
 							$("#addInfoResidentCountryGrid").prop('disabled',
 									false);
+							$("#addInfoViewButton").hide();
 						}
 					},
 					error : function(request, error) {

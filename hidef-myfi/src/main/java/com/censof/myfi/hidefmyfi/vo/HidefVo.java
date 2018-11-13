@@ -31,6 +31,7 @@ public class HidefVo {
 	private String payloadFileName;
 	private String docRefId;
 	private String docRefIdStaticText;
+	private String isSummaryView;
 	
 	
 
@@ -192,6 +193,14 @@ public class HidefVo {
 
 	public void setDocRefIdStaticText(String docRefIdStaticText) {
 		this.docRefIdStaticText = docRefIdStaticText;
+	}
+
+	public String getIsSummaryView() {
+		return isSummaryView;
+	}
+
+	public void setIsSummaryView(String isSummaryView) {
+		this.isSummaryView = isSummaryView;
 	}
 	
 	

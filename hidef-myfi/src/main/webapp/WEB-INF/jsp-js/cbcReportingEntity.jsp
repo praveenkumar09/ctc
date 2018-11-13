@@ -119,13 +119,23 @@
 				<div class="clearfix"></div>
 				<br /> <br />
 				<div class="form-group">
+				<c:choose>
+						<c:when test="${hidef.isSummaryView=='true'}">
 					<div class="text-center">
+						<button id="reportingEntityViewNext" name="singlebutton"
+							onClick="showCbcReports(0,0,1);return false;" class="btn btn-primary">View Next Tab</button>
+					</div>
+					</c:when>
+						<c:otherwise>
+						<div class="text-center">
 						<button id="singlebutton" name="singlebutton"
 							onClick="cbcReportingEntityPrevious(1,0,0);return false;" class="btn btn-warning">Previous</button>
 						&nbsp;&nbsp;
 						<button id="singlebutton" name="singlebutton"
 							onClick="showCbcReports(1,0,0);return false;" class="btn btn-primary">Next</button>
 					</div>
+						</c:otherwise>
+						</c:choose>
 				</div>
 			</div>
 			</form:form>

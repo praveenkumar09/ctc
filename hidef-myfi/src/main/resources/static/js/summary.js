@@ -222,7 +222,9 @@ function viewCBCSummaryGrid(item){
        success: function(response) {
            console
                .log("data ====>"+response);
-           newCBCOnClick();
+           //newCBCOnClick();
+           viewCBCOnClick();
+          // $('#cbcmetadata *').prop('disabled',true);
            
        },
        error: function(

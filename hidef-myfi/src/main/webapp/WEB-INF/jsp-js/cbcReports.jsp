@@ -375,6 +375,13 @@
 				<div class="clearfix"></div>
 				<br />
 				<div class="form-group">
+				<c:choose>
+						<c:when test="${hidef.isSummaryView=='true'}">
+					<div class="text-center">
+						
+					</div>
+					</c:when>
+					<c:otherwise>
 					<div class="text-center">
 						<br />
 						<button id="saveCBCReportButton" name="singlebutton"
@@ -386,6 +393,8 @@
 							<button id="editCancelReportsDone" name="singlebutton"
 							onClick="doneViewreports(1,0,0);return false;" class="btn btn-danger">Cancel</button>
 					</div>
+					</c:otherwise>
+					</c:choose>
 				</div>
 				<div class="clearfix"></div>
 				<br />
@@ -398,6 +407,14 @@
 				<div class="clearfix"></div>
 				<br /> <br />
 				<div class="form-group">
+				<c:choose>
+				<c:when test="${hidef.isSummaryView=='true'}">
+					<div class="text-center">						
+						<button id="viewNextTab" name="singlebutton"
+							onClick="showCbcAddInfo(0,0,1);return false;" class="btn btn-primary">View Next Tab</button>
+					</div>
+					</c:when>
+					<c:otherwise>
 					<div class="text-center">
 						<button id="singlebutton" name="singlebutton"
 							onClick="showCbcReportsPrevious(1,0,0);return false;" class="btn btn-warning">Previous</button>
@@ -405,6 +422,8 @@
 						<button id="singlebutton" name="singlebutton"
 							onClick="showCbcAddInfo(1,0,0);return false;" class="btn btn-primary">Next</button>
 					</div>
+					</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 			</form:form>

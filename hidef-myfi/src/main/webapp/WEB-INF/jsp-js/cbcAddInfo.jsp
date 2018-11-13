@@ -73,12 +73,13 @@
 				<div class="clearfix"></div>
 				<br />
 				<div class="form-group">
+				<c:choose>
+				<c:when test="${hidef.isSummaryView=='true'}">
+					
+					</c:when>
+					<c:otherwise>
 					<div class="text-center">
 						<br />
-						<!-- <button id="singlebutton" name="singlebutton"
-							onClick="saveAddInfo();return false;" class="btn btn-success">Save
-							Additional Information</button> -->
-							
 							<button id="saveCBCAddInfoButton" name="singlebutton"
 							onClick="saveAddInfo();return false;" class="btn btn-success">Save Additional Information</button>
 							<button id="viewAddInfoDone" name="singlebutton"
@@ -88,6 +89,8 @@
 							<button id="editCancelInfoDone" name="singlebutton"
 							onClick="doneViewAddInfo(1,0,0);return false;" class="btn btn-danger">Cancel Edited Changes</button>
 					</div>
+					</c:otherwise>
+					</c:choose>
 				</div>
 				<div class="clearfix"></div>
 				<br />
@@ -104,6 +107,15 @@
 				<br /> <br />
 				</form:form>
 				<div class="form-group">
+				<c:choose>
+				<c:when test="${hidef.isSummaryView=='true'}">
+				<!-- <button id="addInfoViewButton" name="singlebutton"
+							onClick="additionalInfoPrevious();return false;" class="btn btn-primary">Back To Summary</button> -->
+							<div class="text-center">
+							<a id='addInfoViewButton' href="home">Back To Summary</a>
+							</div>
+				</c:when>
+				<c:otherwise>
 					<div class="text-center">
 						<br />
 						<button id="singlebutton" name="singlebutton"
@@ -125,6 +137,8 @@
 							onClick="generatePackage();" class="btn btn-success">Save And Generate
 							Package</button>
 					</div>
+					</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 		</div>
