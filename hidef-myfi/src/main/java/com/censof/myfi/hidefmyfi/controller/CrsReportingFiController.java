@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.censof.myfi.hidefmyfi.CTSConstants;
+import com.censof.myfi.hidefmyfi.entity.Cbcdocumenttypeindicator;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
 import com.censof.myfi.hidefmyfi.service.CtcDataSaveService;
 import com.censof.myfi.hidefmyfi.service.CtccommonDropdownService;
@@ -41,7 +42,9 @@ public class CrsReportingFiController {
 	public String getreportingFi(@ModelAttribute("hidef")HidefVo hidef, 
 		      BindingResult result, ModelMap model,Map<String, Object> map) {
 		List<Hicountry> country = ctccommonDropdownService.getAllCountries();
+		List<Cbcdocumenttypeindicator> cbcdocumenttypeindicator = ctccommonDropdownService.getAllDocumentTypeIndicator();
 		map.put("countryList", country);
+		map.put("documentTypeIndicator", cbcdocumenttypeindicator);
 		model.addAttribute("hidef", hidef);
 		hidef.setCurrentTab(CTSConstants.HIDEF_CTS_CRS_REPORTINGFI);
 		return "crsreportingFI";

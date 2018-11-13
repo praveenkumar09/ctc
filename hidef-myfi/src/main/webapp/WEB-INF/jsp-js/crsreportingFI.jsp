@@ -1,9 +1,12 @@
 <link type="text/css" href="${pageContext.request.contextPath}/css/panel-border.css" rel="stylesheet">
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/crsreportingfi.js"></script>
 <div class="container">
 	<div class="row">
 		<br /> <br />
 		<div class="panel panel-default">
+		 <form:form  modelAttribute="hidef" method="POST" name="crsreportingfi" id="crsreportingfi">
 			<div class="panel-heading">
 				<strong>REPORTING FI</strong>
 			</div>
@@ -24,34 +27,31 @@
 					<div class="clearfix"></div>
 									<br /> <br />
 				<div class="form-group col-md-6">
-					<label for="language">Doc Type Indicator<font color='red'>*</font>:</label><select
-							class="form-control" id="docTypeIndicatorReportingFI">
-							<option value="0">--Choose Doc Type Indicator--</option>
-							<option value="1">OECD0</option>
-							<option value="2">OECD1</option>
-							<option value="3">OECD2</option>
-							<option value="4">OECD3</option>
-							<option value="5">OECD10</option>
-							<option value="6">OECD11</option>
-							<option value="7">OECD12</option>
-							<option value="8">OECD13</option>
-						</select>
+					<label for="language">Doc Type Indicator<font color='red'>*</font>:</label><form:select
+							class="form-control" id="docTypeIndicatorReportingFI" path="crsreportingfi.documentTypeIndic">
+							<form:option value="0">Please choose</form:option>
+							<c:forEach items="${documentTypeIndicator}" var="documenttypeindic">
+							<form:option value="${documenttypeindic.CBCDocumentType}">
+								${documenttypeindic.CBCDocumentType}
+							</form:option>
+						</c:forEach>
+						</form:select>
 				</div>
 
 				<div class="form-group col-md-6">
-					<label for="language">Doc Ref Id<font color='red'>*</font>:</label> <input
-						class="form-control" id="docRefId" placeholder="Doc Ref Id"
-						name="language">
+					<label for="language">Doc Ref Id<font color='red'>*</font>:</label> <form:input
+						class="form-control" id="docRefId" placeholder="Doc Ref Id" path="crsreportingfi.docRefId"
+						name="language"></form:input>
 				</div>
 				<div class="form-group col-md-6">
-					<label for="language">Cor Message Ref Id:</label> <input
-						class="form-control" id="corMessageRefId" placeholder="Cor Message Ref Id"
-						name="language">
+					<label for="language">Cor Message Ref Id:</label> <form:input
+						class="form-control" id="corMessageRefId" placeholder="Cor Message Ref Id" path="crsreportingfi.corMmsgRefId"
+						name="language"></form:input>
 				</div>
 				<div class="form-group col-md-6">
-					<label for="language">Cor Doc Ref Id:</label> <input
-						class="form-control" id="corDocRefId" placeholder="Cor Doc Ref Id"
-						name="language">
+					<label for="language">Cor Doc Ref Id:</label> <form:input
+						class="form-control" id="corDocRefId" placeholder="Cor Doc Ref Id" path="crsreportingfi.corDocRefId"
+						name="language"></form:input>
 				</div>
 				<div class="clearfix"></div>
 				<br /> <br />
@@ -81,6 +81,7 @@
 					</div>
 				</div>
 			</div>
+			</form:form>
 		</div>
 	</div>
 </div>

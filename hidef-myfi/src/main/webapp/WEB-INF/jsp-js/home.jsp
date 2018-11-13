@@ -16,12 +16,18 @@
 	<div id="crsbreadcrumb" class="crsbreadcrumb">
 		<ul class="nav nav-tabs">
 			<!-- <li id="userProfile" class="active"><a href="#" onclick="userProfileOnClick();">USER PROFILE</a></li> -->
-			<li id="metadataBtn" class="active"><a href="#"
+			<!-- <li id="metadataBtn" class="active"><a href="#"
 				onclick="metaDataOnClick();">METADATA</a></li>
 			<li id="reportingFI"><a href="#" onclick="showReportingFI();">REPORTING
 					FI</a></li>
 			<li id="accountHolder"><a href="#"
-				onclick="showAccountHolder();">ACCOUNT HOLDER</a></li>
+				onclick="showAccountHolder();">ACCOUNT HOLDER</a></li> -->
+				<li id="metadataBtn" class="active"><a href="#"
+				onclick="return false;">METADATA</a></li>
+			<li id="reportingFI"><a href="#" onclick="return false;">REPORTING
+					FI</a></li>
+			<li id="accountHolder"><a href="#"
+				onclick="return false;">ACCOUNT HOLDER</a></li>
 			<!-- <li id="config"><a href="#" onclick="showConfig();">CONFIGURATION</a></li> -->
 		</ul>
 		<div id="tabinfo"></div>

@@ -33,6 +33,8 @@ public class HidefVo {
 	private String docRefIdStaticText;
 	private String isSummaryView;	
 	private CrsMetadataVo crsmetadata;
+	private CrsReportingFiVo crsreportingfi;
+	
 	
 	
 
@@ -211,6 +213,15 @@ public class HidefVo {
 	public void setCrsmetadata(CrsMetadataVo crsmetadata) {
 		this.crsmetadata = crsmetadata;
 	}
+
+	public CrsReportingFiVo getCrsreportingfi() {
+		return crsreportingfi;
+	}
+
+	public void setCrsreportingfi(CrsReportingFiVo crsreportingfi) {
+		this.crsreportingfi = crsreportingfi;
+	}
+	
 	
 
 	
