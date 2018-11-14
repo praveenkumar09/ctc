@@ -5660,10 +5660,12 @@ function ReportingFiPrevious() {
 	$("#metadataBtn").addClass("active");
 	$("#accountHolder").removeClass("active");
 	$("#config").removeClass("active");
+	
 	$.ajax({
 
 		url : 'crs/reportingFiNextOrPrevious?previous1=previous',
 		type : 'POST',
+		data : $('#crsreportingfi').serialize(),
 		success : function(data) {
 			$("#metaData").show();
 			$("#metaData").html(data);

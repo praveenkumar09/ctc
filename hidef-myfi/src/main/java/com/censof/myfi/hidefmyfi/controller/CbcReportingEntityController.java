@@ -398,6 +398,8 @@ public class CbcReportingEntityController {
 			for(OrganisationInTypeVo organisationvo :hidef.getReportingEntity().getOrganisationInTypeList()){
 				if(organisationvo.getId()==id){
 					organisationvo.setIssuedBy(updatedorganisationVo.getIssuedBy());
+					organisationvo.setInType(updatedorganisationVo.getInType());
+					organisationvo.setIn(updatedorganisationVo.getIn());
 					break;
 				}
 			}

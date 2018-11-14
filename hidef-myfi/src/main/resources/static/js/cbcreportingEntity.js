@@ -65,7 +65,7 @@ function saveNewReportingEntityAddressClicked(){
 		type : 'GET',
 		data: $('#reportingfiaddress').serialize(),
 		success : function(data) {
-		   /*var object =  {"id":"1","addressType":"Address Free","countryCode":"MY"};
+		   /*var object =  {"id":"1","addressType":"Address Free","countryeportEntityEditSaveAddress(Code":"MY"};
 			console.log(object.addressType);
 			console.log(object.id);
 			console.log(object.countryCode);*/

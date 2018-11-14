@@ -409,6 +409,8 @@ public class CbcReportsController {
 				for (OrganisationInTypeVo organisationvo : hidef.getCbcReports().getOrganisationInTypeList()) {
 					if (organisationvo.getId() == updatedorganisationVo.getId()) {
 						organisationvo.setIssuedBy(updatedorganisationVo.getIssuedBy());
+						organisationvo.setIn(updatedorganisationVo.getIn());
+						organisationvo.setInType(updatedorganisationVo.getInType());
 						break;
 					}
 				}
