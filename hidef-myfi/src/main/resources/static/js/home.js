@@ -12,6 +12,8 @@ $(document).ready(function() {
 	var pageValue = $("#toProfilePage").val();
 	if (pageValue == "true") {
 		userProfileOnClick();
+	}else if (pageValue == "cbctrue"){
+		crsUserProfileOnClick();
 	}
 
 });
@@ -316,170 +318,12 @@ function crsUserProfileOnClick() {
 					$("#userProfile").show();
 					$("#userProfile").html(data);
 
-					var recievingCountry = $("#recievingCountry").val();
-					recievingCountry = $.parseJSON(recievingCountry);
+					/*var recievingCountry = $("#recievingCountry").val();
+					recievingCountry = $.parseJSON(recievingCountry);*/
 
-					$("#userProfileReceivingCountryList")
+					/*$("#userProfileReceivingCountryList")
 							.jsGrid(
-									{
-										width : "205%",
-										inserting : true,
-										editing : true,
-										sorting : true,
-										paging : true,
-										pageSize : 5,
-										pageButtonCount : 5,
-										autoload : true,
-										controller : {
-
-											loadData : function() {
-												var d = $.Deferred();
-												$
-														.ajax({
-															type : 'GET',
-															url : 'loadReceivingCountryList',
-															mimeType : 'application/json',
-															contentType : 'application/json',
-															success : function(
-																	data) {
-																d.resolve(data);
-															},
-															error : function(e) {
-																alert("error: "
-																		+ e.responseText);
-															}
-														});
-
-												return d.promise();
-												/*return
-												[{"id":"1","residentCountryCode":6},{"id":"1","residentCountryCode":6}];*/
-											},
-
-											insertItem : function(item) {
-												var d = $.Deferred();
-
-												$
-														.ajax(
-																{
-																	type : "POST",
-																	url : "insertReceivingCountryGrid",
-																	data : JSON
-																			.stringify(item),
-																	mimeType : 'application/json',
-																	contentType : 'application/json',
-																})
-														.done(
-																function(
-																		response) {
-																	console
-																			.log("done: "
-																					+ JSON
-																							.stringify(response));
-																	d
-																			.resolve(response);
-																})
-														.fail(
-																function(msg) {
-																	console
-																			.log("fail"
-																					+ msg);
-																	d.reject();
-																});
-											},
-
-											updateItem : function(item) {
-												var d = $.Deferred();
-												$
-														.ajax(
-																{
-																	type : "POST",
-																	url : "updateReceivingCountryGrid?id="
-																			+ item.id,
-																	data : JSON
-																			.stringify(item),
-																	mimeType : 'application/json',
-																	contentType : 'application/json',
-																})
-														.done(
-																function(
-																		response) {
-																	console
-																			.log("done: "
-																					+ JSON
-																							.stringify(response));
-																	d
-																			.resolve(response);
-																})
-														.fail(
-																function(msg) {
-																	console
-																			.log("fail"
-																					+ msg);
-																	d.reject();
-																});
-											},
-
-											deleteItem : function(item) {
-												var d = $.Deferred();
-												//alert('@@@@@@@@@@@@@' + item.id)
-
-												$
-														.ajax(
-																{
-																	type : "POST",
-																	url : "cbc/deleteReceivingCountryGrid?id="
-																			+ item.id,
-																	data : JSON
-																			.stringify(item),
-																	mimeType : 'application/json',
-																	contentType : 'application/json',
-																})
-														.done(
-																function(
-																		response) {
-																	console
-																			.log("done: "
-																					+ JSON
-																							.stringify(response));
-																	d
-																			.resolve(response);
-																})
-														.fail(
-																function(msg) {
-																	console
-																			.log("fail"
-																					+ msg);
-																	d.reject();
-																});
-											},
-
-										},
-										invalidNotify : function(args) {/*
-										                        $("#validateTextHere").text("");
-										                        $("#validateTextHere")
-										                            .text(
-										                                "Please fill in all the mandatory fields");
-										                        $('#crsNameModal').modal('show');
-										 */
-										},
-										fields : [ {
-											title : "No",
-											name : "id",
-											type : "text",
-											width : 150,
-											validate : "required",
-											visible : false
-										}, {
-											title : "Receiving Country",
-											name : "recievingCountry",
-											type : "select",
-											items : recievingCountry,
-											valueField : "id",
-											textField : "name",
-										}, {
-											type : "control"
-										} ]
-									});
+									{});*/
 
 				},
 				error : function(request, error) {

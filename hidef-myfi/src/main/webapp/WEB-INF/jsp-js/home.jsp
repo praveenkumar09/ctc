@@ -56,6 +56,7 @@
 		</ul>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<input type="hidden" id="toProfilePage" value='${toProfilePage}'/>
+		<input type="hidden" id="toProfilePage" value='${toCRSProfilePage}'/>
 		<div id="tabinfo"></div>
 	</div>
 	 <!-- <div class="form-group col-md-6" >

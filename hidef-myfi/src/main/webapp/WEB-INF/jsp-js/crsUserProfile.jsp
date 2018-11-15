@@ -11,8 +11,8 @@ $(document).ready(function() {
 	<div class="row">
 		<br /> <br />
 		<div class="panel panel-default">
-			<form:form modelAttribute="hidef" method="POST" name="userProfile"
-				enctype="multipart/form-data" action="profile"
+			<form:form modelAttribute="hidef" method="POST" action="crs/profile" name="userProfile"
+				enctype="multipart/form-data"
 				id="userProfile">
 				<div class="panel-heading">
 					<strong>PROFILE</strong>
@@ -36,23 +36,23 @@ $(document).ready(function() {
 							</c:forEach>
 						</form:select>
 					</div>
-					<%-- <div class="form-group col-md-6">
+					 <div class="form-group col-md-6">
 						<form:label for="" path="userprofile.receivingcountry">Receiving Country:</form:label>
 						<form:select class="form-control" id="receivingCountry"
 							path="userprofile.receivingcountry">
 							<form:option value="0">Please choose</form:option>
-								<form:option value="1">MY</form:option>
+								<%-- <form:option value="1">MY</form:option>
 							<form:option value="2">SG</form:option>
 							<form:option value="3">CN</form:option>
 							<form:option value="4">AU</form:option>
-							<form:option value="5">US</form:option>
+							<form:option value="5">US</form:option> --%>
 							<c:forEach items="${countryList}" var="country">
-								<form:option value="${country.countryCode}">
+								<form:option value="${country.id}">
 								${country.countryCode}
 							</form:option>
 							</c:forEach>
 						</form:select>
-					</div> --%>
+					</div> 
 					<div class="form-group col-md-6">
 						<form:label path="userprofile.msgType">Message Type:</form:label>
 						<form:input type="text" class="form-control"
@@ -214,10 +214,10 @@ $(document).ready(function() {
 						</div> --%>
 					</div>
 					<div class="clearfix"></div>
-					<div class="form-group col-md-6">
+					<!-- <div class="form-group col-md-6">
 					<div id="userProfileReceivingCountryList"></div>
 					<div id="pager"></div>
-				    </div>
+				    </div> -->
 				    <input type="hidden" id="recievingCountry" value='${recievingCountry}'/>
 					<div class="clearfix"></div>
 					<!-- 	<div class="form-group col-md-6">

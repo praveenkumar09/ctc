@@ -166,8 +166,16 @@ public class LoginController {
 	public String home(ModelMap model,@ModelAttribute("hidef")HidefVo hidef,Map<String, Object> map) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		hidef.setMycbcId(auth.getName());
-		map.put("toProfilePage", hidef.isUserProfileSaved());
 		UserVo uservo = userService.findByMyCbcIdAndStatus(auth.getName(),1);
+		if(uservo.getMessageType() != null && uservo.getMessageType().equals("CRS")) {
+			if(hidef.isUserProfileSaved()) {
+			map.put("toProfilePage", "cbctrue");
+			}else {
+				map.put("toProfilePage", hidef.isUserProfileSaved());
+			}
+		}else {
+			map.put("toProfilePage", hidef.isUserProfileSaved());
+		}
 		map.put("messageType", uservo.getMessageType());
 		model.addAttribute("hidef",hidef);	
 		return "home";

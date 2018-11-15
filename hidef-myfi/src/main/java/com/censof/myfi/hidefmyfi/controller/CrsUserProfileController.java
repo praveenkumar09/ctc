@@ -76,6 +76,12 @@ public class CrsUserProfileController {
 		hidef = ctcDataSaveService.getUserProfileByMycbcId(hidef);
 		
 		
+		if(hidef != null && hidef.getUserprofile()!= null && hidef.getUserprofile().getRecievingCountryList() != null
+				&& !hidef.getUserprofile().getRecievingCountryList().isEmpty()) {
+			hidef.getUserprofile().setReceivingcountry(""+hidef.getUserprofile().getRecievingCountryList().get(0).getRecievingCountry());
+		}
+		
+		
 		if(hidef.getUserprofile() == null) {
 			hidef.setUserprofile(new UserProfileVo());
 			//getMessageRefId(hidef,"CBC");
@@ -261,6 +267,14 @@ public class CrsUserProfileController {
 	public String saveUserProfile(@ModelAttribute("hidef")HidefVo hidef,  HttpServletRequest request,	
 		      BindingResult result, ModelMap model,Map<String, Object> map) {
 		
+		List<RecievingCountryVo> listOfRecievingCountry = new ArrayList<RecievingCountryVo>();
+		if(hidef != null && hidef.getUserprofile() != null && hidef.getUserprofile().getReceivingcountry() != null) {
+			RecievingCountryVo recievingCountryVo = new RecievingCountryVo();
+			recievingCountryVo.setRecievingCountry(Integer.parseInt(hidef.getUserprofile().getReceivingcountry()));
+			listOfRecievingCountry.add(recievingCountryVo);
+			hidef.getUserprofile().setRecievingCountryList(listOfRecievingCountry);
+		}
+		
 		MultipartHttpServletRequest multipartRequest=(MultipartHttpServletRequest)request;
         Iterator<String> it=multipartRequest.getFileNames();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -292,7 +306,7 @@ public class CrsUserProfileController {
         
         hidef.setUserProfileSaved(true);
 		model.addAttribute("hidef",hidef);
-		return "redirect:home";
+		return "redirect:/admin/home";
 	}
 	
 	@RequestMapping(value ="/admin/crs/import/excel", method = RequestMethod.GET)

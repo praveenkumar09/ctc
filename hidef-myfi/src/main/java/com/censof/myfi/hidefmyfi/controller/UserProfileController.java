@@ -76,7 +76,6 @@ public class UserProfileController {
 		
 		hidef = ctcDataSaveService.getUserProfileByMycbcId(hidef);
 		
-		
 		if(hidef.getUserprofile() == null) {
 			hidef.setUserprofile(new UserProfileVo());
 			//getMessageRefId(hidef,"CBC");
