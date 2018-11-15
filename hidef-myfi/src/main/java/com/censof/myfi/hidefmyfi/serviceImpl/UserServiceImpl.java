@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService{
 		userVo.setStatus(user.getStatus());
 		userVo.setToken(user.getToken());
 		userVo.setUsername(user.getName());
+		userVo.setMessageType(user.getMessageType());
 		return userVo;
 	}
 	
@@ -57,6 +58,7 @@ public class UserServiceImpl implements UserService{
 		user.setStatus(userVo.getStatus());
 		user.setToken(userVo.getToken());
 		user.setName(userVo.getUsername());
+		user.setMessageType(userVo.getMessageType());
 		userRepository.save(user);
 	}
 	
@@ -73,6 +75,7 @@ public class UserServiceImpl implements UserService{
 		userVo.setStatus(user.getStatus());
 		userVo.setToken(user.getToken());
 		userVo.setUsername(user.getName());
+		userVo.setMessageType(user.getMessageType());
 		return userVo;
 	}
 
@@ -89,6 +92,7 @@ public class UserServiceImpl implements UserService{
 		userVo.setStatus(user.getStatus());
 		userVo.setToken(user.getToken());
 		userVo.setUsername(user.getName());
+		userVo.setMessageType(user.getMessageType());
 		return userVo;
 	}
 
@@ -105,6 +109,7 @@ public class UserServiceImpl implements UserService{
 		user.setStatus(userVo.getStatus());
 		user.setToken(userVo.getToken());
 		user.setName(userVo.getUsername());
+		user.setMessageType(userVo.getMessageType());
 		userRepository.save(user);
 	}
 
@@ -122,11 +127,35 @@ public class UserServiceImpl implements UserService{
 		userVo.setStatus(user.getStatus());
 		userVo.setToken(user.getToken());
 		userVo.setUsername(user.getName());
+		userVo.setMessageType(user.getMessageType());
 		return userVo;
 		}else {
 			return null;
 		}
 	}
+
+
+	@Override
+	public UserVo findByMyCbcIdAndStatus(String mycbcId, int status) {
+		// TODO Auto-generated method stub
+		User user = userRepository.findByMyCbcIdAndStatus(mycbcId,status);
+		UserVo userVo = null;
+		if(user != null) {
+		userVo = new UserVo();	
+		userVo.setId(user.getId());
+		userVo.setMyCBCId(user.getMyCbcId());
+		userVo.setEmail(user.getEmail());
+		userVo.setPassword(user.getPassword());
+		userVo.setStatus(user.getStatus());
+		userVo.setToken(user.getToken());
+		userVo.setUsername(user.getName());
+		userVo.setMessageType(user.getMessageType());
+		return userVo;
+		}
+		return userVo;
+	}
+
+
 	
 	
 

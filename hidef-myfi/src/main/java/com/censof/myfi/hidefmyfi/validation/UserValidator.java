@@ -52,6 +52,7 @@ public class UserValidator implements Validator {
         if (!user.getPasswordConfirm().equals(user.getPassword())) {
             errors.rejectValue("passwordConfirm", "Diff.user.passwordConfirm");
         }
+        
     }
     
     public void validateEmail(Object o, Errors errors){

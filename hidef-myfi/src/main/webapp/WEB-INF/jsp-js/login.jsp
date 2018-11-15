@@ -13,7 +13,7 @@
 				<h3 class="form-signin-heading" align="center"><font color="black">Please Sign In.</font></h3>
 				<br/>
 				<input type="text" id="myCBCId" class="form-control" name="myCBCId"
-					placeholder="CBC ID" required="required" autofocus/><br/>
+					placeholder="CBC OR CRS ID" required="required" autofocus/><br/>
 				<!-- <input type="text" id="email" class="form-control" name="username"
 					placeholder="Email Address" required="required" autofocus/><br/> --> <input
 					type="password" id="password" class="form-control" name="password"

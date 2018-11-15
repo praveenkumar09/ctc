@@ -40,7 +40,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.censof.myfi.hidefmyfi.entity.Messagetype;
 import com.censof.myfi.hidefmyfi.service.CtcDataSaveService;
+import com.censof.myfi.hidefmyfi.service.CtccommonDropdownService;
 import com.censof.myfi.hidefmyfi.service.SecurityService;
 import com.censof.myfi.hidefmyfi.service.UserService;
 import com.censof.myfi.hidefmyfi.validation.UserValidator;
@@ -66,6 +68,9 @@ public class LoginController {
 	
 	@Autowired UserValidator userValidator;
 	
+	@Autowired
+	private CtccommonDropdownService ctccommonDropdownService;
+	
 	@ModelAttribute("hidef")
     public HidefVo getmetadata () {
         return new HidefVo(); 
@@ -88,23 +93,30 @@ public class LoginController {
 
 
 	@RequestMapping(value = "/registration", method = RequestMethod.GET)
-    public String registration(Model model,@ModelAttribute("user")UserVo user,@ModelAttribute("hidef") HidefVo hidef) {
+    public String registration(Model model,@ModelAttribute("user")UserVo user,@ModelAttribute("hidef") HidefVo hidef,Map<String, Object> map) {
 		if(hidef.getCheckEmail() != "") {
 			model.addAttribute("checkEmail",hidef.getCheckEmail());
 		}
 		hidef.setCheckEmail("");
+		
+		List<Messagetype>  messageTypes = ctccommonDropdownService.findAllMessageTypes();
+		map.put("messageType", messageTypes);
+		
         model.addAttribute("user", new UserVo());
         return "registration";
     }
 
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public String registerNewUser(ModelMap model,@ModelAttribute("user")UserVo userVo,BindingResult bindingResult,@ModelAttribute("hidef") HidefVo hidef) {
+	public String registerNewUser(ModelMap model,@ModelAttribute("user")UserVo userVo,BindingResult bindingResult,@ModelAttribute("hidef") HidefVo hidef,Map<String, Object> map) {
 	 	String token = UUID.randomUUID().toString();	
 	 	userVo.setToken(token);
 	    userValidator.validate(userVo, bindingResult);
+	    List<Messagetype>  messageTypes = ctccommonDropdownService.findAllMessageTypes();
+		
 	    hidef.setCheckEmail("Please check your email address <b>"+userVo.getEmail()+"</b> for activation link and click on the link provided for activation. Thanks!");
 	
 	    if (bindingResult.hasErrors()) {
+	    	map.put("messageType", messageTypes);
 	        return "registration";
 	    }
 	
@@ -119,6 +131,7 @@ public class LoginController {
 		}
 	    
 	    //securityService.autologin(userVo.getEmail(),userVo.getPasswordConfirm());
+	    map.put("messageType", messageTypes);
 	    model.addAttribute("checkEmail",hidef.getCheckEmail());	
 	    return "registrationEmail";
 	}
@@ -154,6 +167,8 @@ public class LoginController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		hidef.setMycbcId(auth.getName());
 		map.put("toProfilePage", hidef.isUserProfileSaved());
+		UserVo uservo = userService.findByMyCbcIdAndStatus(auth.getName(),1);
+		map.put("messageType", uservo.getMessageType());
 		model.addAttribute("hidef",hidef);	
 		return "home";
 	}

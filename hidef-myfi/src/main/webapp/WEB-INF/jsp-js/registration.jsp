@@ -3,6 +3,24 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <link href="${pageContext.request.contextPath}/css/register.css" rel="stylesheet">
+<script type="text/javascript">
+
+function getType(){
+	var messageType = $('#messageType').val();
+	if(messageType == 'CRS'){
+		$('#cbcorcrs').show();
+		/* $('#cbc').hide(); */
+	}else if(messageType == 'CBC'){
+		/* $('#crs').hide();
+		$('#cbc').show(); */
+		$('#cbcorcrs').show();
+	}else{
+		/* $('#crs').hide();
+		$('#cbc').hide(); */
+		$('#cbcorcrs').hide();
+	}
+}
+</script>
 <body>
 	<div class="row">
 		<div id="imagesrc" class="col-xs-6">
@@ -29,16 +47,41 @@
 						<br />
 					</div>
 				</spring:bind>
+				
+				<spring:bind path="messageType">
+					<div class="form-group ${status.error ? 'has-error' : ''}">
+						<!-- <label for="">Message Type</label> --> 
+						<form:select
+							class="form-control" id="messageType" path ="messageType">
+							<%-- <form:option value="0">Please Choose Message Type</form:option> --%>
+								<c:forEach items="${messageType}"
+									var="type">
+									<form:option value="${type.msgType}">
+								${type.msgType}
+							</form:option>
+								</c:forEach>
+						</form:select>
+					</div>
+				</spring:bind>
 
 				<spring:bind path="myCBCId">
-					<div class="form-group ${status.error ? 'has-error' : ''}">
+					<div class="form-group ${status.error ? 'has-error' : ''}" id='cbcorcrs'>
 						<form:input type="text" id="cbcId" class="form-control"
-							path="myCBCId" placeholder="CBC ID" required="required" />
+							path="myCBCId" placeholder="CBC OR CRS ID" required="required" />
 							<form:errors path="myCBCId"></form:errors>
 						<br />
 					</div>
 				</spring:bind>
-
+				<%-- <spring:bind path="myCBCId">
+				<div class="form-group ${status.error ? 'has-error' : ''}" id='crs' style="display: none">
+						<form:input type="text" id="crsId" class="form-control"
+							path="myCBCId" placeholder="CRS ID" required="required" />
+							<form:errors path="myCBCId"></form:errors>
+						<br/>
+				</div>
+				</spring:bind> --%>
+				
+			
 				<spring:bind path="email">
 					<div class="form-group ${status.error ? 'has-error' : ''}">
 						<form:input type="text" id="email" class="form-control"

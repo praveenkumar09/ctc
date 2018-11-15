@@ -43,6 +43,9 @@ public class User {
 	@Column(name = "mycbcid")
 	private String myCbcId;
 	
+	@Column(name = "messagetype")
+	private String messageType;
+	
 
 	public Long getId() {
 		return id;
@@ -112,6 +115,17 @@ public class User {
 	public void setMyCbcId(String myCbcId) {
 		this.myCbcId = myCbcId;
 	}
+
+
+	public String getMessageType() {
+		return messageType;
+	}
+
+
+	public void setMessageType(String messageType) {
+		this.messageType = messageType;
+	}
+	
 	
 	
 	

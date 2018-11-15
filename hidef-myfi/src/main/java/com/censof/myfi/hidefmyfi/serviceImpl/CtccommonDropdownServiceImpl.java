@@ -23,6 +23,7 @@ import com.censof.myfi.hidefmyfi.entity.Ctscommunicationtypecd;
 import com.censof.myfi.hidefmyfi.entity.Docrefid;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
 import com.censof.myfi.hidefmyfi.entity.Messagerefid;
+import com.censof.myfi.hidefmyfi.entity.Messagetype;
 import com.censof.myfi.hidefmyfi.entity.Senderfileid;
 import com.censof.myfi.hidefmyfi.repository.CBCBinaryEncodingRepository;
 import com.censof.myfi.hidefmyfi.repository.CbcAddressTypeRepository;
@@ -38,6 +39,7 @@ import com.censof.myfi.hidefmyfi.repository.DocumentTypeIndicatorRepository;
 import com.censof.myfi.hidefmyfi.repository.FileFormatCdRepository;
 import com.censof.myfi.hidefmyfi.repository.HiCountryRepository;
 import com.censof.myfi.hidefmyfi.repository.MessagerefidRepository;
+import com.censof.myfi.hidefmyfi.repository.MessagetypeRepository;
 import com.censof.myfi.hidefmyfi.repository.NameTypeRepository;
 import com.censof.myfi.hidefmyfi.repository.ReportingRoleTypeRepository;
 import com.censof.myfi.hidefmyfi.repository.SenderfileidRepository;
@@ -96,6 +98,9 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService{
 	
 	@Autowired
 	private CrsmessagetypeindicRepository crsmessagetypeindicRepository;
+	
+	@Autowired
+	private MessagetypeRepository messagetypeRepository;
 	
 	
 	@Override
@@ -302,6 +307,14 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService{
 		// TODO Auto-generated method stub
 		List<Crsmessagetypeindic> crsMessageTypeIndic = crsmessagetypeindicRepository.findAllCrsMessageTypeIndic();
 		return crsMessageTypeIndic;
+	}
+
+
+	@Override
+	public List<Messagetype> findAllMessageTypes() {
+		// TODO Auto-generated method stub
+		List<Messagetype>  messageTypes = messagetypeRepository.findAllMessageTypes();
+		return messageTypes;
 	}
 
 }

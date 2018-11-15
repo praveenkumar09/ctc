@@ -19,6 +19,7 @@ import com.censof.myfi.hidefmyfi.entity.Ctscommunicationtypecd;
 import com.censof.myfi.hidefmyfi.entity.Docrefid;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
 import com.censof.myfi.hidefmyfi.entity.Messagerefid;
+import com.censof.myfi.hidefmyfi.entity.Messagetype;
 import com.censof.myfi.hidefmyfi.entity.Senderfileid;
 
 public interface CtccommonDropdownService {
@@ -53,4 +54,5 @@ public interface CtccommonDropdownService {
 	public Senderfileid findSenderFileIdByDate(String date);
 	public List<Cbcmessagetypeindic> findAllCbcmessagetypeindic();
 	public List<Crsmessagetypeindic> findAllCrsMessageTypeIndic();
+	public List<Messagetype> findAllMessageTypes();
 }

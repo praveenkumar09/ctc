@@ -9,4 +9,6 @@ public interface UserService {
 	public UserVo findByToken(String token);
 	public void updateUser(UserVo user);
 	public UserVo findByUsername(String username);
+	public UserVo findByMyCbcIdAndStatus(String mycbcId, int status);
+	
 }
