@@ -35,7 +35,7 @@ box-shadow: 0 0 20px black;
 							<li><a href="#" onclick="newCRSOnClick();">Clone</a></li>
 							<li><a href="#" onclick="newCRSOnClick();">View</a></li>
 							<li role="separator" class="divider"></li>
-							<li><a href="#" onclick="userProfileOnClick(); ">Create
+							<li><a href="#" onclick="crsUserProfileOnClick(); ">Create
 									Profile</a></li>
 						</ul></li>
 					<li><a href="#"
