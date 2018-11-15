@@ -25,6 +25,7 @@ public class CrsMetadataVo implements Serializable{
 	private String messageReferenceId;
 	private String senderContactEmail;
 	private String sendingCompanyIn;
+	private String corMessageReferenceId;
 	private List<RecievingCountryVo> recievingCountryList;
 	public String getSendingCountry() {
 		return sendingCountry;
@@ -129,6 +130,13 @@ public class CrsMetadataVo implements Serializable{
 			List<RecievingCountryVo> recievingCountryList) {
 		this.recievingCountryList = recievingCountryList;
 	}
+	public String getCorMessageReferenceId() {
+		return corMessageReferenceId;
+	}
+	public void setCorMessageReferenceId(String corMessageReferenceId) {
+		this.corMessageReferenceId = corMessageReferenceId;
+	}
+	
 	
 	
 	
