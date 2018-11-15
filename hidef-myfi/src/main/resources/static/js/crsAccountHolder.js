@@ -1148,8 +1148,221 @@ $(document)
 									});
 
 					var object = {};
-
+					
 					$("#accountHolderControllingPersonGrid")
+					.jsGrid(
+							{
+								width : "205%",
+								inserting : false,
+								editing : false,
+								sorting : false,
+								paging : true,
+								pageSize : 6,
+								pageButtonCount : 5,
+								controller : object,
+								datatype : 'json',
+								invalidNotify : function(args) {
+									
+								},
+								fields : [ {
+									name : "id",
+									title : "id",
+									type : "text",
+									visible : false,
+									width : 10,
+									items : object.id
+								}, {
+									title : "Controlling Person Type",
+									name : "controllingPersonType",
+									type : "text",
+									width : 150,
+									items : object.controllingPersonType,
+									visible : true
+								},{
+
+									name : "",
+									/*headerTemplate : function() {
+										return $("<button>")
+												.attr("type",
+														"button")
+												.attr("class",
+														"btn btn-success btn-sm")
+												.text(
+														"Click here to Add New Controlling Person")
+												.on(
+														"click",
+														function() {
+															addNewAccountHolderControllingPersonClicked();
+														});
+									},*/
+									itemTemplate : function(
+											value, item) {
+										var $result = jsGrid.fields.control.prototype.itemTemplate
+												.apply(this,
+														arguments);
+
+										var $customViewButton = $(
+												"<button>")
+												.attr("class",
+														"btn btn-info btn-sm")
+												.text("View")
+												.click(
+														function(
+																e) {
+															alert("ID: "
+																	+ item.id);
+															e
+																	.stopPropagation();
+														});
+
+										var $customEditButton = $(
+												"<button>")
+												.attr("class",
+														"btn btn-warning btn-sm")
+												.text("Edit")
+												.click(
+														function(
+																e) {
+															alert("ID: "
+																	+ item.id);
+															e
+																	.stopPropagation();
+														});
+
+										var $customDeleteButton = $(
+												"<button>")
+												.attr("class",
+														"btn btn-danger btn-sm")
+												.text("Delete")
+												.click(
+														function(
+																e) {
+															alert("ID: "
+																	+ item.id);
+															e
+																	.stopPropagation();
+														});
+
+										return $("<div>")
+												.append(
+														$customViewButton)
+												.append(
+														"&nbsp;")
+												.append(
+														"&nbsp;")
+												.append(
+														$customEditButton)
+												.append(
+														"&nbsp;")
+												.append(
+														"&nbsp;")
+												.append(
+														$customDeleteButton);
+										// return
+										// $result.add($customButton);
+									}
+								
+								} ]
+							});
+
+					$("#Individual").hide();
+					$("#Organization").hide();
+
+					var residentCountryCode = [ {
+						"id" : "1",
+						"name" : "MY"
+					}, {
+						"id" : "2",
+						"name" : "SG"
+					}, {
+						"id" : "3",
+						"name" : "AU"
+					}, {
+						"id" : "4",
+						"name" : "US"
+					} ];
+
+					$("#accountHolderControlingPersonResidentCountryGrid").jsGrid(
+							{
+								width : "205%",
+								inserting : true,
+								editing : true,
+								sorting : true,
+								paging : true,
+								pageSize : 6,
+								pageButtonCount : 5,
+								invalidNotify : function(args) {
+									$("#validateTextHere").text("");
+									$("#validateTextHere").text(
+											"Please fill in all the mandatory fields");
+									$('#crsNameModal').modal('show');
+								},
+								fields : [ {
+									title : "Resident Country Code",
+									name : "residentCountryCode",
+									type : "select",
+									width : 150,
+									items : residentCountryCode,
+									valueField : "id",
+									textField : "name",
+								}, {
+									type : "control"
+								} ]
+							});
+
+					var issuedBy = [ {
+						"id" : "1",
+						"name" : "MY"
+					}, {
+						"id" : "2",
+						"name" : "AR"
+					}, {
+						"id" : "3",
+						"name" : "AU"
+					}, {
+						"id" : "4",
+						"name" : "US"
+					} ];
+
+					var tin = [];
+
+					$("#accountHolderControllingPersonTNGrid").jsGrid(
+							{
+								width : "205%",
+								inserting : true,
+								editing : true,
+								sorting : true,
+								paging : true,
+								pageSize : 6,
+								pageButtonCount : 5,
+								invalidNotify : function(args) {
+									$("#validateTextHere").text("");
+									$("#validateTextHere").text(
+											"Please fill in all the mandatory fields");
+									$('#crsNameModal').modal('show');
+								},
+								fields : [ {
+									title : "TIN",
+									name : "tin",
+									type : "text",
+									width : 150,
+									items : tin,
+								}, {
+									title : "Issued By",
+									name : "issuedBy",
+									type : "select",
+									width : 150,
+									items : issuedBy,
+									valueField : "id",
+									textField : "name",
+								}, {
+									type : "control"
+								} ]
+							});
+
+					var object = {};
+
+					$("#accountHolderControllingPersonNameGrid")
 							.jsGrid(
 									{
 										width : "205%",
@@ -1163,9 +1376,8 @@ $(document)
 										datatype : 'json',
 										invalidNotify : function(args) {
 											$("#validateTextHere").text("");
-											$("#validateTextHere")
-													.text(
-															"Please fill in all the mandatory fields");
+											$("#validateTextHere").text(
+													"Please fill in all the mandatory fields");
 											$('#crsNameModal').modal('show');
 										},
 										fields : [
@@ -1178,91 +1390,72 @@ $(document)
 													items : object.id
 												},
 												{
-													title : "Controlling Person Type",
-													name : "personType",
+													title : "Name",
+													name : "name",
 													type : "text",
 													width : 150,
-													items : object.personType,
+													items : object.name,
+													visible : true
+												},
+												{
+													title : "Name Type",
+													name : "nameType",
+													type : "text",
+													width : 150,
+													items : object.nameType,
 													visible : true
 												},
 												{
 													name : "button",
 													headerTemplate : function() {
 														return $("<button>")
-																.attr("type",
-																		"button")
+																.attr("type", "button")
 																.attr("class",
 																		"btn btn-success btn-sm")
-																.text(
-																		"Click here to Add New Controlling Person")
+																.text("Add Name")
 																.on(
 																		"click",
 																		function() {
-																			addNewAccountHolderControllingPersonClicked();
+																			addAccountHolderControllingPersonNameClicked();
 																		});
 													},
-													itemTemplate : function(
-															value, item) {
+													itemTemplate : function(value, item) {
 														var $result = jsGrid.fields.control.prototype.itemTemplate
-																.apply(this,
-																		arguments);
+																.apply(this, arguments);
 
-														var $customViewButton = $(
-																"<button>")
+														var $customViewButton = $("<button>")
 																.attr("class",
 																		"btn btn-info btn-sm")
 																.text("View")
-																.click(
-																		function(
-																				e) {
-																			alert("ID: "
-																					+ item.id);
-																			e
-																					.stopPropagation();
-																		});
+																.click(function(e) {
+																	alert("ID: " + item.id);
+																	e.stopPropagation();
+																});
 
-														var $customEditButton = $(
-																"<button>")
+														var $customEditButton = $("<button>")
 																.attr("class",
 																		"btn btn-warning btn-sm")
 																.text("Edit")
-																.click(
-																		function(
-																				e) {
-																			alert("ID: "
-																					+ item.id);
-																			e
-																					.stopPropagation();
-																		});
+																.click(function(e) {
+																	alert("ID: " + item.id);
+																	e.stopPropagation();
+																});
 
-														var $customDeleteButton = $(
-																"<button>")
+														var $customDeleteButton = $("<button>")
 																.attr("class",
 																		"btn btn-danger btn-sm")
 																.text("Delete")
-																.click(
-																		function(
-																				e) {
-																			alert("ID: "
-																					+ item.id);
-																			e
-																					.stopPropagation();
-																		});
+																.click(function(e) {
+																	alert("ID: " + item.id);
+																	e.stopPropagation();
+																});
 
-														return $("<div>")
-																.append(
-																		$customViewButton)
-																.append(
-																		"&nbsp;")
-																.append(
-																		"&nbsp;")
-																.append(
-																		$customEditButton)
-																.append(
-																		"&nbsp;")
-																.append(
-																		"&nbsp;")
-																.append(
+														return $("<div>").append(
+																$customViewButton).append(
+																"&nbsp;").append("&nbsp;")
+																.append($customEditButton)
+																.append("&nbsp;").append(
+																		"&nbsp;").append(
 																		$customDeleteButton);
 														// return
 														// $result.add($customButton);
@@ -1270,8 +1463,215 @@ $(document)
 												} ]
 									});
 
-					$("#Individual").hide();
-					$("#Organization").hide();
+					var object = {};
+
+					$("#accountHolderControllingPersonAddressGrid")
+							.jsGrid(
+									{
+										width : "205%",
+										inserting : false,
+										editing : false,
+										sorting : false,
+										paging : true,
+										pageSize : 6,
+										pageButtonCount : 5,
+										controller : object,
+										datatype : 'json',
+										invalidNotify : function(args) {
+											$("#validateTextHere").text("");
+											$("#validateTextHere").text(
+													"Please fill in all the mandatory fields");
+											$('#crsNameModal').modal('show');
+										},
+										fields : [
+												{
+													name : "id",
+													title : "id",
+													type : "text",
+													visible : false,
+													width : 10,
+													items : object.id
+												},
+												{
+													title : "Address Type",
+													name : "addressType",
+													type : "text",
+													width : 150,
+													items : object.addressType,
+													visible : true
+												},
+												{
+													title : "Country Code",
+													name : "countryCode",
+													type : "text",
+													width : 150,
+													items : object.countryCode,
+													visible : true
+												},
+												{
+													name : "button",
+													headerTemplate : function() {
+														return $("<button>")
+																.attr("type", "button")
+																.attr("class",
+																		"btn btn-success btn-sm")
+																.text(
+																		"Click here to Add New Address")
+																.on(
+																		"click",
+																		function() {
+																			addNewAddressAccountHolderCPClicked();
+																		});
+													},
+													itemTemplate : function(value, item) {
+														var $result = jsGrid.fields.control.prototype.itemTemplate
+																.apply(this, arguments);
+
+														var $customViewButton = $("<button>")
+																.attr("class",
+																		"btn btn-info btn-sm")
+																.text("View")
+																.click(function(e) {
+																	alert("ID: " + item.id);
+																	e.stopPropagation();
+																});
+
+														var $customEditButton = $("<button>")
+																.attr("class",
+																		"btn btn-warning btn-sm")
+																.text("Edit")
+																.click(function(e) {
+																	alert("ID: " + item.id);
+																	e.stopPropagation();
+																});
+
+														var $customDeleteButton = $("<button>")
+																.attr("class",
+																		"btn btn-danger btn-sm")
+																.text("Delete")
+																.click(function(e) {
+																	alert("ID: " + item.id);
+																	e.stopPropagation();
+																});
+
+														return $("<div>").append(
+																$customViewButton).append(
+																"&nbsp;").append("&nbsp;")
+																.append($customEditButton)
+																.append("&nbsp;").append(
+																		"&nbsp;").append(
+																		$customDeleteButton);
+														// return
+														// $result.add($customButton);
+													}
+												} ]
+									});
+
+					var object = {};
+
+					$("#accountHolderControllingPersonBirthInfoGrid")
+							.jsGrid(
+									{
+										width : "205%",
+										inserting : false,
+										editing : false,
+										sorting : false,
+										paging : true,
+										pageSize : 6,
+										pageButtonCount : 5,
+										controller : object,
+										datatype : 'json',
+										invalidNotify : function(args) {
+											$("#validateTextHere").text("");
+											$("#validateTextHere").text(
+													"Please fill in all the mandatory fields");
+											$('#crsNameModal').modal('show');
+										},
+										fields : [
+												{
+													name : "id",
+													title : "id",
+													type : "text",
+													visible : false,
+													width : 10,
+													items : object.id
+												},
+												{
+													title : "Birth Date",
+													name : "birthDate",
+													type : "text",
+													width : 150,
+													items : object.birthDate,
+													visible : true
+												},
+												{
+													title : "City",
+													name : "city",
+													type : "text",
+													width : 150,
+													items : object.city,
+													visible : true
+												},
+												{
+													name : "button",
+													headerTemplate : function() {
+														return $("<button>")
+																.attr("type", "button")
+																.attr("class",
+																		"btn btn-success btn-sm")
+																.text(
+																		"Click here to Add New Birth Info")
+																.on(
+																		"click",
+																		function() {
+																			addAccountCPBirthInfoClicked();
+																		});
+													},
+													itemTemplate : function(value, item) {
+														var $result = jsGrid.fields.control.prototype.itemTemplate
+																.apply(this, arguments);
+
+														var $customViewButton = $("<button>")
+																.attr("class",
+																		"btn btn-info btn-sm")
+																.text("View")
+																.click(function(e) {
+																	alert("ID: " + item.id);
+																	e.stopPropagation();
+																});
+
+														var $customEditButton = $("<button>")
+																.attr("class",
+																		"btn btn-warning btn-sm")
+																.text("Edit")
+																.click(function(e) {
+																	alert("ID: " + item.id);
+																	e.stopPropagation();
+																});
+
+														var $customDeleteButton = $("<button>")
+																.attr("class",
+																		"btn btn-danger btn-sm")
+																.text("Delete")
+																.click(function(e) {
+																	alert("ID: " + item.id);
+																	e.stopPropagation();
+																});
+
+														return $("<div>").append(
+																$customViewButton).append(
+																"&nbsp;").append("&nbsp;")
+																.append($customEditButton)
+																.append("&nbsp;").append(
+																		"&nbsp;").append(
+																		$customDeleteButton);
+														// return
+														// $result.add($customButton);
+													}
+												} ]
+									});
+
+
 
 				});
 
@@ -2181,4 +2581,14 @@ function saveAccountHolderInfo(){
 		});
 	
 	
+}
+
+function saveControllingPerson(){
+	var object = {
+			"id" : "1",
+			"controllingPersonType" : "CRS802"
+		};
+	$("#accountHolderControllingPersonGrid").jsGrid("insertItem", object).done(function() {
+		console.log("insertion completed");
+	});
 }

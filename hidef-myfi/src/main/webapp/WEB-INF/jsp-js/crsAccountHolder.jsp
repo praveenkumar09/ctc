@@ -1,5 +1,8 @@
-<link type="text/css" href="${pageContext.request.contextPath}/css/panel-border.css" rel="stylesheet">
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/crsAccountHolder.js"></script>
+<link type="text/css"
+	href="${pageContext.request.contextPath}/css/panel-border.css"
+	rel="stylesheet">
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/js/crsAccountHolder.js"></script>
 <div class="container">
 	<div class="row">
 		<br /> <br />
@@ -31,7 +34,7 @@
 
 				</div>
 				<div class="clearfix"></div>
-					<div class="form-group col-md-6">
+				<div class="form-group col-md-6">
 					<label for="language">Account Balance Type: </label><select
 						class="form-control" id="docTypeIndicatorReportingFI">
 						<option value="0">--Choose Account Balance Type--</option>
@@ -65,10 +68,95 @@
 				</div>
 				<div class="clearfix"></div>
 				<br />
-				<div class="form-group col-md-6">
+				<!-- <div class="form-group col-md-6">
 					<div id="accountHolderControllingPersonGrid"></div>
 					<div id="pager"></div>
-				</div>
+				</div> -->
+				<fieldset class="scheduler-border">
+					<legend class="scheduler-border">Controlling Person:</legend>
+					<div class="form-group">
+						<div class="clearfix"></div>
+						<br />
+						<div class="form-group col-md-6">
+							<label for="language">Controlling Person Type: </label><select
+								class="form-control" id="controllingPersonType">
+								<option value="0">Choose Controlling Person Type</option>
+								<option value="1">CRS801</option>
+								<option value="2">CRS802</option>
+								<option value="3">CRS803</option>
+								<option value="4">CRS804</option>
+								<option value="5">CRS805</option>
+								<option value="6">CRS806</option>
+								<option value="7">CRS807</option>
+								<option value="8">CRS808</option>
+								<option value="9">CRS809</option>
+								<option value="10">CRS810</option>
+								<option value="11">CRS811</option>
+								<option value="12">CRS812</option>
+								<option value="13">CRS813</option>
+							</select>
+						</div>
+						<div class="clearfix"></div>
+						<br />
+						<div class="form-group col-md-6">
+							<div id="accountHolderControlingPersonResidentCountryGrid"></div>
+							<div id="pager"></div>
+						</div>
+						<div class="clearfix"></div>
+						<br />
+						<div class="form-group col-md-6">
+							<div id="accountHolderControllingPersonTNGrid"></div>
+							<div id="pager"></div>
+						</div>
+						<div class="clearfix"></div>
+						<br />
+						<div class="form-group col-md-6">
+							<div id="accountHolderControllingPersonNameGrid"></div>
+							<div id="pager"></div>
+						</div>
+						<div class="clearfix"></div>
+						<br />
+						<div class="form-group col-md-6">
+							<div id="accountHolderControllingPersonAddressGrid"></div>
+							<div id="pager"></div>
+						</div>
+						<div class="clearfix"></div>
+						<br />
+						<div class="form-group col-md-6">
+							<label for="language">Nationality: </label><select
+								class="form-control" id="cpNationality">
+								<option value="0">--Choose Nationality--</option>
+								<option value="1">AD</option>
+								<option value="2">AF</option>
+								<option value="3">US</option>
+								<option value="4">MY</option>
+								<option value="5">AU</option>
+							</select>
+						</div>
+						<div class="clearfix"></div>
+						<br />
+						<div class="form-group col-md-6">
+							<div id="accountHolderControllingPersonBirthInfoGrid"></div>
+							<div id="pager"></div>
+						</div>
+						<div class="clearfix"></div>
+						<div class="text-center">
+							<br />
+							<button id="saveControllingPersonButton" name="singlebutton"
+								onClick="saveControllingPerson();return false;"
+								class="btn btn-success">Save Controlling Person</button>
+						</div>
+						<div class="clearfix"></div>
+						<br/>
+						<div class="form-group col-md-6">
+							<label for="language">Controlling Person Details: </label><br />
+							<br/>
+							<div id="accountHolderControllingPersonGrid"></div>
+							<div id="pager"></div>
+						</div>
+						<br />
+					</div>
+				</fieldset>
 				<div class="clearfix"></div>
 				<br />
 				<div class="form-group col-md-6">
@@ -164,7 +252,7 @@
 				</div>
 				<div class="clearfix"></div>
 				<br />
-			
+
 				<div class="form-group">
 					<div class="text-center">
 						<br />
@@ -175,9 +263,10 @@
 				<div class="clearfix"></div>
 				<br />
 				<div class="form-group col-md-6">
-				<label for="language">Account Holder Details: </label><br/>
-						<div id="accountHolderGrid"></div>
-						<div id="pager"></div>
+					<label for="language">Account Holder Details: </label><br />
+					<br/>
+					<div id="accountHolderGrid"></div>
+					<div id="pager"></div>
 				</div>
 				<div class="clearfix"></div>
 				<br />
@@ -202,7 +291,8 @@
 <%@ include file="common/addNewAccountHolderAddress.jspf"%>
 <%@ include file="common/addNewAccountHolderBirthInfo.jspf"%>
 <%@ include file="common/addNewAccountHolderOrganisationAddress.jspf"%>
-<%@ include file="common/addNewAccountHolderControllingPerson.jspf"%>
+<%-- <%@ include file="common/addNewAccountHolderControllingPerson.jspf"%> --%>
 <%@ include file="common/addAccountHolderControllingPersonName.jspf"%>
-<%@ include file="common/addNewAddressAccountHolderControllingPerson.jspf"%>
+<%@ include
+	file="common/addNewAddressAccountHolderControllingPerson.jspf"%>
 <%@ include file="common/addNewAccountHolderCPBirthInfo.jspf"%>
