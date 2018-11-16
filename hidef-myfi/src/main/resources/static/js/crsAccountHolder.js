@@ -268,75 +268,14 @@ $(document)
 																pageButtonCount : 5,
 																data : clients,
 																invalidNotify : function(
-																		args) {
-																	console
-																			.log("vallog last value"
-																					+ valLog);
-																	if (valLog == "firstNameCharectersLengthWrong") {
-																		$(
-																				"#validateTextHere")
-																				.text(
-																						"");
-																		$(
-																				"#validateTextHere")
-																				.text(
-																						"Name Length is wrong");
-																		$(
-																				'#crsNameModal')
-																				.modal(
-																						'show');
-																	} else if (valLog == "nameIsEmpty") {
-																		$(
-																				"#validateTextHere")
-																				.text(
-																						"");
-																		$(
-																				"#validateTextHere")
-																				.text(
-																						"Please fill in all the mandatory fields");
-																		$(
-																				'#crsNameModal')
-																				.modal(
-																						'show');
-																	} else {
-																		$(
-																				"#validateTextHere")
-																				.text(
-																						"");
-																		$(
-																				"#validateTextHere")
-																				.text(
-																						"Please fill in all the mandatory fields");
-																		$(
-																				'#crsNameModal')
-																				.modal(
-																						'show');
-																	}
-																},
+																		args) {},
 																fields : [
 																		{
-																			title : "First Name<font color='red'>*</font>",
+																			title : "Organisation Name<font color='red'>*</font>",
 																			name : "firstName",
 																			type : "text",
 																			width : 150,
-																			validate : function(
-																					value,
-																					item) {
-																				if (value.length == 0) {
-																					valLog = "nameIsEmpty";
-																				} else if (value.length >= 3) {
-																					console
-																							.log("Val log fist value"
-																									+ valLog);
-																					valLog = "firstNameCharectersLengthWrong";
-																					console
-																							.log("Val log second value"
-																									+ valLog);
-																				} else {
-																					valLog = "";
-																					return true;
-																				}
-																			}
+																			validate : "required"
 
 																		},
 																		{
@@ -344,10 +283,10 @@ $(document)
 																			name : "lastName",
 																			type : "text",
 																			width : 150,
-																			validate : "required"
+																			visible :false
 																		},
 																		{
-																			title : "Name Type<font color='red'>*</font>",
+																			title : "Organisation Name Type<font color='red'>*</font>",
 																			name : "nameType",
 																			type : "select",
 																			width : 150,
@@ -1900,7 +1839,9 @@ function addAccountHolderNameClicked() {
 
 	var title = [];
 
-	$("#accountHolderNameTitleGrid").jsGrid(
+	var title = [];
+
+	$("#accountHolderNameTitleGridPU").jsGrid(
 			{
 				width : "205%",
 				inserting : true,
@@ -1928,7 +1869,7 @@ function addAccountHolderNameClicked() {
 
 	var middleName = [];
 
-	$("#accountHolderNameMiddleNameGrid").jsGrid(
+	$("#accountHolderNameMiddleNameGridPU").jsGrid(
 			{
 				width : "205%",
 				inserting : true,
@@ -1956,7 +1897,7 @@ function addAccountHolderNameClicked() {
 
 	var generationIdentifier = [];
 
-	$("#accountHolderNameGenerationIdentifierGrid").jsGrid(
+	$("#accountHolderNameGenerationIdentifierGridPU").jsGrid(
 			{
 				width : "205%",
 				inserting : true,
@@ -1984,7 +1925,7 @@ function addAccountHolderNameClicked() {
 
 	var suffix = [];
 
-	$("#accountHolderNameSuffixGrid").jsGrid(
+	$("#accountHolderNameSuffixGridPU").jsGrid(
 			{
 				width : "205%",
 				inserting : true,

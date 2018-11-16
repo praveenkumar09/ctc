@@ -1,4 +1,5 @@
 <!-- For Name Modal start -->
+<link type="text/css" href="${pageContext.request.contextPath}/css/controllingPersonModel.css" rel="stylesheet">
 <div class="modal fade" id="addAccountHolderName" tabindex="-1"
 	role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
@@ -48,13 +49,13 @@
 				 <div class="clearfix"></div>		
 				 <br/>
 				<div class="form-group col-md-6">
-					<div id="accountHolderNameTitleGrid"></div>
+					<div id="accountHolderNameTitleGridPU"></div>
 					<div id="pager"></div>
 				</div>
 				 <div class="clearfix"></div>		
 				 <br/>
 				 <div class="form-group col-md-6">
-					<div id="accountHolderNameMiddleNameGrid"></div>
+					<div id="accountHolderNameMiddleNameGridPU"></div>
 					<div id="pager"></div>
 				</div>
 				<div class="clearfix"></div>		
@@ -72,13 +73,13 @@
 				 <div class="clearfix"></div>		
 				 <br/>
 				  <div class="form-group col-md-6">
-					<div id="accountHolderNameGenerationIdentifierGrid"></div>
+					<div id="accountHolderNameGenerationIdentifierGridPU"></div>
 					<div id="pager"></div>
 				</div>
 				 <div class="clearfix"></div>		
 				 <br/>
 				  <div class="form-group col-md-6">
-					<div id="accountHolderNameSuffixGrid"></div>
+					<div id="accountHolderNameSuffixGridPU"></div>
 					<div id="pager"></div>
 				</div>
 				<div class="clearfix"></div>		

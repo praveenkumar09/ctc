@@ -243,6 +243,32 @@ $(document).ready(function() {
 						} ]
 			});
 
+	var nameType = [ {
+		"id" : "1",
+		"name" : "OECD201"
+	}, {
+		"id" : "2",
+		"name" : "OECD202"
+	}, {
+		"id" : "3",
+		"name" : "OECD203"
+	}, {
+		"id" : "4",
+		"name" : "OECD204"
+	}, {
+		"id" : "4",
+		"name" : "OECD205"
+	} , {
+		"id" : "4",
+		"name" : "OECD206"
+	} , {
+		"id" : "4",
+		"name" : "OECD207"
+	} , {
+		"id" : "4",
+		"name" : "OECD208"
+	}  ];
+	
 $("#reportingFINameGrid")
 	.jsGrid(
 			{
@@ -254,7 +280,7 @@ $("#reportingFINameGrid")
 				pageSize : 5,
 				pageButtonCount : 5,
 				autoload : true,
-				controller : {
+				controller : {/*
 					loadData : function() {
 						var d = $.Deferred();
 
@@ -278,11 +304,11 @@ $("#reportingFINameGrid")
 
 						return d.promise();
 					},
-					/*
+					
 					 * loadData: function() { return
 					 * [{"firstName":"MyAccount","lastName":"111-111-7890","nameType":"123456789"},{"firstName":"venki","lastName":"111-111-7890","nameType":"123456789"}]; },
-					 */
-					/* }, */
+					 
+					 }, 
 
 					insertItem : function(item) {
 						var d = $.Deferred();
@@ -394,7 +420,7 @@ $("#reportingFINameGrid")
 										});
 					},
 
-				},
+				*/},
 				data : clients,
 				invalidNotify : function(args) {
 
@@ -424,14 +450,14 @@ $("#reportingFINameGrid")
 							visible : false
 						},
 						{
-							title : "Organisation Type<font color='red'>*</font>",
+							title : "Organisation Name Type<font color='red'>*</font>",
 							name : "nameType",
 							type : "select",
 							width : 150,
 							items : nameType,
 							valueField : "id",
 							textField : "name",
-							visible : false
+							visible : true
 						}, {
 							type : "control"
 						} ]

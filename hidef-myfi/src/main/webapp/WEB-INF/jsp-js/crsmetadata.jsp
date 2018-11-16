@@ -106,13 +106,13 @@
 							placeholder="Communication Type" readonly="true"></form:input>
 					</div>
 				</div>
-				<div class="form-group">
+				<%-- <div class="form-group">
 					<div class="form-group col-md-6">
 						<form:label path="crsmetadata.corMessageReferenceId">Corr Message Reference Id:</form:label> <form:input type="text"
 							class="form-control" id="corrMessageReferenceId" path="crsmetadata.corMessageReferenceId"
 							placeholder="Corr Message Reference Id"></form:input>
 					</div>
-				</div>
+				</div> --%>
 				<div class="form-group">
 					<div class="form-group col-md-6">
 						<label class="">Sender File Id:</label> <form:input type="text"

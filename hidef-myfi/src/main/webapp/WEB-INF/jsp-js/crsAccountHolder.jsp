@@ -62,7 +62,7 @@
 				</div>
 				<div class="clearfix"></div>
 				<div class="form-group col-md-6">
-					<label for="language">Account Balance Type: </label><select
+					<label for="language">Currency: </label><select
 						class="form-control" id="docTypeIndicatorReportingFI">
 						<option value="0">--Choose Account Balance Type--</option>
 						<option value="1">AED</option>
@@ -71,6 +71,11 @@
 						<option value="4">MYR</option>
 						<option value="5">INR</option>
 					</select>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="accoutBalance">Account Balance:</label> <input
+						class="form-control" id="accoutBalance"
+						placeholder="Enter Account Balance" name="accoutBalance">
 				</div>
 				<div class="clearfix"></div>
 				<fieldset class="scheduler-border">
@@ -138,10 +143,10 @@
 						</div>
 						<div class="clearfix"></div>
 						<br />
-						<div class="form-group col-md-6">
+						<!-- <div class="form-group col-md-6">
 							<div id="accountHolderControllingPersonNationalityGrid"></div>
 							<div id="pager"></div>
-						</div>
+						</div> -->
 						<!-- <div class="form-group col-md-6">
 							<label for="language">Nationality: </label><select
 								class="form-control" id="cpNationality">
@@ -248,10 +253,10 @@
 					</div>
 					<div class="clearfix"></div>
 					<br />
-					<div class="form-group col-md-6">
+					<!-- <div class="form-group col-md-6">
 						<div id="accountHolderNationalityGrid"></div>
 						<div id="pager"></div>
-					</div>
+					</div> -->
 					<div class="clearfix"></div>
 					<br />
 					<!-- <div class="form-group col-md-6">
@@ -372,6 +377,7 @@
 <%@ include file="common/addNewAccountHolderOrganisationAddress.jspf"%>
 <%-- <%@ include file="common/addNewAccountHolderControllingPerson.jspf"%> --%>
 <%@ include file="common/addAccountHolderControllingPersonName.jspf"%>
+<%@ include file="common/addAccountHolderName.jspf"%>
 <%@ include
 	file="common/addNewAddressAccountHolderControllingPerson.jspf"%>
 <%-- <%@ include file="common/addNewAccountHolderCPBirthInfo.jspf"%> --%>
