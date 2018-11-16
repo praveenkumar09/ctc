@@ -53,18 +53,6 @@
 				</div>
 				<div class="form-group col-md-6">
 					<label for="sel1">Account Number Type:</label> <br />
-					<!-- <div id="numberType" class="custom-control custom-radio">
-						<input type="radio" class="custom-control-input"
-							id="defaultUnchecked" name="numberTypeRadios"> <label
-							class="custom-control-label" for="defaultUnchecked">Undocumented
-							Account</label> <input type="radio" class="custom-control-input"
-							id="defaultUnchecked" name="numberTypeRadios"> <label
-							class="custom-control-label" for="defaultUnchecked">Closed
-							Account</label> <input type="radio" class="custom-control-input"
-							id="defaultUnchecked" name="numberTypeRadios"> <label
-							class="custom-control-label" for="defaultUnchecked">Dormant
-							Account</label>
-					</div> -->
 				    <select id="multi-select-account-type" multiple="multiple">
 						<option value="Undocumented">Undocumented Account</option>
 						<option value="Closed">Closed Account</option>
