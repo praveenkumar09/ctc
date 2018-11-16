@@ -72,27 +72,6 @@
 						<option value="5">INR</option>
 					</select>
 				</div>
-				<!-- <div class="form-group col-md-6">
-					<label for="language">Payment Type: </label><select
-						class="form-control" id="docTypeIndicatorReportingFI">
-						<option value="0">--Choose Payment Type--</option>
-						<option value="1">CRS501</option>
-						<option value="2">CRS502</option>
-						<option value="3">CRS503</option>
-						<option value="4">CRS504</option>
-					</select>
-				</div>
-				<div class="form-group col-md-6">
-					<label for="language">Payment Amount Type: </label><select
-						class="form-control" id="docTypeIndicatorReportingFI">
-						<option value="0">--Choose Payment Amount Type--</option>
-						<option value="1">AED</option>
-						<option value="2">AFN</option>
-						<option value="3">ALL</option>
-						<option value="4">MYR</option>
-						<option value="5">INR</option>
-					</select>
-				</div> -->
 				<div class="clearfix"></div>
 				<fieldset class="scheduler-border">
 					<legend class="scheduler-border">Payment Details:</legend>
