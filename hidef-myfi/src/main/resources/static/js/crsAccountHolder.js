@@ -1,6 +1,8 @@
 $(document)
 		.ready(
 				function() {
+					
+					$('#multi-select-account-type').multiselect();
 
 					$('.modal').on(
 							"hidden.bs.modal",
@@ -168,6 +170,7 @@ $(document)
 																		} ]
 															});
 
+											var IN = [];
 											var inType = [];
 											var issuedBy = [ {
 												"id" : "1",
@@ -195,23 +198,16 @@ $(document)
 																pageSize : 6,
 																pageButtonCount : 5,
 																invalidNotify : function(
-																		args) {
-																	$(
-																			"#validateTextHere")
-																			.text(
-																					"");
-																	$(
-																			"#validateTextHere")
-																			.text(
-																					"Please fill in all the mandatory fields");
-																	$(
-																			'#crsNameModal')
-																			.modal(
-																					'show');
+																		args) {},
+																fields : [{
+																	title : "IN",
+																	name : "IN",
+																	type : "text",
+																	width : 150,
+																	items : IN
 																},
-																fields : [
 																		{
-																			title : "IN",
+																			title : "IN Type",
 																			name : "inType",
 																			type : "text",
 																			width : 150,
@@ -590,6 +586,7 @@ $(document)
 											} ];
 
 											var tin = [];
+											var tinType = [];
 
 											$("#accountHolderTNGrid")
 													.jsGrid(
@@ -623,8 +620,13 @@ $(document)
 																			type : "text",
 																			width : 150,
 																			items : tin,
-																		},
-																		{
+																		},{
+																			title : "TIN Type",
+																			name : "tinType",
+																			type : "text",
+																			width : 150,
+																			items : tinType,
+																		},{
 																			title : "Issued By",
 																			name : "issuedBy",
 																			type : "select",
@@ -1325,7 +1327,7 @@ $(document)
 					} ];
 
 					var tin = [];
-
+                    var type = [];
 					$("#accountHolderControllingPersonTNGrid").jsGrid(
 							{
 								width : "205%",
@@ -1348,6 +1350,12 @@ $(document)
 									width : 150,
 									items : tin,
 								}, {
+									title : "TIN Type",
+									name : "type",
+									type : "text",
+									width : 150,
+									items : type,
+								},{
 									title : "Issued By",
 									name : "issuedBy",
 									type : "select",
@@ -1359,6 +1367,110 @@ $(document)
 									type : "control"
 								} ]
 							});
+					
+					var nationality = [ {
+						"id" : "1",
+						"name" : "MY"
+					}, {
+						"id" : "2",
+						"name" : "AR"
+					}, {
+						"id" : "3",
+						"name" : "AU"
+					}, {
+						"id" : "4",
+						"name" : "US"
+					} ];
+					
+					
+					$("#accountHolderControllingPersonNationalityGrid").jsGrid({
+						width : "205%",
+						inserting : true,
+						editing : true,
+						sorting : true,
+						paging : true,
+						pageSize : 5,
+						pageButtonCount : 5,
+						invalidNotify : function(args) {},
+						fields : [ {
+							title : "Nationality",
+							name : "nationality",
+							type : "select",
+							width : 150,
+							items : nationality,
+							valueField : "id",
+							textField : "name",
+						}, {
+							type : "control"
+						} ]
+					});	
+					
+					var paymentType = [ {
+						"id" : "1",
+						"name" : "CRS501"
+					}, {
+						"id" : "2",
+						"name" : "CRS502"
+					}, {
+						"id" : "3",
+						"name" : "CRS503"
+					}, {
+						"id" : "4",
+						"name" : "CRS504"
+					} ];
+					
+					var currencyCode = [ {
+						"id" : "1",
+						"name" : "MYR"
+					}, {
+						"id" : "2",
+						"name" : "USD"
+					}, {
+						"id" : "3",
+						"name" : "AED"
+					}, {
+						"id" : "4",
+						"name" : "INR"
+					} ];
+					
+					var amount =[];
+					
+					$("#accountHolderControlingPersonPaymentGrid").jsGrid({
+						width : "205%",
+						inserting : true,
+						editing : true,
+						sorting : true,
+						paging : true,
+						pageSize : 5,
+						pageButtonCount : 5,
+						invalidNotify : function(args) {},
+						fields : [ {
+							title : "Payment Type",
+							name : "paymentType",
+							type : "select",
+							width : 150,
+							items : paymentType,
+							valueField : "id",
+							textField : "name",
+						},{
+							title : "Currrency Code",
+							name : "currencyCode",
+							type : "select",
+							width : 150,
+							items : currencyCode,
+							valueField : "id",
+							textField : "name",
+						},{
+							title : "Amount",
+							name : "amount",
+							type : "text",
+							width : 150,
+							items : amount
+						}, {
+							type : "control"
+						} ]
+					});
+					
 
 					var object = {};
 
@@ -1569,7 +1681,7 @@ $(document)
 
 					var object = {};
 
-					$("#accountHolderControllingPersonBirthInfoGrid")
+					/*$("#accountHolderControllingPersonBirthInfoGrid")
 							.jsGrid(
 									{
 										width : "205%",
@@ -1669,7 +1781,7 @@ $(document)
 														// $result.add($customButton);
 													}
 												} ]
-									});
+									});*/
 
 
 
@@ -2024,413 +2136,7 @@ function saveNewAccountHolderCPAddressClicked() {
 			});
 }
 
-function addNewAccountHolderControllingPersonClicked() {
-	$("#addNewAccountHolderControllingPerson").modal('show');
-
-	var residentCountryCode = [ {
-		"id" : "1",
-		"name" : "MY"
-	}, {
-		"id" : "2",
-		"name" : "SG"
-	}, {
-		"id" : "3",
-		"name" : "AU"
-	}, {
-		"id" : "4",
-		"name" : "US"
-	} ];
-
-	$("#accountHolderControlingPersonResidentCountryGrid").jsGrid(
-			{
-				width : "205%",
-				inserting : true,
-				editing : true,
-				sorting : true,
-				paging : true,
-				pageSize : 6,
-				pageButtonCount : 5,
-				invalidNotify : function(args) {
-					$("#validateTextHere").text("");
-					$("#validateTextHere").text(
-							"Please fill in all the mandatory fields");
-					$('#crsNameModal').modal('show');
-				},
-				fields : [ {
-					title : "Resident Country Code",
-					name : "residentCountryCode",
-					type : "select",
-					width : 150,
-					items : residentCountryCode,
-					valueField : "id",
-					textField : "name",
-				}, {
-					type : "control"
-				} ]
-			});
-
-	var issuedBy = [ {
-		"id" : "1",
-		"name" : "MY"
-	}, {
-		"id" : "2",
-		"name" : "AR"
-	}, {
-		"id" : "3",
-		"name" : "AU"
-	}, {
-		"id" : "4",
-		"name" : "US"
-	} ];
-
-	var tin = [];
-
-	$("#accountHolderControllingPersonTNGrid").jsGrid(
-			{
-				width : "205%",
-				inserting : true,
-				editing : true,
-				sorting : true,
-				paging : true,
-				pageSize : 6,
-				pageButtonCount : 5,
-				invalidNotify : function(args) {
-					$("#validateTextHere").text("");
-					$("#validateTextHere").text(
-							"Please fill in all the mandatory fields");
-					$('#crsNameModal').modal('show');
-				},
-				fields : [ {
-					title : "TIN",
-					name : "tin",
-					type : "text",
-					width : 150,
-					items : tin,
-				}, {
-					title : "Issued By",
-					name : "issuedBy",
-					type : "select",
-					width : 150,
-					items : issuedBy,
-					valueField : "id",
-					textField : "name",
-				}, {
-					type : "control"
-				} ]
-			});
-
-	var object = {};
-
-	$("#accountHolderControllingPersonNameGrid")
-			.jsGrid(
-					{
-						width : "205%",
-						inserting : false,
-						editing : false,
-						sorting : false,
-						paging : true,
-						pageSize : 6,
-						pageButtonCount : 5,
-						controller : object,
-						datatype : 'json',
-						invalidNotify : function(args) {
-							$("#validateTextHere").text("");
-							$("#validateTextHere").text(
-									"Please fill in all the mandatory fields");
-							$('#crsNameModal').modal('show');
-						},
-						fields : [
-								{
-									name : "id",
-									title : "id",
-									type : "text",
-									visible : false,
-									width : 10,
-									items : object.id
-								},
-								{
-									title : "Name",
-									name : "name",
-									type : "text",
-									width : 150,
-									items : object.name,
-									visible : true
-								},
-								{
-									title : "Name Type",
-									name : "nameType",
-									type : "text",
-									width : 150,
-									items : object.nameType,
-									visible : true
-								},
-								{
-									name : "button",
-									headerTemplate : function() {
-										return $("<button>")
-												.attr("type", "button")
-												.attr("class",
-														"btn btn-success btn-sm")
-												.text("Add Name")
-												.on(
-														"click",
-														function() {
-															addAccountHolderControllingPersonNameClicked();
-														});
-									},
-									itemTemplate : function(value, item) {
-										var $result = jsGrid.fields.control.prototype.itemTemplate
-												.apply(this, arguments);
-
-										var $customViewButton = $("<button>")
-												.attr("class",
-														"btn btn-info btn-sm")
-												.text("View")
-												.click(function(e) {
-													alert("ID: " + item.id);
-													e.stopPropagation();
-												});
-
-										var $customEditButton = $("<button>")
-												.attr("class",
-														"btn btn-warning btn-sm")
-												.text("Edit")
-												.click(function(e) {
-													alert("ID: " + item.id);
-													e.stopPropagation();
-												});
-
-										var $customDeleteButton = $("<button>")
-												.attr("class",
-														"btn btn-danger btn-sm")
-												.text("Delete")
-												.click(function(e) {
-													alert("ID: " + item.id);
-													e.stopPropagation();
-												});
-
-										return $("<div>").append(
-												$customViewButton).append(
-												"&nbsp;").append("&nbsp;")
-												.append($customEditButton)
-												.append("&nbsp;").append(
-														"&nbsp;").append(
-														$customDeleteButton);
-										// return
-										// $result.add($customButton);
-									}
-								} ]
-					});
-
-	var object = {};
-
-	$("#accountHolderControllingPersonAddressGrid")
-			.jsGrid(
-					{
-						width : "205%",
-						inserting : false,
-						editing : false,
-						sorting : false,
-						paging : true,
-						pageSize : 6,
-						pageButtonCount : 5,
-						controller : object,
-						datatype : 'json',
-						invalidNotify : function(args) {
-							$("#validateTextHere").text("");
-							$("#validateTextHere").text(
-									"Please fill in all the mandatory fields");
-							$('#crsNameModal').modal('show');
-						},
-						fields : [
-								{
-									name : "id",
-									title : "id",
-									type : "text",
-									visible : false,
-									width : 10,
-									items : object.id
-								},
-								{
-									title : "Address Type",
-									name : "addressType",
-									type : "text",
-									width : 150,
-									items : object.addressType,
-									visible : true
-								},
-								{
-									title : "Country Code",
-									name : "countryCode",
-									type : "text",
-									width : 150,
-									items : object.countryCode,
-									visible : true
-								},
-								{
-									name : "button",
-									headerTemplate : function() {
-										return $("<button>")
-												.attr("type", "button")
-												.attr("class",
-														"btn btn-success btn-sm")
-												.text(
-														"Click here to Add New Address")
-												.on(
-														"click",
-														function() {
-															addNewAddressAccountHolderCPClicked();
-														});
-									},
-									itemTemplate : function(value, item) {
-										var $result = jsGrid.fields.control.prototype.itemTemplate
-												.apply(this, arguments);
-
-										var $customViewButton = $("<button>")
-												.attr("class",
-														"btn btn-info btn-sm")
-												.text("View")
-												.click(function(e) {
-													alert("ID: " + item.id);
-													e.stopPropagation();
-												});
-
-										var $customEditButton = $("<button>")
-												.attr("class",
-														"btn btn-warning btn-sm")
-												.text("Edit")
-												.click(function(e) {
-													alert("ID: " + item.id);
-													e.stopPropagation();
-												});
-
-										var $customDeleteButton = $("<button>")
-												.attr("class",
-														"btn btn-danger btn-sm")
-												.text("Delete")
-												.click(function(e) {
-													alert("ID: " + item.id);
-													e.stopPropagation();
-												});
-
-										return $("<div>").append(
-												$customViewButton).append(
-												"&nbsp;").append("&nbsp;")
-												.append($customEditButton)
-												.append("&nbsp;").append(
-														"&nbsp;").append(
-														$customDeleteButton);
-										// return
-										// $result.add($customButton);
-									}
-								} ]
-					});
-
-	var object = {};
-
-	$("#accountHolderControllingPersonBirthInfoGrid")
-			.jsGrid(
-					{
-						width : "205%",
-						inserting : false,
-						editing : false,
-						sorting : false,
-						paging : true,
-						pageSize : 6,
-						pageButtonCount : 5,
-						controller : object,
-						datatype : 'json',
-						invalidNotify : function(args) {
-							$("#validateTextHere").text("");
-							$("#validateTextHere").text(
-									"Please fill in all the mandatory fields");
-							$('#crsNameModal').modal('show');
-						},
-						fields : [
-								{
-									name : "id",
-									title : "id",
-									type : "text",
-									visible : false,
-									width : 10,
-									items : object.id
-								},
-								{
-									title : "Birth Date",
-									name : "birthDate",
-									type : "text",
-									width : 150,
-									items : object.birthDate,
-									visible : true
-								},
-								{
-									title : "City",
-									name : "city",
-									type : "text",
-									width : 150,
-									items : object.city,
-									visible : true
-								},
-								{
-									name : "button",
-									headerTemplate : function() {
-										return $("<button>")
-												.attr("type", "button")
-												.attr("class",
-														"btn btn-success btn-sm")
-												.text(
-														"Click here to Add New Birth Info")
-												.on(
-														"click",
-														function() {
-															addAccountCPBirthInfoClicked();
-														});
-									},
-									itemTemplate : function(value, item) {
-										var $result = jsGrid.fields.control.prototype.itemTemplate
-												.apply(this, arguments);
-
-										var $customViewButton = $("<button>")
-												.attr("class",
-														"btn btn-info btn-sm")
-												.text("View")
-												.click(function(e) {
-													alert("ID: " + item.id);
-													e.stopPropagation();
-												});
-
-										var $customEditButton = $("<button>")
-												.attr("class",
-														"btn btn-warning btn-sm")
-												.text("Edit")
-												.click(function(e) {
-													alert("ID: " + item.id);
-													e.stopPropagation();
-												});
-
-										var $customDeleteButton = $("<button>")
-												.attr("class",
-														"btn btn-danger btn-sm")
-												.text("Delete")
-												.click(function(e) {
-													alert("ID: " + item.id);
-													e.stopPropagation();
-												});
-
-										return $("<div>").append(
-												$customViewButton).append(
-												"&nbsp;").append("&nbsp;")
-												.append($customEditButton)
-												.append("&nbsp;").append(
-														"&nbsp;").append(
-														$customDeleteButton);
-										// return
-										// $result.add($customButton);
-									}
-								} ]
-					});
-
-}
+//function addNewAccountHolderControllingPersonClicked() {}
 
 function addAccountHolderControllingPersonNameClicked() {
 

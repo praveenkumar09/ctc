@@ -1,5 +1,5 @@
 <!-- For Name Modal start -->
-<link type="text/css" href="/css/controllingPersonModel.css" rel="stylesheet">
+<link type="text/css" href="${pageContext.request.contextPath}/css/controllingPersonModel.css" rel="stylesheet">
 <div class="modal fade" id="addAccountHolderControllingPersonName" tabindex="-1"
 	role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
