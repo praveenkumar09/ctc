@@ -9,5 +9,7 @@ public interface PackageGenerationService {
 	public String generateCBCXMLMetData(HidefVo hidef) throws IOException;
 	public String generateCBCXMLPayload(HidefVo hidef) throws IOException;
 	public String generateCBCPackage(HidefVo hidef) throws Exception;
+	
+	public String generateCRSXMLMetadata(HidefVo hidef)throws IOException;
 
 }
