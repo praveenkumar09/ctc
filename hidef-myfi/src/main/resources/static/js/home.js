@@ -4469,6 +4469,28 @@ function showReportingFI() {
 			});
 }
 
+function accountHolderPrevious() {
+	$("#metaData").hide();
+	$("#reportingFI").addClass("active");
+	$("#metadataBtn").removeClass("active");
+	$("#accountHolder").removeClass("active");
+	var form_data = $('#crsmetadata').serialize();
+
+	$.ajax({
+				url : 'crs/accountHolderPrevious?previous2=previous',
+				type : 'POST',
+				data : form_data,
+				success : function(data) {
+					$("#metaData").show();
+					$("#metaData").html(data);
+			
+				},
+				error : function(request, error) {
+					alert("Request: " + JSON.stringify(request));
+				}
+			});
+}
+
 //venki
 function showCbcAddInfo1(newForm, editForm, viewForm) {
 

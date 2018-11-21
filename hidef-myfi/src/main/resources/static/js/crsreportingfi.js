@@ -243,7 +243,7 @@ $(document).ready(function() {
 						} ]
 			});
 
-	var nameType = [ {
+	/*var nameType = [ {
 		"id" : "1",
 		"name" : "OECD201"
 	}, {
@@ -267,7 +267,9 @@ $(document).ready(function() {
 	} , {
 		"id" : "4",
 		"name" : "OECD208"
-	}  ];
+	}  ];*/
+	var nameType = $("#nameTypedropdown").val();
+	nameType = $.parseJSON(nameType);
 	
 $("#reportingFINameGrid")
 	.jsGrid(
@@ -280,7 +282,7 @@ $("#reportingFINameGrid")
 				pageSize : 5,
 				pageButtonCount : 5,
 				autoload : true,
-				controller : {/*
+				controller : {
 					loadData : function() {
 						var d = $.Deferred();
 
@@ -305,10 +307,10 @@ $("#reportingFINameGrid")
 						return d.promise();
 					},
 					
-					 * loadData: function() { return
-					 * [{"firstName":"MyAccount","lastName":"111-111-7890","nameType":"123456789"},{"firstName":"venki","lastName":"111-111-7890","nameType":"123456789"}]; },
+					 //loadData: function() { return
+					// [{"firstName":"MyAccount","lastName":"111-111-7890","nameType":"123456789"},{"firstName":"venki","lastName":"111-111-7890","nameType":"123456789"}]; },
 					 
-					 }, 
+					/* }, */
 
 					insertItem : function(item) {
 						var d = $.Deferred();
@@ -420,7 +422,7 @@ $("#reportingFINameGrid")
 										});
 					},
 
-				*/},
+				},
 				data : clients,
 				invalidNotify : function(args) {
 

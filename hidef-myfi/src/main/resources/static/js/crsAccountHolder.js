@@ -1208,8 +1208,11 @@ $(document)
 
 					$("#Individual").hide();
 					$("#Organization").hide();
+					
+					var residentCountryCode = $("#residentcountry").val();
+					residentCountryCode = $.parseJSON(residentCountryCode);
 
-					var residentCountryCode = [ {
+					/*var residentCountryCode = [ {
 						"id" : "1",
 						"name" : "MY"
 					}, {
@@ -1221,7 +1224,7 @@ $(document)
 					}, {
 						"id" : "4",
 						"name" : "US"
-					} ];
+					} ];*/
 
 					$("#accountHolderControlingPersonResidentCountryGrid").jsGrid(
 							{
@@ -1232,13 +1235,160 @@ $(document)
 								paging : true,
 								pageSize : 6,
 								pageButtonCount : 5,
+								autoload : true,
+								controller : {
+
+									loadData : function() {
+										var d = $.Deferred();
+										$
+												.ajax({
+													type : 'GET',
+													url : 'crs/loadctrlResidentCountryGrid',
+													mimeType : 'application/json',
+													contentType : 'application/json',
+													success : function(
+															data) {
+														d
+																.resolve(data);
+													},
+													error : function(
+															e) {
+														alert("error: "
+																+ e.responseText);
+													}
+												});
+
+										return d.promise();
+										/*return
+										[{"id":"1","residentCountryCode":6},{"id":"1","residentCountryCode":6}];*/
+									},
+
+									insertItem : function(item) {
+										var d = $.Deferred();
+
+										$
+												.ajax(
+														{
+															type : "POST",
+															url : "crs/insertctrlResidentCountryGrid",
+															data : JSON
+																	.stringify(item),
+															mimeType : 'application/json',
+															contentType : 'application/json',
+														})
+												.done(
+														function(
+																response) {
+															console
+																	.log("done: "
+																			+ JSON
+																					.stringify(response));
+															d
+																	.resolve(response);
+															// showReportingEntity();
+															$(
+																	"#accountHolderControlingPersonResidentCountryGrid")
+																	.jsGrid(
+																			"loadData");
+														})
+												.fail(
+														function(
+																msg) {
+															console
+																	.log("fail"
+																			+ msg);
+															d
+																	.reject();
+														});
+									},
+
+									updateItem : function(item) {
+										var d = $.Deferred();
+										$
+												.ajax(
+														{
+															type : "POST",
+															url : "crs/updatectrlResidentCountryGrid?id="
+																	+ item.id,
+															data : JSON
+																	.stringify(item),
+															mimeType : 'application/json',
+															contentType : 'application/json',
+														})
+												.done(
+														function(
+																response) {
+															console
+																	.log("done: "
+																			+ JSON
+																					.stringify(response));
+															d
+																	.resolve(response);
+														})
+												.fail(
+														function(
+																msg) {
+															console
+																	.log("fail"
+																			+ msg);
+															d
+																	.reject();
+														});
+									},
+
+									deleteItem : function(item) {
+										var d = $.Deferred();
+										// alert('@@@@@@@@@@@@@' + item.id)
+
+										$
+												.ajax(
+														{
+															type : "POST",
+															url : "crs/deletectrlResidentCountryGrid?id="
+																	+ item.id,
+															data : JSON
+																	.stringify(item),
+															mimeType : 'application/json',
+															contentType : 'application/json',
+														})
+												.done(
+														function(
+																response) {
+															console
+																	.log("done: "
+																			+ JSON
+																					.stringify(response));
+															d
+																	.resolve(response);
+														})
+												.fail(
+														function(
+																msg) {
+															console
+																	.log("fail"
+																			+ msg);
+															d
+																	.reject();
+														});
+									},
+
+								},
 								invalidNotify : function(args) {
 									$("#validateTextHere").text("");
 									$("#validateTextHere").text(
 											"Please fill in all the mandatory fields");
 									$('#crsNameModal').modal('show');
 								},
-								fields : [ {
+								fields : [
+								{
+									title : "No.<font color='red'>*</font>",
+									name : "id",
+									type : "text",
+									width : 150,
+									validate : "required",
+									visible : false
+								},
+								  {
 									title : "Resident Country Code",
 									name : "residentCountryCode",
 									type : "select",
@@ -1251,7 +1401,7 @@ $(document)
 								} ]
 							});
 
-					var issuedBy = [ {
+					/*var issuedBy = [ {
 						"id" : "1",
 						"name" : "MY"
 					}, {
@@ -1263,7 +1413,8 @@ $(document)
 					}, {
 						"id" : "4",
 						"name" : "US"
-					} ];
+					} ];*/
+					var issuedBy =residentCountryCode;
 
 					var tin = [];
                     var type = [];
@@ -1276,21 +1427,169 @@ $(document)
 								paging : true,
 								pageSize : 6,
 								pageButtonCount : 5,
+								autoload : true,
+								controller : {
+
+									loadData : function() {
+										var d = $.Deferred();
+										$
+												.ajax({
+													type : 'GET',
+													url : 'crs/loadctrlOrganisationGrid',
+													mimeType : 'application/json',
+													contentType : 'application/json',
+													success : function(
+															data) {
+														d
+																.resolve(data);
+													},
+													error : function(
+															e) {
+														alert("error: "
+																+ e.responseText);
+													}
+												});
+
+										return d.promise();
+										/*return
+										[{"id":"1","residentCountryCode":6},{"id":"1","residentCountryCode":6}];*/
+									},
+
+									insertItem : function(item) {
+										var d = $.Deferred();
+
+										$
+												.ajax(
+														{
+															type : "POST",
+															url : "crs/insertctrlOrganisationGrid",
+															data : JSON
+																	.stringify(item),
+															mimeType : 'application/json',
+															contentType : 'application/json',
+														})
+												.done(
+														function(
+																response) {
+															console
+																	.log("done: "
+																			+ JSON
+																					.stringify(response));
+															d
+																	.resolve(response);
+															// showReportingEntity();
+															$(
+																	"#accountHolderControllingPersonTNGrid")
+																	.jsGrid(
+																			"loadData");
+														})
+												.fail(
+														function(
+																msg) {
+															console
+																	.log("fail"
+																			+ msg);
+															d
+																	.reject();
+														});
+									},
+
+									updateItem : function(item) {
+										var d = $.Deferred();
+										$
+												.ajax(
+														{
+															type : "POST",
+															url : "crs/updatectrlOrganisationGrid?id="
+																	+ item.id,
+															data : JSON
+																	.stringify(item),
+															mimeType : 'application/json',
+															contentType : 'application/json',
+														})
+												.done(
+														function(
+																response) {
+															console
+																	.log("done: "
+																			+ JSON
+																					.stringify(response));
+															d
+																	.resolve(response);
+														})
+												.fail(
+														function(
+																msg) {
+															console
+																	.log("fail"
+																			+ msg);
+															d
+																	.reject();
+														});
+									},
+
+									deleteItem : function(item) {
+										var d = $.Deferred();
+										// alert('@@@@@@@@@@@@@' + item.id)
+
+										$
+												.ajax(
+														{
+															type : "POST",
+															url : "crs/deletectrlOrganisationGrid?id="
+																	+ item.id,
+															data : JSON
+																	.stringify(item),
+															mimeType : 'application/json',
+															contentType : 'application/json',
+														})
+												.done(
+														function(
+																response) {
+															console
+																	.log("done: "
+																			+ JSON
+																					.stringify(response));
+															d
+																	.resolve(response);
+														})
+												.fail(
+														function(
+																msg) {
+															console
+																	.log("fail"
+																			+ msg);
+															d
+																	.reject();
+														});
+									},
+
+								},
+								
 								invalidNotify : function(args) {
 									$("#validateTextHere").text("");
 									$("#validateTextHere").text(
 											"Please fill in all the mandatory fields");
 									$('#crsNameModal').modal('show');
 								},
-								fields : [ {
+								fields : [ 
+								{
+									title : "No.<font color='red'>*</font>",
+									name : "id",
+									type : "text",
+									width : 150,
+									validate : "required",
+									visible : false
+								},
+								{
 									title : "TIN",
-									name : "tin",
+									name : "in",
 									type : "text",
 									width : 150,
 									items : tin,
 								}, {
 									title : "TIN Type",
-									name : "type",
+									name : "inType",
 									type : "text",
 									width : 150,
 									items : type,
@@ -1344,7 +1643,13 @@ $(document)
 						} ]
 					});	
 					
-					var paymentType = [ {
+					var paymentType = $("#paymentType").val();
+					paymentType = $.parseJSON(paymentType);
+					
+					var currencyCode = $("#currency").val();
+					currencyCode = $.parseJSON(currencyCode);
+					
+					/*var paymentType = [ {
 						"id" : "1",
 						"name" : "CRS501"
 					}, {
@@ -1370,7 +1675,7 @@ $(document)
 					}, {
 						"id" : "4",
 						"name" : "INR"
-					} ];
+					} ];*/
 					
 					var amount =[];
 					
@@ -1382,8 +1687,160 @@ $(document)
 						paging : true,
 						pageSize : 5,
 						pageButtonCount : 5,
+						autoload : true,
+						controller : {
+							loadData : function() {
+								var d = $.Deferred();
+
+								$
+										.ajax({
+											type : 'GET',
+											url : 'crs/loadPaymentGrid',
+											mimeType : 'application/json',
+											contentType : "application/json; charset=utf-8",
+											success : function(
+													data) {
+												d
+														.resolve(data);
+											},
+											error : function(
+													e) {
+												alert("error: "
+														+ e.responseText);
+											}
+										});
+
+								return d.promise();
+							},
+							/*
+							 * loadData: function() { return
+							 * [{"firstName":"MyAccount","lastName":"111-111-7890","nameType":"123456789"},{"firstName":"venki","lastName":"111-111-7890","nameType":"123456789"}]; },
+							 */
+							/* }, */
+
+							insertItem : function(item) {
+								var d = $.Deferred();
+
+								$
+										.ajax(
+												{
+													type : "POST",
+													url : "crs/insertPaymentGrid",
+													data : JSON
+															.stringify(item),
+													mimeType : 'application/json',
+													contentType : 'application/json',
+												})
+										.done(
+												function(
+														response) {
+													console
+															.log("done: "
+																	+ JSON
+																			.stringify(response));
+													d
+															.resolve(response);
+													//showReportingEntity();
+													$(
+															"#accountHolderControlingPersonPaymentGrid")
+															.jsGrid(
+																	"loadData");
+												})
+										.fail(
+												function(
+														msg) {
+													console
+															.log("fail"
+																	+ msg);
+													d
+															.reject();
+												});
+							},
+
+							updateItem : function(item) {
+								var d = $.Deferred();
+
+								$
+										.ajax(
+												{
+													type : "POST",
+													url : "crs/updatePaymentGrid?id="
+															+ item.id,
+													data : JSON
+															.stringify(item),
+													mimeType : 'application/json',
+													contentType : 'application/json',
+												})
+										.done(
+												function(
+														response) {
+													console
+															.log("done: "
+																	+ JSON
+																			.stringify(response));
+													d
+															.resolve(response);
+												})
+										.fail(
+												function(
+														msg) {
+													console
+															.log("fail"
+																	+ msg);
+													d
+															.reject();
+												});
+							},
+
+							deleteItem : function(item) {
+								var d = $.Deferred();
+								//alert('@@@@@@@@@@@@@' + item.id)
+
+								$
+										.ajax(
+												{
+													type : "POST",
+													url : "crs/deletePaymentGrid?id="
+															+ item.id,
+													data : JSON
+															.stringify(item),
+													mimeType : 'application/json',
+													contentType : 'application/json',
+												})
+										.done(
+												function(
+														response) {
+													console
+															.log("done: "
+																	+ JSON
+																			.stringify(response));
+													d
+															.resolve(response);
+												})
+										.fail(
+												function(
+														msg) {
+													console
+															.log("fail"
+																	+ msg);
+													d
+															.reject();
+												});
+							},
+
+						},
 						invalidNotify : function(args) {},
-						fields : [ {
+						fields : [
+							{
+								title : "No.<font color='red'>*</font>",
+								name : "id",
+								type : "text",
+								width : 150,
+								validate : "required",
+								visible : false
+							},
+						  
+						  {
 							title : "Payment Type",
 							name : "paymentType",
 							type : "select",
@@ -1393,7 +1850,7 @@ $(document)
 							textField : "name",
 						},{
 							title : "Currrency Code",
-							name : "currencyCode",
+							name : "currency",
 							type : "select",
 							width : 150,
 							items : currencyCode,
@@ -1404,7 +1861,7 @@ $(document)
 							name : "amount",
 							type : "text",
 							width : 150,
-							items : amount
+							
 						}, {
 							type : "control"
 						} ]
@@ -1835,121 +2292,696 @@ function addAccountCPBirthInfoClicked() {
 }
 
 function addAccountHolderNameClicked() {
-	$("#addAccountHolderName").modal('show');
+	
+	
+	
+	
+	
+	$("#addAccountHolderIndividualName").modal('show');
 
-	var title = [];
 
-	var title = [];
+	
+	
+	$.ajax({
+        url: 'crs/resetIndividualNameGrid',
+        type: 'GET',
+        async: false,
+        data : $('#viewAccountHolderIndividualName').serialize(),
+        success: function(response) {
+        	var htmlFiltered = $("<div>").html(response).find("#addAccountHolderIndividualName").html();
+            $('#addAccountHolderIndividualName').html('');
+            $('#addAccountHolderIndividualName').html(htmlFiltered);
+            
+        	var title = [];
 
-	$("#accountHolderNameTitleGridPU").jsGrid(
-			{
-				width : "205%",
-				inserting : true,
-				editing : true,
-				sorting : true,
-				paging : true,
-				pageSize : 6,
-				pageButtonCount : 5,
-				invalidNotify : function(args) {
-					$("#validateTextHere").text("");
-					$("#validateTextHere").text(
-							"Please fill in all the mandatory fields");
-					$('#crsNameModal').modal('show');
-				},
-				fields : [ {
-					title : "Title",
-					name : "title",
-					type : "text",
-					width : 150,
-					items : title,
-				}, {
-					type : "control"
-				} ]
-			});
+        	var title = [];
 
-	var middleName = [];
+        	$("#accountHolderNameTitleGridPU").jsGrid(
+        			{
+        				width : "205%",
+        				inserting : true,
+        				editing : true,
+        				sorting : true,
+        				paging : true,
+        				pageSize : 6,
+        				pageButtonCount : 5,
+        				autoload : true,
+						controller : {
 
-	$("#accountHolderNameMiddleNameGridPU").jsGrid(
-			{
-				width : "205%",
-				inserting : true,
-				editing : true,
-				sorting : true,
-				paging : true,
-				pageSize : 6,
-				pageButtonCount : 5,
-				invalidNotify : function(args) {
-					$("#validateTextHere").text("");
-					$("#validateTextHere").text(
-							"Please fill in all the mandatory fields");
-					$('#crsNameModal').modal('show');
-				},
-				fields : [ {
-					title : "Middle Name",
-					name : "middleName",
-					type : "text",
-					width : 150,
-					items : middleName,
-				}, {
-					type : "control"
-				} ]
-			});
+							loadData : function() {
+								var d = $.Deferred();
+								$
+										.ajax({
+											type : 'GET',
+											url : 'crs/loadIndividualNameTitleGrid',
+											mimeType : 'application/json',
+											contentType : 'application/json',
+											success : function(
+													data) {
+												d
+														.resolve(data);
+											},
+											error : function(
+													e) {
+												alert("error: "
+														+ e.responseText);
+											}
+										});
 
-	var generationIdentifier = [];
+								return d.promise();
+								/*return
+								[{"id":"1","residentCountryCode":6},{"id":"1","residentCountryCode":6}];*/
+							},
 
-	$("#accountHolderNameGenerationIdentifierGridPU").jsGrid(
-			{
-				width : "205%",
-				inserting : true,
-				editing : true,
-				sorting : true,
-				paging : true,
-				pageSize : 6,
-				pageButtonCount : 5,
-				invalidNotify : function(args) {
-					$("#validateTextHere").text("");
-					$("#validateTextHere").text(
-							"Please fill in all the mandatory fields");
-					$('#crsNameModal').modal('show');
-				},
-				fields : [ {
-					title : "Generation Identifier",
-					name : "generationIdentifier",
-					type : "text",
-					width : 150,
-					items : generationIdentifier,
-				}, {
-					type : "control"
-				} ]
-			});
+							insertItem : function(item) {
+								var d = $.Deferred();
 
-	var suffix = [];
+								$
+										.ajax(
+												{
+													type : "POST",
+													url : "crs/insertIndividualNameTitleGrid",
+													data : JSON
+															.stringify(item),
+													mimeType : 'application/json',
+													contentType : 'application/json',
+												})
+										.done(
+												function(
+														response) {
+													console
+															.log("done: "
+																	+ JSON
+																			.stringify(response));
+													d
+															.resolve(response);
+													// showReportingEntity();
+													$(
+															"#accountHolderNameTitleGridPU")
+															.jsGrid(
+																	"loadData");
+												})
+										.fail(
+												function(
+														msg) {
+													console
+															.log("fail"
+																	+ msg);
+													d
+															.reject();
+												});
+							},
 
-	$("#accountHolderNameSuffixGridPU").jsGrid(
-			{
-				width : "205%",
-				inserting : true,
-				editing : true,
-				sorting : true,
-				paging : true,
-				pageSize : 6,
-				pageButtonCount : 5,
-				invalidNotify : function(args) {
-					$("#validateTextHere").text("");
-					$("#validateTextHere").text(
-							"Please fill in all the mandatory fields");
-					$('#crsNameModal').modal('show');
-				},
-				fields : [ {
-					title : "Suffix",
-					name : "suffix",
-					type : "text",
-					width : 150,
-					items : suffix,
-				}, {
-					type : "control"
-				} ]
-			});
+							updateItem : function(item) {
+								var d = $.Deferred();
+								$
+										.ajax(
+												{
+													type : "POST",
+													url : "crs/updateIndividualNameTitleGrid?id="
+															+ item.id,
+													data : JSON
+															.stringify(item),
+													mimeType : 'application/json',
+													contentType : 'application/json',
+												})
+										.done(
+												function(
+														response) {
+													console
+															.log("done: "
+																	+ JSON
+																			.stringify(response));
+													d
+															.resolve(response);
+												})
+										.fail(
+												function(
+														msg) {
+													console
+															.log("fail"
+																	+ msg);
+													d
+															.reject();
+												});
+							},
+
+							deleteItem : function(item) {
+								var d = $.Deferred();
+								// alert('@@@@@@@@@@@@@' + item.id)
+
+								$
+										.ajax(
+												{
+													type : "POST",
+													url : "crs/deleteIndividualNameTitleGrid?id="
+															+ item.id,
+													data : JSON
+															.stringify(item),
+													mimeType : 'application/json',
+													contentType : 'application/json',
+												})
+										.done(
+												function(
+														response) {
+													console
+															.log("done: "
+																	+ JSON
+																			.stringify(response));
+													d
+															.resolve(response);
+												})
+										.fail(
+												function(
+														msg) {
+													console
+															.log("fail"
+																	+ msg);
+													d
+															.reject();
+												});
+							},
+
+						},
+        				invalidNotify : function(args) {
+        					$("#validateTextHere").text("");
+        					$("#validateTextHere").text(
+        							"Please fill in all the mandatory fields");
+        					$('#crsNameModal').modal('show');
+        				},
+        				fields : [ {
+        					title : "Title",
+        					name : "name",
+        					type : "text",
+        					width : 150,
+        					items : title,
+        				}, {
+        					type : "control"
+        				} ]
+        			});
+
+        	var middleName = [];
+
+        	$("#accountHolderNameMiddleNameGridPU").jsGrid(
+        			{
+        				width : "205%",
+        				inserting : true,
+        				editing : true,
+        				sorting : true,
+        				paging : true,
+        				pageSize : 6,
+        				pageButtonCount : 5,
+        				autoload : true,
+						controller : {
+
+							loadData : function() {
+								var d = $.Deferred();
+								$
+										.ajax({
+											type : 'GET',
+											url : 'crs/loadIndividualMiddileNameGrid',
+											mimeType : 'application/json',
+											contentType : 'application/json',
+											success : function(
+													data) {
+												d
+														.resolve(data);
+											},
+											error : function(
+													e) {
+												alert("error: "
+														+ e.responseText);
+											}
+										});
+
+								return d.promise();
+								/*return
+								[{"id":"1","residentCountryCode":6},{"id":"1","residentCountryCode":6}];*/
+							},
+
+							insertItem : function(item) {
+								var d = $.Deferred();
+
+								$
+										.ajax(
+												{
+													type : "POST",
+													url : "crs/insertIndividualMiddileNameGrid",
+													data : JSON
+															.stringify(item),
+													mimeType : 'application/json',
+													contentType : 'application/json',
+												})
+										.done(
+												function(
+														response) {
+													console
+															.log("done: "
+																	+ JSON
+																			.stringify(response));
+													d
+															.resolve(response);
+													// showReportingEntity();
+													$(
+															"#accountHolderNameMiddleNameGridPU")
+															.jsGrid(
+																	"loadData");
+												})
+										.fail(
+												function(
+														msg) {
+													console
+															.log("fail"
+																	+ msg);
+													d
+															.reject();
+												});
+							},
+
+							updateItem : function(item) {
+								var d = $.Deferred();
+								$
+										.ajax(
+												{
+													type : "POST",
+													url : "crs/updateIndividualMiddileNameGrid?id="
+															+ item.id,
+													data : JSON
+															.stringify(item),
+													mimeType : 'application/json',
+													contentType : 'application/json',
+												})
+										.done(
+												function(
+														response) {
+													console
+															.log("done: "
+																	+ JSON
+																			.stringify(response));
+													d
+															.resolve(response);
+												})
+										.fail(
+												function(
+														msg) {
+													console
+															.log("fail"
+																	+ msg);
+													d
+															.reject();
+												});
+							},
+
+							deleteItem : function(item) {
+								var d = $.Deferred();
+								// alert('@@@@@@@@@@@@@' + item.id)
+
+								$
+										.ajax(
+												{
+													type : "POST",
+													url : "crs/deleteIndividualMiddileNameGrid?id="
+															+ item.id,
+													data : JSON
+															.stringify(item),
+													mimeType : 'application/json',
+													contentType : 'application/json',
+												})
+										.done(
+												function(
+														response) {
+													console
+															.log("done: "
+																	+ JSON
+																			.stringify(response));
+													d
+															.resolve(response);
+												})
+										.fail(
+												function(
+														msg) {
+													console
+															.log("fail"
+																	+ msg);
+													d
+															.reject();
+												});
+							},
+
+						},
+        				invalidNotify : function(args) {
+        					$("#validateTextHere").text("");
+        					$("#validateTextHere").text(
+        							"Please fill in all the mandatory fields");
+        					$('#crsNameModal').modal('show');
+        				},
+        				fields : [ {
+        					title : "Middle Name",
+        					name : "middleName",
+        					type : "text",
+        					width : 150,
+        					items : middleName,
+        				}, {
+        					type : "control"
+        				} ]
+        			});
+
+        	var generationIdentifier = [];
+
+        	$("#accountHolderNameGenerationIdentifierGridPU").jsGrid(
+        			{
+        				width : "205%",
+        				inserting : true,
+        				editing : true,
+        				sorting : true,
+        				paging : true,
+        				pageSize : 6,
+        				pageButtonCount : 5,
+        				autoload : true,
+						controller : {
+
+							loadData : function() {
+								var d = $.Deferred();
+								$
+										.ajax({
+											type : 'GET',
+											url : 'crs/loadIndividualGenIdGrid',
+											mimeType : 'application/json',
+											contentType : 'application/json',
+											success : function(
+													data) {
+												d
+														.resolve(data);
+											},
+											error : function(
+													e) {
+												alert("error: "
+														+ e.responseText);
+											}
+										});
+
+								return d.promise();
+								/*return
+								[{"id":"1","residentCountryCode":6},{"id":"1","residentCountryCode":6}];*/
+							},
+
+							insertItem : function(item) {
+								var d = $.Deferred();
+
+								$
+										.ajax(
+												{
+													type : "POST",
+													url : "crs/insertIndividualGenIdGrid",
+													data : JSON
+															.stringify(item),
+													mimeType : 'application/json',
+													contentType : 'application/json',
+												})
+										.done(
+												function(
+														response) {
+													console
+															.log("done: "
+																	+ JSON
+																			.stringify(response));
+													d
+															.resolve(response);
+													// showReportingEntity();
+													$(
+															"#accountHolderNameGenerationIdentifierGridPU")
+															.jsGrid(
+																	"loadData");
+												})
+										.fail(
+												function(
+														msg) {
+													console
+															.log("fail"
+																	+ msg);
+													d
+															.reject();
+												});
+							},
+
+							updateItem : function(item) {
+								var d = $.Deferred();
+								$
+										.ajax(
+												{
+													type : "POST",
+													url : "crs/updateIndividualGenIdGrid?id="
+															+ item.id,
+													data : JSON
+															.stringify(item),
+													mimeType : 'application/json',
+													contentType : 'application/json',
+												})
+										.done(
+												function(
+														response) {
+													console
+															.log("done: "
+																	+ JSON
+																			.stringify(response));
+													d
+															.resolve(response);
+												})
+										.fail(
+												function(
+														msg) {
+													console
+															.log("fail"
+																	+ msg);
+													d
+															.reject();
+												});
+							},
+
+							deleteItem : function(item) {
+								var d = $.Deferred();
+								// alert('@@@@@@@@@@@@@' + item.id)
+
+								$
+										.ajax(
+												{
+													type : "POST",
+													url : "crs/deleteIndividualGenIdGrid?id="
+															+ item.id,
+													data : JSON
+															.stringify(item),
+													mimeType : 'application/json',
+													contentType : 'application/json',
+												})
+										.done(
+												function(
+														response) {
+													console
+															.log("done: "
+																	+ JSON
+																			.stringify(response));
+													d
+															.resolve(response);
+												})
+										.fail(
+												function(
+														msg) {
+													console
+															.log("fail"
+																	+ msg);
+													d
+															.reject();
+												});
+							},
+
+						},
+        				invalidNotify : function(args) {
+        					$("#validateTextHere").text("");
+        					$("#validateTextHere").text(
+        							"Please fill in all the mandatory fields");
+        					$('#crsNameModal').modal('show');
+        				},
+        				fields : [ {
+        					title : "Generation Identifier",
+        					name : "generateIdentifier",
+        					type : "text",
+        					width : 150,
+        					items : generationIdentifier,
+        				}, {
+        					type : "control"
+        				} ]
+        			});
+
+        	var suffix = [];
+
+        	$("#accountHolderNameSuffixGridPU").jsGrid(
+        			{
+        				width : "205%",
+        				inserting : true,
+        				editing : true,
+        				sorting : true,
+        				paging : true,
+        				pageSize : 6,
+        				pageButtonCount : 5,
+        				autoload : true,
+						controller : {
+
+							loadData : function() {
+								var d = $.Deferred();
+								$
+										.ajax({
+											type : 'GET',
+											url : 'crs/loadIndividualSuffixGrid',
+											mimeType : 'application/json',
+											contentType : 'application/json',
+											success : function(
+													data) {
+												d
+														.resolve(data);
+											},
+											error : function(
+													e) {
+												alert("error: "
+														+ e.responseText);
+											}
+										});
+
+								return d.promise();
+								/*return
+								[{"id":"1","residentCountryCode":6},{"id":"1","residentCountryCode":6}];*/
+							},
+
+							insertItem : function(item) {
+								var d = $.Deferred();
+
+								$
+										.ajax(
+												{
+													type : "POST",
+													url : "crs/insertIndividualSuffixGrid",
+													data : JSON
+															.stringify(item),
+													mimeType : 'application/json',
+													contentType : 'application/json',
+												})
+										.done(
+												function(
+														response) {
+													console
+															.log("done: "
+																	+ JSON
+																			.stringify(response));
+													d
+															.resolve(response);
+													// showReportingEntity();
+													$(
+															"#accountHolderNameSuffixGridPU")
+															.jsGrid(
+																	"loadData");
+												})
+										.fail(
+												function(
+														msg) {
+													console
+															.log("fail"
+																	+ msg);
+													d
+															.reject();
+												});
+							},
+
+							updateItem : function(item) {
+								var d = $.Deferred();
+								$
+										.ajax(
+												{
+													type : "POST",
+													url : "crs/updateIndividualSuffixGrid?id="
+															+ item.id,
+													data : JSON
+															.stringify(item),
+													mimeType : 'application/json',
+													contentType : 'application/json',
+												})
+										.done(
+												function(
+														response) {
+													console
+															.log("done: "
+																	+ JSON
+																			.stringify(response));
+													d
+															.resolve(response);
+												})
+										.fail(
+												function(
+														msg) {
+													console
+															.log("fail"
+																	+ msg);
+													d
+															.reject();
+												});
+							},
+
+							deleteItem : function(item) {
+								var d = $.Deferred();
+								// alert('@@@@@@@@@@@@@' + item.id)
+
+								$
+										.ajax(
+												{
+													type : "POST",
+													url : "crs/deleteIndividualSuffixGrid?id="
+															+ item.id,
+													data : JSON
+															.stringify(item),
+													mimeType : 'application/json',
+													contentType : 'application/json',
+												})
+										.done(
+												function(
+														response) {
+													console
+															.log("done: "
+																	+ JSON
+																			.stringify(response));
+													d
+															.resolve(response);
+												})
+										.fail(
+												function(
+														msg) {
+													console
+															.log("fail"
+																	+ msg);
+													d
+															.reject();
+												});
+							},
+
+						},
+        				invalidNotify : function(args) {
+        					$("#validateTextHere").text("");
+        					$("#validateTextHere").text(
+        							"Please fill in all the mandatory fields");
+        					$('#crsNameModal').modal('show');
+        				},
+        				fields : [ {
+        					title : "Suffix",
+        					name : "suffix",
+        					type : "text",
+        					width : 150,
+        					items : suffix,
+        				}, {
+        					type : "control"
+        				} ]
+        			});
+        },
+        error: function(request, error) {
+            alert("Request: " + JSON.stringify(request));
+        }
+    });
 
 }
 
@@ -2239,3 +3271,2143 @@ function saveControllingPerson(){
 		console.log("insertion completed");
 	});
 }
+function accountHolderType(id){
+	if(id == 'individual'){
+		$("#Individual").show();
+		$("#Organization").hide();
+		debugger;
+		var residentCountryCode = $("#residentcountry").val();
+		residentCountryCode = $.parseJSON(residentCountryCode);
+		
+		var issuedBy = residentCountryCode;
+
+		/*var residentCountryCode = [ {
+			"id" : "1",
+			"name" : "MY"
+		}, {
+			"id" : "2",
+			"name" : "SG"
+		}, {
+			"id" : "3",
+			"name" : "AU"
+		}, {
+			"id" : "4",
+			"name" : "US"
+		} ];*/
+
+		$(
+				"#accountHolderResidentCountryGrid")
+				.jsGrid(
+						{
+							width : "205%",
+							inserting : true,
+							editing : true,
+							sorting : true,
+							paging : true,
+							pageSize : 6,
+							pageButtonCount : 5,
+							autoload : true,
+							controller : {
+
+								loadData : function() {
+									var d = $.Deferred();
+									$
+											.ajax({
+												type : 'GET',
+												url : 'crs/loadIndividualResidentCountryGrid',
+												mimeType : 'application/json',
+												contentType : 'application/json',
+												success : function(
+														data) {
+													d
+															.resolve(data);
+												},
+												error : function(
+														e) {
+													alert("error: "
+															+ e.responseText);
+												}
+											});
+
+									return d.promise();
+									/*return
+									[{"id":"1","residentCountryCode":6},{"id":"1","residentCountryCode":6}];*/
+								},
+
+								insertItem : function(item) {
+									var d = $.Deferred();
+
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : "crs/insertIndividualResidentCountryGrid",
+														data : JSON
+																.stringify(item),
+														mimeType : 'application/json',
+														contentType : 'application/json',
+													})
+											.done(
+													function(
+															response) {
+														console
+																.log("done: "
+																		+ JSON
+																				.stringify(response));
+														d
+																.resolve(response);
+														// showReportingEntity();
+														$(
+																"#accountHolderResidentCountryGrid")
+																.jsGrid(
+																		"loadData");
+													})
+											.fail(
+													function(
+															msg) {
+														console
+																.log("fail"
+																		+ msg);
+														d
+																.reject();
+													});
+								},
+
+								updateItem : function(item) {
+									var d = $.Deferred();
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : "crs/updateIndividualResidentCountryGrid?id="
+																+ item.id,
+														data : JSON
+																.stringify(item),
+														mimeType : 'application/json',
+														contentType : 'application/json',
+													})
+											.done(
+													function(
+															response) {
+														console
+																.log("done: "
+																		+ JSON
+																				.stringify(response));
+														d
+																.resolve(response);
+													})
+											.fail(
+													function(
+															msg) {
+														console
+																.log("fail"
+																		+ msg);
+														d
+																.reject();
+													});
+								},
+
+								deleteItem : function(item) {
+									var d = $.Deferred();
+									// alert('@@@@@@@@@@@@@' + item.id)
+
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : "crs/deleteIndividualResidentCountryGrid?id="
+																+ item.id,
+														data : JSON
+																.stringify(item),
+														mimeType : 'application/json',
+														contentType : 'application/json',
+													})
+											.done(
+													function(
+															response) {
+														console
+																.log("done: "
+																		+ JSON
+																				.stringify(response));
+														d
+																.resolve(response);
+													})
+											.fail(
+													function(
+															msg) {
+														console
+																.log("fail"
+																		+ msg);
+														d
+																.reject();
+													});
+								},
+
+							},
+							invalidNotify : function(
+									args) {
+								$(
+										"#validateTextHere")
+										.text(
+												"");
+								$(
+										"#validateTextHere")
+										.text(
+												"Please fill in all the mandatory fields");
+								$(
+										'#crsNameModal')
+										.modal(
+												'show');
+							},
+							fields : [
+									{
+										title : "No.<font color='red'>*</font>",
+										name : "id",
+										type : "text",
+										width : 150,
+										validate : "required",
+										visible : false
+									},
+									{
+										title : "Resident Country Code",
+										name : "residentCountryCode",
+										type : "select",
+										width : 150,
+										items : residentCountryCode,
+										valueField : "id",
+										textField : "name",
+									},
+									{
+										type : "control"
+									} ]
+						});
+
+		/*var issuedBy = [ {
+			"id" : "1",
+			"name" : "MY"
+		}, {
+			"id" : "2",
+			"name" : "AR"
+		}, {
+			"id" : "3",
+			"name" : "AU"
+		}, {
+			"id" : "4",
+			"name" : "US"
+		} ];*/
+
+		var tin = [];
+		var tinType = [];
+
+		$("#accountHolderTNGrid")
+				.jsGrid(
+						{
+							width : "205%",
+							inserting : true,
+							editing : true,
+							sorting : true,
+							paging : true,
+							pageSize : 6,
+							pageButtonCount : 5,
+							autoload : true,
+							controller : {
+
+								loadData : function() {
+									var d = $.Deferred();
+									$
+											.ajax({
+												type : 'GET',
+												url : 'crs/loadIndividualOrganisationGrid',
+												mimeType : 'application/json',
+												contentType : 'application/json',
+												success : function(
+														data) {
+													d
+															.resolve(data);
+												},
+												error : function(
+														e) {
+													alert("error: "
+															+ e.responseText);
+												}
+											});
+
+									return d.promise();
+									/*return
+									[{"id":"1","residentCountryCode":6},{"id":"1","residentCountryCode":6}];*/
+								},
+
+								insertItem : function(item) {
+									var d = $.Deferred();
+
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : "crs/insertIndividualOrganisationGrid",
+														data : JSON
+																.stringify(item),
+														mimeType : 'application/json',
+														contentType : 'application/json',
+													})
+											.done(
+													function(
+															response) {
+														console
+																.log("done: "
+																		+ JSON
+																				.stringify(response));
+														d
+																.resolve(response);
+														// showReportingEntity();
+														$(
+																"#accountHolderTNGrid")
+																.jsGrid(
+																		"loadData");
+													})
+											.fail(
+													function(
+															msg) {
+														console
+																.log("fail"
+																		+ msg);
+														d
+																.reject();
+													});
+								},
+
+								updateItem : function(item) {
+									var d = $.Deferred();
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : "crs/updateIndividualOrganisationGrid?id="
+																+ item.id,
+														data : JSON
+																.stringify(item),
+														mimeType : 'application/json',
+														contentType : 'application/json',
+													})
+											.done(
+													function(
+															response) {
+														console
+																.log("done: "
+																		+ JSON
+																				.stringify(response));
+														d
+																.resolve(response);
+													})
+											.fail(
+													function(
+															msg) {
+														console
+																.log("fail"
+																		+ msg);
+														d
+																.reject();
+													});
+								},
+
+								deleteItem : function(item) {
+									var d = $.Deferred();
+									// alert('@@@@@@@@@@@@@' + item.id)
+
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : "crs/deleteIndividualOrganisationGrid?id="
+																+ item.id,
+														data : JSON
+																.stringify(item),
+														mimeType : 'application/json',
+														contentType : 'application/json',
+													})
+											.done(
+													function(
+															response) {
+														console
+																.log("done: "
+																		+ JSON
+																				.stringify(response));
+														d
+																.resolve(response);
+													})
+											.fail(
+													function(
+															msg) {
+														console
+																.log("fail"
+																		+ msg);
+														d
+																.reject();
+													});
+								},
+
+							},
+							invalidNotify : function(
+									args) {
+								$(
+										"#validateTextHere")
+										.text(
+												"");
+								$(
+										"#validateTextHere")
+										.text(
+												"Please fill in all the mandatory fields");
+								$(
+										'#crsNameModal')
+										.modal(
+												'show');
+							},
+							fields : [
+									{
+										title : "No.<font color='red'>*</font>",
+										name : "id",
+										type : "text",
+										width : 150,
+										validate : "required",
+										visible : false
+									},
+									
+									
+									{
+										title : "TIN",
+										name : "in",
+										type : "text",
+										width : 150,
+										/*items : tin,*/
+									},{
+										title : "TIN Type",
+										name : "inType",
+										type : "text",
+										width : 150,
+										/*items : tinType,*/
+									},{
+										title : "Issued By",
+										name : "issuedBy",
+										type : "select",
+										width : 150,
+										items : issuedBy,
+										valueField : "id",
+										textField : "name",
+									},
+									{
+										type : "control"
+									} ]
+						});
+
+		var object = {};
+
+		$("#accountHolderNameGrid")
+				.jsGrid(
+						{
+							width : "205%",
+							inserting : false,
+							editing : false,
+							sorting : false,
+							paging : true,
+							pageSize : 6,
+							pageButtonCount : 5,
+							autoload : true,
+							controller : {
+								loadData : function() {
+									var d = $.Deferred();
+
+									$
+											.ajax({
+												type : 'GET',
+												url : 'crs/loadNameTypeMainGrid',
+												mimeType : 'application/json',
+												contentType : "application/json; charset=utf-8",
+												success : function(
+														data) {
+													d
+															.resolve(data);
+												},
+												error : function(
+														e) {
+													alert("error: "
+															+ e.responseText);
+												}
+											});
+
+									return d.promise();
+								}
+							},
+							/*controller : object,*/
+							datatype : 'json',
+							invalidNotify : function(
+									args) {
+								$(
+										"#validateTextHere")
+										.text(
+												"");
+								$(
+										"#validateTextHere")
+										.text(
+												"Please fill in all the mandatory fields");
+								$(
+										'#crsNameModal')
+										.modal(
+												'show');
+							},
+							fields : [
+									{
+										name : "id",
+										title : "id",
+										type : "text",
+										visible : false,
+										width : 10,
+										items : object.id
+									},
+									{
+										title : "Name",
+										name : "name",
+										type : "text",
+										width : 150,
+										items : object.name,
+										visible : true
+									},
+									{
+										title : "Name Type",
+										name : "nameType",
+										type : "text",
+										width : 150,
+										items : object.nameType,
+										visible : true
+									},
+									{
+										name : "button",
+										headerTemplate : function() {
+											return $(
+													"<button>")
+													.attr(
+															"type",
+															"button")
+													.attr(
+															"class",
+															"btn btn-success btn-sm")
+													.text(
+															"Click here to Add New Name")
+													.on(
+															"click",
+															function() {
+																addAccountHolderNameClicked();
+															});
+										},
+										itemTemplate : function(
+												value,
+												item) {
+											var $result = jsGrid.fields.control.prototype.itemTemplate
+													.apply(
+															this,
+															arguments);
+
+											var $customViewButton = $(
+													"<button>")
+													.attr(
+															"class",
+															"btn btn-info btn-sm")
+													.text(
+															"View")
+													.click(
+															function(
+																	e) {
+																alert("ID: "
+																		+ item.id);
+																e
+																		.stopPropagation();
+															});
+
+											var $customEditButton = $(
+													"<button>")
+													.attr(
+															"class",
+															"btn btn-warning btn-sm")
+													.text(
+															"Edit")
+													.click(
+															function(
+																	e) {
+																alert("ID: "
+																		+ item.id);
+																e
+																		.stopPropagation();
+															});
+
+											var $customDeleteButton = $(
+													"<button>")
+													.attr(
+															"class",
+															"btn btn-danger btn-sm")
+													.text(
+															"Delete")
+													.click(
+															function(
+																	e) {
+																alert("ID: "
+																		+ item.id);
+																e
+																		.stopPropagation();
+															});
+
+											return $(
+													"<div>")
+													.append(
+															$customViewButton)
+													.append(
+															"&nbsp;")
+													.append(
+															"&nbsp;")
+													.append(
+															$customEditButton)
+													.append(
+															"&nbsp;")
+													.append(
+															"&nbsp;")
+													.append(
+															$customDeleteButton);
+											// return
+											// $result.add($customButton);
+										}
+									} ]
+						});
+
+		var object = {};
+
+		$("#accountHolderAddressGrid")
+				.jsGrid(
+						{
+							width : "205%",
+							inserting : false,
+							editing : false,
+							sorting : false,
+							paging : true,
+							pageSize : 6,
+							pageButtonCount : 5,
+							autoload : true,
+							controller : {
+								loadData : function() {
+									var d = $.Deferred();
+
+									$
+											.ajax({
+												type : 'GET',
+												url : 'crs/loadIndividualAddress',
+												mimeType : 'application/json',
+												contentType : "application/json; charset=utf-8",
+												success : function(
+														data) {
+													d
+															.resolve(data);
+												},
+												error : function(
+														e) {
+													alert("error: "
+															+ e.responseText);
+												}
+											});
+
+									return d.promise();
+								}
+							},
+							/*controller : object,*/
+							datatype : 'json',
+							invalidNotify : function(
+									args) {
+								$(
+										"#validateTextHere")
+										.text(
+												"");
+								$(
+										"#validateTextHere")
+										.text(
+												"Please fill in all the mandatory fields");
+								$(
+										'#crsNameModal')
+										.modal(
+												'show');
+							},
+							fields : [
+									{
+									
+											name : "id",
+											title : "id",
+											type : "text",
+											visible : false,
+											width : 10
+										/*,
+										items: object.id*/
+									
+									},
+									{
+										title : "Address Type",
+										name : "addressType",
+										type : "text",
+										width : 150,
+										items : object.addressType,
+										visible : true
+									},
+									{
+										title : "Country Code",
+										name : "countryCode",
+										type : "text",
+										width : 150,
+										items : object.countryCode,
+										visible : true
+									},
+									{
+										name : "button",
+										headerTemplate : function() {
+											return $(
+													"<button>")
+													.attr(
+															"type",
+															"button")
+													.attr(
+															"class",
+															"btn btn-success btn-sm")
+													.text(
+															"Click here to Add New Address")
+													.on(
+															"click",
+															function() {
+																addNewAddressIndividualClicked();
+															});
+										},
+										itemTemplate : function(
+												value,
+												item) {
+											var $result = jsGrid.fields.control.prototype.itemTemplate
+													.apply(
+															this,
+															arguments);
+
+											var $customViewButton = $(
+													"<button>")
+													.attr(
+															"class",
+															"btn btn-info btn-sm")
+													.text(
+															"View")
+													.click(
+															function(
+																	e) {
+																/*alert("ID: "
+																		+ item.id);*/
+																individualViewAddress(item.id);
+																e
+																		.stopPropagation();
+																return false;
+															});
+
+											var $customEditButton = $(
+													"<button>")
+													.attr(
+															"class",
+															"btn btn-warning btn-sm")
+													.text(
+															"Edit")
+													.click(
+															function(
+																	e) {
+																/*alert("ID: "
+																		+ item.id);*/
+																individualEditAddress(item.id);
+																e
+																		.stopPropagation();
+																return false;
+															});
+
+											var $customDeleteButton = $(
+													"<button>")
+													.attr(
+															"class",
+															"btn btn-danger btn-sm")
+													.text(
+															"Delete")
+													.click(
+															function(
+																	e) {
+															/*	alert("ID: "
+																		+ item.id);*/
+																individualDeleteAddress(item.id);
+																e
+																		.stopPropagation();
+																return false;
+															});
+
+											return $(
+													"<div>")
+													.append(
+															$customViewButton)
+													.append(
+															"&nbsp;")
+													.append(
+															"&nbsp;")
+													.append(
+															$customEditButton)
+													.append(
+															"&nbsp;")
+													.append(
+															"&nbsp;")
+													.append(
+															$customDeleteButton);
+											// return
+											// $result.add($customButton);
+										}
+									} ]
+						});
+
+		var nationality = [ {
+			"id" : "1",
+			"name" : "MY"
+		}, {
+			"id" : "2",
+			"name" : "SG"
+		}, {
+			"id" : "3",
+			"name" : "AU"
+		}, {
+			"id" : "4",
+			"name" : "US"
+		} ];
+
+		$("#accountHolderNationalityGrid")
+				.jsGrid(
+						{
+							width : "205%",
+							inserting : true,
+							editing : true,
+							sorting : true,
+							paging : true,
+							pageSize : 6,
+							pageButtonCount : 5,
+							invalidNotify : function(
+									args) {
+								$(
+										"#validateTextHere")
+										.text(
+												"");
+								$(
+										"#validateTextHere")
+										.text(
+												"Please fill in all the mandatory fields");
+								$(
+										'#crsNameModal')
+										.modal(
+												'show');
+							},
+							fields : [
+									{
+										title : "Nationality",
+										name : "nationality",
+										type : "select",
+										width : 150,
+										items : nationality,
+										valueField : "id",
+										textField : "name",
+									},
+									{
+										type : "control"
+									} ]
+						});
+
+		var object = {};
+
+		$("#accountHolderBirthInfoGrid")
+				.jsGrid(
+						{
+							width : "205%",
+							inserting : false,
+							editing : false,
+							sorting : false,
+							paging : true,
+							pageSize : 6,
+							pageButtonCount : 5,
+							controller : object,
+							datatype : 'json',
+							invalidNotify : function(
+									args) {
+								$(
+										"#validateTextHere")
+										.text(
+												"");
+								$(
+										"#validateTextHere")
+										.text(
+												"Please fill in all the mandatory fields");
+								$(
+										'#crsNameModal')
+										.modal(
+												'show');
+							},
+							fields : [
+									{
+										name : "id",
+										title : "id",
+										type : "text",
+										visible : false,
+										width : 10,
+										items : object.id
+									},
+									{
+										title : "Birth Date",
+										name : "birthDate",
+										type : "text",
+										width : 150,
+										items : object.birthDate,
+										visible : true
+									},
+									{
+										title : "City",
+										name : "city",
+										type : "text",
+										width : 150,
+										items : object.city,
+										visible : true
+									},
+									{
+										name : "button",
+										headerTemplate : function() {
+											return $(
+													"<button>")
+													.attr(
+															"type",
+															"button")
+													.attr(
+															"class",
+															"btn btn-success btn-sm")
+													.text(
+															"Click here to Add New Birth Info")
+													.on(
+															"click",
+															function() {
+																addAccountBirthInfoClicked();
+															});
+										},
+										itemTemplate : function(
+												value,
+												item) {
+											var $result = jsGrid.fields.control.prototype.itemTemplate
+													.apply(
+															this,
+															arguments);
+
+											var $customViewButton = $(
+													"<button>")
+													.attr(
+															"class",
+															"btn btn-info btn-sm")
+													.text(
+															"View")
+													.click(
+															function(
+																	e) {
+																alert("ID: "
+																		+ item.id);
+																e
+																		.stopPropagation();
+															});
+
+											var $customEditButton = $(
+													"<button>")
+													.attr(
+															"class",
+															"btn btn-warning btn-sm")
+													.text(
+															"Edit")
+													.click(
+															function(
+																	e) {
+																alert("ID: "
+																		+ item.id);
+																e
+																		.stopPropagation();
+															});
+
+											var $customDeleteButton = $(
+													"<button>")
+													.attr(
+															"class",
+															"btn btn-danger btn-sm")
+													.text(
+															"Delete")
+													.click(
+															function(
+																	e) {
+																alert("ID: "
+																		+ item.id);
+																e
+																		.stopPropagation();
+															});
+
+											return $(
+													"<div>")
+													.append(
+															$customViewButton)
+													.append(
+															"&nbsp;")
+													.append(
+															"&nbsp;")
+													.append(
+															$customEditButton)
+													.append(
+															"&nbsp;")
+													.append(
+															"&nbsp;")
+													.append(
+															$customDeleteButton);
+											// return
+											// $result.add($customButton);
+										}
+									} ]
+						});
+	
+		
+	}else if(id == 'organization'){
+		
+		var residentCountryCode = $("#residentcountry").val();
+		residentCountryCode = $.parseJSON(residentCountryCode);
+		
+		var issuedBy = residentCountryCode;
+
+		$("#Organization").show();
+		$("#Individual").hide();
+
+		/*var residentCountryCode = [ {
+			"id" : "1",
+			"name" : "MY"
+		}, {
+			"id" : "2",
+			"name" : "SG"
+		}, {
+			"id" : "3",
+			"name" : "AU"
+		}, {
+			"id" : "4",
+			"name" : "US"
+		} ];*/
+
+		$(
+				"#accountHolderOrganisationResidentCountryGrid")
+				.jsGrid(
+						{
+							width : "205%",
+							inserting : true,
+							editing : true,
+							sorting : true,
+							paging : true,
+							pageSize : 6,
+							pageButtonCount : 5,
+							autoload : true,
+							controller : {
+
+								loadData : function() {
+									var d = $.Deferred();
+									$
+											.ajax({
+												type : 'GET',
+												url : 'crs/loadOrganisationResidentCountryGrid',
+												mimeType : 'application/json',
+												contentType : 'application/json',
+												success : function(
+														data) {
+													d
+															.resolve(data);
+												},
+												error : function(
+														e) {
+													alert("error: "
+															+ e.responseText);
+												}
+											});
+
+									return d.promise();
+									/*return
+									[{"id":"1","residentCountryCode":6},{"id":"1","residentCountryCode":6}];*/
+								},
+
+								insertItem : function(item) {
+									var d = $.Deferred();
+
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : "crs/insertOrganisationResidentCountryGrid",
+														data : JSON
+																.stringify(item),
+														mimeType : 'application/json',
+														contentType : 'application/json',
+													})
+											.done(
+													function(
+															response) {
+														console
+																.log("done: "
+																		+ JSON
+																				.stringify(response));
+														d
+																.resolve(response);
+														// showReportingEntity();
+														$(
+																"#accountHolderOrganisationResidentCountryGrid")
+																.jsGrid(
+																		"loadData");
+													})
+											.fail(
+													function(
+															msg) {
+														console
+																.log("fail"
+																		+ msg);
+														d
+																.reject();
+													});
+								},
+
+								updateItem : function(item) {
+									var d = $.Deferred();
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : "crs/updateOrganisationResidentCountryGrid?id="
+																+ item.id,
+														data : JSON
+																.stringify(item),
+														mimeType : 'application/json',
+														contentType : 'application/json',
+													})
+											.done(
+													function(
+															response) {
+														console
+																.log("done: "
+																		+ JSON
+																				.stringify(response));
+														d
+																.resolve(response);
+													})
+											.fail(
+													function(
+															msg) {
+														console
+																.log("fail"
+																		+ msg);
+														d
+																.reject();
+													});
+								},
+
+								deleteItem : function(item) {
+									var d = $.Deferred();
+									// alert('@@@@@@@@@@@@@' + item.id)
+
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : "crs/deleteOrganisationResidentCountryGrid?id="
+																+ item.id,
+														data : JSON
+																.stringify(item),
+														mimeType : 'application/json',
+														contentType : 'application/json',
+													})
+											.done(
+													function(
+															response) {
+														console
+																.log("done: "
+																		+ JSON
+																				.stringify(response));
+														d
+																.resolve(response);
+													})
+											.fail(
+													function(
+															msg) {
+														console
+																.log("fail"
+																		+ msg);
+														d
+																.reject();
+													});
+								},
+
+							},
+							invalidNotify : function(
+									args) {
+								$(
+										"#validateTextHere")
+										.text(
+												"");
+								$(
+										"#validateTextHere")
+										.text(
+												"Please fill in all the mandatory fields");
+								$(
+										'#crsNameModal')
+										.modal(
+												'show');
+							},
+							fields : [
+									{
+										
+										name : "id",
+										title : "id",
+										type : "text",
+										visible : false,
+										width : 10
+									/*,
+									items: object.id*/
+									
+									},
+									{
+										title : "Resident Country Code",
+										name : "residentCountryCode",
+										type : "select",
+										width : 150,
+										items : residentCountryCode,
+										valueField : "id",
+										textField : "name",
+									},
+									{
+										type : "control"
+									} ]
+						});
+
+		var IN = [];
+		var inType = [];
+		/*var issuedBy = [ {
+			"id" : "1",
+			"name" : "MY"
+		}, {
+			"id" : "2",
+			"name" : "AR"
+		}, {
+			"id" : "3",
+			"name" : "AU"
+		}, {
+			"id" : "4",
+			"name" : "US"
+		} ];*/
+
+		$(
+				"#accountHolderOrganisationInTypeGrid")
+				.jsGrid(
+						{
+							width : "205%",
+							inserting : true,
+							editing : true,
+							sorting : true,
+							paging : true,
+							pageSize : 6,
+							pageButtonCount : 5,
+							autoload : true,
+							controller : {
+
+								loadData : function() {
+									var d = $.Deferred();
+									$
+											.ajax({
+												type : 'GET',
+												url : 'crs/loadOrgOrganisationGrid',
+												mimeType : 'application/json',
+												contentType : 'application/json',
+												success : function(
+														data) {
+													d
+															.resolve(data);
+												},
+												error : function(
+														e) {
+													alert("error: "
+															+ e.responseText);
+												}
+											});
+
+									return d.promise();
+									/*return
+									[{"id":"1","residentCountryCode":6},{"id":"1","residentCountryCode":6}];*/
+								},
+
+								insertItem : function(item) {
+									var d = $.Deferred();
+
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : "crs/insertOrgOrganisationGrid",
+														data : JSON
+																.stringify(item),
+														mimeType : 'application/json',
+														contentType : 'application/json',
+													})
+											.done(
+													function(
+															response) {
+														console
+																.log("done: "
+																		+ JSON
+																				.stringify(response));
+														d
+																.resolve(response);
+														// showReportingEntity();
+														$(
+																"#accountHolderOrganisationInTypeGrid")
+																.jsGrid(
+																		"loadData");
+													})
+											.fail(
+													function(
+															msg) {
+														console
+																.log("fail"
+																		+ msg);
+														d
+																.reject();
+													});
+								},
+
+								updateItem : function(item) {
+									var d = $.Deferred();
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : "crs/updateOrgOrganisationGrid?id="
+																+ item.id,
+														data : JSON
+																.stringify(item),
+														mimeType : 'application/json',
+														contentType : 'application/json',
+													})
+											.done(
+													function(
+															response) {
+														console
+																.log("done: "
+																		+ JSON
+																				.stringify(response));
+														d
+																.resolve(response);
+													})
+											.fail(
+													function(
+															msg) {
+														console
+																.log("fail"
+																		+ msg);
+														d
+																.reject();
+													});
+								},
+
+								deleteItem : function(item) {
+									var d = $.Deferred();
+									// alert('@@@@@@@@@@@@@' + item.id)
+
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : "crs/deleteOrgOrganisationGrid?id="
+																+ item.id,
+														data : JSON
+																.stringify(item),
+														mimeType : 'application/json',
+														contentType : 'application/json',
+													})
+											.done(
+													function(
+															response) {
+														console
+																.log("done: "
+																		+ JSON
+																				.stringify(response));
+														d
+																.resolve(response);
+													})
+											.fail(
+													function(
+															msg) {
+														console
+																.log("fail"
+																		+ msg);
+														d
+																.reject();
+													});
+								},
+
+							},
+							invalidNotify : function(
+									args) {},
+							fields : [
+							 
+							{
+								
+								name : "id",
+								title : "id",
+								type : "text",
+								visible : false,
+								width : 10
+							/*,
+							items: object.id*/
+							
+							},
+							 
+							 {
+								title : "IN",
+								name : "in",
+								type : "text",
+								width : 150,
+								items : IN
+							},
+									{
+										title : "IN Type",
+										name : "inType",
+										type : "text",
+										width : 150,
+										items : inType,
+									},
+									{
+										title : "Issued By",
+										name : "issuedBy",
+										type : "select",
+										width : 150,
+										items : issuedBy,
+										valueField : "id",
+										textField : "name",
+									},
+									{
+										type : "control"
+									} ]
+						});
+
+		var clients = [];
+		var nameType = $("#nameTypedropdown").val();
+		nameType = $.parseJSON(nameType);
+
+		/*var nameType = [ {
+			"id" : "1",
+			"name" : "OECD 201"
+		}, {
+			"id" : "2",
+			"name" : "OECD 202"
+		}, {
+			"id" : "3",
+			"name" : "OECD 203"
+		}, {
+			"id" : "4",
+			"name" : "OECD 204"
+		}, {
+			"id" : "5",
+			"name" : "OECD 205"
+		}, {
+			"id" : "6",
+			"name" : "OECD 206"
+		}, {
+			"id" : "7",
+			"name" : "OECD 207"
+		}, {
+			"id" : "8",
+			"name" : "OECD 208"
+		} ];*/
+
+		$(
+				"#accountHolderOrganisationNameTypeGrid")
+				.jsGrid(
+						{
+							width : "205%",
+							inserting : true,
+							editing : true,
+							sorting : true,
+							paging : true,
+							pageSize : 6,
+							pageButtonCount : 5,
+							autoload : true,
+							controller : {
+
+								loadData : function() {
+									var d = $.Deferred();
+									$
+											.ajax({
+												type : 'GET',
+												url : 'crs/loadOrgNameGrid',
+												mimeType : 'application/json',
+												contentType : 'application/json',
+												success : function(
+														data) {
+													d
+															.resolve(data);
+												},
+												error : function(
+														e) {
+													alert("error: "
+															+ e.responseText);
+												}
+											});
+
+									return d.promise();
+									/*return
+									[{"id":"1","residentCountryCode":6},{"id":"1","residentCountryCode":6}];*/
+								},
+
+								insertItem : function(item) {
+									var d = $.Deferred();
+
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : "crs/insertOrgNameGrid",
+														data : JSON
+																.stringify(item),
+														mimeType : 'application/json',
+														contentType : 'application/json',
+													})
+											.done(
+													function(
+															response) {
+														console
+																.log("done: "
+																		+ JSON
+																				.stringify(response));
+														d
+																.resolve(response);
+														// showReportingEntity();
+														$(
+																"#accountHolderOrganisationNameTypeGrid")
+																.jsGrid(
+																		"loadData");
+													})
+											.fail(
+													function(
+															msg) {
+														console
+																.log("fail"
+																		+ msg);
+														d
+																.reject();
+													});
+								},
+
+								updateItem : function(item) {
+									var d = $.Deferred();
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : "crs/updateOrgNameGrid?id="
+																+ item.id,
+														data : JSON
+																.stringify(item),
+														mimeType : 'application/json',
+														contentType : 'application/json',
+													})
+											.done(
+													function(
+															response) {
+														console
+																.log("done: "
+																		+ JSON
+																				.stringify(response));
+														d
+																.resolve(response);
+													})
+											.fail(
+													function(
+															msg) {
+														console
+																.log("fail"
+																		+ msg);
+														d
+																.reject();
+													});
+								},
+
+								deleteItem : function(item) {
+									var d = $.Deferred();
+									// alert('@@@@@@@@@@@@@' + item.id)
+
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : "crs/deleteOrgNameGrid?id="
+																+ item.id,
+														data : JSON
+																.stringify(item),
+														mimeType : 'application/json',
+														contentType : 'application/json',
+													})
+											.done(
+													function(
+															response) {
+														console
+																.log("done: "
+																		+ JSON
+																				.stringify(response));
+														d
+																.resolve(response);
+													})
+											.fail(
+													function(
+															msg) {
+														console
+																.log("fail"
+																		+ msg);
+														d
+																.reject();
+													});
+								},
+
+							},
+						/*	data : clients,*/
+							invalidNotify : function(
+									args) {},
+							fields : [
+									
+									{
+										
+										name : "id",
+										title : "id",
+										type : "text",
+										visible : false,
+										width : 10
+									/*,
+									items: object.id*/
+									
+									},
+									
+									{
+										title : "Organisation Name<font color='red'>*</font>",
+										name : "firstName",
+										type : "text",
+										width : 150,
+										validate : "required"
+
+									},
+									{
+										title : "Last Name<font color='red'>*</font>",
+										name : "lastName",
+										type : "text",
+										width : 150,
+										visible :false
+									},
+									{
+										title : "Organisation Name Type<font color='red'>*</font>",
+										name : "nameType",
+										type : "select",
+										width : 150,
+										items : nameType,
+										valueField : "id",
+										textField : "name",
+										validate : "required"
+									},
+									{
+										type : "control"
+									} ]
+						});
+
+		var object = {};
+
+		$(
+				"#accountHolderOrganisationAddressGrid")
+				.jsGrid(
+						{
+							width : "205%",
+							inserting : false,
+							editing : false,
+							sorting : false,
+							paging : true,
+							pageSize : 6,
+							pageButtonCount : 5,
+							autoload : true,
+							controller : {
+								loadData : function() {
+									var d = $.Deferred();
+
+									$
+											.ajax({
+												type : 'GET',
+												url : 'crs/loadOrganisationAddress',
+												mimeType : 'application/json',
+												contentType : "application/json; charset=utf-8",
+												success : function(
+														data) {
+													d
+															.resolve(data);
+												},
+												error : function(
+														e) {
+													alert("error: "
+															+ e.responseText);
+												}
+											});
+
+									return d.promise();
+								}
+							},
+							/*controller : object,*/
+							datatype : 'json',
+							invalidNotify : function(
+									args) {
+								$(
+										"#validateTextHere")
+										.text(
+												"");
+								$(
+										"#validateTextHere")
+										.text(
+												"Please fill in all the mandatory fields");
+								$(
+										'#crsNameModal')
+										.modal(
+												'show');
+							},
+							fields : [
+									{
+										name : "id",
+										title : "id",
+										type : "text",
+										visible : false,
+										width : 10,
+										items : object.id
+									},
+									{
+										title : "Address Type",
+										name : "addressType",
+										type : "text",
+										width : 150,
+										items : object.addressType,
+										visible : true
+									},
+									{
+										title : "Country Code",
+										name : "countryCode",
+										type : "text",
+										width : 150,
+										items : object.countryCode,
+										visible : true
+									},
+									{
+										name : "button",
+										headerTemplate : function() {
+											return $(
+													"<button>")
+													.attr(
+															"type",
+															"button")
+													.attr(
+															"class",
+															"btn btn-success btn-sm")
+													.text(
+															"Click here to Add New Address")
+													.on(
+															"click",
+															function() {
+																addNewOrgAddressIndividualClicked();
+															});
+										},
+										itemTemplate : function(
+												value,
+												item) {
+											var $result = jsGrid.fields.control.prototype.itemTemplate
+													.apply(
+															this,
+															arguments);
+
+											var $customViewButton = $(
+													"<button>")
+													.attr(
+															"class",
+															"btn btn-info btn-sm")
+													.text(
+															"View")
+													.click(
+															function(
+																	e) {
+															/*	alert("ID: "
+																		+ item.id);*/
+																orgViewAddress(item.id);
+																e
+																		.stopPropagation();
+																return false;
+															});
+
+											var $customEditButton = $(
+													"<button>")
+													.attr(
+															"class",
+															"btn btn-warning btn-sm")
+													.text(
+															"Edit")
+													.click(
+															function(
+																	e) {
+																/*alert("ID: "
+																		+ item.id);*/
+																organisationalEditAddress(item.id);
+																
+																e
+																		.stopPropagation();
+																return false;
+															});
+
+											var $customDeleteButton = $(
+													"<button>")
+													.attr(
+															"class",
+															"btn btn-danger btn-sm")
+													.text(
+															"Delete")
+													.click(
+															function(
+																	e) {
+																/*alert("ID: "
+																		+ item.id);*/
+																orgDeleteAddress(item.id);
+																e
+																		.stopPropagation();
+																return false;
+															});
+
+											return $(
+													"<div>")
+													.append(
+															$customViewButton)
+													.append(
+															"&nbsp;")
+													.append(
+															"&nbsp;")
+													.append(
+															$customEditButton)
+													.append(
+															"&nbsp;")
+													.append(
+															"&nbsp;")
+													.append(
+															$customDeleteButton);
+											// return
+											// $result.add($customButton);
+										}
+									} ]
+						});
+	
+		
+	}
+}
+
+function addNewAddressIndividualClicked(){
+	$("#addNewIndividualAddress").modal('show');
+	$("#addressFreeEntityTextField").hide();
+	$("#addressFixEntityContent").hide();
+	
+	$.ajax({
+        url: 'crs/resetIndividualAddAddress',
+        type: 'GET',
+        async: false,
+        data : $('#addindividual').serialize(),
+        success: function(response) {
+        	var htmlFiltered = $("<div>").html(response).find("#addNewIndividualAddress").html();
+            $('#addNewIndividualAddress').html('');
+            $('#addNewIndividualAddress').html(htmlFiltered);
+        },
+        error: function(request, error) {
+            alert("Request: " + JSON.stringify(request));
+        }
+    });
+	
+}
+function individualViewAddress(id) {
+	$.ajax({
+		url : 'crs/individualViewAddress?id=' + id,
+		type : 'GET',
+		async : false,
+		cache : false,
+		data : $('#viewIndividualAdd').serialize(),
+		success : function(data) {
+			var htmlFiltered = $("<div>").html(data).find(
+					"#individualAddress").html();
+			$('#individualAddress').html('');
+			$('#individualAddress').html(htmlFiltered);
+			$("#individualAddress").modal('show');
+			return false;
+
+		},
+		error : function(request, error) {
+			alert("Request: " + JSON.stringify(request));
+		}
+	});
+}
+
+function individualEditAddress(id) {
+	
+	$(function() {
+		var ctx = "${pageContext.request.contextPath}";
+		$.ajax({
+			type : "GET",
+			url : 'crs/individualEditAddress?id=' + id,
+			async : false,
+			cache : false,
+			data : $('#editNewIndividual').serialize(),
+			success : function(data) {
+				var htmlFiltered = $("<div>").html(data).find(
+						"#editNewIndividualAddress").html();
+				$('#editNewIndividualAddress').html('');
+				$('#editNewIndividualAddress').html(htmlFiltered);
+				$("#editNewIndividualAddress").modal('show');
+				return false;
+			}
+		});
+
+	});
+}
+function individualEditSaveAddress() {
+
+	$(function() {
+		var ctx = "${pageContext.request.contextPath}";
+		$.ajax({
+			type : "GET",
+			url : 'crs/individualEditSaveAddress',
+			async : false,
+			cache : false,
+			data : $('#editNewIndividual').serialize(),
+			success : function(data) {
+				var htmlFiltered = $("<div>").html(data).find(
+						"#editNewIndividualAddress").html();
+				$('#editNewIndividualAddress').html('');
+				$('#editNewIndividualAddress').html(htmlFiltered);
+				/*$("#editNewReportingEntityAddress").modal('close');*/
+				$('#editNewIndividualAddress').modal('toggle');
+				return false;
+			}
+		});
+
+	});
+}
+
+function individualDeleteAddress(id) {
+	$.ajax({
+		url : 'crs/individualDeleteAddress?id=' + id,
+		type : 'GET',
+		async : false,
+		success : function(response) {
+			return false;
+
+		},
+		error : function(request, error) {
+			alert("Request: " + JSON.stringify(request));
+		}
+	});
+}
+function saveNewIndividualAddressClicked(){
+	//alert('saveAddress clicked......');
+	$.ajax({
+		url : 'crs/individualInsertAddress',
+		type : 'GET',
+		data: $('#addindividual').serialize(),
+		success : function(data) {
+		   /*var object =  {"id":"1","addressType":"Address Free","countryCode":"MY"};
+			console.log(object.addressType);
+			console.log(object.id);
+			console.log(object.countryCode);*/
+			console.log(data.addressType);
+			console.log(data.id);
+			console.log(data.countryCode);
+			$("#accountHolderAddressGrid").jsGrid("insertItem", data).done(function() {
+			    console.log("insertion completed");
+			});
+			
+			
+		},error : function(request, error) {
+			alert("Request: " + JSON.stringify(request));
+		}
+	});
+	
+}
+function reportingFiEditSaveAddress() {
+
+	$(function() {
+		var ctx = "${pageContext.request.contextPath}";
+		$.ajax({
+			type : "GET",
+			url : 'crs/reportingFieditSaveAddress',
+			async : false,
+			cache : false,
+			data : $('#editNewReportingfi').serialize(),
+			success : function(data) {
+				var htmlFiltered = $("<div>").html(data).find(
+						"#editNewReportingfiAddress").html();
+				$('#editNewReportingfiAddress').html('');
+				$('#editNewReportingfiAddress').html(htmlFiltered);
+				/*$("#editNewReportingEntityAddress").modal('close');*/
+				$('#editNewReportingfiAddress').modal('toggle');
+				return false;
+			}
+		});
+
+	});
+}
+
+function saveNewIndividualNameClicked(){
+	//alert('saveAddress clicked......');
+	$.ajax({
+		url : 'crs/individualInsertNameGrid',
+		type : 'GET',
+		data: $('#viewAccountHolderIndividualName').serialize(),
+		success : function(data) {
+		   /*var object =  {"id":"1","addressType":"Address Free","countryCode":"MY"};
+			console.log(object.addressType);
+			console.log(object.id);
+			console.log(object.countryCode);*/
+			console.log(data.addressType);
+			console.log(data.id);
+			console.log(data.countryCode);
+			$("#accountHolderNameGrid").jsGrid("insertItem", data).done(function() {
+			    console.log("insertion completed");
+			});
+			
+			
+		},error : function(request, error) {
+			alert("Request: " + JSON.stringify(request));
+		}
+	});
+	
+}
+
+function addNewOrgAddressIndividualClicked(){
+	$("#addNewOrgAddress").modal('show');
+	$("#addressFreeEntityTextField").hide();
+	$("#addressFixEntityContent").hide();
+	
+	$.ajax({
+        url: 'crs/resetOrgAddAddress',
+        type: 'GET',
+        async: false,
+        data : $('#addorganisation').serialize(),
+        success: function(response) {
+        	var htmlFiltered = $("<div>").html(response).find("#addNewOrgAddress").html();
+            $('#addNewOrgAddress').html('');
+            $('#addNewOrgAddress').html(htmlFiltered);
+        },
+        error: function(request, error) {
+            alert("Request: " + JSON.stringify(request));
+        }
+    });
+	
+}
+function orgViewAddress(id) {
+	$.ajax({
+		url : 'crs/organisationViewAddress?id=' + id,
+		type : 'GET',
+		async : false,
+		cache : false,
+		data : $('#viewOrganisationalAdd').serialize(),
+		success : function(data) {
+			var htmlFiltered = $("<div>").html(data).find(
+					"#orgAddress").html();
+			$('#orgAddress').html('');
+			$('#orgAddress').html(htmlFiltered);
+			$("#orgAddress").modal('show');
+			return false;
+
+		},
+		error : function(request, error) {
+			alert("Request: " + JSON.stringify(request));
+		}
+	});
+}
+function organisationalEditAddress(id) {
+	
+	$(function() {
+		var ctx = "${pageContext.request.contextPath}";
+		$.ajax({
+			type : "GET",
+			url : 'crs/orgEditAddress?id=' + id,
+			async : false,
+			cache : false,
+			data : $('#editNewOrg').serialize(),
+			success : function(data) {
+				var htmlFiltered = $("<div>").html(data).find(
+						"#editNewOrgAddress").html();
+				$('#editNewOrgAddress').html('');
+				$('#editNewOrgAddress').html(htmlFiltered);
+				$("#editNewOrgAddress").modal('show');
+				return false;
+			}
+		});
+
+	});
+}
+function orgDeleteAddress(id) {
+	$.ajax({
+		url : 'crs/orgDeleteAddress?id=' + id,
+		type : 'GET',
+		async : false,
+		success : function(response) {
+			return false;
+
+		},
+		error : function(request, error) {
+			alert("Request: " + JSON.stringify(request));
+		}
+	});
+}
+function saveNewOrgAddressClicked(){
+	//alert('saveAddress clicked......');
+	$.ajax({
+		url : 'crs/orgInsertAddress',
+		type : 'GET',
+		data: $('#addorganisation').serialize(),
+		success : function(data) {
+		   /*var object =  {"id":"1","addressType":"Address Free","countryCode":"MY"};
+			console.log(object.addressType);
+			console.log(object.id);
+			console.log(object.countryCode);*/
+			console.log(data.addressType);
+			console.log(data.id);
+			console.log(data.countryCode);
+			$("#accountHolderOrganisationAddressGrid").jsGrid("insertItem", data).done(function() {
+			    console.log("insertion completed");
+			});
+			
+			
+		},error : function(request, error) {
+			alert("Request: " + JSON.stringify(request));
+		}
+	});
+	
+}
+function orgEditSaveAddress() {
+
+	$(function() {
+		var ctx = "${pageContext.request.contextPath}";
+		$.ajax({
+			type : "GET",
+			url : 'crs/orgEditSaveAddress',
+			async : false,
+			cache : false,
+			data : $('#editNewOrg').serialize(),
+			success : function(data) {
+				var htmlFiltered = $("<div>").html(data).find(
+						"#editNewOrgAddress").html();
+				$('#editNewOrgAddress').html('');
+				$('#editNewOrgAddress').html(htmlFiltered);
+				/*$("#editNewReportingEntityAddress").modal('close');*/
+				$('#editNewOrgAddress').modal('toggle');
+				return false;
+			}
+		});
+
+	});
+}
+

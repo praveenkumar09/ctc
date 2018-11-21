@@ -14,7 +14,10 @@ import com.censof.myfi.hidefmyfi.entity.Cbcmessagetypeindic;
 import com.censof.myfi.hidefmyfi.entity.Cbcnametype;
 import com.censof.myfi.hidefmyfi.entity.Cbcreportingrole;
 import com.censof.myfi.hidefmyfi.entity.Cbcsummaryreference;
+import com.censof.myfi.hidefmyfi.entity.Crsaccounthodertype;
+import com.censof.myfi.hidefmyfi.entity.Crsctrlpersontype;
 import com.censof.myfi.hidefmyfi.entity.Crsmessagetypeindic;
+import com.censof.myfi.hidefmyfi.entity.Crspaymenttype;
 import com.censof.myfi.hidefmyfi.entity.Ctscommunicationtypecd;
 import com.censof.myfi.hidefmyfi.entity.Docrefid;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
@@ -55,4 +58,7 @@ public interface CtccommonDropdownService {
 	public List<Cbcmessagetypeindic> findAllCbcmessagetypeindic();
 	public List<Crsmessagetypeindic> findAllCrsMessageTypeIndic();
 	public List<Messagetype> findAllMessageTypes();
+	public List<Crspaymenttype> findAllPaymentType();
+	public List<Crsaccounthodertype> findAllAccountHolderType();
+	public List<Crsctrlpersontype> findAllControllingPersonType();
 }

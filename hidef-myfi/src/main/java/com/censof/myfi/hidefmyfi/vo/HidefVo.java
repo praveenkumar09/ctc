@@ -34,6 +34,8 @@ public class HidefVo {
 	private String isSummaryView;	
 	private CrsMetadataVo crsmetadata;
 	private CrsReportingFiVo crsreportingfi;
+	private AccountHolderVo accountholder;
+	private List<AccountHolderVo> accountHolderList;
 	
 	
 	
@@ -221,6 +223,23 @@ public class HidefVo {
 	public void setCrsreportingfi(CrsReportingFiVo crsreportingfi) {
 		this.crsreportingfi = crsreportingfi;
 	}
+
+	public AccountHolderVo getAccountholder() {
+		return accountholder;
+	}
+
+	public void setAccountholder(AccountHolderVo accountholder) {
+		this.accountholder = accountholder;
+	}
+
+	public List<AccountHolderVo> getAccountHolderList() {
+		return accountHolderList;
+	}
+
+	public void setAccountHolderList(List<AccountHolderVo> accountHolderList) {
+		this.accountHolderList = accountHolderList;
+	}
+	
 	
 	
 

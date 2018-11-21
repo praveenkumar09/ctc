@@ -18,7 +18,10 @@ import com.censof.myfi.hidefmyfi.entity.Cbcmessagetypeindic;
 import com.censof.myfi.hidefmyfi.entity.Cbcnametype;
 import com.censof.myfi.hidefmyfi.entity.Cbcreportingrole;
 import com.censof.myfi.hidefmyfi.entity.Cbcsummaryreference;
+import com.censof.myfi.hidefmyfi.entity.Crsaccounthodertype;
+import com.censof.myfi.hidefmyfi.entity.Crsctrlpersontype;
 import com.censof.myfi.hidefmyfi.entity.Crsmessagetypeindic;
+import com.censof.myfi.hidefmyfi.entity.Crspaymenttype;
 import com.censof.myfi.hidefmyfi.entity.Ctscommunicationtypecd;
 import com.censof.myfi.hidefmyfi.entity.Docrefid;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
@@ -33,7 +36,10 @@ import com.censof.myfi.hidefmyfi.repository.CbcbizactivitiesreferenceRepository;
 import com.censof.myfi.hidefmyfi.repository.CbcmessagetypeindicRepository;
 import com.censof.myfi.hidefmyfi.repository.CbcsummaryreferenceRepository;
 import com.censof.myfi.hidefmyfi.repository.CommunicationTypeRepository;
+import com.censof.myfi.hidefmyfi.repository.CrsaccounthodertypeRepository;
+import com.censof.myfi.hidefmyfi.repository.CrsctrlpersontypeRepository;
 import com.censof.myfi.hidefmyfi.repository.CrsmessagetypeindicRepository;
+import com.censof.myfi.hidefmyfi.repository.CrspaymenttypeRepository;
 import com.censof.myfi.hidefmyfi.repository.DocrefidRepository;
 import com.censof.myfi.hidefmyfi.repository.DocumentTypeIndicatorRepository;
 import com.censof.myfi.hidefmyfi.repository.FileFormatCdRepository;
@@ -101,6 +107,15 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService{
 	
 	@Autowired
 	private MessagetypeRepository messagetypeRepository;
+	
+	@Autowired
+	private CrspaymenttypeRepository  crspaymenttypeRepository;
+	
+	@Autowired
+	private CrsaccounthodertypeRepository crsaccounthodertypeRepository;
+	
+	@Autowired
+	private CrsctrlpersontypeRepository crsctrlpersontypeRepository;
 	
 	
 	@Override
@@ -315,6 +330,30 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService{
 		// TODO Auto-generated method stub
 		List<Messagetype>  messageTypes = messagetypeRepository.findAllMessageTypes();
 		return messageTypes;
+	}
+
+
+	@Override
+	public List<Crspaymenttype> findAllPaymentType() {
+		// TODO Auto-generated method stub
+		List<Crspaymenttype> paymentType = crspaymenttypeRepository.findAllPaymentTypes();
+		return paymentType;
+	}
+
+
+	@Override
+	public List<Crsaccounthodertype> findAllAccountHolderType() {
+		// TODO Auto-generated method stub
+		List<Crsaccounthodertype> accountHolderType = crsaccounthodertypeRepository.findAllAccountHolderType();
+		return accountHolderType;
+	}
+
+
+	@Override
+	public List<Crsctrlpersontype> findAllControllingPersonType() {
+		// TODO Auto-generated method stub
+		List<Crsctrlpersontype> controllingPersonType = crsctrlpersontypeRepository.findAllControllingPersonType();
+		return controllingPersonType;
 	}
 
 }
