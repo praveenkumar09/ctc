@@ -15,7 +15,7 @@
 				<div class="form-group">
 					<div class="form-group col-md-6">
 						<form:label for="" path ="crsmetadata.sendingCountry">Sending Country:</form:label> <form:select path ="crsmetadata.sendingCountry"
-							class="form-control" id="sendingCountry">
+							class="form-control" id="sendingCountry" disabled="true">
 							<form:option value="0" >Please choose</form:option>
 						<%-- 	<form:option value="1">MY</form:option>
 							<form:option value="2">SG</form:option>
@@ -31,7 +31,7 @@
 					</div>
 					<div class="form-group col-md-6">
 						<form:label for="" path ="crsmetadata.receivingCountry">Receiving Country:</form:label> <form:select path ="crsmetadata.receivingCountry"
-							class="form-control" id="receivingCountry">
+							class="form-control" id="receivingCountry" disabled="true">
 							<form:option value="0" >Please choose</form:option>
 						<%-- 	<form:option value="1">MY</form:option>
 							<form:option value="2">SG</form:option>
@@ -121,7 +121,7 @@
 					</div>
 					<div class="form-group col-md-6">
 						<label for="">File Format Code:</label> <form:select
-							class="form-control" id="fileFormatCode" path ="crsmetadata.fileFormatCode">
+							class="form-control" id="fileFormatCode" path ="crsmetadata.fileFormatCode" disabled="true">
 							<form:option value="0">Please choose</form:option>
 								<%-- 	<form:option value="1">MY</form:option>
 							<form:option value="2">SG</form:option>
@@ -140,7 +140,7 @@
 				<div class="form-group">
 					<div class="form-group col-md-6">
 						<label for="">Binary Encoding:</label> <form:select
-							class="form-control" id="binaryEncoding" path ="crsmetadata.binaryEncoding">
+							class="form-control" id="binaryEncoding" path ="crsmetadata.binaryEncoding" disabled="true">
 							<form:option value="0">Please choose</form:option>
 								<%-- 	<form:option value="1">MY</form:option>
 							<form:option value="2">SG</form:option>
@@ -164,7 +164,7 @@
 				<div class="form-group col-md-6">
 						<label class="">Sender Contact Email Address:</label> <form:input type="text"
 							class="form-control" id="senderContactEmailAddress"
-							placeholder="Sender Contact Email Address" path ="crsmetadata.senderContactEmail"></form:input>
+							placeholder="Sender Contact Email Address" path ="crsmetadata.senderContactEmail" disabled="true"></form:input>
 					</div>
 					<div class="form-group col-md-6">
 						<label class="">Sending Company IN:</label> <form:input type="text"
@@ -179,6 +179,12 @@
 				</div>
 			</div>
 			</form:form>
+			<!-- <div class="form-group">
+			<div class="text-center">
+			<button id="singlebutton" name="singlebutton" onClick="generateCRSMetaData();return false;"
+							class="btn btn-success">Generate Metadata</button>
+			</div>
+			</div> -->
 		</div>
 	</div>
 </div>

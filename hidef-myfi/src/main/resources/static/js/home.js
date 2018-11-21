@@ -5661,6 +5661,25 @@ function generateMetaData() {
 	}
 }
 
+
+function generateCRSMetaData() {
+	/*var items = $("#cbcAddInfoGrid").jsGrid("option", "data");
+	var arrayLength = items.length;
+	var errorFlag = false;
+	if (arrayLength <= 0) {
+		$("#documentReferenceIdError").empty();
+		$("#documenttypeindicError").empty();
+		$("#otherInfoError").empty();
+		$("#cbcaddinfoError").empty().append("CBC Additional Info not empty!");
+		errorFlag = true;
+	}*/
+
+	/*if (!errorFlag) {*/
+		var downloadUrl = "crs/generateMetaData";
+		window.location.href = downloadUrl;
+	/*}*/
+}
+
 function generatePayload() {
 	var items = $("#cbcAddInfoGrid").jsGrid("option", "data");
 	var arrayLength = items.length;

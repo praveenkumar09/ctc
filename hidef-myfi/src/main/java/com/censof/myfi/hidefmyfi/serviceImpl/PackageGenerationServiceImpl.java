@@ -893,4 +893,129 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 		return file.toString();
 	}
 
+	@Override
+	public String generateCRSXMLMetadata(HidefVo hidef) throws IOException {
+
+		String personXMLStringValue = null;
+		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+		try {
+			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			Document doc = docBuilder.newDocument();
+			// Create Person root element
+			Element rootElement = doc.createElement("CTSSenderFileMetadata");
+			rootElement.setAttribute("xmlns", "urn:oecd:ctssenderfilemetadata");
+			rootElement.setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
+			rootElement.setAttribute("xmlns:xmime", "http://www.w3.org/2005/05/xmlmime");
+			rootElement.setAttribute("xmlns:xmime", "urn:oecd:ties:isoctstypes:v1");
+			doc.appendChild(rootElement);
+			// Create First Name Element
+
+			if (hidef.getUserprofile() != null) {
+
+				if (hidef.getUserprofile().getSendingcountry() != null
+						&& !hidef.getUserprofile().getSendingcountry().isEmpty()) {
+					Element senderCountryCode = doc.createElement("CTSSenderCountryCd");
+					senderCountryCode.appendChild(doc.createTextNode(hidef.getUserprofile().getSendingcountry()));
+					rootElement.appendChild(senderCountryCode);
+
+				}
+
+				
+				if(hidef.getUserprofile().getReceivingcountry() != null 
+						&& !hidef.getUserprofile().getReceivingcountry().isEmpty()) {
+						Element receivingCountryCode = doc.createElement("CTSReceiverCountryCd");
+						receivingCountryCode.appendChild(doc.createTextNode(hidef.getUserprofile().getReceivingcountry()));
+						rootElement.appendChild(receivingCountryCode);
+				}
+
+				if (hidef.getUserprofile().getCommunicationType() != null
+						&& !hidef.getUserprofile().getCommunicationType().isEmpty()) {
+					Element communicationType = doc.createElement("CTSCommunicationTypeCd");
+					communicationType.appendChild(doc.createTextNode(hidef.getUserprofile().getCommunicationType()));
+					rootElement.appendChild(communicationType);
+
+				}
+
+				if (hidef.getUserprofile().getCtsTransId() != null
+						&& !hidef.getUserprofile().getCtsTransId().isEmpty()) {
+					Element transmissionId = doc.createElement("OriginalCTSTransmissionId");
+					transmissionId.appendChild(doc.createTextNode(hidef.getUserprofile().getCtsTransId()));
+					rootElement.appendChild(transmissionId);
+				}
+
+				if (hidef.getUserprofile().getFileformatCode() != null
+						&& !hidef.getUserprofile().getFileformatCode().isEmpty()) {
+					Element fileFormatCode = doc.createElement("FileFormatCd");
+					fileFormatCode.appendChild(doc.createTextNode(hidef.getUserprofile().getFileformatCode()));
+					rootElement.appendChild(fileFormatCode);
+				}
+
+				if (hidef.getUserprofile().getBinaryEncoding() != null
+						&& !hidef.getUserprofile().getBinaryEncoding().isEmpty()) {
+					Element binaryEncoding = doc.createElement("BinaryEncodingSchemeCd");
+					binaryEncoding.appendChild(doc.createTextNode(hidef.getUserprofile().getBinaryEncoding()));
+					rootElement.appendChild(binaryEncoding);
+				}
+
+				if (hidef.getUserprofile().getSendContactEmailAddress() != null
+						&& !hidef.getUserprofile().getSendContactEmailAddress().isEmpty()) {
+					Element senderContactEmailAddress = doc.createElement("SenderContactEmailAddressTxt");
+					senderContactEmailAddress
+							.appendChild(doc.createTextNode(hidef.getUserprofile().getSendContactEmailAddress()));
+					rootElement.appendChild(senderContactEmailAddress);
+				}
+
+				if (hidef.getUserprofile().getFileTypeIndic() != null
+						&& !hidef.getUserprofile().getFileTypeIndic().isEmpty()) {
+					Element fileTypeIndic = doc.createElement("FileRevisionInd");
+					fileTypeIndic.appendChild(doc.createTextNode(hidef.getUserprofile().getFileTypeIndic()));
+					rootElement.appendChild(fileTypeIndic);
+				}
+
+			}
+
+			if (hidef.getCrsmetadata() != null) {
+				if (hidef.getCrsmetadata().getSenderFileId() != null && !hidef.getCrsmetadata().getSenderFileId().isEmpty()) {
+					Element senderFileId = doc.createElement("SenderFileId");
+					senderFileId.appendChild(doc.createTextNode(hidef.getCrsmetadata().getSenderFileId()));
+					rootElement.appendChild(senderFileId);
+				}
+
+				if (hidef.getCrsmetadata().getFileCreationTimestramp() != null
+						&& !hidef.getCrsmetadata().getFileCreationTimestramp().isEmpty()) {
+					Element fileCreationTS = doc.createElement("FileCreateTs");
+					fileCreationTS.appendChild(doc.createTextNode(hidef.getCrsmetadata().getFileCreationTimestramp()));
+					rootElement.appendChild(fileCreationTS);
+				}
+
+				if (hidef.getCrsmetadata().getTaxYear() != null && !hidef.getCrsmetadata().getTaxYear().isEmpty()) {
+					Element taxYear = doc.createElement("TaxYear");
+					taxYear.appendChild(doc.createTextNode(hidef.getCrsmetadata().getTaxYear()));
+					rootElement.appendChild(taxYear);
+				}
+			}
+			// Transform Document to XML String
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer = tf.newTransformer();
+			StringWriter writer = new StringWriter();
+			transformer.transform(new DOMSource(doc), new StreamResult(writer));
+			// Get the String value of final xml document
+			personXMLStringValue = writer.getBuffer().toString();
+			// return personXMLStringValue;
+			// TODO Auto-generated method stub
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String metaDataFilePath = fetchProperties("crsmetadataPath");
+		File file = new File(metaDataFilePath+"/"+auth.getName()+"_"+hidef.getUserprofile().getCommunicationType()+"_Metadata.xml");
+		hidef.setMetaDataFileName(auth.getName()+"_"+hidef.getUserprofile().getCommunicationType()+"_Metadata.xml");
+		FileWriter fileWriter = new FileWriter(file);
+		fileWriter.write(personXMLStringValue);
+		fileWriter.close();
+		
+		return personXMLStringValue;
+	}
+
 }
