@@ -74,6 +74,10 @@ public class CrsAccountHolderController {
 	@RequestMapping(value ="/admin/crs/accountHolder", method = RequestMethod.GET)
 	public String getaccountHolder(@ModelAttribute("hidef")HidefVo hidef, 
 		      BindingResult result, ModelMap model,Map<String, Object> map) {
+		if(hidef.getAccountholder() == null){
+			hidef.setAccountholder(new AccountHolderVo());
+		}
+		
 		ObjectMapper mapper = new ObjectMapper();
 		List<Hicountry> country = ctccommonDropdownService.getAllCountries();
 		List<Cbcdocumenttypeindicator> cbcdocumenttypeindicator = ctccommonDropdownService.getAllDocumentTypeIndicator();
