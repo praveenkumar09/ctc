@@ -11,8 +11,14 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script type="text/javascript">
-
-
+if('${hidef.accountholder.accountHolderType}' == 'individual,0'){
+$("#defaultUnchecked1").prop("checked", true);
+accountHolderType('individual');
+}
+if('${hidef.accountholder.accountHolderType}' == 'organization,0'){
+	$("#defaultUnchecked2").prop("checked", true);
+	accountHolderType('organization');
+}
 </script>
 <div class="container">
 	<div class="row">
@@ -248,11 +254,11 @@
 					<label for="sel1">Account Holder Type :</label> <br />
 					<div id="accountHolderType" class="custom-control custom-radio">
 						<form:radiobutton class="custom-control-input"
-							id="defaultUnchecked" name="accountHolderTypeRadio"
+							id="defaultUnchecked1" name="accountHolderTypeRadio"
 							value="individual" path="accountholder.accountHolderType" onclick="accountHolderType(this.value)"></form:radiobutton> 
 							<label class="custom-control-label"
 							for="defaultUnchecked">Individual</label> <form:radiobutton
-							class="custom-control-input" id="defaultUnchecked"
+							class="custom-control-input" id="defaultUnchecked2"
 							name="accountHolderTypeRadio" value="organization" path="accountholder.accountHolderType" onclick="accountHolderType(this.value)"></form:radiobutton> <label
 							class="custom-control-label" for="defaultUnchecked">Organization</label>
 					</div>

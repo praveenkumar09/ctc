@@ -358,6 +358,37 @@ public class AccountHolderVo {
 			AddressVo controllingPersoneditAddressVo) {
 		this.controllingPersoneditAddressVo = controllingPersoneditAddressVo;
 	}
+	public String getCtrlbirthDate() {
+		return ctrlbirthDate;
+	}
+	public void setCtrlbirthDate(String ctrlbirthDate) {
+		this.ctrlbirthDate = ctrlbirthDate;
+	}
+	public String getCtrlcity() {
+		return ctrlcity;
+	}
+	public void setCtrlcity(String ctrlcity) {
+		this.ctrlcity = ctrlcity;
+	}
+	public String getCtrlcitySubEntity() {
+		return ctrlcitySubEntity;
+	}
+	public void setCtrlcitySubEntity(String ctrlcitySubEntity) {
+		this.ctrlcitySubEntity = ctrlcitySubEntity;
+	}
+	public String getCtrlcountryCode() {
+		return ctrlcountryCode;
+	}
+	public void setCtrlcountryCode(String ctrlcountryCode) {
+		this.ctrlcountryCode = ctrlcountryCode;
+	}
+	public String getCtrlcountryName() {
+		return ctrlcountryName;
+	}
+	public void setCtrlcountryName(String ctrlcountryName) {
+		this.ctrlcountryName = ctrlcountryName;
+	}
+	
 	
 	
 	
