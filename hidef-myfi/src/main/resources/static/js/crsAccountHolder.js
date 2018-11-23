@@ -1983,7 +1983,33 @@ $(document)
 										paging : true,
 										pageSize : 6,
 										pageButtonCount : 5,
-										controller : object,
+										autoload : true,
+										controller : {
+											loadData : function() {
+												var d = $.Deferred();
+
+												$
+														.ajax({
+															type : 'GET',
+															url : 'crs/loadCtrlPersonAddress',
+															mimeType : 'application/json',
+															contentType : "application/json; charset=utf-8",
+															success : function(
+																	data) {
+																d
+																		.resolve(data);
+															},
+															error : function(
+																	e) {
+																alert("error: "
+																		+ e.responseText);
+															}
+														});
+
+												return d.promise();
+											}
+										},
+										/*controller : object,*/
 										datatype : 'json',
 										invalidNotify : function(args) {
 											$("#validateTextHere").text("");
@@ -1998,7 +2024,7 @@ $(document)
 													type : "text",
 													visible : false,
 													width : 10,
-													items : object.id
+													/*items : object.id*/
 												},
 												{
 													title : "Address Type",
@@ -2028,7 +2054,7 @@ $(document)
 																.on(
 																		"click",
 																		function() {
-																			addNewAddressAccountHolderCPClicked();
+																			addNewAddressControllingPersonClicked();
 																		});
 													},
 													itemTemplate : function(value, item) {
@@ -2040,8 +2066,10 @@ $(document)
 																		"btn btn-info btn-sm")
 																.text("View")
 																.click(function(e) {
-																	alert("ID: " + item.id);
+																	/*alert("ID: " + item.id);*/
+																	controllingPersonViewAddress(item.id);
 																	e.stopPropagation();
+																	return false;
 																});
 
 														var $customEditButton = $("<button>")
@@ -2049,8 +2077,10 @@ $(document)
 																		"btn btn-warning btn-sm")
 																.text("Edit")
 																.click(function(e) {
-																	alert("ID: " + item.id);
+																	/*alert("ID: " + item.id);*/
+																	controllingPersonEditAddress(item.id);
 																	e.stopPropagation();
+																	return false;
 																});
 
 														var $customDeleteButton = $("<button>")
@@ -2058,8 +2088,10 @@ $(document)
 																		"btn btn-danger btn-sm")
 																.text("Delete")
 																.click(function(e) {
-																	alert("ID: " + item.id);
+																	/*alert("ID: " + item.id);*/
+																	controllingPersonDeleteAddress(item.id);
 																	e.stopPropagation();
+																	return false;
 																});
 
 														return $("<div>").append(
@@ -5404,6 +5436,160 @@ function orgEditSaveAddress() {
 				$('#editNewOrgAddress').html(htmlFiltered);
 				/*$("#editNewReportingEntityAddress").modal('close');*/
 				$('#editNewOrgAddress').modal('toggle');
+				return false;
+			}
+		});
+
+	});
+}
+
+
+
+function addNewAddressControllingPersonClicked(){
+	$("#addNewCtrlPersonAddress").modal('show');
+	$("#addressFreeEntityTextField").hide();
+	$("#addressFixEntityContent").hide();
+	
+	$.ajax({
+        url: 'crs/resetCtrlPersonAddAddress',
+        type: 'GET',
+        async: false,
+        data : $('#addctrlperson').serialize(),
+        success: function(response) {
+        	var htmlFiltered = $("<div>").html(response).find("#addNewCtrlPersonAddress").html();
+            $('#addNewCtrlPersonAddress').html('');
+            $('#addNewCtrlPersonAddress').html(htmlFiltered);
+        },
+        error: function(request, error) {
+            alert("Request: " + JSON.stringify(request));
+        }
+    });
+	
+}
+function controllingPersonViewAddress(id) {
+	$.ajax({
+		url : 'crs/ctrlPersonViewAddress?id=' + id,
+		type : 'GET',
+		async : false,
+		cache : false,
+		data : $('#viewCtrlPersonAdd').serialize(),
+		success : function(data) {
+			var htmlFiltered = $("<div>").html(data).find(
+					"#ctrlPersonAddress").html();
+			$('#ctrlPersonAddress').html('');
+			$('#ctrlPersonAddress').html(htmlFiltered);
+			$("#ctrlPersonAddress").modal('show');
+			return false;
+
+		},
+		error : function(request, error) {
+			alert("Request: " + JSON.stringify(request));
+		}
+	});
+}
+
+function controllingPersonEditAddress(id) {
+	
+	$(function() {
+		var ctx = "${pageContext.request.contextPath}";
+		$.ajax({
+			type : "GET",
+			url : 'crs/ctrlPersonEditAddress?id=' + id,
+			async : false,
+			cache : false,
+			data : $('#editNewCtrlPerson').serialize(),
+			success : function(data) {
+				var htmlFiltered = $("<div>").html(data).find(
+						"#editNewCtrlPersonAddress").html();
+				$('#editNewCtrlPersonAddress').html('');
+				$('#editNewCtrlPersonAddress').html(htmlFiltered);
+				$("#editNewCtrlPersonAddress").modal('show');
+				return false;
+			}
+		});
+
+	});
+}
+function individualEditSaveAddress() {
+
+	$(function() {
+		var ctx = "${pageContext.request.contextPath}";
+		$.ajax({
+			type : "GET",
+			url : 'crs/individualEditSaveAddress',
+			async : false,
+			cache : false,
+			data : $('#editNewIndividual').serialize(),
+			success : function(data) {
+				var htmlFiltered = $("<div>").html(data).find(
+						"#editNewIndividualAddress").html();
+				$('#editNewIndividualAddress').html('');
+				$('#editNewIndividualAddress').html(htmlFiltered);
+				/*$("#editNewReportingEntityAddress").modal('close');*/
+				$('#editNewIndividualAddress').modal('toggle');
+				return false;
+			}
+		});
+
+	});
+}
+
+function controllingPersonDeleteAddress(id) {
+	$.ajax({
+		url : 'crs/ctrlPersonDeleteAddress?id=' + id,
+		type : 'GET',
+		async : false,
+		success : function(response) {
+			return false;
+
+		},
+		error : function(request, error) {
+			alert("Request: " + JSON.stringify(request));
+		}
+	});
+}
+function saveNewCtrlPersonAddressClicked(){
+	//alert('saveAddress clicked......');
+	$.ajax({
+		url : 'crs/ctrlPersonInsertAddress',
+		type : 'GET',
+		data: $('#addctrlperson').serialize(),
+		success : function(data) {
+		   /*var object =  {"id":"1","addressType":"Address Free","countryCode":"MY"};
+			console.log(object.addressType);
+			console.log(object.id);
+			console.log(object.countryCode);*/
+			console.log(data.addressType);
+			console.log(data.id);
+			console.log(data.countryCode);
+			$("#accountHolderControllingPersonAddressGrid").jsGrid("insertItem", data).done(function() {
+			    console.log("insertion completed");
+			});
+			
+			
+		},error : function(request, error) {
+			alert("Request: " + JSON.stringify(request));
+		}
+	});
+	
+}
+function controllingPersonEditSaveAddress() {
+
+	$(function() {
+		var ctx = "${pageContext.request.contextPath}";
+		$.ajax({
+			type : "GET",
+			url : 'crs/ctrlPersoneditSaveAddress',
+			async : false,
+			cache : false,
+			data : $('#editNewCtrlPerson').serialize(),
+			success : function(data) {
+				var htmlFiltered = $("<div>").html(data).find(
+						"#editNewCtrlPersonAddress").html();
+				$('#editNewCtrlPersonAddress').html('');
+				$('#editNewCtrlPersonAddress').html(htmlFiltered);
+				/*$("#editNewReportingEntityAddress").modal('close');*/
+				$('#editNewCtrlPersonAddress').modal('toggle');
 				return false;
 			}
 		});

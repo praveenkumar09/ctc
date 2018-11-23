@@ -1865,6 +1865,250 @@ public class CrsAccountHolderController {
 	
 	
 	
+	@GetMapping(value ="/admin/crs/resetCtrlPersonAddAddress")
+	public String resetCtrlPersonAddAddress(@ModelAttribute("hidef")HidefVo hidef, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response,Map<String, Object> map) throws JsonProcessingException {
+		AddressVo addressVo = new AddressVo();
+		hidef.getAccountholder().setControllingPersonaddressVo(addressVo);
+		List<Hicountry> hicountryList = ctccommonDropdownService.getAllCountries();
+		List<Cbcaddresstype> cbcaddresstype = ctccommonDropdownService.getAllAddressType();
+		map.put("tinlist", hicountryList);
+		map.put("addressType", cbcaddresstype);
+		model.addAttribute("hidef", hidef);
+		return "crsAccountHolder";
+	}
+	@GetMapping(value ="/admin/crs/loadCtrlPersonAddress",consumes="application/json")
+	@ResponseBody
+	public String loadCtrlPersonAddress(@ModelAttribute("hidef")HidefVo hidef, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		
+		List<AddressVo> addressList = new ArrayList<AddressVo>();
+		String addressJson = mapper.writeValueAsString(addressList);
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonAddressList() != null 
+				&& hidef.getAccountholder().getControllingPersonAddressList().size() >0) {
+			addressJson = mapper.writeValueAsString(hidef.getAccountholder().getControllingPersonAddressList());
+		}
+		model.addAttribute("hidef", hidef);
+		return addressJson;
+	}
+	@GetMapping(value ="/admin/crs/ctrlPersonInsertAddress")
+	@ResponseBody
+	public AddressVo ctrlPersonInsertAddress(@ModelAttribute("hidef")HidefVo hidef, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		List<AddressVo> addressList = null;
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonAddressList() != null && hidef.getAccountholder().getControllingPersonAddressList().size()>0) {
+			addressList = hidef.getAccountholder().getControllingPersonAddressList();
+			
+		}else {
+			addressList = new ArrayList<AddressVo>();
+			hidef.getAccountholder().setControllingPersonAddressList(addressList);
+		}
+		
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonAddressList() != null){
+			AddressVo addressVo = new AddressVo();
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonaddressVo().getAddressFree())){
+			addressVo.setAddressFree(hidef.getAccountholder().getControllingPersonaddressVo().getAddressFree());
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonaddressVo().getAddressType())){
+			addressVo.setAddressType(hidef.getAccountholder().getControllingPersonaddressVo().getAddressType());
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonaddressVo().getBuildingIdentifier())){
+			addressVo.setBuildingIdentifier(hidef.getAccountholder().getControllingPersonaddressVo().getBuildingIdentifier());
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonaddressVo().getCity())){
+			addressVo.setCity(hidef.getAccountholder().getControllingPersonaddressVo().getCity());
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonaddressVo().getCountryCode())){
+			addressVo.setCountryCode(hidef.getAccountholder().getControllingPersonaddressVo().getCountryCode());
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonaddressVo().getCountrySubentity())){
+			addressVo.setCountrySubentity(hidef.getAccountholder().getControllingPersonaddressVo().getCountrySubentity());
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonaddressVo().getDistrictName())){
+			addressVo.setDistrictName(hidef.getAccountholder().getControllingPersonaddressVo().getDistrictName());
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonaddressVo().getFloorIdentifier())){
+			addressVo.setFloorIdentifier(hidef.getAccountholder().getControllingPersonaddressVo().getFloorIdentifier());
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonAddressList()) && hidef.getAccountholder().getControllingPersonAddressList().size()>0){
+			addressVo.setId(hidef.getAccountholder().getControllingPersonAddressList().size()+1);
+			hidef.getAccountholder().getControllingPersonaddressVo().setId(hidef.getAccountholder().getControllingPersonAddressList().size()+1);
+			}else{
+				addressVo.setId(1);
+				hidef.getAccountholder().getControllingPersonaddressVo().setId(1);
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonaddressVo().getPob())){
+			addressVo.setPob(hidef.getAccountholder().getControllingPersonaddressVo().getPob());
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonaddressVo().getPostCode())){
+			addressVo.setPostCode(hidef.getAccountholder().getControllingPersonaddressVo().getPostCode());
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonaddressVo().getStreet())){
+			addressVo.setStreet(hidef.getAccountholder().getControllingPersonaddressVo().getStreet());
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonaddressVo().getSuitIdentifier())){
+			addressVo.setSuitIdentifier(hidef.getAccountholder().getControllingPersonaddressVo().getSuitIdentifier());
+			}
+			addressList.add(addressVo);
+		}
+		
+		hidef.getAccountholder().setControllingPersonAddressList(addressList);
+		String arrayToJson = mapper.writeValueAsString(addressList);
+		model.addAttribute("hidef", hidef);
+        return hidef.getAccountholder().getControllingPersonaddressVo();
+	}
+	
+	
+	@RequestMapping(value = "/admin/crs/ctrlPersonViewAddress", method = RequestMethod.GET)
+	public String ctrlPersonViewAddress(@ModelAttribute("hidef")HidefVo hidef,@RequestParam(required = true) int id,Map<String, Object> map, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		AddressVo addressView = new AddressVo();
+		List<AddressVo> addressList = null;
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonAddressList() != null && hidef.getAccountholder().getControllingPersonAddressList().size()>0) {
+			addressList = hidef.getAccountholder().getControllingPersonAddressList();
+			for(AddressVo address: addressList) {
+				if(address.getId()==id) {
+					addressView = address;
+					hidef.getAccountholder().setControllingPersonviewAddressVo(addressView);
+				}
+			}
+			
+		}
+		String arrayToJson = mapper.writeValueAsString(addressView);
+		List<Hicountry> hicountryList = ctccommonDropdownService.getAllCountries();
+		List<Cbcaddresstype> cbcaddresstype = ctccommonDropdownService.getAllAddressType();
+		map.put("tinlist", hicountryList);
+		map.put("addressType", cbcaddresstype);
+		model.addAttribute("hidef", hidef);
+		map.put("viewAddress", addressView);
+        return "crsAccountHolder";
+	}
+	@RequestMapping(value = "/admin/crs/ctrlPersonEditAddress", method = RequestMethod.GET)
+	public String ctrlPersonEditAddress(@ModelAttribute("hidef")HidefVo hidef,@RequestParam(required = true) int id, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response,Map<String, Object> map) throws JsonProcessingException {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		AddressVo addressView = new AddressVo();
+		List<AddressVo> addressList = null;
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonAddressList() != null && hidef.getAccountholder().getControllingPersonAddressList().size()>0) {
+			addressList = hidef.getAccountholder().getControllingPersonAddressList();
+			for(AddressVo address: addressList) {
+				if(address.getId()==id) {
+					addressView = address;
+					hidef.getAccountholder().setControllingPersoneditAddressVo(addressView);
+				}
+			}
+			
+		}
+		
+		String arrayToJson = mapper.writeValueAsString(addressView);
+		List<Hicountry> hicountryList = ctccommonDropdownService.getAllCountries();
+		List<Cbcaddresstype> cbcaddresstype = ctccommonDropdownService.getAllAddressType();
+		map.put("tinlist", hicountryList);
+		map.put("addressType", cbcaddresstype);
+		model.addAttribute("hidef", hidef);
+        return "crsAccountHolder";
+	}
+	
+	
+	@RequestMapping(value = "/admin/crs/ctrlPersoneditSaveAddress", method = RequestMethod.GET)
+	public String ctrlPersoneditSaveAddress(@ModelAttribute("hidef")HidefVo hidef, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response,Map<String, Object> map) throws JsonProcessingException {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		AddressVo addressView = new AddressVo();
+		List<AddressVo> addressList = null;
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonAddressList() != null && hidef.getAccountholder().getControllingPersonAddressList().size()>0) {
+			addressList = hidef.getAccountholder().getControllingPersonAddressList();
+			for(AddressVo address: addressList) {
+				if(address.getId()==hidef.getAccountholder().getControllingPersoneditAddressVo().getId()) {
+					if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersoneditAddressVo().getAddressFree())){
+					address.setAddressFree(hidef.getAccountholder().getControllingPersoneditAddressVo().getAddressFree());
+					}
+					if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersoneditAddressVo().getAddressType())){
+					address.setAddressType(hidef.getAccountholder().getControllingPersoneditAddressVo().getAddressType());
+					address.setAddressTypeId(hidef.getAccountholder().getControllingPersoneditAddressVo().getAddressType());
+					}
+					if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersoneditAddressVo().getBuildingIdentifier())){
+					address.setBuildingIdentifier(hidef.getAccountholder().getControllingPersoneditAddressVo().getBuildingIdentifier());
+					}
+					if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersoneditAddressVo().getCity())){
+					address.setCity(hidef.getAccountholder().getControllingPersoneditAddressVo().getCity());
+					}
+					if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersoneditAddressVo().getCountryCode())){
+					address.setCountryCode(hidef.getAccountholder().getControllingPersoneditAddressVo().getCountryCode());
+					address.setCountryCodeId(hidef.getAccountholder().getControllingPersoneditAddressVo().getCountryCode());
+					}
+					if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersoneditAddressVo().getCountrySubentity())){
+					address.setCountrySubentity(hidef.getAccountholder().getControllingPersoneditAddressVo().getCountrySubentity());
+					}
+					if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersoneditAddressVo().getDistrictName())){
+					address.setDistrictName(hidef.getAccountholder().getControllingPersoneditAddressVo().getDistrictName());
+					}
+					if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersoneditAddressVo().getFloorIdentifier())){
+					address.setFloorIdentifier(hidef.getAccountholder().getControllingPersoneditAddressVo().getFloorIdentifier());
+					}
+					
+					address.setId(address.getId());
+					if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersoneditAddressVo().getPob())){
+					address.setPob(hidef.getAccountholder().getControllingPersoneditAddressVo().getPob());
+					}
+					if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersoneditAddressVo().getPostCode())){
+					address.setPostCode(hidef.getAccountholder().getControllingPersoneditAddressVo().getPostCode());
+					}
+					if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersoneditAddressVo().getStreet())){
+					address.setStreet(hidef.getAccountholder().getControllingPersoneditAddressVo().getStreet());
+					}
+					if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersoneditAddressVo().getSuitIdentifier())){
+					address.setSuitIdentifier(hidef.getAccountholder().getControllingPersoneditAddressVo().getSuitIdentifier());
+					}
+				}
+			}
+			
+		}
+		
+		String arrayToJson = mapper.writeValueAsString(addressView);
+		List<Hicountry> hicountryList = ctccommonDropdownService.getAllCountries();
+		List<Cbcaddresstype> cbcaddresstype = ctccommonDropdownService.getAllAddressType();
+		map.put("tinlist", hicountryList);
+		map.put("addressType", cbcaddresstype);
+		model.addAttribute("hidef", hidef);
+        return "crsAccountHolder";
+	}
+	@RequestMapping(value = "/admin/crs/ctrlPersonDeleteAddress", method = RequestMethod.GET)
+	@ResponseBody
+	public String ctrlPersonDeleteAddress(@ModelAttribute("hidef")HidefVo hidef,@RequestParam(required = true) int id, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		AddressVo addressView = new AddressVo();
+		List<AddressVo> addressList = null;
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonAddressList() != null && hidef.getAccountholder().getControllingPersonAddressList().size()>0) {
+			
+			addressList = hidef.getAccountholder().getControllingPersonAddressList();
+			for(AddressVo address: addressList) {
+				if(address.getId()==id) {
+					addressView = address;
+					List<AddressVo> copyList = new ArrayList<AddressVo>(addressList);
+					copyList.remove(address);
+					hidef.getAccountholder().setControllingPersonAddressList(copyList);
+				}
+			}
+			
+		}
+		
+		String arrayToJson = mapper.writeValueAsString(addressView);
+		
+        return arrayToJson;
+	}
+	
+	
+	
+	
 	
 	
 	

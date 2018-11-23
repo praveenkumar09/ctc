@@ -1164,6 +1164,329 @@
 </div>
 <!-- End Org Address
  -->
+ 
+ 
+ <!-- Controlling Person Address -->
+ <div class="modal fade" id="addNewCtrlPersonAddress" tabindex="-1"
+	role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	 <form:form  modelAttribute="hidef" name="addctrlperson" id="addctrlperson">
+		<div class="modal-content">
+			<div class="modal-header" id="popUpModelHeader">
+				<h5 class="modal-title" id="exampleModalLabel">
+					<strong><font color="white">ADD NEW ADDRESS</font></strong>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="clearfix"></div>
+				<div class="form-group col-md-6">
+					<label for="">Country Code<font color='red'>*</font>:</label> <form:select class="form-control"
+						id="countryCodeReportingFI" path="accountholder.controllingPersonaddressVo.countryCode">
+						<option value="0">--Choose Country code--</option>
+						<c:forEach items="${tinlist}" var="tin">
+							<form:option value="${tin.countryCode}">
+								${tin.countryCode}
+							</form:option>
+						</c:forEach>
+					</form:select>
+				</div>
+				<div class="clearfix"></div>
+				<div class="form-group col-md-6">
+					<label for="">Address Type<font color='red'>*</font>:</label> <form:select class="form-control"
+						id="addressTypeReportingFI" path="accountholder.controllingPersonaddressVo.addressType">
+						<option value="0">--Choose Address Type--</option>
+						<c:forEach items="${addressType}" var="addressType">
+							<form:option value="${addressType.id}">
+								${addressType.addressType}
+							</form:option>
+						</c:forEach>
+					</form:select>
+				</div>
+				<div class="clearfix"></div>
+				<div class="form-group col-md-11" id="addressFreeTextField">
+					<label>Address Free:</label>
+					<form:textarea class="form-control" rows="5" id="addressFree"
+						placeholder="Add Address Free" path="accountholder.controllingPersonaddressVo.addressFree"></form:textarea>
+				</div>
+				<div class="clearfix"></div>
+				<div id="addressFixContent">
+				    <div class="form-group col-md-6">
+					<label for="language">Street:</label> <form:input
+						class="form-control" id="Street" placeholder="Street"
+						name="language" path="accountholder.controllingPersonaddressVo.street"></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Building Identifier:</label> <form:input
+						class="form-control" id="buildingIdentifier" placeholder="Building Identifier"
+						name="language" path="accountholder.controllingPersonaddressVo.buildingIdentifier"></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Suite Identifier:</label> <form:input
+						class="form-control" id="suiteIdentifier" placeholder="Suite Identifier"
+						name="language" path="accountholder.controllingPersonaddressVo.suitIdentifier" ></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Floor Identifier:</label> <form:input
+						class="form-control" id="floorIdentifier" placeholder="Floor Identifier"
+						name="language" path="accountholder.controllingPersonaddressVo.floorIdentifier"></form:input>
+				    </div>
+				     <div class="form-group col-md-6">
+					<label for="language">District Name:</label> <form:input
+						class="form-control" id="districtName" placeholder="District Name"
+						name="language" path="accountholder.controllingPersonaddressVo.districtName"></form:input>
+				    </div>
+				     <div class="form-group col-md-6">
+					<label for="language">POB:</label> <form:input
+						class="form-control" id="pob" placeholder="POB"
+						name="language" path="accountholder.controllingPersonaddressVo.pob"></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Post Code:</label> <form:input
+						class="form-control" id="postCode" placeholder="Post Code"
+						name="language" path="accountholder.controllingPersonaddressVo.postCode"></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">City<font color='red'>*</font>:</label> <form:input
+						class="form-control" id="city" placeholder="City"
+						name="language" path="accountholder.controllingPersonaddressVo.city"></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Country Sub Entity:</label> <form:input
+						class="form-control" id="countrySubEntity" placeholder="Country Sub Entity"
+						name="language" path="accountholder.controllingPersonaddressVo.countrySubentity"></form:input>
+				    </div>				
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				<button type="button" onClick="saveNewCtrlPersonAddressClicked(); return false;" class="btn btn-primary" data-dismiss="modal">Save</button>
+			</div>
+		</div>
+		</form:form>
+	</div>
+</div>
+
+<div class="modal fade" id="editNewCtrlPersonAddress" tabindex="-1"
+	role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	 <form:form  modelAttribute="hidef" name="editNewCtrlPerson" id="editNewCtrlPerson">
+		<div class="modal-content">
+			<div class="modal-header" id="popUpModelHeader">
+				<h5 class="modal-title" id="exampleModalLabel">
+					<strong><font color="white">EDIT ADDRESS</font></strong>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="clearfix"></div>
+				<div class="form-group col-md-6">
+					<label for="">Country Code<font color='red'>*</font>:</label> <form:select class="form-control"
+						id="countryCodeReportingFI" path="accountholder.controllingPersoneditAddressVo.countryCode" >
+						<option value="0">--Choose Country code--</option>
+						<c:forEach items="${tinlist}" var="tin">
+							<form:option value="${tin.countryCode}">
+								${tin.countryCode}
+							</form:option>
+						</c:forEach>
+					</form:select>
+				</div>
+				<div class="clearfix"></div>
+				<div class="form-group col-md-6">
+					<label for="">Address Type<font color='red'>*</font>:</label> <form:select class="form-control"
+						id="addressTypeReportingFI" path="accountholder.controllingPersoneditAddressVo.addressType">
+						<option value="0">--Choose Address Type--</option>
+						<c:forEach items="${addressType}" var="addressType">
+							<form:option value="${addressType.id}">
+								${addressType.addressType}
+							</form:option>
+						</c:forEach>
+					</form:select>
+				</div>
+				<div class="clearfix"></div>
+				<div class="form-group col-md-11" id="addressFreeTextField">
+					<label>Address Free:</label>
+					<form:textarea class="form-control" rows="5" id="addressFree"
+						placeholder="Add Address Free" path="accountholder.controllingPersoneditAddressVo.addressFree"></form:textarea>
+				</div>
+				<div class="clearfix"></div>
+				<div id="addressFixContent">
+				    <div class="form-group col-md-6">
+					<label for="language">Street:</label> <form:input
+						class="form-control" id="Street" placeholder="Street"
+						name="language" path="accountholder.controllingPersoneditAddressVo.street"></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Building Identifier:</label> <form:input
+						class="form-control" id="buildingIdentifier" placeholder="Building Identifier"
+						name="language" path="accountholder.controllingPersoneditAddressVo.buildingIdentifier"></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Suite Identifier:</label> <form:input
+						class="form-control" id="suiteIdentifier" placeholder="Suite Identifier"
+						name="language" path="accountholder.controllingPersoneditAddressVo.suitIdentifier" ></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Floor Identifier:</label> <form:input
+						class="form-control" id="floorIdentifier" placeholder="Floor Identifier"
+						name="language" path="accountholder.controllingPersoneditAddressVo.floorIdentifier"></form:input>
+				    </div>
+				     <div class="form-group col-md-6">
+					<label for="language">District Name:</label> <form:input
+						class="form-control" id="districtName" placeholder="District Name"
+						name="language" path="accountholder.controllingPersoneditAddressVo.districtName"></form:input>
+				    </div>
+				     <div class="form-group col-md-6">
+					<label for="language">POB:</label> <form:input
+						class="form-control" id="pob" placeholder="POB"
+						name="language" path="accountholder.controllingPersoneditAddressVo.pob"></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Post Code:</label> <form:input
+						class="form-control" id="postCode" placeholder="Post Code"
+						name="language" path="accountholder.controllingPersoneditAddressVo.postCode"></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">City<font color='red'>*</font>:</label> <form:input
+						class="form-control" id="city" placeholder="City"
+						name="language" path="accountholder.controllingPersoneditAddressVo.city"></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Country Sub Entity:</label> <form:input
+						class="form-control" id="countrySubEntity" placeholder="Country Sub Entity"
+						name="language" path="accountholder.controllingPersoneditAddressVo.countrySubentity"></form:input>
+				    </div>				
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				<button type="button" onClick="controllingPersonEditSaveAddress(); return false;" class="btn btn-primary" data-dismiss="modal">Save</button>
+			</div>
+		</div>
+		</form:form>
+	</div>
+</div>
+
+
+
+<div class="modal fade" id="ctrlPersonAddress" tabindex="-1"
+	role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	 <form:form  modelAttribute="hidef" name="viewCtrlPersonAdd" id="viewCtrlPersonAdd">
+		<div class="modal-content">
+			<div class="modal-header" id="popUpModelHeader">
+				<h5 class="modal-title" id="exampleModalLabel">
+					<strong><font color="white">VIEW ADDRESS</font></strong>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="clearfix"></div>
+				<div class="form-group col-md-6">
+					<label for="">Country Code<font color='red'>*</font>:</label> 
+					<form:select class="form-control"
+						id="countryCodeReportingFI" path="accountholder.controllingPersonviewAddressVo.countryCode" disabled="true">
+						<option value="0">--Choose Country code--</option>
+						<c:forEach items="${tinlist}" var="tin">
+							<form:option value="${tin.countryCode}">
+								${tin.countryCode}
+							</form:option>
+						</c:forEach>
+					</form:select>
+				</div>
+				<div class="clearfix"></div>
+				<div class="form-group col-md-6">
+					<label for="">Address Type<font color='red'>*</font>:</label> <form:select class="form-control"
+						id="addressTypeReportingFI" path="accountholder.controllingPersonviewAddressVo.addressType" disabled="true">
+						<option value="0">--Choose Address Type--</option>
+						<c:forEach items="${addressType}" var="addressType">
+							<form:option value="${addressType.id}">
+								${addressType.addressType}
+							</form:option>
+						</c:forEach>
+					</form:select>
+				</div>
+				<div class="clearfix"></div>
+				<div class="form-group col-md-11" id="addressFreeTextField">
+					<label>Address Free:</label>
+					<form:textarea class="form-control" rows="5" id="addressFree"
+						placeholder="Add Address Free" path="accountholder.controllingPersonviewAddressVo.addressFree" readonly="true"></form:textarea>
+				</div>
+				<div class="clearfix"></div>
+				<div id="addressFixContent">
+				    <div class="form-group col-md-6">
+					<label for="language">Street:</label> <form:input
+						class="form-control" id="Street" placeholder="Street"
+						name="language" path="accountholder.controllingPersonviewAddressVo.street" readonly="true"></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Building Identifier:</label> <form:input
+						class="form-control" id="buildingIdentifier" placeholder="Building Identifier"
+						name="language" path="accountholder.controllingPersonviewAddressVo.buildingIdentifier" readonly="true"></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Suite Identifier:</label> <form:input
+						class="form-control" id="suiteIdentifier" placeholder="Suite Identifier"
+						name="language" path="accountholder.controllingPersonviewAddressVo.suitIdentifier" readonly="true"></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Floor Identifier:</label> <form:input
+						class="form-control" id="floorIdentifier" placeholder="Floor Identifier"
+						name="language" path="accountholder.controllingPersonviewAddressVo.floorIdentifier" readonly="true"></form:input>
+				    </div>
+				     <div class="form-group col-md-6">
+					<label for="language">District Name:</label> <form:input
+						class="form-control" id="districtName" placeholder="District Name"
+						name="language" path="accountholder.controllingPersonviewAddressVo.districtName" readonly="true"></form:input>
+				    </div>
+				     <div class="form-group col-md-6">
+					<label for="language">POB:</label> <form:input
+						class="form-control" id="pob" placeholder="POB"
+						name="language" path="accountholder.controllingPersonviewAddressVo.pob" readonly="true"></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Post Code:</label> <form:input
+						class="form-control" id="postCode" placeholder="Post Code"
+						name="language" path="accountholder.controllingPersonviewAddressVo.postCode" readonly="true"></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">City<font color='red'>*</font>:</label> <form:input
+						class="form-control" id="city" placeholder="City"
+						name="language" path="accountholder.controllingPersonviewAddressVo.city" readonly="true"></form:input>
+				    </div>
+				    <div class="form-group col-md-6">
+					<label for="language">Country Sub Entity:</label> <form:input
+						class="form-control" id="countrySubEntity" placeholder="Country Sub Entity"
+						name="language" path="accountholder.controllingPersonviewAddressVo.countrySubentity" readonly="true"></form:input>
+				    </div>				
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				<!-- <button type="button" onClick="saveNewReportingEntityAddressClicked(); return false;" class="btn btn-primary" data-dismiss="modal">Save</button> -->
+			</div>
+		</div>
+		</form:form>
+	</div>
+</div>
+ 
+ 
+ <!-- Controlling Person Address -->
 
 
 

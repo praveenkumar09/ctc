@@ -24,6 +24,11 @@ public class AccountHolderVo {
 	private AddressVo controllingPersonaddressVo;
 	private AddressVo controllingPersonviewAddressVo;
 	private AddressVo controllingPersoneditAddressVo;
+	private String ctrlbirthDate;
+	private String ctrlcity;
+	private String ctrlcitySubEntity;
+	private String ctrlcountryCode;
+	private String ctrlcountryName;
 	
 	/*private AccountTypeIndividualVo individualVo;
 	private List<AccountTypeIndividualVo> individualList;*/
