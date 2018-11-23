@@ -14,6 +14,7 @@ public class AccountHolderVo {
 	private String currency;
 	private String accountBalance;
 	private String accountHolderType;
+	private String individualaccountHolderType;
 	private List<PaymentTypeVo> paymentList;
 	
 	private ControllingPersonVo  controllingPersonVo;
@@ -67,7 +68,7 @@ public class AccountHolderVo {
 	private AddressVo organisationeditAddressVo;
 	
 	
-	private BigInteger id;
+	private int id;
 	
 	/*Controlling Person*/
 	
@@ -131,10 +132,11 @@ public class AccountHolderVo {
 	public void setPaymentList(List<PaymentTypeVo> paymentList) {
 		this.paymentList = paymentList;
 	}
-	public BigInteger getId() {
+	
+	public int getId() {
 		return id;
 	}
-	public void setId(BigInteger id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public ControllingPersonVo getControllingPersonVo() {
@@ -388,6 +390,13 @@ public class AccountHolderVo {
 	public void setCtrlcountryName(String ctrlcountryName) {
 		this.ctrlcountryName = ctrlcountryName;
 	}
+	public String getIndividualaccountHolderType() {
+		return individualaccountHolderType;
+	}
+	public void setIndividualaccountHolderType(String individualaccountHolderType) {
+		this.individualaccountHolderType = individualaccountHolderType;
+	}
+	
 	
 	
 	

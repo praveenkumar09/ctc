@@ -40,7 +40,36 @@ $(document)
 										paging : true,
 										pageSize : 6,
 										pageButtonCount : 5,
-										controller : object,
+										autoload: true,
+										controller: {
+
+						                    loadData: function(filter) {
+						                    	
+//						                    	return $.ajax({url:  "/admin/cbc/loadResidentCountryGrid",data:filter
+//						                        });
+						                    	
+						                    	
+						                        var d = $.Deferred();
+						                        $
+						                            .ajax({
+						                                type: 'GET',
+						                                url: 'crs/loadAccountHolderMain',
+						                                mimeType: 'application/json',
+						                                contentType: 'application/json',
+						                                success: function(
+						                                    data) {
+						                                	d.resolve(data);
+						                                },
+						                                error: function(e) {
+						                                    alert("error: " +
+						                                        e.responseText);
+						                                }
+						                            });
+
+						                        return d.promise();
+						                    }
+						                },
+										/*controller : object,*/
 										datatype : 'json',
 										invalidNotify : function(args) {
 											$("#validateTextHere").text("");
@@ -65,19 +94,100 @@ $(document)
 											visible : true
 										}, {
 											title : "Number Type",
-											name : "numberType",
+											name : "accountNumberType",
 											type : "text",
 											width : 150,
-											items : object.numberType,
+											items : object.accountNumberType,
+											visible : true
+										}
+										, {
+											title : "Document Type Indicator",
+											name : "documentTypeIndic",
+											type : "text",
+											width : 150,
+											items : object.documentTypeIndic,
 											visible : true
 										}, {
-											title : "Account Holder Type",
-											name : "accoutHolderType",
-											type : "text",
-											width : 150,
-											items : object.accoutHolderType,
-											visible : true
-										} ]
+											name: "",
+											itemTemplate : function(value,item){
+							                    var $result = jsGrid.fields.control.prototype.itemTemplate
+							                    .apply(this,
+							                        arguments);
+
+							                var $customViewButton = $(
+							                        "<button>")
+							                    .attr("class",
+							                        "btn btn-info btn-sm")
+							                    .text("View")
+							                    .click(
+							                        function(
+							                            e) {
+							                        /*	e
+							                            .stopPropagation();*/
+							                           /* alert(JSON
+							                                    .stringify(item));*/
+							                          e
+							                                .stopPropagation();
+							                        	console.log(item);
+							                          /* viewCBCReports(item);*/
+							                        	viewAccountHolderMain(item);
+							                           return false;
+							                        });
+
+							                var $customEditButton = $(
+							                        "<button>")
+							                    .attr("class",
+							                        "btn btn-warning btn-sm")
+							                    .text("Edit")
+							                    .click(
+							                        function(
+							                            e) {
+							                        	 e
+							                             .stopPropagation();
+							                        	 //alert("in here")
+							                        	 console.log("inside item edit");
+							                        /*editCBCReports(item);*/
+							                       editAccountHolderMain(item);
+							                        console.log("completed item edit");
+							                        return false;
+							                        	
+							                        });
+
+							                var $customDeleteButton = $(
+							                        "<button>")
+							                    .attr("class",
+							                        "btn btn-danger btn-sm")
+							                    .text("Delete")
+							                    .click(
+							                        function(
+							                            e) {
+							                        	e
+							                            .stopPropagation();
+							                        	/*deleteNewAddressReportsClicked(item);*/
+							                        	return false;                                
+							                        });
+
+							                return $("<div>")
+							                    .append(
+							                        $customViewButton)
+							                    .append(
+							                        "&nbsp;")
+							                    .append(
+							                        "&nbsp;")
+							                    .append(
+							                        $customEditButton)
+							                    .append(
+							                        "&nbsp;")
+							                    .append(
+							                        "&nbsp;")
+							                    .append(
+							                        $customDeleteButton);
+							                // return
+							                // $result.add($customButton);
+							            } 
+											} 
+										
+										]
 									});
 
 					$('#addressTypeAccountOrgHolder').change(function() {
@@ -5595,5 +5705,78 @@ function controllingPersonEditSaveAddress() {
 		});
 
 	});
+}
+
+
+function saveAccountHolderMain(){
+	
+/*	var errorFlag = false; 
+	errorFlag = validateCbcReports();
+	 $("#cbcReportsError").empty();
+	if(!errorFlag){*/
+	
+	
+	 var form_data = $('#crsaccountholder').serialize();
+		$.ajax({
+			url : 'crs/insertAcountHolderMain',
+			type : 'GET',
+			data : form_data,
+			success : function(data) {
+				console.log(data);
+				$("#accountHolderGrid").jsGrid("insertItem", data).done(function() {
+					console.log("insertion completed");
+					/*showCbcReports(1,0,0);*/
+					ReportingFiNext();
+				});
+			},error : function(request, error) {
+				alert("Request: " + JSON.stringify(request));
+			}
+		});	
+/*	}*/
+}
+
+function viewAccountHolderMain(item){
+	
+	$
+   .ajax({
+
+       url: 'crs/viewAcountHolderMain?viewId='+item.id,
+       type: 'GET',
+       async: false,
+       success: function(data) {
+           console
+               .log("data ====>"+data);
+           ReportingFiNext();
+       },
+       error: function(
+           request,
+           error) {
+           console.log(error);
+       }
+   });
+
+}
+
+function editAccountHolderMain(item){
+	
+	$
+   .ajax({
+
+       url: 'crs/editAcountHolderMain?editId='+item.id,
+       type: 'GET',
+       async: false,
+       success: function(data) {
+           console
+               .log("data ====>"+data);
+           ReportingFiNext();
+           return false;
+       },
+       error: function(
+           request,
+           error) {
+           console.log(error);
+       }
+   });
+
 }
 

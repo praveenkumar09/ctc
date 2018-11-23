@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JsonParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -37,7 +38,9 @@ import com.censof.myfi.hidefmyfi.entity.Crspaymenttype;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
 import com.censof.myfi.hidefmyfi.service.CtcDataSaveService;
 import com.censof.myfi.hidefmyfi.service.CtccommonDropdownService;
+import com.censof.myfi.hidefmyfi.vo.AccountHolderVo;
 import com.censof.myfi.hidefmyfi.vo.AddressVo;
+import com.censof.myfi.hidefmyfi.vo.CBCRepotsVo;
 import com.censof.myfi.hidefmyfi.vo.CommonDropdownGridBean;
 import com.censof.myfi.hidefmyfi.vo.GenerationIdentifierVo;
 import com.censof.myfi.hidefmyfi.vo.HidefVo;
@@ -50,6 +53,7 @@ import com.censof.myfi.hidefmyfi.vo.ResidentCountryVo;
 import com.censof.myfi.hidefmyfi.vo.SuffixVo;
 import com.censof.myfi.hidefmyfi.vo.TitleVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
@@ -1777,30 +1781,30 @@ public class CrsAccountHolderController {
 		ObjectMapper mapper = new ObjectMapper();
 		List<OrganisationInTypeVo> organisationList = new ArrayList<OrganisationInTypeVo>();
 		String organisationJson = mapper.writeValueAsString(organisationList);
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getIndividualOrganisationInTypeList() != null 
-				&& hidef.getAccountholder().getIndividualOrganisationInTypeList().size() >0) {
-			organisationJson = mapper.writeValueAsString(hidef.getAccountholder().getIndividualOrganisationInTypeList());
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonInTypeList() != null 
+				&& hidef.getAccountholder().getControllingPersonInTypeList().size() >0) {
+			organisationJson = mapper.writeValueAsString(hidef.getAccountholder().getControllingPersonInTypeList());
 		}
 		model.addAttribute("hidef", hidef);
 		return organisationJson;
 	}
 	@PostMapping(value ="/admin/crs/insertctrlOrganisationGrid",consumes="application/json")
 	@ResponseBody
-	public OrganisationInTypeVo insertctrlOrganisationGrid(@ModelAttribute("hidef")HidefVo hidef,@RequestBody String insertOrganisationGrid, 
+	public OrganisationInTypeVo insertctrlOrganisationGrid(@ModelAttribute("hidef")HidefVo hidef,@RequestBody String insertCtrlOrganisationGrid, 
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		OrganisationInTypeVo organisationVo  = null;
 		Random ran = new Random();
 		try {
 			List<OrganisationInTypeVo> organisationList = new ArrayList<OrganisationInTypeVo>();
-			organisationVo = mapper.readValue(insertOrganisationGrid, OrganisationInTypeVo.class);
+			organisationVo = mapper.readValue(insertCtrlOrganisationGrid, OrganisationInTypeVo.class);
 			organisationVo.setId(ran.nextInt(10000));
-			if(hidef.getAccountholder() != null && hidef.getAccountholder().getIndividualOrganisationInTypeList() != null 
-					&& hidef.getAccountholder().getIndividualOrganisationInTypeList().size() >0) {
-				hidef.getAccountholder().getIndividualOrganisationInTypeList().add(organisationVo);
+			if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonInTypeList() != null 
+					&& hidef.getAccountholder().getControllingPersonInTypeList().size() >0) {
+				hidef.getAccountholder().getControllingPersonInTypeList().add(organisationVo);
 			}else {
-				hidef.getAccountholder().setIndividualOrganisationInTypeList(organisationList);
-				hidef.getAccountholder().getIndividualOrganisationInTypeList().add(organisationVo);
+				hidef.getAccountholder().setControllingPersonInTypeList(organisationList);
+				hidef.getAccountholder().getControllingPersonInTypeList().add(organisationVo);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -1812,15 +1816,15 @@ public class CrsAccountHolderController {
 	
 	@PostMapping(value ="/admin/crs/updatectrlOrganisationGrid",consumes="application/json")
 	@ResponseBody
-	public String updatectrlOrganisationGrid(@ModelAttribute("hidef")HidefVo hidef, @RequestBody String updateOrganisationGrid,
+	public String updatectrlOrganisationGrid(@ModelAttribute("hidef")HidefVo hidef, @RequestBody String updateCtrlOrganisationGrid,
 			@RequestParam(required = true) int id,
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getIndividualOrganisationInTypeList() != null 
-				&& hidef.getAccountholder().getIndividualOrganisationInTypeList().size() >0) {
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonInTypeList() != null 
+				&& hidef.getAccountholder().getControllingPersonInTypeList().size() >0) {
 			try{
-			OrganisationInTypeVo updatedorganisationVo = mapper.readValue(updateOrganisationGrid, OrganisationInTypeVo.class);
-			for(OrganisationInTypeVo organisationvo :hidef.getAccountholder().getIndividualOrganisationInTypeList()){
+			OrganisationInTypeVo updatedorganisationVo = mapper.readValue(updateCtrlOrganisationGrid, OrganisationInTypeVo.class);
+			for(OrganisationInTypeVo organisationvo :hidef.getAccountholder().getControllingPersonInTypeList()){
 				if(organisationvo.getId()==id){
 					organisationvo.setIssuedBy(updatedorganisationVo.getIssuedBy());
 					organisationvo.setInType(updatedorganisationVo.getInType());
@@ -1839,18 +1843,18 @@ public class CrsAccountHolderController {
 	}
 	@PostMapping(value ="/admin/crs/deletectrlOrganisationGrid",consumes="application/json")
 	@ResponseBody
-	public String deletectrlOrganisationGrid(@ModelAttribute("hidef")HidefVo hidef, @RequestBody String deleteOrganisationGrid,
+	public String deletectrlOrganisationGrid(@ModelAttribute("hidef")HidefVo hidef, @RequestBody String deleteCtrlOrganisationGrid,
 			@RequestParam(required = true) int id,
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if(deleteOrganisationGrid != null && hidef.getAccountholder().getIndividualOrganisationInTypeList() != null){
+		if(deleteCtrlOrganisationGrid != null && hidef.getAccountholder().getControllingPersonInTypeList() != null){
 			try{
-			OrganisationInTypeVo updatedorganisationVo = mapper.readValue(deleteOrganisationGrid, OrganisationInTypeVo.class);
-			List<OrganisationInTypeVo> copyList = new ArrayList<OrganisationInTypeVo>(hidef.getAccountholder().getIndividualOrganisationInTypeList());
-			for(OrganisationInTypeVo organisation:hidef.getAccountholder().getIndividualOrganisationInTypeList()){
+			OrganisationInTypeVo updatedorganisationVo = mapper.readValue(deleteCtrlOrganisationGrid, OrganisationInTypeVo.class);
+			List<OrganisationInTypeVo> copyList = new ArrayList<OrganisationInTypeVo>(hidef.getAccountholder().getControllingPersonInTypeList());
+			for(OrganisationInTypeVo organisation:hidef.getAccountholder().getControllingPersonInTypeList()){
 				if(id==organisation.getId()){
 					copyList.remove(organisation);
-					hidef.getAccountholder().setIndividualOrganisationInTypeList(copyList);
+					hidef.getAccountholder().setControllingPersonInTypeList(copyList);
 					break;
 				}
 			}
@@ -2106,7 +2110,76 @@ public class CrsAccountHolderController {
         return arrayToJson;
 	}
 	
+	@GetMapping(value = "/admin/crs/loadAccountHolderMain", consumes = "application/json")
+	@ResponseBody
+	public String loadAccountHolderMain(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
+			HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+
+		List<AccountHolderVo> accountHolderList = new ArrayList<AccountHolderVo>();
+		String reportsJSON = mapper.writeValueAsString(accountHolderList);
+		if (hidef.getAccountHolderList() != null && hidef.getAccountHolderList() != null
+				&& !hidef.getAccountHolderList().isEmpty()) {
+			reportsJSON = mapper.writeValueAsString(hidef.getAccountHolderList());
+		}
+
+		model.addAttribute("hidef", hidef);
+		return reportsJSON;
+
+	}
+	@GetMapping(value = "/admin/crs/insertAcountHolderMain")
+	@ResponseBody
+	public AccountHolderVo insertAcountHolderMain(@ModelAttribute("hidef") HidefVo hidef, BindingResult result,
+			ModelMap model, Map<String, Object> map) {
+
+		AccountHolderVo accountHolderVO = new AccountHolderVo();
+		Random rand = new Random();
+		accountHolderVO = hidef.getAccountholder();
+		accountHolderVO.setId(rand.nextInt(10000));
+		if (hidef.getAccountholder() != null && hidef.getAccountHolderList() != null) {
+			hidef.getAccountHolderList().add(accountHolderVO);
+		} else {
+			hidef.setAccountHolderList(new ArrayList<AccountHolderVo>());
+			hidef.getAccountHolderList().add(accountHolderVO);
+		}
+		hidef.setAccountholder(new AccountHolderVo());
+		model.addAttribute("hidef", hidef);
+
+		return accountHolderVO;
+	}
 	
+	@GetMapping(value = "/admin/crs/viewAcountHolderMain")
+	@ResponseBody
+	public String viewAcountHolderMain(@ModelAttribute("hidef") HidefVo hidef, @RequestParam int viewId, BindingResult result,
+			ModelMap model, Map<String, Object> map) throws JsonParseException, JsonMappingException, IOException {
+		AccountHolderVo viewAccountHolder = new AccountHolderVo();
+		for (AccountHolderVo accountHolder : hidef.getAccountHolderList()) {
+			if (accountHolder.getId() == viewId) {
+				viewAccountHolder = accountHolder;
+			}
+		}
+
+		hidef.setAccountholder(viewAccountHolder);
+		model.addAttribute("hidef", hidef);
+		return "success";
+	}
+	
+	@GetMapping(value = "/admin/crs/editAcountHolderMain")
+	@ResponseBody
+	public String editAcountHolderMain(@ModelAttribute("hidef") HidefVo hidef, @RequestParam int editId, BindingResult result,
+			ModelMap model, Map<String, Object> map) throws JsonParseException, JsonMappingException, IOException {
+		AccountHolderVo editAccountHolder = new AccountHolderVo();
+		for (AccountHolderVo accountHolder : hidef.getAccountHolderList()) {
+			if (accountHolder.getId() == editId) {
+				editAccountHolder = accountHolder;
+			}
+		}
+
+		hidef.setAccountholder(editAccountHolder);
+		model.addAttribute("hidef", hidef);
+		return "success";
+	}
+
 	
 	
 	

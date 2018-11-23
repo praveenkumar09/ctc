@@ -11,11 +11,11 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script type="text/javascript">
-if('${hidef.accountholder.accountHolderType}' == 'individual,0'){
+if('${hidef.accountholder.accountHolderType}' == 'individual,0' || '${hidef.accountholder.accountHolderType}' == 'individual'){
 $("#defaultUnchecked1").prop("checked", true);
 accountHolderType('individual');
 }
-if('${hidef.accountholder.accountHolderType}' == 'organization,0'){
+if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.accountholder.accountHolderType}' == 'organization'){
 	$("#defaultUnchecked2").prop("checked", true);
 	accountHolderType('organization');
 }
@@ -343,7 +343,7 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0'){
 				<div id="Organization">
 					<br />
 					<div class="form-group col-md-6">
-						<label for="language">Account Holder Type: </label><form:select path="accountholder.accountHolderType"
+						<label for="language">Account Holder Type: </label><form:select path="accountholder.individualaccountHolderType"
 							class="form-control" id="docTypeIndicatorReportingFI">
 							<option value="0">--Choose Account Holder Type--</option>
 							<!-- <option value="1">CRS101</option>
@@ -391,7 +391,7 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0'){
 					<div class="text-center">
 						<br />
 						<button id="singlebutton" name="singlebutton"
-							onClick="saveAccountHolderInfo();" class="btn btn-primary">Save</button>
+							onClick="saveAccountHolderMain();return false;" class="btn btn-primary">Save</button>
 					</div>
 				</div>
 				<div class="clearfix"></div>
