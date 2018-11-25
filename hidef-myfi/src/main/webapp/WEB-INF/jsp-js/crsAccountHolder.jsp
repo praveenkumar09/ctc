@@ -234,7 +234,7 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 						<div class="text-center">
 							<br />
 							<button id="saveControllingPersonButton" name="singlebutton"
-								onClick="saveControllingPerson();return false;"
+								onClick="saveCtrlPersonMain();return false;"
 								class="btn btn-success">Save Controlling Person</button>
 						</div>
 						<div class="clearfix"></div>
@@ -390,8 +390,14 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 				<div class="form-group">
 					<div class="text-center">
 						<br />
-						<button id="singlebutton" name="singlebutton"
+						<button id="saveaccountholder" name="singlebutton"
 							onClick="saveAccountHolderMain();return false;" class="btn btn-primary">Save</button>
+							<button id="viewAccountDone" name="singlebutton"
+							onClick="doneViewAccounts();return false;" class="btn btn-success">Cancel</button>
+							<button id="editAccountDone" name="singlebutton"
+							onClick="doneEditAccounts();return false;" class="btn btn-success">Save Edited Changes</button>
+							<button id="editCancelAccountDone" name="singlebutton"
+							onClick="doneViewAccounts(1,0,0);return false;" class="btn btn-danger">Cancel</button>
 					</div>
 				</div>
 				<div class="clearfix"></div>
@@ -1494,9 +1500,148 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
  
  <!-- Controlling Person Address -->
 
+<!-- Controlling Person Name -->
+<div class="modal fade" id="addAccountHolderCtrlPersonName" tabindex="-1"
+	role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	 <form:form  modelAttribute="hidef" name="viewAccountHolderCtrlPersonName" id="viewAccountHolderCtrlPersonName">
+		<div class="modal-content">
+			<div class="modal-header" id="popUpModelHeader">
+				<h5 class="modal-title" id="exampleModalLabel">
+					<strong><font color="white">ADD NEW NAME</font></strong>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="clearfix"></div>
+				<br/>
+				<div class="form-group col-md-6">
+					<label for="language">Name:</label> <form:input
+						class="form-control" id="name" placeholder="Name" path="accountholder.individualName.name"
+						name="Name"></form:input>
+				 </div>
+				 <div class="form-group col-md-6">
+					<label for="">Name Type:</label> <form:select class="form-control"
+						id="countryCodeReportingFI" path="accountholder.individualName.nameType">
+						<!-- <option value="0">--Choose Name Type--</option>
+						<option value="1">OECD201</option>
+						<option value="2">OECD202</option>
+						<option value="3">OECD203</option>
+						<option value="4">OECD204</option>
+						<option value="5">OECD205</option>
+						<option value="6">OECD206</option>
+						<option value="7">OECD207</option>
+						<option value="8">OECD208</option> -->
+						<c:forEach items="${nameType}" var="nameType">
+							<form:option value="${nameType.nameType}">
+								${nameType.nameType}
+							</form:option>
+						</c:forEach>
+					</form:select>
+				</div>
+				<div class="clearfix"></div>		
+				<div class="form-group col-md-6">
+					<label for="language">Preceding Title:</label> <form:input
+						class="form-control" id="precedingTitle" placeholder="Preceding Title"
+						name="precedingTitle" path="accountholder.individualName.precedingTitle"></form:input>
+				 </div>	
+				 <div class="form-group col-md-6">
+					<label for="language">First Name:</label> <form:input
+						class="form-control" id="firstName" placeholder="First Name"
+						name="firstName" path="accountholder.individualName.firstName"/> 
+				 </div>		
+				 <div class="clearfix"></div>		
+				 <br/>
+				<div class="form-group col-md-6">
+					<div id="accountHolderNameTitleGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				 <div class="clearfix"></div>		
+				 <br/>
+				 <div class="form-group col-md-6">
+					<div id="accountHolderNameMiddleNameGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				<div class="clearfix"></div>		
+				 <br/>
+				 <div class="form-group col-md-6">
+					<label for="language">Name Prefix:</label> <form:input
+						class="form-control" id="namePrefix" placeholder="Name Prefix"
+						name="namePrefix" path="accountholder.individualName.namePrefix"></form:input>
+				 </div>	
+				 <div class="form-group col-md-6">
+					<label for="language">Last Name:</label> <form:input
+						class="form-control" id="lastName" placeholder="Last Name"
+						name="lastName" path="accountholder.individualName.lastName"></form:input>
+				 </div>		
+				 <div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<div id="accountHolderNameGenerationIdentifierGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				 <div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<div id="accountHolderNameSuffixGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				<div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<label for="language">General Suffix:</label> <form:input
+						class="form-control" id="generalSuffix" placeholder="General Suffix"
+						name="generalSuffix" path="accountholder.individualName.generalSuffix"></form:input>
+				 </div>	
+			</div>
+			<div class="clearfix"></div>
+			<div class="modal-footer">
+				<button class="btn btn-danger" data-dismiss="modal">Close</button>
+				<button  id ="saveaccountholder" onClick="saveNewIndividualNameClicked();" class="btn btn-primary" data-dismiss="modal">Save</button>
+				
+			</div>
+		</div>
+		</form:form>
+	</div>
+</div>
 
 
 
+<!-- Controlling Person Name -->
+
+<div class="modal fade" id="deleteConfirmation" tabindex="-1"
+	role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header modal-header-danger" id="alertModelHeader">
+				<h5 class="modal-title" id="exampleModalLabel">
+					<strong><font color="white">Delete Confirmation</font></strong>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="clearfix"></div>
+				<br/>
+				     Are you sure you want to Delete?
+				     <div id="idToDelete" style="display: none;"></div>
+				     <div id="formId" style="display: none;"></div>
+				<br/>
+				<div class="clearfix"></div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+				<button type="button" onClick="proceedAccDelete();" class="btn btn-danger" data-dismiss="modal">Delete</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 
 

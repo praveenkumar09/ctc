@@ -164,6 +164,7 @@ $(document)
 							                        	e
 							                            .stopPropagation();
 							                        	/*deleteNewAddressReportsClicked(item);*/
+							                        	deleteNewAccountHolderClicked(item);
 							                        	return false;                                
 							                        });
 
@@ -1210,7 +1211,36 @@ $(document)
 								paging : true,
 								pageSize : 6,
 								pageButtonCount : 5,
-								controller : object,
+								autoload: true,
+								controller: {
+
+				                    loadData: function(filter) {
+				                    	
+//				                    	return $.ajax({url:  "/admin/cbc/loadResidentCountryGrid",data:filter
+//				                        });
+				                    	
+				                    	
+				                        var d = $.Deferred();
+				                        $
+				                            .ajax({
+				                                type: 'GET',
+				                                url: 'crs/loadCtrlPersonMain',
+				                                mimeType: 'application/json',
+				                                contentType: 'application/json',
+				                                success: function(
+				                                    data) {
+				                                	d.resolve(data);
+				                                },
+				                                error: function(e) {
+				                                    alert("error: " +
+				                                        e.responseText);
+				                                }
+				                            });
+
+				                        return d.promise();
+				                    }
+				                },
+								/*controller : object,*/
 								datatype : 'json',
 								invalidNotify : function(args) {
 									
@@ -5726,7 +5756,7 @@ function saveAccountHolderMain(){
 				$("#accountHolderGrid").jsGrid("insertItem", data).done(function() {
 					console.log("insertion completed");
 					/*showCbcReports(1,0,0);*/
-					ReportingFiNext();
+					ReportingFiNext(1,0,0);
 				});
 			},error : function(request, error) {
 				alert("Request: " + JSON.stringify(request));
@@ -5746,7 +5776,7 @@ function viewAccountHolderMain(item){
        success: function(data) {
            console
                .log("data ====>"+data);
-           ReportingFiNext();
+           ReportingFiNext(0,0,1);
        },
        error: function(
            request,
@@ -5756,6 +5786,47 @@ function viewAccountHolderMain(item){
    });
 
 }
+
+function doneViewAccounts(newForm,editForm,viewForm){
+	$
+   .ajax({
+
+       url: 'crs/viewAccountDone',
+       type: 'GET',
+       async: false,
+       success: function(data) {
+    	   ReportingFiNext(1,0,0);       	
+       },
+       error: function(
+           request,
+           error) {
+           console.log(error);
+       }
+   });
+}
+function doneEditAccounts(){
+	
+	/*var errorFlag = false; 
+	errorFlag = validateCbcReports();*/
+	
+	
+	/*if(!errorFlag){*/
+	 var form_data = $('#crsaccountholder').serialize();
+		$.ajax({
+			url : 'crs/saveEditedData',
+			type : 'GET',
+			data : form_data,
+			success : function(data) {
+				console.log(data);
+				/*$("#cbcReportsGrid").jsGrid("insertItem", data).done(function() {
+					console.log("insertion completed");*/
+				ReportingFiNext(1,0,0);
+			},error : function(request, error) {
+				alert("Request: " + JSON.stringify(request));
+			}
+		});	
+	/*}*/
+} 
 
 function editAccountHolderMain(item){
 	
@@ -5768,7 +5839,7 @@ function editAccountHolderMain(item){
        success: function(data) {
            console
                .log("data ====>"+data);
-           ReportingFiNext();
+           ReportingFiNext(0,1,0);
            return false;
        },
        error: function(
@@ -5779,4 +5850,66 @@ function editAccountHolderMain(item){
    });
 
 }
+function deleteNewAccountHolderClicked(item){
+	$("#deleteConfirmation").modal('show');
+	$("#idToDelete").html(item.id);
+	$("#formId").html(7);
+}
+
+function proceedAccDelete(){
+	var idToDelete = $("#idToDelete").text();
+	var formToDelete = $("#formId").text();
+	/*alert("idToDelete =====>"+formToDelete);*/
+	
+	if(formToDelete == 7){
+	$
+   .ajax({
+
+       url: 'crs/populateDeletedAccountHolder?deleteId='+idToDelete,
+       type: 'GET',
+       async: false,
+       success: function(data) {
+           console
+               .log("data ====>"+data);
+           ReportingFiNext(1,0,0);
+           return false;
+       },
+       error: function(
+           request,
+           error) {
+           console.log(error);
+       }
+   });
+	}
+}
+
+function saveCtrlPersonMain(){
+	
+	/*	var errorFlag = false; 
+		errorFlag = validateCbcReports();
+		 $("#cbcReportsError").empty();
+		if(!errorFlag){*/
+		
+		
+		 var form_data = $('#crsaccountholder').serialize();
+			$.ajax({
+				url : 'crs/insertCtrlPersonMain',
+				type : 'GET',
+				data : form_data,
+				success : function(data) {
+					console.log(data);
+					$("#accountHolderGrid").jsGrid("insertItem", data).done(function() {
+						console.log("insertion completed");
+						/*showCbcReports(1,0,0);*/
+						ReportingFiNext();
+					});
+				},error : function(request, error) {
+					alert("Request: " + JSON.stringify(request));
+				}
+			});	
+	/*	}*/
+	}
+
+
+
 

@@ -33,6 +33,7 @@ import com.censof.myfi.hidefmyfi.entity.Cbcnametype;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
 import com.censof.myfi.hidefmyfi.service.CtcDataSaveService;
 import com.censof.myfi.hidefmyfi.service.CtccommonDropdownService;
+import com.censof.myfi.hidefmyfi.vo.AccountHolderVo;
 import com.censof.myfi.hidefmyfi.vo.AddressVo;
 import com.censof.myfi.hidefmyfi.vo.CommonDropdownGridBean;
 import com.censof.myfi.hidefmyfi.vo.HidefVo;
@@ -98,6 +99,7 @@ public class CrsReportingFiController {
 	}
 	@PostMapping(value ="/admin/crs/reportingFiNextOrPrevious")
 	public String reportingFiNextOrPrevious(@ModelAttribute("hidef")HidefVo hidef, BindingResult result,
+			@RequestParam(required=true,value="newForm") int newFormId,
 			 @RequestParam(required = false, value = "next1") String next,
 			 @RequestParam(required = false, value = "previous1") String previous,
 		     ModelMap model,RedirectAttributes redirectAttributes) {
@@ -109,6 +111,9 @@ public class CrsReportingFiController {
 		}
 		
 		if (!StringUtils.isEmpty(next)) {
+			if(newFormId == 1){
+				hidef.setAccountholder(new AccountHolderVo());
+			}
 	            return "redirect:accountHolder";
 	    }
 		model.addAttribute("hidef", hidef);

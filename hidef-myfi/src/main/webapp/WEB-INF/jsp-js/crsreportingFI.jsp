@@ -80,7 +80,7 @@
 							onClick="ReportingFiPrevious();return false;" class="btn btn-warning">Previous</button>
 							&nbsp;&nbsp;
 						<button id="singlebutton" name="singlebutton"
-							onClick="ReportingFiNext();return false;" class="btn btn-primary">Next</button>
+							onClick="ReportingFiNext(1,0,0);return false;" class="btn btn-primary">Next</button>
 					</div>
 				</div>
 			</div>

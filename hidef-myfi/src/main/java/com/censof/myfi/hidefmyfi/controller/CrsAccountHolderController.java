@@ -2183,6 +2183,94 @@ public class CrsAccountHolderController {
 		model.addAttribute("hidef", hidef);
 		return "success";
 	}
+	@GetMapping(value = "/admin/crs/viewAccountDone")
+	@ResponseBody
+	public String viewAccountDone(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
+			Map<String, Object> map) {
+		hidef.setCurrentTab(CTSConstants.HIDEF_CTS_CRS_ACCOUNTHOLDER);
+		hidef.setAccountholder(new AccountHolderVo());
+		model.addAttribute("hidef", hidef);
+		return "success";
+	}
+	@GetMapping(value = "/admin/crs/populateDeletedAccountHolder")
+	@ResponseBody
+	public String populateDeletedCBCReportsGrid(@ModelAttribute("hidef") HidefVo hidef, @RequestParam int deleteId,
+			BindingResult result, ModelMap model, Map<String, Object> map) {
+
+		List<AccountHolderVo> newAccountHolderDeletedList = new ArrayList<AccountHolderVo>();
+		for (AccountHolderVo accountsVO : hidef.getAccountHolderList()) {
+			if (accountsVO.getId() != deleteId) {
+				newAccountHolderDeletedList.add(accountsVO);
+			}
+		}
+
+		hidef.setAccountHolderList(newAccountHolderDeletedList);
+		model.addAttribute("hidef", hidef);
+
+		return "success";
+	}
+	
+	@GetMapping(value = "/admin/crs/saveEditedData")
+	@ResponseBody
+	public AccountHolderVo populateEditedCBCReportsGrid(@ModelAttribute("hidef") HidefVo hidef, BindingResult result,
+			ModelMap model, Map<String, Object> map) {
+
+		AccountHolderVo accountHolderVO = new AccountHolderVo();
+		accountHolderVO = hidef.getAccountholder();
+		int newAccountId = accountHolderVO.getId();
+
+		List<AccountHolderVo> newCRSAccountEditedList = new ArrayList<AccountHolderVo>();
+		for (AccountHolderVo accountVO : hidef.getAccountHolderList()) {
+			if (accountVO.getId() != newAccountId) {
+				newCRSAccountEditedList.add(accountVO);
+			}
+		}
+
+		newCRSAccountEditedList.add(accountHolderVO);
+
+		hidef.setAccountholder(new AccountHolderVo());
+		model.addAttribute("hidef", hidef);
+
+		return accountHolderVO;
+	}
+	
+	@GetMapping(value = "/admin/crs/loadCtrlPersonMain", consumes = "application/json")
+	@ResponseBody
+	public String loadCtrlPersonMain(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
+			HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+
+		List<AccountHolderVo> accountHolderList = new ArrayList<AccountHolderVo>();
+		String reportsJSON = mapper.writeValueAsString(accountHolderList);
+		if (hidef.getAccountHolderList() != null && hidef.getAccountHolderList() != null
+				&& !hidef.getAccountHolderList().isEmpty()) {
+			reportsJSON = mapper.writeValueAsString(hidef.getAccountHolderList());
+		}
+
+		model.addAttribute("hidef", hidef);
+		return reportsJSON;
+
+	}
+	@GetMapping(value = "/admin/crs/insertCtrlPersonMain")
+	@ResponseBody
+	public AccountHolderVo insertCtrlPersonMain(@ModelAttribute("hidef") HidefVo hidef, BindingResult result,
+			ModelMap model, Map<String, Object> map) {
+
+		AccountHolderVo accountHolderVO = new AccountHolderVo();
+		Random rand = new Random();
+		accountHolderVO = hidef.getAccountholder();
+		accountHolderVO.setId(rand.nextInt(10000));
+		if (hidef.getAccountholder() != null && hidef.getAccountHolderList() != null) {
+			hidef.getAccountHolderList().add(accountHolderVO);
+		} else {
+			hidef.setAccountHolderList(new ArrayList<AccountHolderVo>());
+			hidef.getAccountHolderList().add(accountHolderVO);
+		}
+		hidef.setAccountholder(new AccountHolderVo());
+		model.addAttribute("hidef", hidef);
+
+		return accountHolderVO;
+	}
 
 	
 	

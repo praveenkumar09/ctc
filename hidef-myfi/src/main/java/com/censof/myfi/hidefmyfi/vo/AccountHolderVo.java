@@ -30,6 +30,16 @@ public class AccountHolderVo {
 	private String ctrlcitySubEntity;
 	private String ctrlcountryCode;
 	private String ctrlcountryName;
+	private List<TitleVo> ctrlPersontitleList;
+	private List<MiddleNameVo> ctrlPersonmiddlenameList;
+	private List<GenerationIdentifierVo> ctrlPersongenerateIdentifilerList;
+	private List<SuffixVo> ctrlPersonsuffixList;
+	private List<NameTypeVo> ctrlPersonNameList;
+	private NameTypeVo ctrlPersonName;
+	private NameTypeVo ctrlPersonViewName;
+	private NameTypeVo ctrlPersonEditName;
+	
+	
 	
 	/*private AccountTypeIndividualVo individualVo;
 	private List<AccountTypeIndividualVo> individualList;*/
@@ -396,6 +406,59 @@ public class AccountHolderVo {
 	public void setIndividualaccountHolderType(String individualaccountHolderType) {
 		this.individualaccountHolderType = individualaccountHolderType;
 	}
+	public List<TitleVo> getCtrlPersontitleList() {
+		return ctrlPersontitleList;
+	}
+	public void setCtrlPersontitleList(List<TitleVo> ctrlPersontitleList) {
+		this.ctrlPersontitleList = ctrlPersontitleList;
+	}
+	public List<MiddleNameVo> getCtrlPersonmiddlenameList() {
+		return ctrlPersonmiddlenameList;
+	}
+	public void setCtrlPersonmiddlenameList(
+			List<MiddleNameVo> ctrlPersonmiddlenameList) {
+		this.ctrlPersonmiddlenameList = ctrlPersonmiddlenameList;
+	}
+	public List<GenerationIdentifierVo> getCtrlPersongenerateIdentifilerList() {
+		return ctrlPersongenerateIdentifilerList;
+	}
+	public void setCtrlPersongenerateIdentifilerList(
+			List<GenerationIdentifierVo> ctrlPersongenerateIdentifilerList) {
+		this.ctrlPersongenerateIdentifilerList = ctrlPersongenerateIdentifilerList;
+	}
+	public List<SuffixVo> getCtrlPersonsuffixList() {
+		return ctrlPersonsuffixList;
+	}
+	public void setCtrlPersonsuffixList(List<SuffixVo> ctrlPersonsuffixList) {
+		this.ctrlPersonsuffixList = ctrlPersonsuffixList;
+	}
+	public List<NameTypeVo> getCtrlPersonNameList() {
+		return ctrlPersonNameList;
+	}
+	public void setCtrlPersonNameList(List<NameTypeVo> ctrlPersonNameList) {
+		this.ctrlPersonNameList = ctrlPersonNameList;
+	}
+	public NameTypeVo getCtrlPersonName() {
+		return ctrlPersonName;
+	}
+	public void setCtrlPersonName(NameTypeVo ctrlPersonName) {
+		this.ctrlPersonName = ctrlPersonName;
+	}
+	public NameTypeVo getCtrlPersonViewName() {
+		return ctrlPersonViewName;
+	}
+	public void setCtrlPersonViewName(NameTypeVo ctrlPersonViewName) {
+		this.ctrlPersonViewName = ctrlPersonViewName;
+	}
+	public NameTypeVo getCtrlPersonEditName() {
+		return ctrlPersonEditName;
+	}
+	public void setCtrlPersonEditName(NameTypeVo ctrlPersonEditName) {
+		this.ctrlPersonEditName = ctrlPersonEditName;
+	}
+	
+	
+	
 	
 	
 	
