@@ -8,6 +8,7 @@ public class ControllingPersonVo {
 	private List<ResidentCountryVo> controllingResidentCountryList;
 	private List<OrganisationInTypeVo> controllingOrganisationInTypeList;
 	private List<NameTypeVo> nameTypeList;
+	private List<AddressVo> controllingPersonAddressList;
 	private String birthDate;
 	private String city;
 	private String citySubEntity;
@@ -76,6 +77,14 @@ public class ControllingPersonVo {
 	public void setId(int id) {
 		this.id = id;
 	}
+	public List<AddressVo> getControllingPersonAddressList() {
+		return controllingPersonAddressList;
+	}
+	public void setControllingPersonAddressList(
+			List<AddressVo> controllingPersonAddressList) {
+		this.controllingPersonAddressList = controllingPersonAddressList;
+	}
+	
 	
 	
 	
