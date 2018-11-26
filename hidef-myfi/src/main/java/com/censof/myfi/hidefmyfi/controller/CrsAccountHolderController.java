@@ -2271,6 +2271,29 @@ public class CrsAccountHolderController {
 
 		return accountHolderVO;
 	}
+	
+	@GetMapping(value = "/admin/crs/editIndividualNameGrid")
+	@ResponseBody
+	public String editIndividualNameGrid(@ModelAttribute("hidef") HidefVo hidef, BindingResult result,
+			@RequestParam int id,
+			ModelMap model, Map<String, Object> map) {
+
+		List<NameTypeVo> nameTypeList = hidef.getAccountholder().getIndividualNameList();
+		if(nameTypeList != null && nameTypeList.size() > 0){
+			for(NameTypeVo nameType : nameTypeList){
+				if(nameType.getId() == id){
+					hidef.getAccountholder().setTitleList(nameType.getTitleList());
+					hidef.getAccountholder().setMiddlenameList(nameType.getMiddlenameList());
+					hidef.getAccountholder().setGenerateIdentifilerList(nameType.getGenerateIdentifilerList());
+					hidef.getAccountholder().setSuffixList(nameType.getSuffixList());
+				}
+				
+			}
+		}
+		model.addAttribute("hidef", hidef);
+
+		return "crsAccountHolder";
+	}
 
 	
 	
