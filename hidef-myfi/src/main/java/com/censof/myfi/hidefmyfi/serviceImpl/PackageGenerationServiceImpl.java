@@ -896,8 +896,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 		FATCAPackager fatcaPackager = new FATCAPackager();
 		String folderPath = fatcaPackager.signAndCreatePkgStreaming(payloadxml, myPrivateKey, myPublicCert, senderGiin,
 				receiverGiin, receiverPublicCert, taxyear, metadataxml, targetFolderPath);
-		File file = new File(folderPath);
-		return file.toString();
+		return folderPath;
 	}
 
 	@Override

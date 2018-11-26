@@ -5,7 +5,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -70,6 +75,7 @@ public class CbcAdditionalInfoController {
 	private CtcDataSaveService ctcDataSaveService;
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
+	protected SimpleDateFormat sdfFileName = new SimpleDateFormat("yyyyMMdd'T'HHmmssSSS'Z'");
 
 	@ModelAttribute("hidef")
 	public HidefVo getmetadata() {
@@ -526,18 +532,22 @@ public class CbcAdditionalInfoController {
 	public ModelAndView generateCBCPackage(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
 			Map<String, Object> map, HttpServletResponse response) throws Exception {
 		//ctcDataSaveService.saveCtcData(hidef);		
-		String metaDataContentInString = "";
+		String packageFolderPath = "";
 		response.setContentType("application/zip");
-		String packageFileName = hidef.getUserprofile().getSendingcountry()+"_"+hidef.getUserprofile().getCommunicationType()+"_"+hidef.getMetadata().getFormCreationTimeStamp()+".zip";
-		response.setHeader("Content-Disposition", "attachment;filename=\""+packageFileName+"\"");
-		metaDataContentInString = metaDataGenerationService.generateCBCPackage(hidef);
-		response.setContentLength(metaDataContentInString.length());
-		ServletOutputStream outStream = response.getOutputStream();
-		outStream.write(metaDataContentInString.getBytes());
-		//outStream.println(metaDataContentInString);
-		outStream.flush();
-		outStream.close();
-		response.flushBuffer();
+		String packageFileName = hidef.getUserprofile().getSendingcountry()+"_"+hidef.getUserprofile().getCommunicationType()+"_"+sdfFileName.format(new Date(System.currentTimeMillis()))+".zip";
+		packageFolderPath = metaDataGenerationService.generateCBCPackage(hidef);
+		
+	     //Path sourcePath = sourceFile.toPath();
+	     Path sourcePath = Paths.get(packageFolderPath);
+	     response.setHeader("Content-Disposition", "attachment;filename=\""+sourcePath.getFileName()+"\"");
+	     ZipOutputStream outZip = new ZipOutputStream(response.getOutputStream(),StandardCharsets.UTF_8);
+
+	     outZip.putNextEntry(new ZipEntry(sourcePath.getFileName().toString()));
+	     Files.copy(sourcePath, outZip);
+	     outZip.closeEntry();
+	     outZip.finish();
+	     outZip.close();
+		
 		//FileCopyUtils.copy(metaDataContentInString, response.getWriter());
 		return null;
 
