@@ -1602,11 +1602,11 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 							/***
 							 * To change later after discussion with venki - Drafted - Praveen
 							 */
-							if (accountHolderVo.getAccountHolderType() != null
-									&& !accountHolderVo.getAccountHolderType().isEmpty()) {
+							if (accountHolderVo.getIndividualaccountHolderType() != null
+									&& !accountHolderVo.getIndividualaccountHolderType().isEmpty()) {
 								Element accountHolderType = doc.createElement("crs:AcctHolderType");
 								accountHolderType
-										.appendChild(doc.createTextNode(accountHolderVo.getAccountHolderType()));
+										.appendChild(doc.createTextNode(accountHolderVo.getIndividualaccountHolderType()));
 								organisation.appendChild(accountHolderType);
 							}
 
@@ -1867,8 +1867,121 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 								}
 							}
 							
-							// need to add here
-							//if(controllingPersonVo.get)
+							if(controllingPersonVo.getControllingPersonAddressList() != null && !controllingPersonVo.getControllingPersonAddressList().isEmpty()) {
+								for(AddressVo address:controllingPersonVo.getControllingPersonAddressList()) {
+
+									Element addressElement = doc.createElement("crs:Address");
+									controllingPerson.appendChild(addressElement);
+
+									Element addressCountryCode = doc.createElement("crs:CountryCode");
+									addressCountryCode.appendChild(doc.createTextNode(address.getCountryCode()));
+									addressElement.appendChild(addressCountryCode);
+
+									Element addressFree = doc.createElement("crs:AddressFree");
+									addressFree.appendChild(doc.createTextNode(address.getAddressFree()));
+									addressElement.appendChild(addressFree);
+
+									if (!address.getAddressType().equals("Address Free")) {
+										Element addressFix = doc.createElement("crs:AddressFix");
+										addressElement.appendChild(addressFix);
+
+										if (address.getStreet() != null && !address.getStreet().isEmpty()) {
+											Element addressFixStreet = doc.createElement("crs:Street");
+											addressFixStreet.appendChild(doc.createTextNode(address.getStreet()));
+											addressFix.appendChild(addressFixStreet);
+										}
+
+										if (address.getBuildingIdentifier() != null
+												&& !address.getBuildingIdentifier().isEmpty()) {
+											Element addressFixBI = doc.createElement("crs:BuildingIdentifier");
+											addressFixBI
+													.appendChild(doc.createTextNode(address.getBuildingIdentifier()));
+											addressFix.appendChild(addressFixBI);
+										}
+
+										if (address.getSuitIdentifier() != null
+												&& !address.getSuitIdentifier().isEmpty()) {
+											Element addressFixSI = doc.createElement("crs:SuiteIdentifier");
+											addressFixSI.appendChild(doc.createTextNode(address.getSuitIdentifier()));
+											addressFix.appendChild(addressFixSI);
+										}
+
+										if (address.getFloorIdentifier() != null
+												&& !address.getFloorIdentifier().isEmpty()) {
+											Element addressFixFI = doc.createElement("crs:FloorIdentifier");
+											addressFixFI.appendChild(doc.createTextNode(address.getFloorIdentifier()));
+											addressFix.appendChild(addressFixFI);
+										}
+
+										if (address.getDistrictName() != null && !address.getDistrictName().isEmpty()) {
+											Element addressFixDN = doc.createElement("crs:DistrictName");
+											addressFixDN.appendChild(doc.createTextNode(address.getDistrictName()));
+											addressFix.appendChild(addressFixDN);
+										}
+
+										if (address.getPob() != null && !address.getPob().isEmpty()) {
+											Element addressFixPOB = doc.createElement("crs:POB");
+											addressFixPOB.appendChild(doc.createTextNode(address.getPob()));
+											addressFix.appendChild(addressFixPOB);
+										}
+
+										if (address.getPostCode() != null && !address.getPostCode().isEmpty()) {
+											Element addressFixPC = doc.createElement("crs:PostCode");
+											addressFixPC.appendChild(doc.createTextNode(address.getPostCode()));
+											addressFix.appendChild(addressFixPC);
+										}
+
+										if (address.getCity() != null && !address.getCity().isEmpty()) {
+											Element addressFixCity = doc.createElement("crs:City");
+											addressFixCity.appendChild(doc.createTextNode(address.getCity()));
+											addressFix.appendChild(addressFixCity);
+										}
+
+										if (address.getCountrySubentity() != null
+												&& !address.getCountrySubentity().isEmpty()) {
+											Element addressFixCSE = doc.createElement("crs:CountrySubentity");
+											addressFixCSE
+													.appendChild(doc.createTextNode(address.getCountrySubentity()));
+											addressFix.appendChild(addressFixCSE);
+										}
+
+									}
+								
+								}
+							}
+							
+							if (controllingPersonVo.getBirthDate() != null && !controllingPersonVo.getBirthDate().isEmpty()) {
+								Element birthDate = doc.createElement("crs:BirthDate");
+								birthDate.appendChild(doc.createTextNode(controllingPersonVo.getBirthDate()));
+								controllingPerson.appendChild(birthDate);
+							}
+
+							if (controllingPersonVo.getCity() != null && !controllingPersonVo.getCity().isEmpty()) {
+								Element city = doc.createElement("crs:City");
+								city.appendChild(doc.createTextNode(controllingPersonVo.getCity()));
+								controllingPerson.appendChild(city);
+							}
+
+							if (controllingPersonVo.getCitySubEntity() != null
+									&& !controllingPersonVo.getCitySubEntity().isEmpty()) {
+								Element citySubEntity = doc.createElement("crs:CitySubentity");
+								citySubEntity.appendChild(doc.createTextNode(controllingPersonVo.getCitySubEntity()));
+								controllingPerson.appendChild(citySubEntity);
+							}
+
+							if (controllingPersonVo.getCountryCode() != null
+									&& !controllingPersonVo.getCountryCode().isEmpty()) {
+								Element countryCode = doc.createElement("crs:CountryCode");
+								countryCode.appendChild(doc.createElement(controllingPersonVo.getCountryCode()));
+								controllingPerson.appendChild(countryCode);
+							}
+
+							if (controllingPersonVo.getCountryName() != null
+									&& !controllingPersonVo.getCountryName().isEmpty()) {
+								Element countryName = doc.createElement("crs:FormerCountryName");
+								countryName.appendChild(doc.createTextNode(controllingPersonVo.getCountryName()));
+								controllingPerson.appendChild(countryName);
+							}
 
 						}
 
@@ -1888,7 +2001,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 		}
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String payloadFilePath = fetchProperties("payloadPath");
+		String payloadFilePath = fetchProperties("crspayloadPath");
 		File file = new File(payloadFilePath + "/" + auth.getName() + "_"
 				+ hidef.getUserprofile().getCommunicationType() + "_Payload.xml");
 		hidef.setPayloadFileName(auth.getName() + "_" + hidef.getUserprofile().getCommunicationType() + "_Payload.xml");
