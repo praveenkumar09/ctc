@@ -2272,7 +2272,7 @@ public class CrsAccountHolderController {
 		return accountHolderVO;
 	}
 	
-	@GetMapping(value = "/admin/crs/editIndividualNameGrid")
+	/*@GetMapping(value = "/admin/crs/editIndividualNameGrid")
 	@ResponseBody
 	public String editIndividualNameGrid(@ModelAttribute("hidef") HidefVo hidef, BindingResult result,
 			@RequestParam int id,
@@ -2293,9 +2293,636 @@ public class CrsAccountHolderController {
 		model.addAttribute("hidef", hidef);
 
 		return "crsAccountHolder";
-	}
+	}*/
 
 	
+	
+	@GetMapping(value ="/admin/crs/resetCtrlNameGrid")
+	public String resetCtrlNameGrid(@ModelAttribute("hidef")HidefVo hidef, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response,Map<String, Object> map) throws JsonProcessingException {
+		NameTypeVo  nameVo = new NameTypeVo();
+		hidef.getAccountholder().setCtrlPersonName(nameVo);
+		hidef.getAccountholder().setCtrlPersontitleList(new ArrayList<TitleVo>());
+		hidef.getAccountholder().setCtrlPersonmiddlenameList(new ArrayList<MiddleNameVo>());
+		hidef.getAccountholder().setCtrlPersongenerateIdentifilerList(new ArrayList<GenerationIdentifierVo>());
+		hidef.getAccountholder().setCtrlPersonsuffixList(new ArrayList<SuffixVo>());
+		List<Hicountry> hicountryList = ctccommonDropdownService.getAllCountries();
+		List<Cbcaddresstype> cbcaddresstype = ctccommonDropdownService.getAllAddressType();
+		List<Cbcnametype> cbcnametype = ctccommonDropdownService.getAllNameType();
+		map.put("tinlist", hicountryList);
+		map.put("addressType", cbcaddresstype);
+		map.put("nameType", cbcnametype);
+		model.addAttribute("hidef", hidef);
+		return "crsAccountHolder";
+	}
+	
+	
+	
+	
+	
+	@GetMapping(value ="/admin/crs/loadCtrlPersonNameTitleGrid",consumes="application/json")
+	@ResponseBody
+	public String loadCtrlPersonNameTitleGrid(@ModelAttribute("hidef")HidefVo hidef, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		List<TitleVo> titleList = new ArrayList<TitleVo>();
+		String titleJson = mapper.writeValueAsString(titleList);
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersontitleList() != null 
+				&& hidef.getAccountholder().getCtrlPersontitleList().size() >0) {
+			titleJson = mapper.writeValueAsString(hidef.getAccountholder().getCtrlPersontitleList());
+		}
+		model.addAttribute("hidef", hidef);
+		return titleJson;
+	}
+	
+	
+	@PostMapping(value ="/admin/crs/insertCtrlPersonNameTitleGrid",consumes="application/json")
+	@ResponseBody
+	public TitleVo insertCtrlPersonNameTitleGrid(@ModelAttribute("hidef")HidefVo hidef,@RequestBody String insertTitleGrid, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		TitleVo titleVo  = null;
+		Random ran = new Random();
+		try {
+			List<TitleVo> titleList = new ArrayList<TitleVo>();
+			titleVo = mapper.readValue(insertTitleGrid, TitleVo.class);
+			titleVo.setId(ran.nextInt(10000));
+			if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersontitleList() != null 
+					&& hidef.getAccountholder().getCtrlPersontitleList().size() >0) {
+				hidef.getAccountholder().getCtrlPersontitleList().add(titleVo);
+			}else {
+				hidef.getAccountholder().setCtrlPersontitleList(titleList);
+				hidef.getAccountholder().getCtrlPersontitleList().add(titleVo);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		model.addAttribute("hidef", hidef);
+		return titleVo;
+	}
+	
+	@PostMapping(value ="/admin/crs/updateCtrlPersonNameTitleGrid",consumes="application/json")
+	@ResponseBody
+	public String updateCtrlPersonNameTitleGrid(@ModelAttribute("hidef")HidefVo hidef, @RequestBody String updateTitleGrid,
+			@RequestParam(required = true) int id,
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersontitleList() != null 
+				&& hidef.getAccountholder().getCtrlPersontitleList().size() >0) {
+			try{
+			TitleVo updatedTitleVo = mapper.readValue(updateTitleGrid, TitleVo.class);
+			for(TitleVo title :hidef.getAccountholder().getCtrlPersontitleList()){
+				if(title.getId()==id){
+					title.setName(updatedTitleVo.getName());
+					break;
+				}
+			}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}else{
+			
+		}
+		model.addAttribute("hidef", hidef);
+		return "success";
+	}
+	@PostMapping(value ="/admin/crs/deleteCtrlPersonNameTitleGrid",consumes="application/json")
+	@ResponseBody
+	public String deleteCtrlPersonNameTitleGrid(@ModelAttribute("hidef")HidefVo hidef, @RequestBody String deleteTitleGrid,
+			@RequestParam(required = true) int id,
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		if(deleteTitleGrid != null && hidef.getAccountholder().getCtrlPersontitleList() != null){
+			try{
+			TitleVo deleteTitleVo = mapper.readValue(deleteTitleGrid, TitleVo.class);
+			List<TitleVo> copyList = new ArrayList<TitleVo>(hidef.getAccountholder().getCtrlPersontitleList());
+			for(TitleVo title:hidef.getAccountholder().getCtrlPersontitleList()){
+				if(id==title.getId()){
+					copyList.remove(title);
+					hidef.getAccountholder().setCtrlPersontitleList(copyList);
+					break;
+				}
+			}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		model.addAttribute("hidef", hidef);
+		return "success";
+	}
+	
+	@GetMapping(value ="/admin/crs/loadCtrlPersonMiddileNameGrid",consumes="application/json")
+	@ResponseBody
+	public String loadCtrlPersonNameGrid(@ModelAttribute("hidef")HidefVo hidef, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		List<MiddleNameVo> middileNameList = new ArrayList<MiddleNameVo>();
+		String titleJson = mapper.writeValueAsString(middileNameList);
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonmiddlenameList() != null 
+				&& hidef.getAccountholder().getCtrlPersonmiddlenameList().size() >0) {
+			titleJson = mapper.writeValueAsString(hidef.getAccountholder().getCtrlPersonmiddlenameList());
+		}
+		model.addAttribute("hidef", hidef);
+		return titleJson;
+	}
+	
+	
+	@PostMapping(value ="/admin/crs/insertCtrlPersonMiddileNameGrid",consumes="application/json")
+	@ResponseBody
+	public MiddleNameVo insertCtrlPersonMiddileNameGrid(@ModelAttribute("hidef")HidefVo hidef,@RequestBody String insertMiddleNameGrid, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		MiddleNameVo middleNameVo  = null;
+		Random ran = new Random();
+		try {
+			List<MiddleNameVo> middleNameList = new ArrayList<MiddleNameVo>();
+			middleNameVo = mapper.readValue(insertMiddleNameGrid, MiddleNameVo.class);
+			middleNameVo.setId(ran.nextInt(10000));
+			if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonmiddlenameList() != null 
+					&& hidef.getAccountholder().getCtrlPersonmiddlenameList().size() >0) {
+				hidef.getAccountholder().getCtrlPersonmiddlenameList().add(middleNameVo);
+			}else {
+				hidef.getAccountholder().setCtrlPersonmiddlenameList(middleNameList);
+				hidef.getAccountholder().getCtrlPersonmiddlenameList().add(middleNameVo);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		model.addAttribute("hidef", hidef);
+		return middleNameVo;
+	}
+	
+	@PostMapping(value ="/admin/crs/updateCtrlPersonMiddileNameGrid",consumes="application/json")
+	@ResponseBody
+	public String updateCtrlPersonMiddileNameGrid(@ModelAttribute("hidef")HidefVo hidef, @RequestBody String updateMiddleNameGrid,
+			@RequestParam(required = true) int id,
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonmiddlenameList() != null 
+				&& hidef.getAccountholder().getCtrlPersonmiddlenameList().size() >0) {
+			try{
+			MiddleNameVo middlenameVo = mapper.readValue(updateMiddleNameGrid, MiddleNameVo.class);
+			for(MiddleNameVo middlename :hidef.getAccountholder().getCtrlPersonmiddlenameList()){
+				if(middlename.getId()==id){
+					middlename.setMiddleName(middlenameVo.getMiddleName());
+					break;
+				}
+			}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}else{
+			
+		}
+		model.addAttribute("hidef", hidef);
+		return "success";
+	}
+	@PostMapping(value ="/admin/crs/deleteCtrlPersonMiddileNameGrid",consumes="application/json")
+	@ResponseBody
+	public String deleteCtrlPersonMiddileNameGrid(@ModelAttribute("hidef")HidefVo hidef, @RequestBody String deleteMiddleNameGrid,
+			@RequestParam(required = true) int id,
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		if(deleteMiddleNameGrid != null && hidef.getAccountholder().getCtrlPersonmiddlenameList() != null){
+			try{
+			MiddleNameVo deleteMiddleNameVo = mapper.readValue(deleteMiddleNameGrid, MiddleNameVo.class);
+			List<MiddleNameVo> copyList = new ArrayList<MiddleNameVo>(hidef.getAccountholder().getCtrlPersonmiddlenameList());
+			for(MiddleNameVo middlename:hidef.getAccountholder().getCtrlPersonmiddlenameList()){
+				if(id==middlename.getId()){
+					copyList.remove(middlename);
+					hidef.getAccountholder().setCtrlPersonmiddlenameList(copyList);
+					break;
+				}
+			}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		model.addAttribute("hidef", hidef);
+		return "success";
+	}
+	
+	@GetMapping(value ="/admin/crs/loadCtrlPersonGenIdGrid",consumes="application/json")
+	@ResponseBody
+	public String loadCtrlPersonGenIdGrid(@ModelAttribute("hidef")HidefVo hidef, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		List<GenerationIdentifierVo> genIdenList = new ArrayList<GenerationIdentifierVo>();
+		String titleJson = mapper.writeValueAsString(genIdenList);
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersongenerateIdentifilerList() != null 
+				&& hidef.getAccountholder().getCtrlPersongenerateIdentifilerList().size() >0) {
+			titleJson = mapper.writeValueAsString(hidef.getAccountholder().getCtrlPersongenerateIdentifilerList());
+		}
+		model.addAttribute("hidef", hidef);
+		return titleJson;
+	}
+	
+	
+	@PostMapping(value ="/admin/crs/insertCtrlPersonGenIdGrid",consumes="application/json")
+	@ResponseBody
+	public GenerationIdentifierVo insertCtrlPersonGenIdGrid(@ModelAttribute("hidef")HidefVo hidef,@RequestBody String insertGenIdenGrid, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		GenerationIdentifierVo genIdenVo  = null;
+		Random ran = new Random();
+		try {
+			List<GenerationIdentifierVo> genIdenList = new ArrayList<GenerationIdentifierVo>();
+			genIdenVo = mapper.readValue(insertGenIdenGrid, GenerationIdentifierVo.class);
+			genIdenVo.setId(ran.nextInt(10000));
+			if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersongenerateIdentifilerList() != null 
+					&& hidef.getAccountholder().getCtrlPersongenerateIdentifilerList().size() >0) {
+				hidef.getAccountholder().getCtrlPersongenerateIdentifilerList().add(genIdenVo);
+			}else {
+				hidef.getAccountholder().setCtrlPersongenerateIdentifilerList(genIdenList);
+				hidef.getAccountholder().getCtrlPersongenerateIdentifilerList().add(genIdenVo);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		model.addAttribute("hidef", hidef);
+		return genIdenVo;
+	}
+	
+	@PostMapping(value ="/admin/crs/updateCtrlPersonGenIdGrid",consumes="application/json")
+	@ResponseBody
+	public String updateCtrlPersonGenIdGrid(@ModelAttribute("hidef")HidefVo hidef, @RequestBody String updateGenIdenGrid,
+			@RequestParam(required = true) int id,
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersongenerateIdentifilerList() != null 
+				&& hidef.getAccountholder().getCtrlPersongenerateIdentifilerList().size() >0) {
+			try{
+				GenerationIdentifierVo middlenameVo = mapper.readValue(updateGenIdenGrid, GenerationIdentifierVo.class);
+			for(GenerationIdentifierVo geniden :hidef.getAccountholder().getCtrlPersongenerateIdentifilerList()){
+				if(geniden.getId()==id){
+					geniden.setGenerateIdentifier(middlenameVo.getGenerateIdentifier());
+					break;
+				}
+			}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}else{
+			
+		}
+		model.addAttribute("hidef", hidef);
+		return "success";
+	}
+	@PostMapping(value ="/admin/crs/deleteCtrlPersonGenIdGrid",consumes="application/json")
+	@ResponseBody
+	public String deleteCtrlPersonGenIdGrid(@ModelAttribute("hidef")HidefVo hidef, @RequestBody String deleteGenIdenGrid,
+			@RequestParam(required = true) int id,
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		if(deleteGenIdenGrid != null && hidef.getAccountholder().getCtrlPersongenerateIdentifilerList() != null){
+			try{
+			GenerationIdentifierVo deleteGenIdenVo = mapper.readValue(deleteGenIdenGrid, GenerationIdentifierVo.class);
+			List<GenerationIdentifierVo> copyList = new ArrayList<GenerationIdentifierVo>(hidef.getAccountholder().getCtrlPersongenerateIdentifilerList());
+			for(GenerationIdentifierVo geniden:hidef.getAccountholder().getCtrlPersongenerateIdentifilerList()){
+				if(id==geniden.getId()){
+					copyList.remove(geniden);
+					hidef.getAccountholder().setCtrlPersongenerateIdentifilerList(copyList);
+					break;
+				}
+			}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		model.addAttribute("hidef", hidef);
+		return "success";
+	}
+	
+	@GetMapping(value ="/admin/crs/loadCtrlPersonSuffixGrid",consumes="application/json")
+	@ResponseBody
+	public String loadCtrlPersonSuffixGrid(@ModelAttribute("hidef")HidefVo hidef, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		List<SuffixVo> suffixList = new ArrayList<SuffixVo>();
+		String titleJson = mapper.writeValueAsString(suffixList);
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonsuffixList() != null 
+				&& hidef.getAccountholder().getCtrlPersonsuffixList().size() >0) {
+			titleJson = mapper.writeValueAsString(hidef.getAccountholder().getCtrlPersonsuffixList());
+		}
+		model.addAttribute("hidef", hidef);
+		return titleJson;
+	}
+	
+	
+	@PostMapping(value ="/admin/crs/insertCtrlPersonSuffixGrid",consumes="application/json")
+	@ResponseBody
+	public SuffixVo insertCtrlPersonSuffixGrid(@ModelAttribute("hidef")HidefVo hidef,@RequestBody String insertSuffixGrid, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		SuffixVo suffixVo  = null;
+		Random ran = new Random();
+		try {
+			List<SuffixVo> SuffixVo = new ArrayList<SuffixVo>();
+			suffixVo = mapper.readValue(insertSuffixGrid, SuffixVo.class);
+			suffixVo.setId(ran.nextInt(10000));
+			if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonsuffixList() != null 
+					&& hidef.getAccountholder().getCtrlPersonsuffixList().size() >0) {
+				hidef.getAccountholder().getCtrlPersonsuffixList().add(suffixVo);
+			}else {
+				hidef.getAccountholder().setCtrlPersonsuffixList(SuffixVo);
+				hidef.getAccountholder().getCtrlPersonsuffixList().add(suffixVo);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		model.addAttribute("hidef", hidef);
+		return suffixVo;
+	}
+	
+	@PostMapping(value ="/admin/crs/updateCtrlPersonSuffixGrid",consumes="application/json")
+	@ResponseBody
+	public String updateCtrlPersonSuffixGrid(@ModelAttribute("hidef")HidefVo hidef, @RequestBody String updateGenIdenGrid,
+			@RequestParam(required = true) int id,
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonsuffixList() != null 
+				&& hidef.getAccountholder().getCtrlPersonsuffixList().size() >0) {
+			try{
+				SuffixVo suffixVo = mapper.readValue(updateGenIdenGrid, SuffixVo.class);
+			for(SuffixVo suffix :hidef.getAccountholder().getCtrlPersonsuffixList()){
+				if(suffix.getId()==id){
+					suffix.setSuffix(suffixVo.getSuffix());
+					break;
+				}
+			}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}else{
+			
+		}
+		model.addAttribute("hidef", hidef);
+		return "success";
+	}
+	@PostMapping(value ="/admin/crs/deleteCtrlPersonSuffixGrid",consumes="application/json")
+	@ResponseBody
+	public String deleteCtrlPersonSuffixGrid(@ModelAttribute("hidef")HidefVo hidef, @RequestBody String deleteSuffixGrid,
+			@RequestParam(required = true) int id,
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		if(deleteSuffixGrid != null && hidef.getAccountholder().getCtrlPersonsuffixList() != null){
+			try{
+			SuffixVo deleteSuffixVo = mapper.readValue(deleteSuffixGrid, SuffixVo.class);
+			List<SuffixVo> copyList = new ArrayList<SuffixVo>(hidef.getAccountholder().getCtrlPersonsuffixList());
+			for(SuffixVo suffix:hidef.getAccountholder().getCtrlPersonsuffixList()){
+				if(id==suffix.getId()){
+					copyList.remove(suffix);
+					hidef.getAccountholder().setCtrlPersonsuffixList(copyList);
+					break;
+				}
+			}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		model.addAttribute("hidef", hidef);
+		return "success";
+	}
+	@GetMapping(value ="/admin/crs/ctrlPersonInsertNameGrid")
+	@ResponseBody
+	public NameTypeVo ctrlPersonInsertNameGrid(@ModelAttribute("hidef")HidefVo hidef, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		List<NameTypeVo> NameTypeList = null;
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonNameList() != null && hidef.getAccountholder().getCtrlPersonNameList().size()>0) {
+			NameTypeList = hidef.getAccountholder().getCtrlPersonNameList();
+			
+		}else {
+			NameTypeList = new ArrayList<NameTypeVo>();
+			hidef.getAccountholder().setCtrlPersonNameList(NameTypeList);
+		}
+		
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonName() != null){
+			NameTypeVo nameTypeVo = new NameTypeVo();
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonNameList()) && hidef.getAccountholder().getCtrlPersonNameList().size()>0){
+				nameTypeVo.setId(hidef.getAccountholder().getCtrlPersonNameList().size()+1);
+				hidef.getAccountholder().getIndividualName().setId(hidef.getAccountholder().getCtrlPersonNameList().size()+1);
+				}else{
+					nameTypeVo.setId(1);
+					hidef.getAccountholder().getCtrlPersonName().setId(1);
+				}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonName().getFirstName())){
+			nameTypeVo.setFirstName(hidef.getAccountholder().getCtrlPersonName().getFirstName());
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonName().getGeneralSuffix())){
+			nameTypeVo.setGeneralSuffix(hidef.getAccountholder().getCtrlPersonName().getGeneralSuffix());
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonName().getLastName())){
+				nameTypeVo.setLastName(hidef.getAccountholder().getCtrlPersonName().getLastName());
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonName().getName())){
+				nameTypeVo.setName(hidef.getAccountholder().getCtrlPersonName().getName());
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonName().getNamePrefix())){
+				nameTypeVo.setNamePrefix(hidef.getAccountholder().getCtrlPersonName().getNamePrefix());
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonName().getNameType())){
+				nameTypeVo.setNameType(hidef.getAccountholder().getCtrlPersonName().getNameType());
+			}
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonName().getPrecedingTitle())){
+				nameTypeVo.setPrecedingTitle(hidef.getAccountholder().getCtrlPersonName().getPrecedingTitle());
+			}
+			/*if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonName().getPrecedingTitle())){
+				nameTypeVo.set
+			}*/
+			nameTypeVo.setTitleList(hidef.getAccountholder().getCtrlPersontitleList());
+			nameTypeVo.setMiddlenameList(hidef.getAccountholder().getCtrlPersonmiddlenameList());
+			nameTypeVo.setGenerateIdentifilerList(hidef.getAccountholder().getCtrlPersongenerateIdentifilerList());
+			nameTypeVo.setSuffixList(hidef.getAccountholder().getCtrlPersonsuffixList());
+			NameTypeList.add(nameTypeVo);
+		
+		}
+		
+		hidef.getAccountholder().setCtrlPersonNameList(NameTypeList);
+		String arrayToJson = mapper.writeValueAsString(NameTypeList);
+		model.addAttribute("hidef", hidef);
+        return hidef.getAccountholder().getCtrlPersonName();
+	}
+	
+	@GetMapping(value ="/admin/crs/editctrlPersonInsertNameGrid")
+	public String editctrlPersonInsertNameGrid(@ModelAttribute("hidef")HidefVo hidef,Map<String, Object> map,
+			@RequestParam(required = true) int id,
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		
+		NameTypeVo nameType = new NameTypeVo();
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonNameList() != null &&
+				hidef.getAccountholder().getCtrlPersonNameList().size() > 0){
+			for(NameTypeVo nameList :hidef.getAccountholder().getCtrlPersonNameList()){
+				if(nameList.getId() == id){
+					nameType = nameList;
+					hidef.getAccountholder().setCtrlPersonName(nameType);
+					hidef.getAccountholder().setCtrlPersontitleList(nameType.getTitleList());
+					hidef.getAccountholder().setCtrlPersonmiddlenameList(nameType.getMiddlenameList());
+					hidef.getAccountholder().setCtrlPersongenerateIdentifilerList(nameType.getGenerateIdentifilerList());
+					hidef.getAccountholder().setCtrlPersonsuffixList(nameType.getSuffixList());
+					break;
+				}
+			}
+		}
+		
+		
+		List<Hicountry> hicountryList = ctccommonDropdownService.getAllCountries();
+		List<Cbcaddresstype> cbcaddresstype = ctccommonDropdownService.getAllAddressType();
+		List<Cbcnametype> cbcnametype = ctccommonDropdownService.getAllNameType();
+		map.put("tinlist", hicountryList);
+		map.put("addressType", cbcaddresstype);
+		map.put("nameType", cbcnametype);
+		model.addAttribute("hidef", hidef);
+        return "crsAccountHolder";
+	}
+	
+	@GetMapping(value ="/admin/crs/editSavectrlPersonInsertNameGrid")
+	public String editSavectrlPersonInsertNameGrid(@ModelAttribute("hidef")HidefVo hidef,Map<String, Object> map,
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonNameList() != null){
+			for(NameTypeVo nameList :hidef.getAccountholder().getCtrlPersonNameList()){
+				if(hidef.getAccountholder().getCtrlPersonName().getId() == nameList.getId()){
+					nameList.setFirstName(hidef.getAccountholder().getCtrlPersonName().getFirstName());
+					nameList.setGeneralSuffix(hidef.getAccountholder().getCtrlPersonName().getGeneralSuffix());
+					nameList.setGenerateIdentifilerList(hidef.getAccountholder().getCtrlPersongenerateIdentifilerList());
+					nameList.setLastName(hidef.getAccountholder().getCtrlPersonName().getLastName());
+					nameList.setMiddlenameList(hidef.getAccountholder().getCtrlPersonmiddlenameList());
+					nameList.setName(hidef.getAccountholder().getCtrlPersonName().getName());
+					nameList.setNamePrefix(hidef.getAccountholder().getCtrlPersonName().getNamePrefix());
+					nameList.setNameType(hidef.getAccountholder().getCtrlPersonName().getNameType());
+					nameList.setPrecedingTitle(hidef.getAccountholder().getCtrlPersonName().getPrecedingTitle());
+					nameList.setSuffixList(hidef.getAccountholder().getCtrlPersonsuffixList());
+					nameList.setTitleList(hidef.getAccountholder().getCtrlPersontitleList());
+					break;
+				}
+				
+			}
+		}
+		model.addAttribute("hidef", hidef);
+        return "crsAccountHolder";
+	}
+	
+	@GetMapping(value ="/admin/crs/editIndividualNameGrid")
+	public String editIndividualNameGrid(@ModelAttribute("hidef")HidefVo hidef,Map<String, Object> map,
+			@RequestParam(required = true) int id,
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		
+		NameTypeVo nameType = new NameTypeVo();
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getIndividualNameList() != null &&
+				hidef.getAccountholder().getIndividualNameList().size() > 0){
+			for(NameTypeVo nameList :hidef.getAccountholder().getIndividualNameList()){
+				if(nameList.getId() == id){
+					nameType = nameList;
+					hidef.getAccountholder().setIndividualName(nameType);
+					hidef.getAccountholder().setTitleList(nameType.getTitleList());
+					hidef.getAccountholder().setMiddlenameList(nameType.getMiddlenameList());
+					hidef.getAccountholder().setGenerateIdentifilerList(nameType.getGenerateIdentifilerList());
+					hidef.getAccountholder().setSuffixList(nameType.getSuffixList());
+					break;
+				}
+			}
+		}
+		
+		
+		List<Hicountry> hicountryList = ctccommonDropdownService.getAllCountries();
+		List<Cbcaddresstype> cbcaddresstype = ctccommonDropdownService.getAllAddressType();
+		List<Cbcnametype> cbcnametype = ctccommonDropdownService.getAllNameType();
+		map.put("tinlist", hicountryList);
+		map.put("addressType", cbcaddresstype);
+		map.put("nameType", cbcnametype);
+		model.addAttribute("hidef", hidef);
+        return "crsAccountHolder";
+	}
+	@GetMapping(value ="/admin/crs/viewIndividualNameGrid")
+	public String viewIndividualNameGrid(@ModelAttribute("hidef")HidefVo hidef,Map<String, Object> map,
+			@RequestParam(required = true) int id,
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		
+		NameTypeVo nameType = new NameTypeVo();
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getIndividualNameList() != null &&
+				hidef.getAccountholder().getIndividualNameList().size() > 0){
+			for(NameTypeVo nameList :hidef.getAccountholder().getIndividualNameList()){
+				if(nameList.getId() == id){
+					nameType = nameList;
+					hidef.getAccountholder().setIndividualName(nameType);
+					hidef.getAccountholder().setTitleList(nameType.getTitleList());
+					hidef.getAccountholder().setMiddlenameList(nameType.getMiddlenameList());
+					hidef.getAccountholder().setGenerateIdentifilerList(nameType.getGenerateIdentifilerList());
+					hidef.getAccountholder().setSuffixList(nameType.getSuffixList());
+					break;
+				}
+			}
+		}
+		
+		
+		List<Hicountry> hicountryList = ctccommonDropdownService.getAllCountries();
+		List<Cbcaddresstype> cbcaddresstype = ctccommonDropdownService.getAllAddressType();
+		List<Cbcnametype> cbcnametype = ctccommonDropdownService.getAllNameType();
+		map.put("tinlist", hicountryList);
+		map.put("addressType", cbcaddresstype);
+		map.put("nameType", cbcnametype);
+		model.addAttribute("hidef", hidef);
+        return "crsAccountHolder";
+	}
+	
+	@GetMapping(value ="/admin/crs/editSaveIndividualNameGrid")
+	public String editSaveIndividualNameGrid(@ModelAttribute("hidef")HidefVo hidef,Map<String, Object> map,
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getIndividualNameList() != null){
+			for(NameTypeVo nameList :hidef.getAccountholder().getIndividualNameList()){
+				if(hidef.getAccountholder().getIndividualName().getId() == nameList.getId()){
+					nameList.setFirstName(hidef.getAccountholder().getIndividualName().getFirstName());
+					nameList.setGeneralSuffix(hidef.getAccountholder().getIndividualName().getGeneralSuffix());
+					nameList.setGenerateIdentifilerList(hidef.getAccountholder().getGenerateIdentifilerList());
+					nameList.setLastName(hidef.getAccountholder().getIndividualName().getLastName());
+					nameList.setMiddlenameList(hidef.getAccountholder().getMiddlenameList());
+					nameList.setName(hidef.getAccountholder().getIndividualName().getName());
+					nameList.setNamePrefix(hidef.getAccountholder().getIndividualName().getNamePrefix());
+					nameList.setNameType(hidef.getAccountholder().getIndividualName().getNameType());
+					nameList.setPrecedingTitle(hidef.getAccountholder().getIndividualName().getPrecedingTitle());
+					nameList.setSuffixList(hidef.getAccountholder().getSuffixList());
+					nameList.setTitleList(hidef.getAccountholder().getTitleList());
+					break;
+				}
+				
+			}
+		}
+		model.addAttribute("hidef", hidef);
+        return "crsAccountHolder";
+	}
+	@RequestMapping(value = "/admin/crs/deleteIndividualNameGrid", method = RequestMethod.GET)
+	@ResponseBody
+	public String deleteIndividualNameGrid(@ModelAttribute("hidef")HidefVo hidef,@RequestParam(required = true) int id, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		NameTypeVo nameView = new NameTypeVo();
+		List<NameTypeVo> nameList = null;
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getIndividualNameList() != null && hidef.getAccountholder().getIndividualNameList().size()>0) {
+			
+			nameList = hidef.getAccountholder().getIndividualNameList();
+			for(NameTypeVo  nameType: nameList) {
+				if(nameType.getId()==id) {
+					nameView = nameType;
+					List<NameTypeVo> copyList = new ArrayList<NameTypeVo>(nameList);
+					copyList.remove(nameView);
+					hidef.getAccountholder().setIndividualNameList(copyList);
+				}
+			}
+			
+		}
+		
+		String arrayToJson = mapper.writeValueAsString(nameView);
+		
+        return arrayToJson;
+	}
 	
 	
 	

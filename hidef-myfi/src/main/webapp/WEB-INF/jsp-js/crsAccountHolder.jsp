@@ -855,7 +855,6 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 	</div>
 </div>
 
-
 <div class="modal fade" id="editAccountHolderIndividualName" tabindex="-1"
 	role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
@@ -911,13 +910,13 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 				 <div class="clearfix"></div>		
 				 <br/>
 				<div class="form-group col-md-6">
-					<div id="accountHolderNameTitleGridPU"></div>
+					<div id="editaccountHolderNameTitleGridPU"></div>
 					<div id="pager"></div>
 				</div>
 				 <div class="clearfix"></div>		
 				 <br/>
 				 <div class="form-group col-md-6">
-					<div id="accountHolderNameMiddleNameGridPU"></div>
+					<div id="editaccountHolderNameMiddleNameGridPU"></div>
 					<div id="pager"></div>
 				</div>
 				<div class="clearfix"></div>		
@@ -935,13 +934,13 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 				 <div class="clearfix"></div>		
 				 <br/>
 				  <div class="form-group col-md-6">
-					<div id="accountHolderNameGenerationIdentifierGridPU"></div>
+					<div id="editaccountHolderNameGenerationIdentifierGridPU"></div>
 					<div id="pager"></div>
 				</div>
 				 <div class="clearfix"></div>		
 				 <br/>
 				  <div class="form-group col-md-6">
-					<div id="accountHolderNameSuffixGridPU"></div>
+					<div id="editaccountHolderNameSuffixGridPU"></div>
 					<div id="pager"></div>
 				</div>
 				<div class="clearfix"></div>		
@@ -955,12 +954,119 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 			<div class="clearfix"></div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-				<button type="button" onClick="saveNewIndividualNameClicked();" class="btn btn-primary" data-dismiss="modal">Save</button>
+				<button type="button" onClick="saveEditedNewIndividualNameClicked();" class="btn btn-primary" data-dismiss="modal">Save</button>
 			</div>
 		</div>
 		</form:form>
 	</div>
 </div>
+
+<div class="modal fade" id="viewAccountHolderIndividualName1" tabindex="-1"
+	role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	 <form:form  modelAttribute="hidef" name="viewAccountHolderIndividualName1" id="viewAccountHolderIndividualName1">
+		<div class="modal-content">
+			<div class="modal-header" id="popUpModelHeader">
+				<h5 class="modal-title" id="exampleModalLabel">
+					<strong><font color="white">VIEW NAME</font></strong>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="clearfix"></div>
+				<br/>
+				<div class="form-group col-md-6">
+					<label for="language">Name:</label> <form:input
+						class="form-control" id="name" placeholder="Name" path="accountholder.individualName.name"
+						name="Name"></form:input>
+				 </div>
+				 <div class="form-group col-md-6">
+					<label for="">Name Type:</label> <form:select class="form-control"
+						id="countryCodeReportingFI" path="accountholder.individualName.nameType">
+						<!-- <option value="0">--Choose Name Type--</option>
+						<option value="1">OECD201</option>
+						<option value="2">OECD202</option>
+						<option value="3">OECD203</option>
+						<option value="4">OECD204</option>
+						<option value="5">OECD205</option>
+						<option value="6">OECD206</option>
+						<option value="7">OECD207</option>
+						<option value="8">OECD208</option> -->
+						<c:forEach items="${nameType}" var="nameType">
+							<form:option value="${nameType.nameType}">
+								${nameType.nameType}
+							</form:option>
+						</c:forEach>
+					</form:select>
+				</div>
+				<div class="clearfix"></div>		
+				<div class="form-group col-md-6">
+					<label for="language">Preceding Title:</label> <form:input
+						class="form-control" id="precedingTitle" placeholder="Preceding Title"
+						name="precedingTitle" path="accountholder.individualName.precedingTitle"></form:input>
+				 </div>	
+				 <div class="form-group col-md-6">
+					<label for="language">First Name:</label> <form:input
+						class="form-control" id="firstName" placeholder="First Name"
+						name="firstName" path="accountholder.individualName.firstName"/> 
+				 </div>		
+				 <div class="clearfix"></div>		
+				 <br/>
+				<div class="form-group col-md-6">
+					<div id="viewaccountHolderNameTitleGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				 <div class="clearfix"></div>		
+				 <br/>
+				 <div class="form-group col-md-6">
+					<div id="viewaccountHolderNameMiddleNameGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				<div class="clearfix"></div>		
+				 <br/>
+				 <div class="form-group col-md-6">
+					<label for="language">Name Prefix:</label> <form:input
+						class="form-control" id="namePrefix" placeholder="Name Prefix"
+						name="namePrefix" path="accountholder.individualName.namePrefix"></form:input>
+				 </div>	
+				 <div class="form-group col-md-6">
+					<label for="language">Last Name:</label> <form:input
+						class="form-control" id="lastName" placeholder="Last Name"
+						name="lastName" path="accountholder.individualName.lastName"></form:input>
+				 </div>		
+				 <div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<div id="viewaccountHolderNameGenerationIdentifierGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				 <div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<div id="viewaccountHolderNameSuffixGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				<div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<label for="language">General Suffix:</label> <form:input
+						class="form-control" id="generalSuffix" placeholder="General Suffix"
+						name="generalSuffix" path="accountholder.individualName.generalSuffix"></form:input>
+				 </div>	
+			</div>
+			<div class="clearfix"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				<!-- <button type="button" onClick="saveNewIndividualNameClicked();" class="btn btn-primary" data-dismiss="modal">Save</button> -->
+			</div>
+		</div>
+		</form:form>
+	</div>
+</div>
+
 
 <!-- Org Address -->
 
@@ -1749,6 +1855,222 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 		</div>
 	</div>
 </div>
+
+
+
+<div class="modal fade" id="addAccountHolderCtrlNameName" tabindex="-1"
+	role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	 <form:form  modelAttribute="hidef" name="accountHolderCtrlPersonName" id="accountHolderCtrlPersonName">
+		<div class="modal-content">
+			<div class="modal-header" id="popUpModelHeader">
+				<h5 class="modal-title" id="exampleModalLabel">
+					<strong><font color="white">ADD NEW NAME</font></strong>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="clearfix"></div>
+				<br/>
+				<div class="form-group col-md-6">
+					<label for="language">Name:</label> <form:input
+						class="form-control" id="name" placeholder="Name" path="accountholder.ctrlPersonName.name"
+						name="Name"></form:input>
+				 </div>
+				 <div class="form-group col-md-6">
+					<label for="">Name Type:</label> <form:select class="form-control"
+						id="countryCodeReportingFI" path="accountholder.ctrlPersonName.nameType">
+						<!-- <option value="0">--Choose Name Type--</option>
+						<option value="1">OECD201</option>
+						<option value="2">OECD202</option>
+						<option value="3">OECD203</option>
+						<option value="4">OECD204</option>
+						<option value="5">OECD205</option>
+						<option value="6">OECD206</option>
+						<option value="7">OECD207</option>
+						<option value="8">OECD208</option> -->
+						<c:forEach items="${nameType}" var="nameType">
+							<form:option value="${nameType.nameType}">
+								${nameType.nameType}
+							</form:option>
+						</c:forEach>
+					</form:select>
+				</div>
+				<div class="clearfix"></div>		
+				<div class="form-group col-md-6">
+					<label for="language">Preceding Title:</label> <form:input
+						class="form-control" id="precedingTitle" placeholder="Preceding Title"
+						name="precedingTitle" path="accountholder.ctrlPersonName.precedingTitle"></form:input>
+				 </div>	
+				 <div class="form-group col-md-6">
+					<label for="language">First Name:</label> <form:input
+						class="form-control" id="firstName" placeholder="First Name"
+						name="firstName" path="accountholder.ctrlPersonName.firstName"/> 
+				 </div>		
+				 <div class="clearfix"></div>		
+				 <br/>
+				<div class="form-group col-md-6">
+					<div id="accountHolderCtrlNameTitleGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				 <div class="clearfix"></div>		
+				 <br/>
+				 <div class="form-group col-md-6">
+					<div id="accountHolderCtrlNameMiddleNameGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				<div class="clearfix"></div>		
+				 <br/>
+				 <div class="form-group col-md-6">
+					<label for="language">Name Prefix:</label> <form:input
+						class="form-control" id="namePrefix" placeholder="Name Prefix"
+						name="namePrefix" path="accountholder.ctrlPersonName.namePrefix"></form:input>
+				 </div>	
+				 <div class="form-group col-md-6">
+					<label for="language">Last Name:</label> <form:input
+						class="form-control" id="lastName" placeholder="Last Name"
+						name="lastName" path="accountholder.ctrlPersonName.lastName"></form:input>
+				 </div>		
+				 <div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<div id="accountHolderCtrlNameGenerationIdentifierGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				 <div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<div id="accountHolderCtrlNameSuffixGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				<div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<label for="language">General Suffix:</label> <form:input
+						class="form-control" id="generalSuffix" placeholder="General Suffix"
+						name="generalSuffix" path="accountholder.ctrlPersonName.generalSuffix"></form:input>
+				 </div>	
+			</div>
+			<div class="clearfix"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				<button type="button" onClick="saveNewCtrlPersonNameClicked();" class="btn btn-primary" data-dismiss="modal">Save</button>
+			</div>
+		</div>
+		</form:form>
+	</div>
+</div>
+
+
+<div class="modal fade" id="editAccountHolderCtrlNameName" tabindex="-1"
+	role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	 <form:form  modelAttribute="hidef" name="editaccountHolderCtrlPersonName" id="editaccountHolderCtrlPersonName">
+		<div class="modal-content">
+			<div class="modal-header" id="popUpModelHeader">
+				<h5 class="modal-title" id="exampleModalLabel">
+					<strong><font color="white">ADD NEW NAME</font></strong>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="clearfix"></div>
+				<br/>
+				<div class="form-group col-md-6">
+					<label for="language">Name:</label> <form:input
+						class="form-control" id="name" placeholder="Name" path="accountholder.ctrlPersonName.name"
+						name="Name"></form:input>
+				 </div>
+				 <div class="form-group col-md-6">
+					<label for="">Name Type:</label> <form:select class="form-control"
+						id="countryCodeReportingFI" path="accountholder.ctrlPersonName.nameType">
+						<!-- <option value="0">--Choose Name Type--</option>
+						<option value="1">OECD201</option>
+						<option value="2">OECD202</option>
+						<option value="3">OECD203</option>
+						<option value="4">OECD204</option>
+						<option value="5">OECD205</option>
+						<option value="6">OECD206</option>
+						<option value="7">OECD207</option>
+						<option value="8">OECD208</option> -->
+						<c:forEach items="${nameType}" var="nameType">
+							<form:option value="${nameType.nameType}">
+								${nameType.nameType}
+							</form:option>
+						</c:forEach>
+					</form:select>
+				</div>
+				<div class="clearfix"></div>		
+				<div class="form-group col-md-6">
+					<label for="language">Preceding Title:</label> <form:input
+						class="form-control" id="precedingTitle" placeholder="Preceding Title"
+						name="precedingTitle" path="accountholder.ctrlPersonName.precedingTitle"></form:input>
+				 </div>	
+				 <div class="form-group col-md-6">
+					<label for="language">First Name:</label> <form:input
+						class="form-control" id="firstName" placeholder="First Name"
+						name="firstName" path="accountholder.ctrlPersonName.firstName"/> 
+				 </div>		
+				 <div class="clearfix"></div>		
+				 <br/>
+				<div class="form-group col-md-6">
+					<div id="accountHoldereditCtrlNameTitleGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				 <div class="clearfix"></div>		
+				 <br/>
+				 <div class="form-group col-md-6">
+					<div id="accountHoldereditCtrlNameMiddleNameGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				<div class="clearfix"></div>		
+				 <br/>
+				 <div class="form-group col-md-6">
+					<label for="language">Name Prefix:</label> <form:input
+						class="form-control" id="namePrefix" placeholder="Name Prefix"
+						name="namePrefix" path="accountholder.ctrlPersonName.namePrefix"></form:input>
+				 </div>	
+				 <div class="form-group col-md-6">
+					<label for="language">Last Name:</label> <form:input
+						class="form-control" id="lastName" placeholder="Last Name"
+						name="lastName" path="accountholder.ctrlPersonName.lastName"></form:input>
+				 </div>		
+				 <div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<div id="accountHoldereditCtrlNameGenerationIdentifierGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				 <div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<div id="accountHoldereditCtrlNameSuffixGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				<div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<label for="language">General Suffix:</label> <form:input
+						class="form-control" id="generalSuffix" placeholder="General Suffix"
+						name="generalSuffix" path="accountholder.ctrlPersonName.generalSuffix"></form:input>
+				 </div>	
+			</div>
+			<div class="clearfix"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				<button type="button" onClick="controllingPersonEditSaveName();" class="btn btn-primary" data-dismiss="modal">Save</button>
+			</div>
+		</div>
+		</form:form>
+	</div>
+</div>
+
 
 
 
