@@ -11,5 +11,6 @@ public interface PackageGenerationService {
 	public String generateCBCPackage(HidefVo hidef) throws Exception;
 	
 	public String generateCRSXMLMetadata(HidefVo hidef)throws IOException;
+	public String generateCRSXMLPayload(HidefVo hidef)throws IOException;
 
 }

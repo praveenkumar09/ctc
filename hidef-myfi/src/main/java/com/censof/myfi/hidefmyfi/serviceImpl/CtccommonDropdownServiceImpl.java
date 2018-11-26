@@ -52,77 +52,76 @@ import com.censof.myfi.hidefmyfi.repository.SenderfileidRepository;
 import com.censof.myfi.hidefmyfi.service.CtccommonDropdownService;
 
 @Service("ctccommonDropdownService")
-public class CtccommonDropdownServiceImpl implements CtccommonDropdownService{
+public class CtccommonDropdownServiceImpl implements CtccommonDropdownService {
 
 	@Autowired
 	private HiCountryRepository hiCountryRepository;
-	
+
 	@Autowired
 	private CbcAddressTypeRepository cbcAddressTypeRepository;
-	
+
 	@Autowired
 	private DocumentTypeIndicatorRepository documentTypeIndicatorRepository;
-	
+
 	@Autowired
 	private ReportingRoleTypeRepository reportingRoleTypeRepository;
-	
+
 	@Autowired
 	private NameTypeRepository nameTypeRepository;
-	
+
 	@Autowired
 	private FileFormatCdRepository fileFormatCdRepository;
-	
+
 	@Autowired
 	private CBCBinaryEncodingRepository cBCBinaryEncodingRepository;
-	
+
 	@Autowired
 	private CommunicationTypeRepository communicationTypeRepository;
-	
+
 	@Autowired
 	private CbcsummaryreferenceRepository cbcsummaryreferenceRepository;
-	
+
 	@Autowired
 	private CbcFileTypeIndicRepository cbcFileTypeIndicRepository;
-	
+
 	@Autowired
 	private CbcbizactivitiesreferenceRepository cbcbizactivitiesreferenceRepository;
-	
+
 	@Autowired
 	private CbcCurrencyRepository cbcCurrencyRepository;
-	
+
 	@Autowired
 	private DocrefidRepository docrefidRepository;
-	
+
 	@Autowired
 	private MessagerefidRepository messageRefIdRepository;
-	
+
 	@Autowired
 	private SenderfileidRepository senderFileIdRepository;
-	
+
 	@Autowired
 	private CbcmessagetypeindicRepository cbcmessagetypeindicRepository;
-	
+
 	@Autowired
 	private CrsmessagetypeindicRepository crsmessagetypeindicRepository;
-	
+
 	@Autowired
 	private MessagetypeRepository messagetypeRepository;
-	
+
 	@Autowired
-	private CrspaymenttypeRepository  crspaymenttypeRepository;
-	
+	private CrspaymenttypeRepository crspaymenttypeRepository;
+
 	@Autowired
 	private CrsaccounthodertypeRepository crsaccounthodertypeRepository;
-	
+
 	@Autowired
 	private CrsctrlpersontypeRepository crsctrlpersontypeRepository;
-	
-	
+
 	@Override
 	public List<Hicountry> getAllCountries() {
 		// TODO Auto-generated method stub
-		return hiCountryRepository.findAllCountry();	}
-
+		return hiCountryRepository.findAllCountry();
+	}
 
 	@Override
 	public List<Cbcaddresstype> getAllAddressType() {
@@ -130,13 +129,11 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService{
 		return cbcAddressTypeRepository.findAllAddressTypes();
 	}
 
-
 	@Override
 	public List<Cbcdocumenttypeindicator> getAllDocumentTypeIndicator() {
 		// TODO Auto-generated method stub
 		return documentTypeIndicatorRepository.findAllReportingTypeIndicator();
 	}
-
 
 	@Override
 	public List<Cbcreportingrole> getAllReportingRoleType() {
@@ -144,13 +141,11 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService{
 		return reportingRoleTypeRepository.findAllReportingTypes();
 	}
 
-
 	@Override
 	public List<Cbcnametype> getAllNameType() {
 		// TODO Auto-generated method stub
 		return nameTypeRepository.findAllNameTypes();
 	}
-
 
 	@Override
 	public List<Cbcbinaryencodingschemecd> getAllBinaryEncodingSchemesType() {
@@ -158,13 +153,11 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService{
 		return cBCBinaryEncodingRepository.findAllBinaryencodingSchemeTypes();
 	}
 
-
 	@Override
 	public List<Cbcfileformatcd> getAllFileFormatCdType() {
 		// TODO Auto-generated method stub
 		return fileFormatCdRepository.findAllFileFormatCdTypes();
 	}
-
 
 	@Override
 	public List<Ctscommunicationtypecd> getAllCommunicationTypeCd() {
@@ -172,37 +165,34 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService{
 		return communicationTypeRepository.findAllCommunicationTypes();
 	}
 
-
 	@Override
 	public List<Cbcsummaryreference> getAllCbcSummaryReference() {
 		// TODO Auto-generated method stub
 		return cbcsummaryreferenceRepository.findAllSummaryReference();
 	}
 
-
 	@Override
 	public Hicountry findCountryById(BigInteger id) {
 		// TODO Auto-generated method stub
 		Hicountry country = null;
 		Optional<Hicountry> optionalCountry = hiCountryRepository.findById(id);
-		if(optionalCountry.isPresent()) {
+		if (optionalCountry.isPresent()) {
 			country = optionalCountry.get();
 		}
 		return country;
 	}
 
-
 	@Override
 	public Ctscommunicationtypecd findCtscommunicationtypecdbyId(String id) {
 		// TODO Auto-generated method stub
 		Ctscommunicationtypecd commmunicationType = null;
-		Optional<Ctscommunicationtypecd> communicationTypeOptional = communicationTypeRepository.findById(new BigInteger(id));
-		if(communicationTypeOptional.isPresent()) {
+		Optional<Ctscommunicationtypecd> communicationTypeOptional = communicationTypeRepository
+				.findById(new BigInteger(id));
+		if (communicationTypeOptional.isPresent()) {
 			commmunicationType = communicationTypeOptional.get();
 		}
 		return commmunicationType;
 	}
-
 
 	@Override
 	public List<Cbcfiletypeindic> getAllFileTypeIndic() {
@@ -210,80 +200,76 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService{
 		return cbcFileTypeIndicRepository.findAll();
 	}
 
-
 	@Override
 	public List<Cbcbizactivitiesreference> getAllCbcbizactivitiesreference() {
 		// TODO Auto-generated method stub
 		return cbcbizactivitiesreferenceRepository.findAllBizActivitiesTypes();
 	}
 
-
 	@Override
 	public List<CbcCurrency> getAllCurrencyreference() {
 		// TODO Auto-generated method stub
 		return cbcCurrencyRepository.findAllCurrency();
 	}
-	
+
 	@Override
 	public Cbcbizactivitiesreference findBizActivitiesById(int id) {
 		// TODO Auto-generated method stub
 		Cbcbizactivitiesreference bizreference = null;
-		Optional<Cbcbizactivitiesreference> optionalBiz = cbcbizactivitiesreferenceRepository.findById(BigInteger.valueOf(id));
-		if(optionalBiz.isPresent()) {
+		Optional<Cbcbizactivitiesreference> optionalBiz = cbcbizactivitiesreferenceRepository
+				.findById(BigInteger.valueOf(id));
+		if (optionalBiz.isPresent()) {
 			bizreference = optionalBiz.get();
 		}
 		return bizreference;
 	}
 
-
 	@Override
 	public Cbcsummaryreference findSummaryReferenceById(int id) {
 		// TODO Auto-generated method stub
 		Cbcsummaryreference cbcSummaryReference = null;
-		Optional<Cbcsummaryreference> optionalSummaryReference = cbcsummaryreferenceRepository.findById(BigInteger.valueOf(id));
-		if(optionalSummaryReference.isPresent()) {
+		Optional<Cbcsummaryreference> optionalSummaryReference = cbcsummaryreferenceRepository
+				.findById(BigInteger.valueOf(id));
+		if (optionalSummaryReference.isPresent()) {
 			cbcSummaryReference = optionalSummaryReference.get();
 		}
 		return cbcSummaryReference;
 	}
-
 
 	@Override
 	public Cbcfileformatcd findFileFormatCodeById(int id) {
 		// TODO Auto-generated method stub
 		Cbcfileformatcd fileFormatCodeOb = null;
 		Optional<Cbcfileformatcd> optionalFileFormatCode = fileFormatCdRepository.findById(BigInteger.valueOf(id));
-		if(optionalFileFormatCode.isPresent()) {
+		if (optionalFileFormatCode.isPresent()) {
 			fileFormatCodeOb = optionalFileFormatCode.get();
 		}
 		return fileFormatCodeOb;
 	}
 
-
 	@Override
 	public Cbcbinaryencodingschemecd findBinaryEncodingSchemeById(int id) {
 		// TODO Auto-generated method stub
 		Cbcbinaryencodingschemecd binaryEncodingScheemeObject = null;
-		Optional<Cbcbinaryencodingschemecd> binaryOptionOb = cBCBinaryEncodingRepository.findById(BigInteger.valueOf(id));
-		if(binaryOptionOb.isPresent()) {
+		Optional<Cbcbinaryencodingschemecd> binaryOptionOb = cBCBinaryEncodingRepository
+				.findById(BigInteger.valueOf(id));
+		if (binaryOptionOb.isPresent()) {
 			binaryEncodingScheemeObject = binaryOptionOb.get();
 		}
-		
+
 		return binaryEncodingScheemeObject;
 	}
-
 
 	@Override
 	public CbcCurrency findCurrencyById(int id) {
 		// TODO Auto-generated method stub
 		CbcCurrency cbcCurrency = null;
 		Optional<CbcCurrency> optionCurrencyObject = cbcCurrencyRepository.findById(id);
-		if(optionCurrencyObject.isPresent()) {
+		if (optionCurrencyObject.isPresent()) {
 			cbcCurrency = optionCurrencyObject.get();
 		}
 		return cbcCurrency;
 	}
-
 
 	@Override
 	public Docrefid findDocRefIdByDate(String date) {
@@ -292,14 +278,12 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService{
 		return docRefId;
 	}
 
-
 	@Override
 	public Messagerefid findMessageRefIdByDate(String date) {
 		// TODO Auto-generated method stub
 		Messagerefid messageRefId = messageRefIdRepository.findByDate(date);
 		return messageRefId;
 	}
-
 
 	@Override
 	public Senderfileid findSenderFileIdByDate(String date) {
@@ -308,14 +292,12 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService{
 		return senderFileId;
 	}
 
-
 	@Override
 	public List<Cbcmessagetypeindic> findAllCbcmessagetypeindic() {
 		// TODO Auto-generated method stub
 		List<Cbcmessagetypeindic> messageTypeIndic = cbcmessagetypeindicRepository.findAllMessageTypeIndicator();
 		return messageTypeIndic;
 	}
-
 
 	@Override
 	public List<Crsmessagetypeindic> findAllCrsMessageTypeIndic() {
@@ -324,14 +306,12 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService{
 		return crsMessageTypeIndic;
 	}
 
-
 	@Override
 	public List<Messagetype> findAllMessageTypes() {
 		// TODO Auto-generated method stub
-		List<Messagetype>  messageTypes = messagetypeRepository.findAllMessageTypes();
+		List<Messagetype> messageTypes = messagetypeRepository.findAllMessageTypes();
 		return messageTypes;
 	}
-
 
 	@Override
 	public List<Crspaymenttype> findAllPaymentType() {
@@ -340,7 +320,6 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService{
 		return paymentType;
 	}
 
-
 	@Override
 	public List<Crsaccounthodertype> findAllAccountHolderType() {
 		// TODO Auto-generated method stub
@@ -348,12 +327,33 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService{
 		return accountHolderType;
 	}
 
-
 	@Override
 	public List<Crsctrlpersontype> findAllControllingPersonType() {
 		// TODO Auto-generated method stub
 		List<Crsctrlpersontype> controllingPersonType = crsctrlpersontypeRepository.findAllControllingPersonType();
 		return controllingPersonType;
+	}
+
+	@Override
+	public Cbcnametype findNameById(int id) {
+		// TODO Auto-generated method stub
+		Cbcnametype nameType = null;
+		Optional<Cbcnametype> nameById = nameTypeRepository.findById(BigInteger.valueOf(id));
+		if (nameById.isPresent()) {
+			nameType = nameById.get();
+		}
+		return nameType;
+	}
+
+	@Override
+	public Crspaymenttype findPaymentTypeById(int id) {
+		// TODO Auto-generated method stub
+		Crspaymenttype paymentType = null;
+		Optional<Crspaymenttype> paymentTypeById = crspaymenttypeRepository.findById(BigInteger.valueOf(id));
+		if (paymentTypeById.isPresent()) {
+			paymentType = paymentTypeById.get();
+		}
+		return paymentType;
 	}
 
 }

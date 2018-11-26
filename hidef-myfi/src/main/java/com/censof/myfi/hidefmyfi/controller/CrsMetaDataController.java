@@ -127,6 +127,33 @@ public class CrsMetaDataController {
 
 	}
 	
+	@GetMapping(value = "/admin/crs/generateCRSPayload", produces = MediaType.APPLICATION_XML_VALUE)
+	public ModelAndView generateCRSPayload(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
+			Map<String, Object> map, HttpServletResponse response) throws IOException {
+
+		String payloadContentInString = "";
+		response.setContentType("application/xml");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String payloadFileName = auth.getName()+"_"+hidef.getUserprofile().getCommunicationType()+"_Payload.xml";
+		response.setHeader("Content-Disposition", "attachment;filename=\""+payloadFileName+"\"");
+		payloadContentInString = packageGenerationService.generateCRSXMLPayload(hidef);
+		response.setContentLength(payloadContentInString.length());
+		ServletOutputStream outStream = response.getOutputStream();
+		outStream.write(payloadContentInString.getBytes());
+		outStream.flush();
+		outStream.close();
+		response.flushBuffer();
+		
+		
+		//ctcDataSaveService.saveCtcData(hidef);
+		
+		
+		
+		//FileCopyUtils.copy(metaDataContentInString, response.getWriter());
+		return null;
+
+	}
+	
 	
 	private HidefVo setUserProfileInfoForMetaData(HidefVo hidef) {
 		// TODO Auto-generated method stub

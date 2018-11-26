@@ -61,4 +61,7 @@ public interface CtccommonDropdownService {
 	public List<Crspaymenttype> findAllPaymentType();
 	public List<Crsaccounthodertype> findAllAccountHolderType();
 	public List<Crsctrlpersontype> findAllControllingPersonType();
+	
+	public Cbcnametype findNameById(int id);
+	public Crspaymenttype findPaymentTypeById(int id); 
 }

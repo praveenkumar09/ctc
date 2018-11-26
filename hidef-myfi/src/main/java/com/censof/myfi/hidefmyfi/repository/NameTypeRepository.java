@@ -14,4 +14,5 @@ public interface NameTypeRepository extends JpaRepository<Cbcnametype, BigIntege
 	
 	@Query("SELECT p FROM Cbcnametype p")
     public List<Cbcnametype> findAllNameTypes();
+	
 }
