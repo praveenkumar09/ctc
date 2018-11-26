@@ -120,21 +120,21 @@
 						<br />
 						<button id="singlebutton" name="singlebutton"
 							onClick="additionalInfoPrevious();return false;" class="btn btn-warning">Previous</button>
-						<!-- <button id="singlebutton" name="singlebutton" onClick="saveAllCBCData();"
-							class="btn btn-danger">Save</button> -->
+					 <button id="saveCBCDataButton" name="singlebutton" onClick="saveAllCBCData();"
+							class="btn btn-success">Save</button> <br/><br/>
 						<!-- <button id="singlebutton" name="singlebutton" onClick="#"
 							class="btn btn-danger">Reset</button> -->
 							<br/><br/>
-						<button id="singlebutton" name="singlebutton"
-							onClick="generateMetaData();" class="btn btn-success">Generate
+						<button id="generateCBCMetadata" name="singlebutton"
+							onClick="generateMetaData();" class="btn btn-primary">Generate
 							MetaData</button>
-						<button id="singlebutton" name="singlebutton"
-							onClick="generatePayload();" class="btn btn-success">Generate
+						<button id="generateCBCPayload" name="singlebutton"
+							onClick="generatePayload();" class="btn btn-primary">Generate
 							Payload</button>
 							<br/>
 							<br/>
-							<button id="singlebutton" name="singlebutton"
-							onClick="generatePackage();" class="btn btn-success">Save And Generate
+							<button id="generateCBCPackage" name="singlebutton"
+							onClick="generatePackage();" class="btn btn-primary">Generate
 							Package</button>
 					</div>
 					</c:otherwise>

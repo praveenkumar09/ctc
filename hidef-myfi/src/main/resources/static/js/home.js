@@ -5643,24 +5643,6 @@ function cbcReportsDeleteAddress(id) {
 	});
 }
 
-function generateMetaData() {
-	var items = $("#cbcAddInfoGrid").jsGrid("option", "data");
-	var arrayLength = items.length;
-	var errorFlag = false;
-	if (arrayLength <= 0) {
-		$("#documentReferenceIdError").empty();
-		$("#documenttypeindicError").empty();
-		$("#otherInfoError").empty();
-		$("#cbcaddinfoError").empty().append("CBC Additional Info not empty!");
-		errorFlag = true;
-	}
-
-	if (!errorFlag) {
-		var downloadUrl = "cbc/generateMetaData";
-		window.location.href = downloadUrl;
-	}
-}
-
 
 function generateCRSMetaData() {
 	/*var items = $("#cbcAddInfoGrid").jsGrid("option", "data");
@@ -5680,41 +5662,8 @@ function generateCRSMetaData() {
 	/*}*/
 }
 
-function generatePayload() {
-	var items = $("#cbcAddInfoGrid").jsGrid("option", "data");
-	var arrayLength = items.length;
-	var errorFlag = false;
-	if (arrayLength <= 0) {
-		$("#documentReferenceIdError").empty();
-		$("#documenttypeindicError").empty();
-		$("#otherInfoError").empty();
-		$("#cbcaddinfoError").empty().append("CBC Additional Info not empty!");
-		errorFlag = true;
-	}
 
-	if (!errorFlag) {
-		var downloadUrl = "cbc/generatePayload";
-		window.location.href = downloadUrl;
-	}
-}
 
-function generatePackage() {
-	var items = $("#cbcAddInfoGrid").jsGrid("option", "data");
-	var arrayLength = items.length;
-	var errorFlag = false;
-	if (arrayLength <= 0) {
-		$("#documentReferenceIdError").empty();
-		$("#documenttypeindicError").empty();
-		$("#otherInfoError").empty();
-		$("#cbcaddinfoError").empty().append("CBC Additional Info not empty!");
-		errorFlag = true;
-	}
-
-	if (!errorFlag) {
-		var downloadUrl = "cbc/generatePackage";
-		window.location.href = downloadUrl;
-	}
-}
 
 function onClickImportExcelCalled() {
 	$("#importExcel").submit();

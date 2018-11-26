@@ -1,5 +1,8 @@
 $(document).ready(function() {
 	console.log("Inside here");
+	$("#generateCBCPackage").hide();
+	$("#generateCBCPayload").hide();
+	$("#generateCBCMetadata").hide();
 	var cbcAddionalInfo = {};
 	
 	$("#cbcAddInfoGrid")
@@ -313,6 +316,8 @@ function saveAllCBCData(){
        success: function(data) {
            console
                .log("data ====>"+data);
+           $("#saveCBCDataButton").hide();
+           $("#generateCBCMetadata").show();
            //showCbcAddInfo(0,0,1);
        },
        error: function(
@@ -322,6 +327,65 @@ function saveAllCBCData(){
        }
    });
 
+}
+
+function generatePackage() {
+	var items = $("#cbcAddInfoGrid").jsGrid("option", "data");
+	var arrayLength = items.length;
+	var errorFlag = false;
+	if (arrayLength <= 0) {
+		$("#documentReferenceIdError").empty();
+		$("#documenttypeindicError").empty();
+		$("#otherInfoError").empty();
+		$("#cbcaddinfoError").empty().append("CBC Additional Info not empty!");
+		errorFlag = true;
+	}
+
+	if (!errorFlag) {
+		$("#generateCBCPackage").hide();
+		var downloadUrl = "cbc/generatePackage";
+		window.location.href = downloadUrl;
+	}
+}
+
+function generatePayload() {
+	var items = $("#cbcAddInfoGrid").jsGrid("option", "data");
+	var arrayLength = items.length;
+	var errorFlag = false;
+	if (arrayLength <= 0) {
+		$("#documentReferenceIdError").empty();
+		$("#documenttypeindicError").empty();
+		$("#otherInfoError").empty();
+		$("#cbcaddinfoError").empty().append("CBC Additional Info not empty!");
+		errorFlag = true;
+	}
+
+	if (!errorFlag) {
+	    $("#generateCBCPayload").hide();
+		$("#generateCBCPackage").show();
+		var downloadUrl = "cbc/generatePayload";
+		window.location.href = downloadUrl;
+	}
+}
+
+function generateMetaData() {
+	var items = $("#cbcAddInfoGrid").jsGrid("option", "data");
+	var arrayLength = items.length;
+	var errorFlag = false;
+	if (arrayLength <= 0) {
+		$("#documentReferenceIdError").empty();
+		$("#documenttypeindicError").empty();
+		$("#otherInfoError").empty();
+		$("#cbcaddinfoError").empty().append("CBC Additional Info not empty!");
+		errorFlag = true;
+	}
+
+	if (!errorFlag) {
+		$("#generateCBCMetadata").hide();
+		$("#generateCBCPayload").show();
+		var downloadUrl = "cbc/generateMetaData";
+		window.location.href = downloadUrl;
+	}
 }
 
 

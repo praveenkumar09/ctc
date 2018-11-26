@@ -861,7 +861,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 	@Override
 	public String generateCBCPackage(HidefVo hidef) throws Exception {
 
-		ctcDataSaveService.saveCtcData(hidef);
+		//ctcDataSaveService.saveCtcData(hidef);
 
 		// TODO Auto-generated method stub
 		String privarecert = fetchProperties("privatecertpath");
