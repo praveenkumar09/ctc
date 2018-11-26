@@ -561,7 +561,8 @@ public class CbcAdditionalInfoController {
 	public ModelAndView generateCBCDownloadTemplate(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
 			Map<String, Object> map, HttpServletResponse response) throws Exception {
 
-		response.setContentType("Application/x-msexcel");
+		//response.setContentType("Application/x-msexcel");
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		response.setHeader("Content-Disposition", "attachment;filename=\"CTCTemplate.xlsx\"");
 		//File file = new File(fetchProperties("downloadTemplateLoc"));
 		//metaDataContentInString = metaDataGenerationService.generateCBCPackage(hidef);
