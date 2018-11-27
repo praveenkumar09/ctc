@@ -1062,7 +1062,43 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 			     fos.close();
 			  userProfile.setReceivingcountrycert(convFile.getAbsolutePath());
 			  }
-			  }
+			  }else {///TODO
+				  if(!StringUtils.isEmpty(hidefvo.getUserprofile().getConfigurationFileText()) && !StringUtils.isEmpty(fetchProperties("privatecertpath"))){ 
+					  /*File privateCert = new File(privarecert);
+					  hidefvo.getUserprofile().getConfigurationFile().transferTo(privateCert);*/
+						  File convFile = null;
+						  if(hidefvo.getUserprofile().getMsgType().equals("CRS")) {
+							  convFile = new File(fetchProperties("crsprivatecertpath")+'/'+hidefvo.getUserprofile().getConfigurationFileText());
+
+						  }else {
+							  
+							  convFile = new File(fetchProperties("privatecertpath")+'/'+hidefvo.getUserprofile().getConfigurationFileText());
+						  }
+					     convFile.createNewFile();
+					     FileOutputStream fos = new FileOutputStream(convFile);
+					     fos.write(hidefvo.getUserprofile().getConfigurationFile().getBytes());
+					     fos.close();
+					  userProfile.setSendingcountrycert(convFile.getAbsolutePath());
+					  }
+					  if(!StringUtils.isEmpty(hidefvo.getUserprofile().getPublicCertFileName()) && !StringUtils.isEmpty(fetchProperties("publiccertpath"))){ 
+					  /*File publicCert = new File(publiccertpath);
+					  hidefvo.getUserprofile().getConfigurationFile().transferTo(publicCert);*/
+						  File convFile = null;
+						  if(hidefvo.getUserprofile().getMsgType().equals("CRS")) {
+							  
+							  convFile = new File(fetchProperties("crspubliccertpath")+'/'+hidefvo.getUserprofile().getPublicCertFileName());
+							  
+						  }else {
+							  
+							  convFile = new File(fetchProperties("publiccertpath")+'/'+hidefvo.getUserprofile().getPublicCertFileName());
+						  }
+					     convFile.createNewFile();
+					     FileOutputStream fos = new FileOutputStream(convFile);
+					     fos.write(hidefvo.getUserprofile().getPublicCertPath().getBytes());
+					     fos.close();
+					  userProfile.setReceivingcountrycert(convFile.getAbsolutePath());
+					  }
+					  }
 		
 		//userProfile.setTransmissionid(hidefvo.getUserprofile().get);
 		userProfile = userprofileRepository.saveAndFlush(userProfile);
@@ -2597,7 +2633,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 					payldhdr.setMessageTypeIndic(hidefVo.getMetadata().getMessageTypeIndic());
 				}
 				if (!StringUtils.isEmpty(hidefVo.getMetadata().getMsgType())) {
-					payldhdr.setMessageType(hidefVo.getMetadata().getMsgType());
+					payldhdr.setMessageType(commonDropDownService.findMessageTypeById(Integer.parseInt(hidefVo.getMetadata().getMsgType())).getMsgType());
 				}
 				if (!StringUtils.isEmpty(hidefVo.getMetadata().getWarning())) {
 					payldhdr.setWarning(hidefVo.getMetadata().getWarning());
@@ -2672,9 +2708,8 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						}
 						payldreceivingCountry.setCreateDateTime(new Date());
 						payldreceivingCountry.setHdrID(payldhdr.getId());
-						if (!StringUtils.isEmpty(receivingCountry.getRecievingCountry())) {
-							payldreceivingCountry.setReceivingCountry(
-									findCountryCodeById(BigInteger.valueOf(receivingCountry.getId())));// TODO
+						if (!StringUtils.isEmpty(receivingCountry.getId())) {
+							payldreceivingCountry.setReceivingCountry(""+receivingCountry.getId());// TODO
 						}
 						payldreceivingCountry.setIsdeleted(0);
 						payldreceivingCountry = cbcpayldreceivingcountryRepository.saveAndFlush(payldreceivingCountry);
@@ -2931,7 +2966,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							cbcpayldreport
 									.setCapitalAmt(Double.valueOf(cbcReports.getCapitalAmount().replace(",", "")));
 						}
-						if (!StringUtils.isEmpty(hidefVo.getCbcReports().getCapitalCurrCode())) {
+						if (!StringUtils.isEmpty(cbcReports.getCapitalCurrCode())) {
 							cbcpayldreport.setCapitalCurrCode(findCurrencyById(cbcReports.getCapitalCurrCode()));
 						}
 						if (!StringUtils.isEmpty(cbcReports.getCorrDocRefId())) {
@@ -2992,9 +3027,9 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							cbcpayldreport.setTaxAccruedAmt(
 									Double.valueOf(cbcReports.getTaxaccruedAmount().replace(",", "")));
 						}
-						if (!StringUtils.isEmpty(hidefVo.getCbcReports().getTaxaccruedCurrCode())) {
+						if (!StringUtils.isEmpty(cbcReports.getTaxaccruedCurrCode())) {
 							cbcpayldreport.setTaxAccruedCurrCode(
-									findCurrencyById(hidefVo.getCbcReports().getTaxaccruedCurrCode()));
+									findCurrencyById(cbcReports.getTaxaccruedCurrCode()));
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTaxpaidAmount())) {
 							cbcpayldreport

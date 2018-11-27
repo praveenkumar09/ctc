@@ -1,6 +1,8 @@
 package com.censof.myfi.hidefmyfi.entity;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -15,7 +17,7 @@ public class Cbcfileformatcd implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private String id;
+	private BigInteger id;
 
 	@Column(name="cbcfileformattype")
 	private String CBCFileFormatType;
@@ -37,11 +39,11 @@ public class Cbcfileformatcd implements Serializable {
 	public Cbcfileformatcd() {
 	}
 
-	public String getId() {
+	public BigInteger getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(BigInteger id) {
 		this.id = id;
 	}
 

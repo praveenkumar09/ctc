@@ -54,7 +54,7 @@ $(document).ready(function() {
                       title: "Sending Country",
                       name: "sendingCountry",
                       type: "text",
-                      width: 50
+                      width: 40
                       ,
                       /*items: object.addressType,*/
                       visible: true
@@ -63,7 +63,7 @@ $(document).ready(function() {
                       title: "Message Type",
                       name: "messageType",
                       type: "text",
-                      width: 50,
+                      width: 40,
                       /*,
                       items: object.countryCode,*/
                       visible: true
@@ -79,7 +79,7 @@ $(document).ready(function() {
                               .attr("class",
                                   "btn btn-success btn-sm")
                               .text(
-                                  "Import")
+                                  "Import Excel here!")
                               .on(
                                   "click",
                                   function() {

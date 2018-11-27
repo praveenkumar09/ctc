@@ -64,4 +64,5 @@ public interface CtccommonDropdownService {
 	
 	public Cbcnametype findNameById(int id);
 	public Crspaymenttype findPaymentTypeById(int id); 
+	public Messagetype findMessageTypeById(int id);
 }

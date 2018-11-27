@@ -356,4 +356,15 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService {
 		return paymentType;
 	}
 
+	@Override
+	public Messagetype findMessageTypeById(int id) {
+		// TODO Auto-generated method stub
+		Messagetype messageType = null;
+		Optional<Messagetype> optionalMessageType = messagetypeRepository.findById(BigInteger.valueOf(id));
+		if(optionalMessageType.isPresent()) {
+			messageType = optionalMessageType.get();
+		}
+		return messageType;
+	}
+
 }
