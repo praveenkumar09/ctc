@@ -1557,13 +1557,22 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								}
 							} else if (currentRow.getRowNum() == 3) {
 								List<RecievingCountryVo> receivingCountryList = new ArrayList<RecievingCountryVo>();
-								RecievingCountryVo coutryVo = new RecievingCountryVo();
+								String recicingCountryListFromExcel = currentCell.getStringCellValue();
+								String[] rcArrayList = recicingCountryListFromExcel.split(",");
+								
+								for(String str: rcArrayList) {
+									RecievingCountryVo coutryVo = new RecievingCountryVo();
+									coutryVo.setId(Integer.parseInt(str));
+									receivingCountryList.add(coutryVo);
+								}
+								
+								/*RecievingCountryVo coutryVo = new RecievingCountryVo();
 								if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
 									coutryVo.setId(Math.toIntExact(Math.round(currentCell.getNumericCellValue())));
 								} else if (currentCell.getCellTypeEnum() == CellType.STRING) {
 									coutryVo.setId(Integer.parseInt(currentCell.getStringCellValue()));
 								}
-								receivingCountryList.add(coutryVo);
+								receivingCountryList.add(coutryVo);*/
 								hidefVo.getMetadata().setRecievingCountryList(receivingCountryList);
 							} else if (currentRow.getRowNum() == 4) {
 								if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
