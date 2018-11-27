@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.censof.myfi.hidefmyfi.CTSConstants;
 import com.censof.myfi.hidefmyfi.entity.Cbcbinaryencodingschemecd;
 import com.censof.myfi.hidefmyfi.entity.Cbcfileformatcd;
+import com.censof.myfi.hidefmyfi.entity.Cbcfiletypeindic;
 import com.censof.myfi.hidefmyfi.entity.Cbcmessagetypeindic;
 import com.censof.myfi.hidefmyfi.entity.Ctscommunicationtypecd;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
@@ -84,6 +85,7 @@ public class CbcMetadataController {
 		List<Ctscommunicationtypecd> communicationType = ctccommonDropdownService.getAllCommunicationTypeCd();
 		List<Cbcfileformatcd> fileformatcd = ctccommonDropdownService.getAllFileFormatCdType();
 		List<Cbcmessagetypeindic> cbcMessageTypeIndic = ctccommonDropdownService.findAllCbcmessagetypeindic();
+		List<Cbcfiletypeindic> fileTypeIndic = ctccommonDropdownService.getAllFileTypeIndic();
 		
 		
 		List<CommonDropdownGridBean> gridBeans = new ArrayList<>();
@@ -110,6 +112,7 @@ public class CbcMetadataController {
 		map.put("fileformatcodeList", fileformatcd);
 		map.put("comminicationtype", communicationType);
 		map.put("cbcMessageTypeindic", cbcMessageTypeIndic);
+		map.put("fileTypeIndicList",fileTypeIndic);
 		//map.put("recievingCountry",country);
 		
 		model.addAttribute("hidef", hidef);
@@ -152,6 +155,7 @@ public class CbcMetadataController {
 		List<Ctscommunicationtypecd> communicationType = ctccommonDropdownService.getAllCommunicationTypeCd();
 		List<Cbcfileformatcd> fileformatcd = ctccommonDropdownService.getAllFileFormatCdType();
 		List<Cbcmessagetypeindic> cbcMessageTypeIndic = ctccommonDropdownService.findAllCbcmessagetypeindic();
+		List<Cbcfiletypeindic> fileTypeIndic = ctccommonDropdownService.getAllFileTypeIndic();
 		
 		List<CommonDropdownGridBean> gridBeans = new ArrayList<>();
 		for(Hicountry residentCountry:country) {
@@ -177,6 +181,7 @@ public class CbcMetadataController {
 		map.put("fileformatcodeList", fileformatcd);
 		map.put("comminicationtype", communicationType);
 		map.put("cbcMessageTypeindic", cbcMessageTypeIndic);
+		map.put("fileTypeIndicList",fileTypeIndic);
 		//map.put("recievingCountry",country);
 		
 		model.addAttribute("hidef", newHidefVo);

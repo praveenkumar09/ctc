@@ -36,8 +36,8 @@
 			centsLimit: 2,
 			clearPrefix: false,
             clearSufix: false,
-			allowNegative: false,
-			insertPlusSign: false,
+			allowNegative: true,
+			insertPlusSign: true,
 			clearOnEmpty:false
 		};
 

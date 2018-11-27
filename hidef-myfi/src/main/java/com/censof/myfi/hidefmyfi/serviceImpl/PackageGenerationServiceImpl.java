@@ -627,8 +627,12 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 
 					if (reports.getTin() != null && !reports.getTin().isEmpty()) {
 						Element reportsTIN = doc.createElement("cbc:TIN");
+						if(reports.getTinType() != null && !reports.getTinType().isEmpty()) {
 						reportsTIN.setAttribute("TINType", reports.getTinType());
+						}
+						if(reports.getIssuedBy() != null && !reports.getIssuedBy().isEmpty()) {
 						reportsTIN.setAttribute("issuedBy", reports.getIssuedBy());
+						}
 						reportsTIN.appendChild(doc.createTextNode(reports.getTin()));
 						reportsConstEntity.appendChild(reportsTIN);
 					}

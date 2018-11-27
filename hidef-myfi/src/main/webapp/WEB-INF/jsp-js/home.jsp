@@ -3,11 +3,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <meta name="_csrf" content="${_csrf.token}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
+<link type="text/css"
+	href="${pageContext.request.contextPath}/css/bootstrapDatePicker.css"
+	rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/css/home.css" rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/css/fieldset.css" rel="stylesheet">
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/jsgrid.min.css" />
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/jsgrid-theme.min.css" />
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jsgrid.min.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/js/bootstrap-datepicker.js"></script>
 
 <script src="${pageContext.request.contextPath}/js/home.js"></script>
 <script src="${pageContext.request.contextPath}/js/summary.js"></script>

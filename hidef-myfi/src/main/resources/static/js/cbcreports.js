@@ -568,7 +568,7 @@ function validateCbcReports(){
    }else{
    	$("#assetsAmountError").empty();
    }
-   if($("#tin11").val() == ''){
+   /*if($("#tin11").val() == ''){
 	   	 $("#tinError11").empty().append("TIN not empty!");
 	   	 errorFlag = true;	
   }else{
@@ -588,7 +588,7 @@ function validateCbcReports(){
 	   	 errorFlag = true;
   }else{
   	$("#issuedByError11").empty();
-  }
+  }*/
   return errorFlag;
 }
 
@@ -599,6 +599,8 @@ function currencyValidation(obj){
     	prefix: '',
     	centsSeparator: '.',
         thousandsSeparator: ',',
-        limit: 14
+        limit: 14,
+        allowNegative: true,
+		insertPlusSign: true
     }); 	
 } 

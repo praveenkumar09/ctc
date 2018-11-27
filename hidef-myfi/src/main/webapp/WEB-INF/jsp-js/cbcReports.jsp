@@ -300,21 +300,21 @@
 					<legend class="scheduler-border">Constituent Entities :</legend>
 						<div class="form-group">
 							<div class="form-group col-md-6">
-							<form:label path="reportingEntity.tin">TIN<font color='red'>*</font>:</form:label> <form:input type="text" path="cbcReports.tin"
+							<form:label path="reportingEntity.tin">TIN</form:label> <form:input type="text" path="cbcReports.tin"
 								class="form-control" id="tin11"
 								placeholder="TIN"></form:input>
-								<font color='red'><span id="tinError11" class="mandatory-flag"></span></font>
+<!-- 								<font color='red'><span id="tinError11" class="mandatory-flag"></span></font> -->
 						</div>
 						<div class="form-group col-md-6">
-							<form:label path="reportingEntity.tinIssuedBy">TIN Type<font color='red'>*</font>:</form:label> <form:input type="text" path="cbcReports.tinType"
+							<form:label path="reportingEntity.tinIssuedBy">TIN Type:</form:label> <form:input type="text" path="cbcReports.tinType"
 								class="form-control" id="tintype11"
 								placeholder="TIN Type"></form:input>
-								<font color='red'><span id="tintypeError11" class="mandatory-flag"></span></font>
+<!-- 								<font color='red'><span id="tintypeError11" class="mandatory-flag"></span></font> -->
 						</div>
 						
 						
 						<div class="form-group col-md-6">
-							<form:label for="" path="cbcReports.tin">TIN Issued By<font color='red'>*</font>:</form:label> <form:select class="form-control" id="issuedBy11" path="cbcReports.issuedBy">
+							<form:label for="" path="cbcReports.tin">TIN Issued By:</form:label> <form:select class="form-control" id="issuedBy11" path="cbcReports.issuedBy">
 								<form:option value="0">Please choose</form:option>
 							<c:forEach items="${countryList}" var="country">
 							<form:option value="${country.countryCode}">
@@ -322,7 +322,7 @@
 							</form:option>
 						</c:forEach>
 							</form:select>
-							<font color='red'><span id="issuedByError11" class="mandatory-flag"></span></font>
+<!-- 							<font color='red'><span id="issuedByError11" class="mandatory-flag"></span></font> -->
 						</div>
 						<div class="form-group col-md-6">
 							<form:label for="" path="cbcReports.incorpCountryCode">Incorp Country Code:</form:label> <form:select

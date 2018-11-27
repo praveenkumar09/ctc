@@ -131,28 +131,28 @@ $(document).ready(function() {
 							id="documentReferenceId" placeholder="Document Reference Id"
 							path="userprofile.docRefID"></form:input>
 					</div> --%>
-					<div class="form-group col-md-6">
+					<%-- <div class="form-group col-md-6">
 						<form:label path="userprofile.ctsTransId">Transmission Id:</form:label>
 						<form:input type="text" class="form-control" id="ctsTransId"
 							placeholder="CTS Transmission Id" path="userprofile.ctsTransId"></form:input>
-					</div>
-					<div class="form-group col-md-6">
+					</div> --%>
+					<%-- <div class="form-group col-md-6">
 						<form:label for="" path="userprofile.fileTypeIndic">File Type Indicator:</form:label>
 						<form:select class="form-control" id="binaryEncoding"
 							path="userprofile.fileTypeIndic">
 							<form:option value="0">Please choose</form:option>
-							<%-- 	<form:option value="1">MY</form:option>
+								<form:option value="1">MY</form:option>
 							<form:option value="2">SG</form:option>
 							<form:option value="3">CN</form:option>
 							<form:option value="4">AU</form:option>
-							<form:option value="5">US</form:option> --%>
+							<form:option value="5">US</form:option>
 							<c:forEach items="${fileTypeIndicList}" var="fileTypeIndicList">
 								<form:option value="${fileTypeIndicList.indic}">
 								${fileTypeIndicList.indic}
 							</form:option>
 							</c:forEach>
 						</form:select>
-					</div>
+					</div> --%>
 					<div class="clearfix"></div>
 					<div class="form-group col-md-6">
 						<div class="form-group">

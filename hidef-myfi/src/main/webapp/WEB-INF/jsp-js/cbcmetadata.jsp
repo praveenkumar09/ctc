@@ -101,11 +101,15 @@
 						<div class="form-group col-md-6">
 							<form:label class="" path="metadata.reportingPeriod">Reporting Period<font
 									color='red'>*</font>:</form:label>
-							<form:input type="text" class="form-control" id="reportingPeriod"
-								placeholder="Reporting Period" path="metadata.reportingPeriod"
-								maxlength="4" onkeypress='validate(event)'></form:input>
-							<font color='red'><span id="reportingPeriodError"
-								class="mandatory-flag"></span></font>
+							<div class="input-group date" data-provide="datepicker">
+								<form:input type="text" class="form-control"
+									id="reportingPeriod" placeholder="Reporting Period"
+									path="metadata.reportingPeriod"></form:input>
+								<span class="input-group-addon"> <span
+									class="glyphicon glyphicon-calendar"></span>
+								</span> <font color='red'><span id="reportingPeriodError"
+									class="mandatory-flag"></span></font>
+							</div>
 						</div>
 						<div class="form-group col-md-6">
 							<form:label class="" path="metadata.taxYear">Tax Year:</form:label>
@@ -207,6 +211,29 @@
 						<form:input type="text" maxlength="2" class="form-control"
 							id="language" placeholder="Language" path="metadata.language"></form:input>
 					</div>
+					<div class="form-group col-md-6">
+						<form:label for="" path="userprofile.fileTypeIndic">File Type Indicator:</form:label>
+						<form:select class="form-control" id="binaryEncoding"
+							path="userprofile.fileTypeIndic">
+							<form:option value="0">Please choose</form:option>
+							<%-- 	<form:option value="1">MY</form:option>
+							<form:option value="2">SG</form:option>
+							<form:option value="3">CN</form:option>
+							<form:option value="4">AU</form:option>
+							<form:option value="5">US</form:option> --%>
+							<c:forEach items="${fileTypeIndicList}" var="fileTypeIndicList">
+								<form:option value="${fileTypeIndicList.indic}">
+								${fileTypeIndicList.indic}
+							</form:option>
+							</c:forEach>
+						</form:select>
+					</div>
+					<div class="clearfix"></div>
+					<div class="form-group col-md-6">
+						<form:label path="userprofile.ctsTransId">Transmission Id:</form:label>
+						<form:input type="text" class="form-control" id="ctsTransId"
+							placeholder="CTS Transmission Id" path="userprofile.ctsTransId"></form:input>
+					</div>
 					<div class="clearfix"></div>
 					<div class="form-group col-md-6">
 						<div id="metaDataReceivingCountryList"></div>
@@ -222,16 +249,18 @@
 				</div> -->
 					<c:choose>
 						<c:when test="${hidef.isSummaryView=='true'}">
-       <div class="text-center">
-					<button id="metaDataButton" name="singlebutton"
-						onClick="viewReportingEntity();return false;" class="btn btn-primary">View Next Tab</button>
-				</div>
+							<div class="text-center">
+								<button id="metaDataButton" name="singlebutton"
+									onClick="viewReportingEntity();return false;"
+									class="btn btn-primary">View Next Tab</button>
+							</div>
 						</c:when>
 						<c:otherwise>
-                           <div class="text-center">
-					<button id="metaDataButton" name="singlebutton"
-						onClick="showReportingEntity();return false;" class="btn btn-primary">Next</button>
-				</div>
+							<div class="text-center">
+								<button id="metaDataButton" name="singlebutton"
+									onClick="showReportingEntity();return false;"
+									class="btn btn-primary">Next</button>
+							</div>
 						</c:otherwise>
 					</c:choose>
 				</div>

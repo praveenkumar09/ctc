@@ -161,6 +161,27 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 	public HidefVo saveCtcData(HidefVo hidefVo) {
 
 		if (hidefVo != null) {
+			
+			
+			if(hidefVo.getUserprofile() != null) {
+				Userprofile userProfile = null;
+				if(hidefVo.getUserprofile().getUserProfileId() != null){
+					userProfile = userprofileRepository.getUserprofileDetailsById(hidefVo.getUserprofile().getUserProfileId());
+					
+					if(hidefVo.getUserprofile().getCtsTransId() != null && !hidefVo.getUserprofile().getCtsTransId().isEmpty()) {
+					userProfile.setTransmissionid(hidefVo.getUserprofile().getCtsTransId());
+					}
+					
+					if(hidefVo.getUserprofile().getFileTypeIndic() != null && !hidefVo.getUserprofile().getFileTypeIndic().isEmpty()) {
+						userProfile.setFiletypeindic(hidefVo.getUserprofile().getFileTypeIndic());
+					}
+					
+					userProfile = userprofileRepository.saveAndFlush(userProfile);
+					
+				}
+			}
+			
+			
 			if (hidefVo.getMetadata() != null) {
 				/**
 				 * Cbcpayldhdr

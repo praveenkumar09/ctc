@@ -3,6 +3,14 @@ $(document).ready(function() {
 	
     var recievingCountry = $("#recievingCountry").val();
     recievingCountry = $.parseJSON(recievingCountry);
+    $.fn.datepicker.defaults.format = "yyyy-mm-dd";
+    $.fn.datepicker.defaults.autoclose = true;
+    var datepicker = $.fn.datepicker.noConflict(); // return $.fn.datepicker to previously assigned value
+    $.fn.bootstrapDP = datepicker; 
+   /* $('#reportingPeriod').datepicker({
+    	 autoclose: true,
+    	 todayHighlight: true
+    });*/
 
      
      
