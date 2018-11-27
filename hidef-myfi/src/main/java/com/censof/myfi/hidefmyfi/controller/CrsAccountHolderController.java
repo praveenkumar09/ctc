@@ -2780,6 +2780,38 @@ public class CrsAccountHolderController {
 		model.addAttribute("hidef", hidef);
         return "crsAccountHolder";
 	}
+	@GetMapping(value ="/admin/crs/viewctrlPersonInsertNameGrid")
+	public String viewctrlPersonInsertNameGrid(@ModelAttribute("hidef")HidefVo hidef,Map<String, Object> map,
+			@RequestParam(required = true) int id,
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		
+		NameTypeVo nameType = new NameTypeVo();
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonNameList() != null &&
+				hidef.getAccountholder().getCtrlPersonNameList().size() > 0){
+			for(NameTypeVo nameList :hidef.getAccountholder().getCtrlPersonNameList()){
+				if(nameList.getId() == id){
+					nameType = nameList;
+					hidef.getAccountholder().setCtrlPersonName(nameType);
+					hidef.getAccountholder().setCtrlPersontitleList(nameType.getTitleList());
+					hidef.getAccountholder().setCtrlPersonmiddlenameList(nameType.getMiddlenameList());
+					hidef.getAccountholder().setCtrlPersongenerateIdentifilerList(nameType.getGenerateIdentifilerList());
+					hidef.getAccountholder().setCtrlPersonsuffixList(nameType.getSuffixList());
+					break;
+				}
+			}
+		}
+		
+		
+		List<Hicountry> hicountryList = ctccommonDropdownService.getAllCountries();
+		List<Cbcaddresstype> cbcaddresstype = ctccommonDropdownService.getAllAddressType();
+		List<Cbcnametype> cbcnametype = ctccommonDropdownService.getAllNameType();
+		map.put("tinlist", hicountryList);
+		map.put("addressType", cbcaddresstype);
+		map.put("nameType", cbcnametype);
+		model.addAttribute("hidef", hidef);
+        return "crsAccountHolder";
+	}
+	
 	
 	@GetMapping(value ="/admin/crs/editSavectrlPersonInsertNameGrid")
 	public String editSavectrlPersonInsertNameGrid(@ModelAttribute("hidef")HidefVo hidef,Map<String, Object> map,
@@ -2923,6 +2955,51 @@ public class CrsAccountHolderController {
 		
         return arrayToJson;
 	}
+	
+	@RequestMapping(value = "/admin/crs/deleteCtrlNameGrid", method = RequestMethod.GET)
+	@ResponseBody
+	public String deleteCtrlNameGrid(@ModelAttribute("hidef")HidefVo hidef,@RequestParam(required = true) int id, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		NameTypeVo nameView = new NameTypeVo();
+		List<NameTypeVo> nameList = null;
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonNameList() != null && hidef.getAccountholder().getCtrlPersonNameList().size()>0) {
+			
+			nameList = hidef.getAccountholder().getCtrlPersonNameList();
+			for(NameTypeVo  nameType: nameList) {
+				if(nameType.getId()==id) {
+					nameView = nameType;
+					List<NameTypeVo> copyList = new ArrayList<NameTypeVo>(nameList);
+					copyList.remove(nameView);
+					hidef.getAccountholder().setCtrlPersonNameList(copyList);
+				}
+			}
+			
+		}
+		
+		String arrayToJson = mapper.writeValueAsString(nameView);
+		
+        return arrayToJson;
+	}
+	@GetMapping(value ="/admin/crs/loadctrlNameTypeMainGrid",consumes="application/json")
+	@ResponseBody
+	public String loadctrlNameTypeMainGrid(@ModelAttribute("hidef")HidefVo hidef, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		
+		List<NameTypeVo> nameTypeList = new ArrayList<NameTypeVo>();
+		String nameTypeJson = mapper.writeValueAsString(nameTypeList);
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonNameList() != null 
+				&& hidef.getAccountholder().getCtrlPersonNameList().size() >0) {
+			nameTypeJson = mapper.writeValueAsString(hidef.getAccountholder().getCtrlPersonNameList());
+		}
+		model.addAttribute("hidef", hidef);
+		return nameTypeJson;
+	}
+	
+	
+	
 	
 	
 	
