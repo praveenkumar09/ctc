@@ -140,7 +140,7 @@ public class CbcMetadataController {
 			newHidefVo.setMetadata(new MetaDataVo());
 			newHidefVo.getMetadata().setSendingCompanyIN(newHidefVo.getMycbcId());
 			newHidefVo = getSenderFileID(newHidefVo,"CBC");
-			newHidefVo = getMessageRefId(newHidefVo,"CBC");
+			/*newHidefVo = getMessageRefId(newHidefVo,"CBC");*/
 			if(newHidefVo.getUserprofile() != null) {
 				newHidefVo = setUserProfileDataForMetaData(newHidefVo);
 			}
@@ -304,6 +304,17 @@ public class CbcMetadataController {
 
 	}
 	
+	@GetMapping(value ="/admin/cbc/generateMessageRef")
+	@ResponseBody
+	public String generateMessageReferenceId(@ModelAttribute("hidef")HidefVo hidef, 
+		/*	@RequestParam(required = true) String year,*/
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		/*hidef.getMetadata().setTaxYear(year);*/
+		hidef = getMessageRefId(hidef,"CBC");
+		model.addAttribute("hidef", hidef);
+		return hidef.getMetadata().getMessageRefId();
+	}
+	
 	public String converToString(int i){
 		String convertedNum = "";
 	    if(String.valueOf(i).length() == 1){
@@ -356,7 +367,7 @@ public class CbcMetadataController {
 		String date = simpleDateFormat.format(new Date());
 		Messagerefid messageRefId = ctccommonDropdownService.findMessageRefIdByDate(date);
 		String messageRefIdNew = "";
-		String messageRefIdStatic = "MY"+hidef.getMycbcId()+date;
+		String messageRefIdStatic = "MY"+hidef.getMetadata().getTaxYear()+"-"+hidef.getMycbcId()+date;
 		if(messageRefId != null){
 			
 				int sum = Integer.parseInt(messageRefId.getMessagerefid())+ 1;				
@@ -368,11 +379,11 @@ public class CbcMetadataController {
 			messageRefIdNew = messageRefIdStatic+String.valueOf(messageRefId.getMessagerefid());
 		}
 		
-		if(hidef.getMetadata() != null && hidef.getMetadata().getMessageRefId() != null && !hidef.getMetadata().getMessageRefId().isEmpty()) {
+		/*if(hidef.getMetadata() != null && hidef.getMetadata().getMessageRefId() != null && !hidef.getMetadata().getMessageRefId().isEmpty()) {
 			hidef.getMetadata().setMessageRefId(hidef.getMetadata().getMessageRefId());
-		}else {
+		}else {*/
 		hidef.getMetadata().setMessageRefId(messageRefIdNew);
-		}
+		/*}*/
 		return hidef;
 	}
 

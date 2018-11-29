@@ -799,6 +799,13 @@ function showReportingEntity() {
 	} else {
 		$("#sendingCountryError").empty();
 	}
+	var year = $('#taxYear').val();
+	if(year == null || year ==''){
+		$("#taxYearError").empty().append("Year not empty!");
+		errorFlag = true;
+	}else{
+		$("#taxYearError").empty();
+	}
 
 	if (!errorFlag) {
 		$("#metaData").hide();

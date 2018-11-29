@@ -97,7 +97,38 @@ function validate(evt) {
 	key = String.fromCharCode( key );
 	var regex = /[0-9]|\./;
 	if( !regex.test(key) ) {
+	
 	theEvent.returnValue = false;
 	if(theEvent.preventDefault) theEvent.preventDefault();
 	}
+}
+function generatemessageReferenceId(id,evt) {
+	
+	
+	var theEvent = evt || window.event;
+	var key = theEvent.keyCode || theEvent.which;
+	key = String.fromCharCode( key );
+	var regex = /[0-9]|\./;
+	if( !regex.test(key) ) {
+	
+	theEvent.returnValue = false;
+	if(theEvent.preventDefault) theEvent.preventDefault();
+	}
+		var ye = $("#taxYear").val();
+		
+		
+		$.ajax({
+
+			url : 'cbc/generateMessageRef',
+			type : 'GET',
+			data : $('#cbcmetadata').serialize(),
+			success : function(response) {
+				/*alert('@@@@@@@@@@@'+response)*/
+				$("#messageRefId").val(response);
+			},
+			error : function(request, error) {
+				alert("Request: " + JSON.stringify(request));
+			}
+		});
+	
 }
