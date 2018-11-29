@@ -9,43 +9,41 @@ import java.util.Date;
 
 
 /**
- * The persistent class for the crsctrlpersontype database table.
+ * The persistent class for the crscorrectionmsg database table.
  * 
  */
 @Entity
-@NamedQuery(name="Crsctrlpersontype.findAll", query="SELECT c FROM Crsctrlpersontype c")
-public class Crsctrlpersontype implements Serializable {
+@NamedQuery(name="Crscorrectionmsg.findAll", query="SELECT c FROM Crscorrectionmsg c")
+public class Crscorrectionmsg implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private BigInteger id;
-
-	@Column(name="createby")
-	private String createBy;
 
 	@Column(name="createdatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDateTime;
 
-	@Column(name="ctrlpersontype")
-	private String ctrlpersontype;
+	@Column(name="messagerefid")
+	private String messageRefId;
 
-	@Column(name="modifyby")
-	private String modifyBy;
-
+	
 	@Column(name="modifydatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifyDateTime;
 
-	public Crsctrlpersontype() {
+	private String status;
+
+	public Crscorrectionmsg() {
 	}
 
 	
+
 	public BigInteger getId() {
 		return id;
 	}
+
 
 
 	public void setId(BigInteger id) {
@@ -53,13 +51,6 @@ public class Crsctrlpersontype implements Serializable {
 	}
 
 
-	public String getCreateBy() {
-		return this.createBy;
-	}
-
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
 
 	public Date getCreateDateTime() {
 		return this.createDateTime;
@@ -69,20 +60,12 @@ public class Crsctrlpersontype implements Serializable {
 		this.createDateTime = createDateTime;
 	}
 
-	public String getCtrlpersontype() {
-		return this.ctrlpersontype;
+	public String getMessageRefId() {
+		return this.messageRefId;
 	}
 
-	public void setCtrlpersontype(String ctrlpersontype) {
-		this.ctrlpersontype = ctrlpersontype;
-	}
-
-	public String getModifyBy() {
-		return this.modifyBy;
-	}
-
-	public void setModifyBy(String modifyBy) {
-		this.modifyBy = modifyBy;
+	public void setMessageRefId(String messageRefId) {
+		this.messageRefId = messageRefId;
 	}
 
 	public Date getModifyDateTime() {
@@ -91,6 +74,14 @@ public class Crsctrlpersontype implements Serializable {
 
 	public void setModifyDateTime(Date modifyDateTime) {
 		this.modifyDateTime = modifyDateTime;
+	}
+
+	public String getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

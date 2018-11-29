@@ -1,26 +1,25 @@
 package com.censof.myfi.hidefmyfi.entity;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 
 import javax.persistence.*;
 
 import java.util.Date;
+import java.math.BigInteger;
 
 
 /**
- * The persistent class for the crsctrlpersontype database table.
+ * The persistent class for the crsfiletter database table.
  * 
  */
 @Entity
-@NamedQuery(name="Crsctrlpersontype.findAll", query="SELECT c FROM Crsctrlpersontype c")
-public class Crsctrlpersontype implements Serializable {
+@NamedQuery(name="Crsfiletter.findAll", query="SELECT c FROM Crsfiletter c")
+public class Crsfiletter implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private BigInteger id;
+	private String id;
 
 	@Column(name="createby")
 	private String createBy;
@@ -29,8 +28,14 @@ public class Crsctrlpersontype implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDateTime;
 
-	@Column(name="ctrlpersontype")
-	private String ctrlpersontype;
+	@Column(name="fiid")
+	private BigInteger fiid;
+
+	@Column(name="filename")
+	private String fileName;
+
+	@Column(name="filesize")
+	private String fileSize;
 
 	@Column(name="modifyby")
 	private String modifyBy;
@@ -39,19 +44,16 @@ public class Crsctrlpersontype implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifyDateTime;
 
-	public Crsctrlpersontype() {
+	public Crsfiletter() {
 	}
 
-	
-	public BigInteger getId() {
-		return id;
+	public String getId() {
+		return this.id;
 	}
 
-
-	public void setId(BigInteger id) {
+	public void setId(String id) {
 		this.id = id;
 	}
-
 
 	public String getCreateBy() {
 		return this.createBy;
@@ -69,12 +71,28 @@ public class Crsctrlpersontype implements Serializable {
 		this.createDateTime = createDateTime;
 	}
 
-	public String getCtrlpersontype() {
-		return this.ctrlpersontype;
+	public BigInteger getFiid() {
+		return this.fiid;
 	}
 
-	public void setCtrlpersontype(String ctrlpersontype) {
-		this.ctrlpersontype = ctrlpersontype;
+	public void setFiid(BigInteger fiid) {
+		this.fiid = fiid;
+	}
+
+	public String getFileName() {
+		return this.fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getFileSize() {
+		return this.fileSize;
+	}
+
+	public void setFileSize(String fileSize) {
+		this.fileSize = fileSize;
 	}
 
 	public String getModifyBy() {

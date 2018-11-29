@@ -1,57 +1,44 @@
 package com.censof.myfi.hidefmyfi.entity;
 
 import java.io.Serializable;
-import java.math.BigInteger;
-
 import javax.persistence.*;
-
 import java.util.Date;
 
 
 /**
- * The persistent class for the crsctrlpersontype database table.
+ * The persistent class for the crspayldcountry database table.
  * 
  */
 @Entity
-@NamedQuery(name="Crsctrlpersontype.findAll", query="SELECT c FROM Crsctrlpersontype c")
-public class Crsctrlpersontype implements Serializable {
+@NamedQuery(name="Crspayldcountry.findAll", query="SELECT c FROM Crspayldcountry c")
+public class Crspayldcountry implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private BigInteger id;
+	@EmbeddedId
+	private CrspayldcountryPK id;
 
-	@Column(name="createby")
 	private String createBy;
 
-	@Column(name="createdatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDateTime;
 
-	@Column(name="ctrlpersontype")
-	private String ctrlpersontype;
-
-	@Column(name="modifyby")
 	private String modifyBy;
 
-	@Column(name="modifydatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifyDateTime;
 
-	public Crsctrlpersontype() {
+	private String resCountryCode;
+
+	public Crspayldcountry() {
 	}
 
-	
-	public BigInteger getId() {
-		return id;
+	public CrspayldcountryPK getId() {
+		return this.id;
 	}
 
-
-	public void setId(BigInteger id) {
+	public void setId(CrspayldcountryPK id) {
 		this.id = id;
 	}
-
 
 	public String getCreateBy() {
 		return this.createBy;
@@ -69,14 +56,6 @@ public class Crsctrlpersontype implements Serializable {
 		this.createDateTime = createDateTime;
 	}
 
-	public String getCtrlpersontype() {
-		return this.ctrlpersontype;
-	}
-
-	public void setCtrlpersontype(String ctrlpersontype) {
-		this.ctrlpersontype = ctrlpersontype;
-	}
-
 	public String getModifyBy() {
 		return this.modifyBy;
 	}
@@ -91,6 +70,14 @@ public class Crsctrlpersontype implements Serializable {
 
 	public void setModifyDateTime(Date modifyDateTime) {
 		this.modifyDateTime = modifyDateTime;
+	}
+
+	public String getResCountryCode() {
+		return this.resCountryCode;
+	}
+
+	public void setResCountryCode(String resCountryCode) {
+		this.resCountryCode = resCountryCode;
 	}
 
 }

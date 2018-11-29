@@ -42,6 +42,7 @@ import com.censof.myfi.hidefmyfi.vo.AccountHolderVo;
 import com.censof.myfi.hidefmyfi.vo.AddressVo;
 import com.censof.myfi.hidefmyfi.vo.CBCRepotsVo;
 import com.censof.myfi.hidefmyfi.vo.CommonDropdownGridBean;
+import com.censof.myfi.hidefmyfi.vo.ControllingPersonVo;
 import com.censof.myfi.hidefmyfi.vo.GenerationIdentifierVo;
 import com.censof.myfi.hidefmyfi.vo.HidefVo;
 import com.censof.myfi.hidefmyfi.vo.MiddleNameVo;
@@ -1689,9 +1690,9 @@ public class CrsAccountHolderController {
 		
 		List<ResidentCountryVo> residentCountryList = new ArrayList<ResidentCountryVo>();
 		String residentJson = mapper.writeValueAsString(residentCountryList);
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonResidentCountryList() != null 
-				&& hidef.getAccountholder().getControllingPersonResidentCountryList().size() >0) {
-			residentJson = mapper.writeValueAsString(hidef.getAccountholder().getControllingPersonResidentCountryList());
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null && hidef.getAccountholder().getControllingPersonVo().getControllingResidentCountryList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getControllingResidentCountryList().size() >0) {
+			residentJson = mapper.writeValueAsString(hidef.getAccountholder().getControllingPersonVo().getControllingResidentCountryList());
 		}
 		
 
@@ -1709,14 +1710,14 @@ public class CrsAccountHolderController {
 		try {
 			List<ResidentCountryVo> residentCountryList = new ArrayList<ResidentCountryVo>();
 			residentCountryVo = mapper.readValue(insertResident, ResidentCountryVo.class);
-			if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonResidentCountryList() != null 
-					&& hidef.getAccountholder().getControllingPersonResidentCountryList().size() >0) {
+			if(hidef.getAccountholder() != null &&hidef.getAccountholder().getControllingPersonVo() != null &&  hidef.getAccountholder().getControllingPersonVo().getControllingResidentCountryList() != null 
+					&& hidef.getAccountholder().getControllingPersonVo().getControllingResidentCountryList().size() >0) {
 				residentCountryVo.setId(ran.nextInt(10000));
-				hidef.getAccountholder().getControllingPersonResidentCountryList().add(residentCountryVo);
+				hidef.getAccountholder().getControllingPersonVo().getControllingResidentCountryList().add(residentCountryVo);
 			}else {
 				residentCountryVo.setId(ran.nextInt(10000));
-				hidef.getAccountholder().setControllingPersonResidentCountryList(residentCountryList);
-				hidef.getAccountholder().getControllingPersonResidentCountryList().add(residentCountryVo);
+				hidef.getAccountholder().getControllingPersonVo().setControllingResidentCountryList(residentCountryList);
+				hidef.getAccountholder().getControllingPersonVo().getControllingResidentCountryList().add(residentCountryVo);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -1731,11 +1732,11 @@ public class CrsAccountHolderController {
 	public String updatectrlResidentCountryGrid(@ModelAttribute("hidef")HidefVo hidef,@RequestBody String updateResident,@RequestParam(required = true) int id, 
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonResidentCountryList() != null 
-					&& hidef.getAccountholder().getControllingPersonResidentCountryList().size() >0) {
+		if(hidef.getAccountholder() != null &&hidef.getAccountholder().getControllingPersonVo() != null &&  hidef.getAccountholder().getControllingPersonVo().getControllingResidentCountryList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getControllingResidentCountryList().size() >0) {
 			try{
 			ResidentCountryVo residentCountryVo = mapper.readValue(updateResident, ResidentCountryVo.class);
-			for(ResidentCountryVo residentvo :hidef.getAccountholder().getControllingPersonResidentCountryList() ){
+			for(ResidentCountryVo residentvo :hidef.getAccountholder().getControllingPersonVo().getControllingResidentCountryList() ){
 				if(residentvo.getId()==id){
 					residentvo.setResidentCountryCode(residentCountryVo.getResidentCountryCode());
 					break;
@@ -1757,15 +1758,15 @@ public class CrsAccountHolderController {
 			@RequestParam(required = true) int id,
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-			if(deleteResident != null && hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonResidentCountryList() != null 
-					&& hidef.getAccountholder().getControllingPersonResidentCountryList().size() >0){
+			if(deleteResident != null && hidef.getAccountholder() != null &&hidef.getAccountholder().getControllingPersonVo() != null &&  hidef.getAccountholder().getControllingPersonVo().getControllingResidentCountryList() != null 
+					&& hidef.getAccountholder().getControllingPersonVo().getControllingResidentCountryList().size() >0){
 				try{
 				ResidentCountryVo residentCountryVo = mapper.readValue(deleteResident, ResidentCountryVo.class);
-				List<ResidentCountryVo> copyList = new ArrayList<ResidentCountryVo>(hidef.getAccountholder().getControllingPersonResidentCountryList());
-				for(ResidentCountryVo residentCountry: hidef.getAccountholder().getControllingPersonResidentCountryList()){
+				List<ResidentCountryVo> copyList = new ArrayList<ResidentCountryVo>(hidef.getAccountholder().getControllingPersonVo().getControllingResidentCountryList());
+				for(ResidentCountryVo residentCountry: hidef.getAccountholder().getControllingPersonVo().getControllingResidentCountryList()){
 					if(residentCountryVo.getId()==residentCountry.getId()){
 						copyList.remove(residentCountry);
-						hidef.getAccountholder().setControllingPersonResidentCountryList(copyList);
+						hidef.getAccountholder().getControllingPersonVo().setControllingResidentCountryList(copyList);
 						break;
 					}
 				}
@@ -1785,9 +1786,9 @@ public class CrsAccountHolderController {
 		ObjectMapper mapper = new ObjectMapper();
 		List<OrganisationInTypeVo> organisationList = new ArrayList<OrganisationInTypeVo>();
 		String organisationJson = mapper.writeValueAsString(organisationList);
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonInTypeList() != null 
-				&& hidef.getAccountholder().getControllingPersonInTypeList().size() >0) {
-			organisationJson = mapper.writeValueAsString(hidef.getAccountholder().getControllingPersonInTypeList());
+		if(hidef.getAccountholder() != null &&hidef.getAccountholder().getControllingPersonVo() != null && hidef.getAccountholder().getControllingPersonVo().getControllingOrganisationInTypeList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getControllingOrganisationInTypeList().size() >0) {
+			organisationJson = mapper.writeValueAsString(hidef.getAccountholder().getControllingPersonVo().getControllingOrganisationInTypeList());
 		}
 		model.addAttribute("hidef", hidef);
 		return organisationJson;
@@ -1803,12 +1804,12 @@ public class CrsAccountHolderController {
 			List<OrganisationInTypeVo> organisationList = new ArrayList<OrganisationInTypeVo>();
 			organisationVo = mapper.readValue(insertCtrlOrganisationGrid, OrganisationInTypeVo.class);
 			organisationVo.setId(ran.nextInt(10000));
-			if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonInTypeList() != null 
-					&& hidef.getAccountholder().getControllingPersonInTypeList().size() >0) {
-				hidef.getAccountholder().getControllingPersonInTypeList().add(organisationVo);
+			if(hidef.getAccountholder() != null &&hidef.getAccountholder().getControllingPersonVo() != null && hidef.getAccountholder().getControllingPersonVo().getControllingOrganisationInTypeList() != null 
+					&& hidef.getAccountholder().getControllingPersonVo().getControllingOrganisationInTypeList().size() >0) {
+				hidef.getAccountholder().getControllingPersonVo().getControllingOrganisationInTypeList().add(organisationVo);
 			}else {
-				hidef.getAccountholder().setControllingPersonInTypeList(organisationList);
-				hidef.getAccountholder().getControllingPersonInTypeList().add(organisationVo);
+				hidef.getAccountholder().getControllingPersonVo().setControllingOrganisationInTypeList(organisationList);
+				hidef.getAccountholder().getControllingPersonVo().getControllingOrganisationInTypeList().add(organisationVo);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -1824,11 +1825,11 @@ public class CrsAccountHolderController {
 			@RequestParam(required = true) int id,
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonInTypeList() != null 
-				&& hidef.getAccountholder().getControllingPersonInTypeList().size() >0) {
+		if(hidef.getAccountholder() != null &&hidef.getAccountholder().getControllingPersonVo() != null && hidef.getAccountholder().getControllingPersonVo().getControllingOrganisationInTypeList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getControllingOrganisationInTypeList().size() >0) {
 			try{
 			OrganisationInTypeVo updatedorganisationVo = mapper.readValue(updateCtrlOrganisationGrid, OrganisationInTypeVo.class);
-			for(OrganisationInTypeVo organisationvo :hidef.getAccountholder().getControllingPersonInTypeList()){
+			for(OrganisationInTypeVo organisationvo :hidef.getAccountholder().getControllingPersonVo().getControllingOrganisationInTypeList()){
 				if(organisationvo.getId()==id){
 					organisationvo.setIssuedBy(updatedorganisationVo.getIssuedBy());
 					organisationvo.setInType(updatedorganisationVo.getInType());
@@ -1851,14 +1852,15 @@ public class CrsAccountHolderController {
 			@RequestParam(required = true) int id,
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if(deleteCtrlOrganisationGrid != null && hidef.getAccountholder().getControllingPersonInTypeList() != null){
+		if(deleteCtrlOrganisationGrid != null && hidef.getAccountholder() != null &&hidef.getAccountholder().getControllingPersonVo() != null && hidef.getAccountholder().getControllingPersonVo().getControllingOrganisationInTypeList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getControllingOrganisationInTypeList().size() >0){
 			try{
 			OrganisationInTypeVo updatedorganisationVo = mapper.readValue(deleteCtrlOrganisationGrid, OrganisationInTypeVo.class);
-			List<OrganisationInTypeVo> copyList = new ArrayList<OrganisationInTypeVo>(hidef.getAccountholder().getControllingPersonInTypeList());
-			for(OrganisationInTypeVo organisation:hidef.getAccountholder().getControllingPersonInTypeList()){
+			List<OrganisationInTypeVo> copyList = new ArrayList<OrganisationInTypeVo>(hidef.getAccountholder().getControllingPersonVo().getControllingOrganisationInTypeList());
+			for(OrganisationInTypeVo organisation:hidef.getAccountholder().getControllingPersonVo().getControllingOrganisationInTypeList()){
 				if(id==organisation.getId()){
 					copyList.remove(organisation);
-					hidef.getAccountholder().setControllingPersonInTypeList(copyList);
+					hidef.getAccountholder().getControllingPersonVo().setControllingOrganisationInTypeList(copyList);
 					break;
 				}
 			}
@@ -1893,9 +1895,10 @@ public class CrsAccountHolderController {
 		
 		List<AddressVo> addressList = new ArrayList<AddressVo>();
 		String addressJson = mapper.writeValueAsString(addressList);
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonAddressList() != null 
-				&& hidef.getAccountholder().getControllingPersonAddressList().size() >0) {
-			addressJson = mapper.writeValueAsString(hidef.getAccountholder().getControllingPersonAddressList());
+		if(hidef.getAccountholder() != null &&  hidef.getAccountholder().getControllingPersonVo() != null && 
+				hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList() != null && hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList().size() >0) {
+			addressJson = mapper.writeValueAsString(hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList());
 		}
 		model.addAttribute("hidef", hidef);
 		return addressJson;
@@ -1907,15 +1910,16 @@ public class CrsAccountHolderController {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		List<AddressVo> addressList = null;
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonAddressList() != null && hidef.getAccountholder().getControllingPersonAddressList().size()>0) {
-			addressList = hidef.getAccountholder().getControllingPersonAddressList();
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null && hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList().size()>0) {
+			addressList = hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList();
 			
 		}else {
 			addressList = new ArrayList<AddressVo>();
-			hidef.getAccountholder().setControllingPersonAddressList(addressList);
+			hidef.getAccountholder().getControllingPersonVo().setControllingPersonAddressList(addressList);
 		}
 		
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonAddressList() != null){
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList() != null){
 			AddressVo addressVo = new AddressVo();
 			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonaddressVo().getAddressFree())){
 			addressVo.setAddressFree(hidef.getAccountholder().getControllingPersonaddressVo().getAddressFree());
@@ -1941,9 +1945,9 @@ public class CrsAccountHolderController {
 			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonaddressVo().getFloorIdentifier())){
 			addressVo.setFloorIdentifier(hidef.getAccountholder().getControllingPersonaddressVo().getFloorIdentifier());
 			}
-			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonAddressList()) && hidef.getAccountholder().getControllingPersonAddressList().size()>0){
-			addressVo.setId(hidef.getAccountholder().getControllingPersonAddressList().size()+1);
-			hidef.getAccountholder().getControllingPersonaddressVo().setId(hidef.getAccountholder().getControllingPersonAddressList().size()+1);
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList()) && hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList().size()>0){
+			addressVo.setId(hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList().size()+1);
+			hidef.getAccountholder().getControllingPersonaddressVo().setId(hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList().size()+1);
 			}else{
 				addressVo.setId(1);
 				hidef.getAccountholder().getControllingPersonaddressVo().setId(1);
@@ -1963,7 +1967,7 @@ public class CrsAccountHolderController {
 			addressList.add(addressVo);
 		}
 		
-		hidef.getAccountholder().setControllingPersonAddressList(addressList);
+		hidef.getAccountholder().getControllingPersonVo().setControllingPersonAddressList(addressList);
 		String arrayToJson = mapper.writeValueAsString(addressList);
 		model.addAttribute("hidef", hidef);
         return hidef.getAccountholder().getControllingPersonaddressVo();
@@ -1976,8 +1980,8 @@ public class CrsAccountHolderController {
 		ObjectMapper mapper = new ObjectMapper();
 		AddressVo addressView = new AddressVo();
 		List<AddressVo> addressList = null;
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonAddressList() != null && hidef.getAccountholder().getControllingPersonAddressList().size()>0) {
-			addressList = hidef.getAccountholder().getControllingPersonAddressList();
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null && hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList() != null && hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList().size()>0) {
+			addressList = hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList();
 			for(AddressVo address: addressList) {
 				if(address.getId()==id) {
 					addressView = address;
@@ -2002,8 +2006,8 @@ public class CrsAccountHolderController {
 		ObjectMapper mapper = new ObjectMapper();
 		AddressVo addressView = new AddressVo();
 		List<AddressVo> addressList = null;
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonAddressList() != null && hidef.getAccountholder().getControllingPersonAddressList().size()>0) {
-			addressList = hidef.getAccountholder().getControllingPersonAddressList();
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null && hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList() != null && hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList().size()>0) {
+			addressList = hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList();
 			for(AddressVo address: addressList) {
 				if(address.getId()==id) {
 					addressView = address;
@@ -2030,8 +2034,8 @@ public class CrsAccountHolderController {
 		ObjectMapper mapper = new ObjectMapper();
 		AddressVo addressView = new AddressVo();
 		List<AddressVo> addressList = null;
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonAddressList() != null && hidef.getAccountholder().getControllingPersonAddressList().size()>0) {
-			addressList = hidef.getAccountholder().getControllingPersonAddressList();
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null && hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList() != null && hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList().size()>0) {
+			addressList = hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList();
 			for(AddressVo address: addressList) {
 				if(address.getId()==hidef.getAccountholder().getControllingPersoneditAddressVo().getId()) {
 					if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersoneditAddressVo().getAddressFree())){
@@ -2095,15 +2099,15 @@ public class CrsAccountHolderController {
 		ObjectMapper mapper = new ObjectMapper();
 		AddressVo addressView = new AddressVo();
 		List<AddressVo> addressList = null;
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonAddressList() != null && hidef.getAccountholder().getControllingPersonAddressList().size()>0) {
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null && hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList() != null && hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList().size()>0) {
 			
-			addressList = hidef.getAccountholder().getControllingPersonAddressList();
+			addressList = hidef.getAccountholder().getControllingPersonVo().getControllingPersonAddressList();
 			for(AddressVo address: addressList) {
 				if(address.getId()==id) {
 					addressView = address;
 					List<AddressVo> copyList = new ArrayList<AddressVo>(addressList);
 					copyList.remove(address);
-					hidef.getAccountholder().setControllingPersonAddressList(copyList);
+					hidef.getAccountholder().getControllingPersonVo().setControllingPersonAddressList(copyList);
 				}
 			}
 			
@@ -2140,7 +2144,8 @@ public class CrsAccountHolderController {
 		Random rand = new Random();
 		accountHolderVO = hidef.getAccountholder();
 		accountHolderVO.setId(rand.nextInt(10000));
-		if (hidef.getAccountholder() != null && hidef.getAccountHolderList() != null) {
+		accountHolderVO.setControllingPersonList(hidef.getControllingPersonList());
+		if (hidef.getAccountholder() != null && hidef.getAccountHolderList() != null && hidef.getAccountHolderList().size() >0) {
 			hidef.getAccountHolderList().add(accountHolderVO);
 		} else {
 			hidef.setAccountHolderList(new ArrayList<AccountHolderVo>());
@@ -2198,10 +2203,12 @@ public class CrsAccountHolderController {
 			BindingResult result, ModelMap model, Map<String, Object> map) {
 
 		List<AccountHolderVo> newAccountHolderDeletedList = new ArrayList<AccountHolderVo>();
+		if(hidef.getAccountHolderList() != null && hidef.getAccountHolderList().size()>0){
 		for (AccountHolderVo accountsVO : hidef.getAccountHolderList()) {
 			if (accountsVO.getId() != deleteId) {
 				newAccountHolderDeletedList.add(accountsVO);
 			}
+		}
 		}
 
 		hidef.setAccountHolderList(newAccountHolderDeletedList);
@@ -2242,9 +2249,9 @@ public class CrsAccountHolderController {
 
 		List<AccountHolderVo> accountHolderList = new ArrayList<AccountHolderVo>();
 		String reportsJSON = mapper.writeValueAsString(accountHolderList);
-		if (hidef.getAccountHolderList() != null && hidef.getAccountHolderList() != null
-				&& !hidef.getAccountHolderList().isEmpty()) {
-			reportsJSON = mapper.writeValueAsString(hidef.getAccountHolderList());
+		if (hidef.getAccountholder() != null && hidef.getControllingPersonList() != null 
+				&& !hidef.getControllingPersonList().isEmpty()) {
+			reportsJSON = mapper.writeValueAsString(hidef.getControllingPersonList());
 		}
 
 		model.addAttribute("hidef", hidef);
@@ -2253,23 +2260,38 @@ public class CrsAccountHolderController {
 	}
 	@GetMapping(value = "/admin/crs/insertCtrlPersonMain")
 	@ResponseBody
-	public AccountHolderVo insertCtrlPersonMain(@ModelAttribute("hidef") HidefVo hidef, BindingResult result,
+	public ControllingPersonVo insertCtrlPersonMain(@ModelAttribute("hidef") HidefVo hidef, BindingResult result,
 			ModelMap model, Map<String, Object> map) {
 
-		AccountHolderVo accountHolderVO = new AccountHolderVo();
+		ControllingPersonVo ctrlPerson = new ControllingPersonVo();
 		Random rand = new Random();
-		accountHolderVO = hidef.getAccountholder();
-		accountHolderVO.setId(rand.nextInt(10000));
-		if (hidef.getAccountholder() != null && hidef.getAccountHolderList() != null) {
-			hidef.getAccountHolderList().add(accountHolderVO);
-		} else {
-			hidef.setAccountHolderList(new ArrayList<AccountHolderVo>());
-			hidef.getAccountHolderList().add(accountHolderVO);
+		ctrlPerson = hidef.getAccountholder().getControllingPersonVo();
+		ctrlPerson.setId(rand.nextInt(10000));
+		/*if(ctrlPerson != null){
+		if(ctrlPerson.getControllingOrganisationInTypeList() != null && ctrlPerson.getControllingOrganisationInTypeList().size() >0){
+		ctrlPerson.setControllingOrganisationInTypeList(ctrlPerson.getControllingOrganisationInTypeList());
 		}
-		hidef.setAccountholder(new AccountHolderVo());
+		if(ctrlPerson.getControllingPersonAddressList() != null && ctrlPerson.getControllingPersonAddressList().size() >0){
+		ctrlPerson.setControllingPersonAddressList(ctrlPerson.getControllingPersonAddressList());
+		}
+		if(hidef.getAccountholder().getCtrlPersonNameList() != null && hidef.getAccountholder().getCtrlPersonNameList().size() >0){
+		ctrlPerson.setNameTypeList(hidef.getAccountholder().getCtrlPersonNameList());
+		}
+		if(hidef.getAccountholder().getControllingPersonResidentCountryList() != null && hidef.getAccountholder().getControllingPersonResidentCountryList().size() >0){
+		ctrlPerson.setControllingResidentCountryList(hidef.getAccountholder().getControllingPersonResidentCountryList());
+		}*/
+		if (hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonList() != null) {
+			hidef.getControllingPersonList().add(ctrlPerson);
+		} else {
+			hidef.setControllingPersonList(new ArrayList<ControllingPersonVo>());
+			hidef.getControllingPersonList().add(ctrlPerson);
+		}
+		/*}*/
+		/*hidef.setAccountholder(new AccountHolderVo());
+		hidef.getAccountholder().setControllingPersonVo(new ControllingPersonVo());;*/
 		model.addAttribute("hidef", hidef);
-
-		return accountHolderVO;
+		
+		return ctrlPerson;
 	}
 	
 	/*@GetMapping(value = "/admin/crs/editIndividualNameGrid")
@@ -2301,11 +2323,11 @@ public class CrsAccountHolderController {
 	public String resetCtrlNameGrid(@ModelAttribute("hidef")HidefVo hidef, 
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response,Map<String, Object> map) throws JsonProcessingException {
 		NameTypeVo  nameVo = new NameTypeVo();
-		hidef.getAccountholder().setCtrlPersonName(nameVo);
-		hidef.getAccountholder().setCtrlPersontitleList(new ArrayList<TitleVo>());
+		hidef.getAccountholder().getControllingPersonVo().setCtrlPersonName(nameVo);
+	/*	hidef.getAccountholder().setCtrlPersontitleList(new ArrayList<TitleVo>());
 		hidef.getAccountholder().setCtrlPersonmiddlenameList(new ArrayList<MiddleNameVo>());
 		hidef.getAccountholder().setCtrlPersongenerateIdentifilerList(new ArrayList<GenerationIdentifierVo>());
-		hidef.getAccountholder().setCtrlPersonsuffixList(new ArrayList<SuffixVo>());
+		hidef.getAccountholder().setCtrlPersonsuffixList(new ArrayList<SuffixVo>());*/
 		List<Hicountry> hicountryList = ctccommonDropdownService.getAllCountries();
 		List<Cbcaddresstype> cbcaddresstype = ctccommonDropdownService.getAllAddressType();
 		List<Cbcnametype> cbcnametype = ctccommonDropdownService.getAllNameType();
@@ -2327,9 +2349,10 @@ public class CrsAccountHolderController {
 		ObjectMapper mapper = new ObjectMapper();
 		List<TitleVo> titleList = new ArrayList<TitleVo>();
 		String titleJson = mapper.writeValueAsString(titleList);
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersontitleList() != null 
-				&& hidef.getAccountholder().getCtrlPersontitleList().size() >0) {
-			titleJson = mapper.writeValueAsString(hidef.getAccountholder().getCtrlPersontitleList());
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null &&
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName() != null && hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getTitleList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getTitleList().size() >0) {
+			titleJson = mapper.writeValueAsString(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getTitleList());
 		}
 		model.addAttribute("hidef", hidef);
 		return titleJson;
@@ -2347,12 +2370,13 @@ public class CrsAccountHolderController {
 			List<TitleVo> titleList = new ArrayList<TitleVo>();
 			titleVo = mapper.readValue(insertTitleGrid, TitleVo.class);
 			titleVo.setId(ran.nextInt(10000));
-			if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersontitleList() != null 
-					&& hidef.getAccountholder().getCtrlPersontitleList().size() >0) {
-				hidef.getAccountholder().getCtrlPersontitleList().add(titleVo);
+			if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null &&
+					hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName() != null && hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getTitleList() != null 
+					&& hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getTitleList().size() >0) {
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getTitleList().add(titleVo);
 			}else {
-				hidef.getAccountholder().setCtrlPersontitleList(titleList);
-				hidef.getAccountholder().getCtrlPersontitleList().add(titleVo);
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().setTitleList(titleList);
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getTitleList().add(titleVo);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -2368,11 +2392,12 @@ public class CrsAccountHolderController {
 			@RequestParam(required = true) int id,
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersontitleList() != null 
-				&& hidef.getAccountholder().getCtrlPersontitleList().size() >0) {
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null &&
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName() != null && hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getTitleList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getTitleList().size() >0) {
 			try{
 			TitleVo updatedTitleVo = mapper.readValue(updateTitleGrid, TitleVo.class);
-			for(TitleVo title :hidef.getAccountholder().getCtrlPersontitleList()){
+			for(TitleVo title :hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getTitleList()){
 				if(title.getId()==id){
 					title.setName(updatedTitleVo.getName());
 					break;
@@ -2393,14 +2418,16 @@ public class CrsAccountHolderController {
 			@RequestParam(required = true) int id,
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if(deleteTitleGrid != null && hidef.getAccountholder().getCtrlPersontitleList() != null){
+		if(deleteTitleGrid != null && hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null &&
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName() != null && hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getTitleList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getTitleList().size() >0){
 			try{
 			TitleVo deleteTitleVo = mapper.readValue(deleteTitleGrid, TitleVo.class);
-			List<TitleVo> copyList = new ArrayList<TitleVo>(hidef.getAccountholder().getCtrlPersontitleList());
-			for(TitleVo title:hidef.getAccountholder().getCtrlPersontitleList()){
+			List<TitleVo> copyList = new ArrayList<TitleVo>(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getTitleList());
+			for(TitleVo title:hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getTitleList()){
 				if(id==title.getId()){
 					copyList.remove(title);
-					hidef.getAccountholder().setCtrlPersontitleList(copyList);
+					hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().setTitleList(copyList);
 					break;
 				}
 			}
@@ -2419,9 +2446,10 @@ public class CrsAccountHolderController {
 		ObjectMapper mapper = new ObjectMapper();
 		List<MiddleNameVo> middileNameList = new ArrayList<MiddleNameVo>();
 		String titleJson = mapper.writeValueAsString(middileNameList);
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonmiddlenameList() != null 
-				&& hidef.getAccountholder().getCtrlPersonmiddlenameList().size() >0) {
-			titleJson = mapper.writeValueAsString(hidef.getAccountholder().getCtrlPersonmiddlenameList());
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null &&
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName() != null && hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getMiddlenameList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getMiddlenameList().size() >0) {
+			titleJson = mapper.writeValueAsString(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getMiddlenameList());
 		}
 		model.addAttribute("hidef", hidef);
 		return titleJson;
@@ -2439,12 +2467,13 @@ public class CrsAccountHolderController {
 			List<MiddleNameVo> middleNameList = new ArrayList<MiddleNameVo>();
 			middleNameVo = mapper.readValue(insertMiddleNameGrid, MiddleNameVo.class);
 			middleNameVo.setId(ran.nextInt(10000));
-			if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonmiddlenameList() != null 
-					&& hidef.getAccountholder().getCtrlPersonmiddlenameList().size() >0) {
-				hidef.getAccountholder().getCtrlPersonmiddlenameList().add(middleNameVo);
+			if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null &&
+					hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName() != null && hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getMiddlenameList() != null 
+					&& hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getMiddlenameList().size() >0) {
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getMiddlenameList().add(middleNameVo);
 			}else {
-				hidef.getAccountholder().setCtrlPersonmiddlenameList(middleNameList);
-				hidef.getAccountholder().getCtrlPersonmiddlenameList().add(middleNameVo);
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().setMiddlenameList(middleNameList);
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getMiddlenameList().add(middleNameVo);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -2460,11 +2489,12 @@ public class CrsAccountHolderController {
 			@RequestParam(required = true) int id,
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonmiddlenameList() != null 
-				&& hidef.getAccountholder().getCtrlPersonmiddlenameList().size() >0) {
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null &&
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName() != null && hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getMiddlenameList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getMiddlenameList().size() >0) {
 			try{
 			MiddleNameVo middlenameVo = mapper.readValue(updateMiddleNameGrid, MiddleNameVo.class);
-			for(MiddleNameVo middlename :hidef.getAccountholder().getCtrlPersonmiddlenameList()){
+			for(MiddleNameVo middlename :hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getMiddlenameList()){
 				if(middlename.getId()==id){
 					middlename.setMiddleName(middlenameVo.getMiddleName());
 					break;
@@ -2485,14 +2515,16 @@ public class CrsAccountHolderController {
 			@RequestParam(required = true) int id,
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if(deleteMiddleNameGrid != null && hidef.getAccountholder().getCtrlPersonmiddlenameList() != null){
+		if(deleteMiddleNameGrid != null && hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null &&
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName() != null && hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getMiddlenameList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getMiddlenameList().size() >0){
 			try{
 			MiddleNameVo deleteMiddleNameVo = mapper.readValue(deleteMiddleNameGrid, MiddleNameVo.class);
-			List<MiddleNameVo> copyList = new ArrayList<MiddleNameVo>(hidef.getAccountholder().getCtrlPersonmiddlenameList());
-			for(MiddleNameVo middlename:hidef.getAccountholder().getCtrlPersonmiddlenameList()){
+			List<MiddleNameVo> copyList = new ArrayList<MiddleNameVo>(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getMiddlenameList());
+			for(MiddleNameVo middlename:hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getMiddlenameList()){
 				if(id==middlename.getId()){
 					copyList.remove(middlename);
-					hidef.getAccountholder().setCtrlPersonmiddlenameList(copyList);
+					hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().setMiddlenameList(copyList);
 					break;
 				}
 			}
@@ -2511,9 +2543,10 @@ public class CrsAccountHolderController {
 		ObjectMapper mapper = new ObjectMapper();
 		List<GenerationIdentifierVo> genIdenList = new ArrayList<GenerationIdentifierVo>();
 		String titleJson = mapper.writeValueAsString(genIdenList);
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersongenerateIdentifilerList() != null 
-				&& hidef.getAccountholder().getCtrlPersongenerateIdentifilerList().size() >0) {
-			titleJson = mapper.writeValueAsString(hidef.getAccountholder().getCtrlPersongenerateIdentifilerList());
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null && 
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName() != null &&hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGenerateIdentifilerList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGenerateIdentifilerList().size() >0) {
+			titleJson = mapper.writeValueAsString(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGenerateIdentifilerList());
 		}
 		model.addAttribute("hidef", hidef);
 		return titleJson;
@@ -2531,12 +2564,13 @@ public class CrsAccountHolderController {
 			List<GenerationIdentifierVo> genIdenList = new ArrayList<GenerationIdentifierVo>();
 			genIdenVo = mapper.readValue(insertGenIdenGrid, GenerationIdentifierVo.class);
 			genIdenVo.setId(ran.nextInt(10000));
-			if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersongenerateIdentifilerList() != null 
-					&& hidef.getAccountholder().getCtrlPersongenerateIdentifilerList().size() >0) {
-				hidef.getAccountholder().getCtrlPersongenerateIdentifilerList().add(genIdenVo);
+			if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null && 
+					hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName() != null &&hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGenerateIdentifilerList() != null 
+					&& hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGenerateIdentifilerList().size() >0) {
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGenerateIdentifilerList().add(genIdenVo);
 			}else {
-				hidef.getAccountholder().setCtrlPersongenerateIdentifilerList(genIdenList);
-				hidef.getAccountholder().getCtrlPersongenerateIdentifilerList().add(genIdenVo);
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().setGenerateIdentifilerList(genIdenList);
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGenerateIdentifilerList().add(genIdenVo);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -2552,11 +2586,12 @@ public class CrsAccountHolderController {
 			@RequestParam(required = true) int id,
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersongenerateIdentifilerList() != null 
-				&& hidef.getAccountholder().getCtrlPersongenerateIdentifilerList().size() >0) {
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null && 
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName() != null &&hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGenerateIdentifilerList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGenerateIdentifilerList().size() >0) {
 			try{
 				GenerationIdentifierVo middlenameVo = mapper.readValue(updateGenIdenGrid, GenerationIdentifierVo.class);
-			for(GenerationIdentifierVo geniden :hidef.getAccountholder().getCtrlPersongenerateIdentifilerList()){
+			for(GenerationIdentifierVo geniden :hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGenerateIdentifilerList()){
 				if(geniden.getId()==id){
 					geniden.setGenerateIdentifier(middlenameVo.getGenerateIdentifier());
 					break;
@@ -2577,14 +2612,16 @@ public class CrsAccountHolderController {
 			@RequestParam(required = true) int id,
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if(deleteGenIdenGrid != null && hidef.getAccountholder().getCtrlPersongenerateIdentifilerList() != null){
+		if(deleteGenIdenGrid != null && hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null && 
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName() != null &&hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGenerateIdentifilerList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGenerateIdentifilerList().size() >0){
 			try{
 			GenerationIdentifierVo deleteGenIdenVo = mapper.readValue(deleteGenIdenGrid, GenerationIdentifierVo.class);
-			List<GenerationIdentifierVo> copyList = new ArrayList<GenerationIdentifierVo>(hidef.getAccountholder().getCtrlPersongenerateIdentifilerList());
-			for(GenerationIdentifierVo geniden:hidef.getAccountholder().getCtrlPersongenerateIdentifilerList()){
+			List<GenerationIdentifierVo> copyList = new ArrayList<GenerationIdentifierVo>(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGenerateIdentifilerList());
+			for(GenerationIdentifierVo geniden:hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGenerateIdentifilerList()){
 				if(id==geniden.getId()){
 					copyList.remove(geniden);
-					hidef.getAccountholder().setCtrlPersongenerateIdentifilerList(copyList);
+					hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().setGenerateIdentifilerList(copyList);
 					break;
 				}
 			}
@@ -2603,9 +2640,10 @@ public class CrsAccountHolderController {
 		ObjectMapper mapper = new ObjectMapper();
 		List<SuffixVo> suffixList = new ArrayList<SuffixVo>();
 		String titleJson = mapper.writeValueAsString(suffixList);
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonsuffixList() != null 
-				&& hidef.getAccountholder().getCtrlPersonsuffixList().size() >0) {
-			titleJson = mapper.writeValueAsString(hidef.getAccountholder().getCtrlPersonsuffixList());
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null && 
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName() != null &&hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getSuffixList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getSuffixList().size() >0) {
+			titleJson = mapper.writeValueAsString(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getSuffixList());
 		}
 		model.addAttribute("hidef", hidef);
 		return titleJson;
@@ -2623,12 +2661,13 @@ public class CrsAccountHolderController {
 			List<SuffixVo> SuffixVo = new ArrayList<SuffixVo>();
 			suffixVo = mapper.readValue(insertSuffixGrid, SuffixVo.class);
 			suffixVo.setId(ran.nextInt(10000));
-			if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonsuffixList() != null 
-					&& hidef.getAccountholder().getCtrlPersonsuffixList().size() >0) {
-				hidef.getAccountholder().getCtrlPersonsuffixList().add(suffixVo);
+			if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null && 
+					hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName() != null &&hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getSuffixList() != null 
+					&& hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getSuffixList().size() >0) {
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getSuffixList().add(suffixVo);
 			}else {
-				hidef.getAccountholder().setCtrlPersonsuffixList(SuffixVo);
-				hidef.getAccountholder().getCtrlPersonsuffixList().add(suffixVo);
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().setSuffixList(SuffixVo);
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getSuffixList().add(suffixVo);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -2644,11 +2683,12 @@ public class CrsAccountHolderController {
 			@RequestParam(required = true) int id,
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonsuffixList() != null 
-				&& hidef.getAccountholder().getCtrlPersonsuffixList().size() >0) {
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null && 
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName() != null &&hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getSuffixList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getSuffixList().size() >0) {
 			try{
 				SuffixVo suffixVo = mapper.readValue(updateGenIdenGrid, SuffixVo.class);
-			for(SuffixVo suffix :hidef.getAccountholder().getCtrlPersonsuffixList()){
+			for(SuffixVo suffix :hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getSuffixList()){
 				if(suffix.getId()==id){
 					suffix.setSuffix(suffixVo.getSuffix());
 					break;
@@ -2669,14 +2709,16 @@ public class CrsAccountHolderController {
 			@RequestParam(required = true) int id,
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if(deleteSuffixGrid != null && hidef.getAccountholder().getCtrlPersonsuffixList() != null){
+		if(deleteSuffixGrid != null && hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null && 
+				hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName() != null &&hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getSuffixList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getSuffixList().size() >0){
 			try{
 			SuffixVo deleteSuffixVo = mapper.readValue(deleteSuffixGrid, SuffixVo.class);
-			List<SuffixVo> copyList = new ArrayList<SuffixVo>(hidef.getAccountholder().getCtrlPersonsuffixList());
-			for(SuffixVo suffix:hidef.getAccountholder().getCtrlPersonsuffixList()){
+			List<SuffixVo> copyList = new ArrayList<SuffixVo>(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getSuffixList());
+			for(SuffixVo suffix:hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getSuffixList()){
 				if(id==suffix.getId()){
 					copyList.remove(suffix);
-					hidef.getAccountholder().setCtrlPersonsuffixList(copyList);
+					hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().setSuffixList(copyList);
 					break;
 				}
 			}
@@ -2694,59 +2736,60 @@ public class CrsAccountHolderController {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		List<NameTypeVo> NameTypeList = null;
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonNameList() != null && hidef.getAccountholder().getCtrlPersonNameList().size()>0) {
-			NameTypeList = hidef.getAccountholder().getCtrlPersonNameList();
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null && 
+				hidef.getAccountholder().getControllingPersonVo().getNameTypeList() != null && hidef.getAccountholder().getControllingPersonVo().getNameTypeList().size()>0) {
+			NameTypeList = hidef.getAccountholder().getControllingPersonVo().getNameTypeList();
 			
 		}else {
 			NameTypeList = new ArrayList<NameTypeVo>();
-			hidef.getAccountholder().setCtrlPersonNameList(NameTypeList);
+			hidef.getAccountholder().getControllingPersonVo().setNameTypeList(NameTypeList);
 		}
 		
 		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonName() != null){
 			NameTypeVo nameTypeVo = new NameTypeVo();
-			if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonNameList()) && hidef.getAccountholder().getCtrlPersonNameList().size()>0){
-				nameTypeVo.setId(hidef.getAccountholder().getCtrlPersonNameList().size()+1);
-				hidef.getAccountholder().getIndividualName().setId(hidef.getAccountholder().getCtrlPersonNameList().size()+1);
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonVo().getNameTypeList()) && hidef.getAccountholder().getControllingPersonVo().getNameTypeList().size()>0){
+				nameTypeVo.setId(hidef.getAccountholder().getControllingPersonVo().getNameTypeList().size()+1);
+				hidef.getAccountholder().getCtrlPersonName().setId(hidef.getAccountholder().getControllingPersonVo().getNameTypeList().size()+1);
 				}else{
 					nameTypeVo.setId(1);
-					hidef.getAccountholder().getCtrlPersonName().setId(1);
+					hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().setId(1);
 				}
-			if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonName().getFirstName())){
-			nameTypeVo.setFirstName(hidef.getAccountholder().getCtrlPersonName().getFirstName());
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getFirstName())){
+			nameTypeVo.setFirstName(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getFirstName());
 			}
-			if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonName().getGeneralSuffix())){
-			nameTypeVo.setGeneralSuffix(hidef.getAccountholder().getCtrlPersonName().getGeneralSuffix());
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGeneralSuffix())){
+			nameTypeVo.setGeneralSuffix(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGeneralSuffix());
 			}
-			if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonName().getLastName())){
-				nameTypeVo.setLastName(hidef.getAccountholder().getCtrlPersonName().getLastName());
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getLastName())){
+				nameTypeVo.setLastName(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getLastName());
 			}
-			if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonName().getName())){
-				nameTypeVo.setName(hidef.getAccountholder().getCtrlPersonName().getName());
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getName())){
+				nameTypeVo.setName(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getName());
 			}
-			if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonName().getNamePrefix())){
-				nameTypeVo.setNamePrefix(hidef.getAccountholder().getCtrlPersonName().getNamePrefix());
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getNamePrefix())){
+				nameTypeVo.setNamePrefix(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getNamePrefix());
 			}
-			if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonName().getNameType())){
-				nameTypeVo.setNameType(hidef.getAccountholder().getCtrlPersonName().getNameType());
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getNameType())){
+				nameTypeVo.setNameType(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getNameType());
 			}
-			if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonName().getPrecedingTitle())){
-				nameTypeVo.setPrecedingTitle(hidef.getAccountholder().getCtrlPersonName().getPrecedingTitle());
+			if(!StringUtils.isEmpty(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getPrecedingTitle())){
+				nameTypeVo.setPrecedingTitle(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getPrecedingTitle());
 			}
 			/*if(!StringUtils.isEmpty(hidef.getAccountholder().getCtrlPersonName().getPrecedingTitle())){
 				nameTypeVo.set
 			}*/
-			nameTypeVo.setTitleList(hidef.getAccountholder().getCtrlPersontitleList());
-			nameTypeVo.setMiddlenameList(hidef.getAccountholder().getCtrlPersonmiddlenameList());
-			nameTypeVo.setGenerateIdentifilerList(hidef.getAccountholder().getCtrlPersongenerateIdentifilerList());
-			nameTypeVo.setSuffixList(hidef.getAccountholder().getCtrlPersonsuffixList());
+			nameTypeVo.setTitleList(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getTitleList());
+			nameTypeVo.setMiddlenameList(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getMiddlenameList());
+			nameTypeVo.setGenerateIdentifilerList(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGenerateIdentifilerList());
+			nameTypeVo.setSuffixList(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getSuffixList());
 			NameTypeList.add(nameTypeVo);
 		
 		}
 		
-		hidef.getAccountholder().setCtrlPersonNameList(NameTypeList);
+		hidef.getAccountholder().getControllingPersonVo().setNameTypeList(NameTypeList);
 		String arrayToJson = mapper.writeValueAsString(NameTypeList);
 		model.addAttribute("hidef", hidef);
-        return hidef.getAccountholder().getCtrlPersonName();
+        return hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName();
 	}
 	
 	@GetMapping(value ="/admin/crs/editctrlPersonInsertNameGrid")
@@ -2755,16 +2798,18 @@ public class CrsAccountHolderController {
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		
 		NameTypeVo nameType = new NameTypeVo();
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonNameList() != null &&
-				hidef.getAccountholder().getCtrlPersonNameList().size() > 0){
-			for(NameTypeVo nameList :hidef.getAccountholder().getCtrlPersonNameList()){
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null &&
+				hidef.getAccountholder().getControllingPersonVo().getNameTypeList() != null &&
+						hidef.getAccountholder().getControllingPersonVo().getNameTypeList().size() > 0){
+			for(NameTypeVo nameList :hidef.getAccountholder().getControllingPersonVo().getNameTypeList()){
 				if(nameList.getId() == id){
 					nameType = nameList;
-					hidef.getAccountholder().setCtrlPersonName(nameType);
+					/*hidef.getAccountholder().getControllingPersonVo().get.setCtrlPersonName(nameType);
 					hidef.getAccountholder().setCtrlPersontitleList(nameType.getTitleList());
 					hidef.getAccountholder().setCtrlPersonmiddlenameList(nameType.getMiddlenameList());
 					hidef.getAccountholder().setCtrlPersongenerateIdentifilerList(nameType.getGenerateIdentifilerList());
-					hidef.getAccountholder().setCtrlPersonsuffixList(nameType.getSuffixList());
+					hidef.getAccountholder().setCtrlPersonsuffixList(nameType.getSuffixList());*/
+					hidef.getAccountholder().getControllingPersonVo().setCtrlPersonName(nameType);
 					break;
 				}
 			}
@@ -2786,16 +2831,13 @@ public class CrsAccountHolderController {
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		
 		NameTypeVo nameType = new NameTypeVo();
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonNameList() != null &&
-				hidef.getAccountholder().getCtrlPersonNameList().size() > 0){
-			for(NameTypeVo nameList :hidef.getAccountholder().getCtrlPersonNameList()){
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null &&
+				hidef.getAccountholder().getControllingPersonVo().getNameTypeList() != null && 
+						hidef.getAccountholder().getControllingPersonVo().getNameTypeList().size() > 0){
+			for(NameTypeVo nameList :hidef.getAccountholder().getControllingPersonVo().getNameTypeList()){
 				if(nameList.getId() == id){
 					nameType = nameList;
-					hidef.getAccountholder().setCtrlPersonName(nameType);
-					hidef.getAccountholder().setCtrlPersontitleList(nameType.getTitleList());
-					hidef.getAccountholder().setCtrlPersonmiddlenameList(nameType.getMiddlenameList());
-					hidef.getAccountholder().setCtrlPersongenerateIdentifilerList(nameType.getGenerateIdentifilerList());
-					hidef.getAccountholder().setCtrlPersonsuffixList(nameType.getSuffixList());
+					hidef.getAccountholder().getControllingPersonVo().setCtrlPersonName(nameType);
 					break;
 				}
 			}
@@ -2817,20 +2859,20 @@ public class CrsAccountHolderController {
 	public String editSavectrlPersonInsertNameGrid(@ModelAttribute("hidef")HidefVo hidef,Map<String, Object> map,
 		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonNameList() != null){
-			for(NameTypeVo nameList :hidef.getAccountholder().getCtrlPersonNameList()){
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo().getNameTypeList() != null){
+			for(NameTypeVo nameList :hidef.getAccountholder().getControllingPersonVo().getNameTypeList()){
 				if(hidef.getAccountholder().getCtrlPersonName().getId() == nameList.getId()){
-					nameList.setFirstName(hidef.getAccountholder().getCtrlPersonName().getFirstName());
-					nameList.setGeneralSuffix(hidef.getAccountholder().getCtrlPersonName().getGeneralSuffix());
-					nameList.setGenerateIdentifilerList(hidef.getAccountholder().getCtrlPersongenerateIdentifilerList());
-					nameList.setLastName(hidef.getAccountholder().getCtrlPersonName().getLastName());
-					nameList.setMiddlenameList(hidef.getAccountholder().getCtrlPersonmiddlenameList());
-					nameList.setName(hidef.getAccountholder().getCtrlPersonName().getName());
-					nameList.setNamePrefix(hidef.getAccountholder().getCtrlPersonName().getNamePrefix());
-					nameList.setNameType(hidef.getAccountholder().getCtrlPersonName().getNameType());
-					nameList.setPrecedingTitle(hidef.getAccountholder().getCtrlPersonName().getPrecedingTitle());
+					nameList.setFirstName(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getFirstName());
+					nameList.setGeneralSuffix(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGeneralSuffix());
+					nameList.setGenerateIdentifilerList(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getGenerateIdentifilerList());
+					nameList.setLastName(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getLastName());
+					nameList.setMiddlenameList(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getMiddlenameList());
+					nameList.setName(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getName());
+					nameList.setNamePrefix(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getNamePrefix());
+					nameList.setNameType(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getNameType());
+					nameList.setPrecedingTitle(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getPrecedingTitle());
 					nameList.setSuffixList(hidef.getAccountholder().getCtrlPersonsuffixList());
-					nameList.setTitleList(hidef.getAccountholder().getCtrlPersontitleList());
+					nameList.setTitleList(hidef.getAccountholder().getControllingPersonVo().getCtrlPersonName().getTitleList());
 					break;
 				}
 				
@@ -2997,6 +3039,38 @@ public class CrsAccountHolderController {
 		model.addAttribute("hidef", hidef);
 		return nameTypeJson;
 	}
+	
+	@GetMapping(value = "/admin/crs/viewControllingPersonMain")
+	@ResponseBody
+	public String viewControllingPersonMain(@ModelAttribute("hidef") HidefVo hidef, @RequestParam int viewId, BindingResult result,
+			ModelMap model, Map<String, Object> map) throws JsonParseException, JsonMappingException, IOException {
+		ControllingPersonVo controllingPersonVo = new ControllingPersonVo();
+		
+		for (ControllingPersonVo ctrlPerson: hidef.getControllingPersonList()) {
+			if (ctrlPerson.getId() == viewId) {
+				controllingPersonVo =ctrlPerson;
+			}
+		}
+
+		hidef.getAccountholder().setControllingPersonVo(controllingPersonVo);;
+		model.addAttribute("hidef", hidef);
+		return "success";
+	}
+	
+	@PostMapping(value = "/admin/crs/save")
+	@ResponseBody
+	public String save(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
+			Map<String, Object> map, HttpServletResponse response) throws IOException {
+		
+		/**
+		 * Database Saving part created by Venki 
+		 */
+		ctcDataSaveService.savecrsData(hidef);		
+		//FileCopyUtils.copy(metaDataContentInString, response.getWriter());
+		return "success";
+
+	}
+	
 	
 	
 	

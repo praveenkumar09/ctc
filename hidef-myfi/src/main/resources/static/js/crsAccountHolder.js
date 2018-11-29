@@ -1290,10 +1290,12 @@ $(document)
 												.click(
 														function(
 																e) {
-															alert("ID: "
-																	+ item.id);
+															/*alert("ID: "
+																	+ item.id);*/
 															e
 																	.stopPropagation();
+															viewControllingPersonMain(item.id);
+															return false;
 														});
 
 										var $customEditButton = $(
@@ -2266,6 +2268,10 @@ $(document)
 																.click(function(e) {
 																	/*alert("ID: " + item.id);*/
 																	controllingPersonDeleteAddress(item.id);
+																	$(
+																	"#accountHolderControllingPersonAddressGrid")
+																	.jsGrid(
+																			"loadData");
 																	e.stopPropagation();
 																	return false;
 																});
@@ -9432,8 +9438,8 @@ function saveCtrlPersonMain(){
 					console.log(data);
 					$("#accountHolderGrid").jsGrid("insertItem", data).done(function() {
 						console.log("insertion completed");
-						/*showCbcReports(1,0,0);*/
-						ReportingFiNext();
+						
+						ReportingFiNext(1,0,0);
 					});
 				},error : function(request, error) {
 					alert("Request: " + JSON.stringify(request));
@@ -9542,6 +9548,53 @@ function deleteNewCtrlNameClicked(id){
        }
    });
 /*	}*/
+}
+
+function viewControllingPersonMain(id){
+	
+	$
+   .ajax({
+
+       url: 'crs/viewControllingPersonMain?viewId='+id,
+       type: 'GET',
+       async: false,
+       success: function(data) {
+           console
+               .log("data ====>"+data);
+           ReportingFiNext(0,0,1);
+       },
+       error: function(
+           request,
+           error) {
+           console.log(error);
+       }
+   });
+
+}
+
+function saveAllCRSData(){
+	/*alert('@@@@@@@@@@@@@@');*/
+	$
+   .ajax({
+
+       url: 'crs/save',
+       type: 'POST',
+       async: false,
+       success: function(data) {
+           console
+               .log("data ====>"+data);
+           return false;
+         /*  $("#saveCBCDataButton").hide();
+           $("#generateCBCMetadata").show();*/
+           //showCbcAddInfo(0,0,1);
+       },
+       error: function(
+           request,
+           error) {
+           console.log(error);
+       }
+   });
+
 }
 
 

@@ -593,13 +593,13 @@ function validateCbcReports(){
 }
 
 function currencyValidation(obj){
-	
+	/*alert('@@@@@@@@@@@@@@@');*/
 	//validate(evt);
     $(obj).priceFormat({
     	prefix: '',
-    	centsSeparator: '.',
-        thousandsSeparator: ',',
-        limit: 14,
+    	centsSeparator: '',
+        thousandsSeparator: '',
+        limit: 18,
         allowNegative: true,
 		insertPlusSign: true
     }); 	

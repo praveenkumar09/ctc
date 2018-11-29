@@ -55,7 +55,7 @@
 							<form:option value="0" >Please choose</form:option>
 						
 							<c:forEach items="${messageTypeIndic}" var="msftypeindic">
-							<form:option value="${msftypeindic.indic}">
+							<form:option value="${msftypeindic.id}">
 								${msftypeindic.indic}
 							</form:option>
 						</c:forEach>
@@ -85,9 +85,20 @@
 				<br />
 				<div class="form-group">
 					<div class="form-group col-md-6">
-						<label class="">Reporting Period:</label> <form:input type="text"
+						<label class="">Reporting Period:</label> 
+						<%-- <form:input type="text"
 							class="form-control" id="reportingPeriod"
-							placeholder="Reporting Period" path ="crsmetadata.reportingPeriod" maxlength="4" onkeypress='validate(event)'></form:input>
+							placeholder="Reporting Period" path ="crsmetadata.reportingPeriod" maxlength="4" onkeypress='validate(event)'></form:input> --%>
+							
+					<div class="input-group date" data-provide="datepicker">
+								<form:input type="text" class="form-control"
+									id="reportingPeriod" placeholder="Reporting Period"
+									path="crsmetadata.reportingPeriod"></form:input>
+								<span class="input-group-addon"> <span
+									class="glyphicon glyphicon-calendar"></span>
+								</span> <font color='red'><span id="reportingPeriodError"
+									class="mandatory-flag"></span></font>
+							</div>
 					</div>
 					<div class="form-group col-md-6">
 						<label class="">Tax Year:</label> <form:input type="text"

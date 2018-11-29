@@ -1,57 +1,44 @@
 package com.censof.myfi.hidefmyfi.entity;
 
 import java.io.Serializable;
-import java.math.BigInteger;
-
 import javax.persistence.*;
-
 import java.util.Date;
 
 
 /**
- * The persistent class for the crsctrlpersontype database table.
+ * The persistent class for the crspayldnamegeneration database table.
  * 
  */
 @Entity
-@NamedQuery(name="Crsctrlpersontype.findAll", query="SELECT c FROM Crsctrlpersontype c")
-public class Crsctrlpersontype implements Serializable {
+@NamedQuery(name="Crspayldnamegeneration.findAll", query="SELECT c FROM Crspayldnamegeneration c")
+public class Crspayldnamegeneration implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private BigInteger id;
+	@EmbeddedId
+	private CrspayldnamegenerationPK id;
 
-	@Column(name="createby")
 	private String createBy;
 
-	@Column(name="createdatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDateTime;
 
-	@Column(name="ctrlpersontype")
-	private String ctrlpersontype;
+	private String generationIdentifier;
 
-	@Column(name="modifyby")
 	private String modifyBy;
 
-	@Column(name="modifydatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifyDateTime;
 
-	public Crsctrlpersontype() {
+	public Crspayldnamegeneration() {
 	}
 
-	
-	public BigInteger getId() {
-		return id;
+	public CrspayldnamegenerationPK getId() {
+		return this.id;
 	}
 
-
-	public void setId(BigInteger id) {
+	public void setId(CrspayldnamegenerationPK id) {
 		this.id = id;
 	}
-
 
 	public String getCreateBy() {
 		return this.createBy;
@@ -69,12 +56,12 @@ public class Crsctrlpersontype implements Serializable {
 		this.createDateTime = createDateTime;
 	}
 
-	public String getCtrlpersontype() {
-		return this.ctrlpersontype;
+	public String getGenerationIdentifier() {
+		return this.generationIdentifier;
 	}
 
-	public void setCtrlpersontype(String ctrlpersontype) {
-		this.ctrlpersontype = ctrlpersontype;
+	public void setGenerationIdentifier(String generationIdentifier) {
+		this.generationIdentifier = generationIdentifier;
 	}
 
 	public String getModifyBy() {

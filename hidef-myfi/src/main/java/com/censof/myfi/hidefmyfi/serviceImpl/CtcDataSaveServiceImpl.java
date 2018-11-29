@@ -45,6 +45,10 @@ import com.censof.myfi.hidefmyfi.entity.Cbcpayldreceivingcountry;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldreport;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldrescountry;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldsumref;
+import com.censof.myfi.hidefmyfi.entity.Crspayldbody;
+import com.censof.myfi.hidefmyfi.entity.Crspayldfi;
+import com.censof.myfi.hidefmyfi.entity.Crspayldhdr;
+import com.censof.myfi.hidefmyfi.entity.Crspayldname;
 import com.censof.myfi.hidefmyfi.entity.Docrefid;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
 import com.censof.myfi.hidefmyfi.entity.Messagerefid;
@@ -65,6 +69,10 @@ import com.censof.myfi.hidefmyfi.repository.CbcpayldreceivingcountryRepository;
 import com.censof.myfi.hidefmyfi.repository.CbcpayldreportRepository;
 import com.censof.myfi.hidefmyfi.repository.CbcpayldrescountryRepository;
 import com.censof.myfi.hidefmyfi.repository.CbcpayldsumrefRepository;
+import com.censof.myfi.hidefmyfi.repository.CrspayldbodyRepository;
+import com.censof.myfi.hidefmyfi.repository.CrspayldfiRepository;
+import com.censof.myfi.hidefmyfi.repository.CrspayldhdrRepository;
+import com.censof.myfi.hidefmyfi.repository.CrspayldnameRepository;
 import com.censof.myfi.hidefmyfi.repository.DocrefidRepository;
 import com.censof.myfi.hidefmyfi.repository.MessagerefidRepository;
 import com.censof.myfi.hidefmyfi.repository.SenderfileidRepository;
@@ -78,6 +86,8 @@ import com.censof.myfi.hidefmyfi.vo.BizActivitiesTypeVo;
 import com.censof.myfi.hidefmyfi.vo.CBCRepotsVo;
 import com.censof.myfi.hidefmyfi.vo.CBCSummaryGridVo;
 import com.censof.myfi.hidefmyfi.vo.CbcAdditionalInfo;
+import com.censof.myfi.hidefmyfi.vo.CrsMetadataVo;
+import com.censof.myfi.hidefmyfi.vo.CrsReportingFiVo;
 import com.censof.myfi.hidefmyfi.vo.HidefVo;
 import com.censof.myfi.hidefmyfi.vo.MetaDataVo;
 import com.censof.myfi.hidefmyfi.vo.NameVo;
@@ -155,6 +165,23 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 
 	@Autowired
 	private CtccommonDropdownService ctccommonDropdownService;
+	
+	
+	
+	
+	
+	
+	@Autowired
+	private CrspayldhdrRepository crspayldhdrRepository;
+	
+	@Autowired
+	private CrspayldbodyRepository crspayldbodyRepository;
+	
+	@Autowired
+	private CrspayldfiRepository crspayldfiRepository;
+	
+	@Autowired
+	private CrspayldnameRepository crspayldnameRepository;
 
 	@Override
 	@Transactional
@@ -518,7 +545,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							cbcpayldreport = new Cbcpayldreport();
 						}
 						if (!StringUtils.isEmpty(cbcReports.getAssertAmount())) {
-							cbcpayldreport.setAssetsAmt(Double.valueOf(cbcReports.getAssertAmount().replace(",", "")));
+							cbcpayldreport.setAssetsAmt(cbcReports.getAssertAmount());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getAssertCurrCode())) {
 							cbcpayldreport.setAssetsCurrCode(cbcReports.getAssertCurrCode());
@@ -526,7 +553,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						cbcpayldreport.setBodyID(cbcpayldbody.getId());
 						if (!StringUtils.isEmpty(cbcReports.getCapitalAmount())) {
 							cbcpayldreport
-									.setCapitalAmt(Double.valueOf(cbcReports.getCapitalAmount().replace(",", "")));
+									.setCapitalAmt(cbcReports.getCapitalAmount());
 						}
 						if (!StringUtils.isEmpty(hidefVo.getCbcReports().getCapitalCurrCode())) {
 							cbcpayldreport.setCapitalCurrCode(cbcReports.getCapitalCurrCode());
@@ -540,7 +567,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						}
 						if (!StringUtils.isEmpty(cbcReports.getEarningAmount())) {
 							cbcpayldreport
-									.setEarningsAmt(Double.valueOf(cbcReports.getEarningAmount().replace(",", "")));
+									.setEarningsAmt(cbcReports.getEarningAmount());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getEarningCurrCode())) {
 							cbcpayldreport.setEarningsCurrCode(cbcReports.getEarningCurrCode());
@@ -551,7 +578,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						}
 						if (!StringUtils.isEmpty(cbcReports.getPrfitotloassAmount())) {
 							cbcpayldreport.setProfitOrLossAmt(
-									Double.valueOf(cbcReports.getPrfitotloassAmount().replace(",", "")));
+									cbcReports.getPrfitotloassAmount());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getProfitorlossCurrCode())) {
 							cbcpayldreport.setProfitOrLossCurrCode(cbcReports.getProfitorlossCurrCode());
@@ -561,35 +588,35 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						}
 						if (!StringUtils.isEmpty(cbcReports.getRelatedAmount())) {
 							cbcpayldreport.setRevenuesRelatedAmt(
-									Double.valueOf(cbcReports.getRelatedAmount().replace(",", "")));
+									cbcReports.getRelatedAmount());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getRelatedCurrCode())) {
 							cbcpayldreport.setRevenuesRelatedCurrCode(cbcReports.getRelatedCurrCode());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTotalRevenueAmount())) {
 							cbcpayldreport.setRevenuesTotalAmt(
-									Double.valueOf(cbcReports.getTotalRevenueAmount().replace(",", "")));
+									cbcReports.getTotalRevenueAmount());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTotalRevenueCurrCode())) {
 							cbcpayldreport.setRevenuesTotalCurrCode(cbcReports.getTotalRevenueCurrCode());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getUnrelatedAmount())) {
 							cbcpayldreport.setRevenuesUnrelatedAmt(
-									Double.valueOf(cbcReports.getUnrelatedAmount().replace(",", "")));
+									cbcReports.getUnrelatedAmount());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getUnrelateCurrCode())) {
 							cbcpayldreport.setRevenuesUnrelatedCurrCode(cbcReports.getUnrelateCurrCode());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTaxaccruedAmount())) {
 							cbcpayldreport.setTaxAccruedAmt(
-									Double.valueOf(cbcReports.getTaxaccruedAmount().replace(",", "")));
+									cbcReports.getTaxaccruedAmount());
 						}
 						if (!StringUtils.isEmpty(hidefVo.getCbcReports().getTaxaccruedCurrCode())) {
 							cbcpayldreport.setTaxAccruedCurrCode(hidefVo.getCbcReports().getTaxaccruedCurrCode());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTaxpaidAmount())) {
 							cbcpayldreport
-									.setTaxPaidAmt(Double.valueOf(cbcReports.getTaxpaidAmount().replace(",", "")));
+									.setTaxPaidAmt(cbcReports.getTaxpaidAmount());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTaxpiadCurrCode())) {
 							cbcpayldreport.setTaxPaidCurrCode(cbcReports.getTaxpiadCurrCode());
@@ -1292,16 +1319,16 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 				if (cbcReports != null && cbcReports.size() > 0) {
 					for (Cbcpayldreport reports : cbcReports) {
 						CBCRepotsVo cbcReport = new CBCRepotsVo();
-						DecimalFormat formatter = new DecimalFormat("###,###,###,###.00");
+						/*DecimalFormat formatter = new DecimalFormat("###,###,###,###.00");*/
 						if (reports.getAssetsAmt() != null) {
 
 							cbcReport.setAssertAmount(
-									String.valueOf(formatter.format(reports.getAssetsAmt().doubleValue())));
+									String.valueOf(reports.getAssetsAmt()));
 						}
 						cbcReport.setAssertCurrCode(reports.getAssetsCurrCode());
 						if (reports.getCapitalAmt() != null) {
 							cbcReport.setCapitalAmount(
-									String.valueOf(formatter.format(reports.getCapitalAmt().doubleValue())));
+									String.valueOf(reports.getCapitalAmt()));
 						}
 						cbcReport.setCapitalCurrCode(reports.getCapitalCurrCode());
 						cbcReport.setCorrDocRefId(reports.getCorrDocRefId());
@@ -1310,7 +1337,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						cbcReport.setDocumentTypeIndicator(reports.getDocTypeIndic());
 						if (reports.getEarningsAmt() != null) {
 							cbcReport.setEarningAmount(
-									String.valueOf(formatter.format(reports.getEarningsAmt().doubleValue())));
+									String.valueOf(reports.getEarningsAmt()));
 						}
 						cbcReport.setEarningCurrCode(reports.getEarningsCurrCode());
 						cbcReport.setId(reports.getId().intValue());
@@ -1322,34 +1349,34 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						// cbcReport.setOtherEntityInfo(reports.get);
 						if (reports.getProfitOrLossAmt() != null) {
 							cbcReport.setPrfitotloassAmount(
-									String.valueOf(formatter.format(reports.getProfitOrLossAmt().doubleValue())));
+									String.valueOf(reports.getProfitOrLossAmt()));
 						}
 						cbcReport.setProfitorlossCurrCode(reports.getCapitalCurrCode());
 						if (reports.getRevenuesRelatedAmt() != null) {
 							cbcReport.setRelatedAmount(
-									String.valueOf(formatter.format(reports.getRevenuesRelatedAmt().doubleValue())));
+									String.valueOf(reports.getRevenuesRelatedAmt()));
 						}
 						cbcReport.setUnrelateCurrCode(reports.getRevenuesUnrelatedCurrCode());
 						if (reports.getRevenuesUnrelatedAmt() != null) {
 							cbcReport.setUnrelatedAmount(
-									String.valueOf(formatter.format(reports.getRevenuesUnrelatedAmt().doubleValue())));
+									String.valueOf(reports.getRevenuesUnrelatedAmt()));
 						}
 						cbcReport.setRelatedCurrCode(reports.getRevenuesRelatedCurrCode());
 						cbcReport.setResidentCountryCode(reports.getResCountryCode());
 						if (reports.getTaxAccruedAmt() != null) {
 							cbcReport.setTaxaccruedAmount(
-									String.valueOf(formatter.format(reports.getTaxAccruedAmt().doubleValue())));
+									String.valueOf(reports.getTaxAccruedAmt()));
 						}
 						if (reports.getRevenuesTotalAmt() != null) {
 							cbcReport.setTotalRevenueAmount(
-									String.valueOf(formatter.format(reports.getRevenuesTotalAmt())));
+									String.valueOf(reports.getRevenuesTotalAmt()));
 						}
 						cbcReport.setTotalRevenueCurrCode(reports.getRevenuesTotalCurrCode());
 
 						cbcReport.setTaxaccruedCurrCode(reports.getTaxAccruedCurrCode());
 						if (reports.getTaxPaidAmt() != null) {
 							cbcReport.setTaxpaidAmount(
-									String.valueOf(formatter.format(reports.getTaxPaidAmt().doubleValue())));
+									String.valueOf(reports.getTaxPaidAmt()));
 						}
 						cbcReport.setTaxpiadCurrCode(reports.getTaxPaidCurrCode());
 
@@ -2965,7 +2992,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							cbcpayldreport = new Cbcpayldreport();
 						}
 						if (!StringUtils.isEmpty(cbcReports.getAssertAmount())) {
-							cbcpayldreport.setAssetsAmt(Double.valueOf(cbcReports.getAssertAmount().replace(",", "")));
+							cbcpayldreport.setAssetsAmt(cbcReports.getAssertAmount());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getAssertCurrCode())) {
 							cbcpayldreport.setAssetsCurrCode(findCurrencyById(cbcReports.getAssertCurrCode()));
@@ -2973,7 +3000,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						cbcpayldreport.setBodyID(cbcpayldbody.getId());
 						if (!StringUtils.isEmpty(cbcReports.getCapitalAmount())) {
 							cbcpayldreport
-									.setCapitalAmt(Double.valueOf(cbcReports.getCapitalAmount().replace(",", "")));
+									.setCapitalAmt(cbcReports.getCapitalAmount());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getCapitalCurrCode())) {
 							cbcpayldreport.setCapitalCurrCode(findCurrencyById(cbcReports.getCapitalCurrCode()));
@@ -2987,7 +3014,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						}
 						if (!StringUtils.isEmpty(cbcReports.getEarningAmount())) {
 							cbcpayldreport
-									.setEarningsAmt(Double.valueOf(cbcReports.getEarningAmount().replace(",", "")));
+									.setEarningsAmt(cbcReports.getEarningAmount());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getEarningCurrCode())) {
 							cbcpayldreport.setEarningsCurrCode(findCurrencyById(cbcReports.getEarningCurrCode()));
@@ -2998,7 +3025,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						}
 						if (!StringUtils.isEmpty(cbcReports.getPrfitotloassAmount())) {
 							cbcpayldreport.setProfitOrLossAmt(
-									Double.valueOf(cbcReports.getPrfitotloassAmount().replace(",", "")));
+									cbcReports.getPrfitotloassAmount());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getProfitorlossCurrCode())) {
 							cbcpayldreport
@@ -3010,7 +3037,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						}
 						if (!StringUtils.isEmpty(cbcReports.getRelatedAmount())) {
 							cbcpayldreport.setRevenuesRelatedAmt(
-									Double.valueOf(cbcReports.getRelatedAmount().replace(",", "")));
+									cbcReports.getRelatedAmount());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getRelatedCurrCode())) {
 							cbcpayldreport
@@ -3018,7 +3045,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTotalRevenueAmount())) {
 							cbcpayldreport.setRevenuesTotalAmt(
-									Double.valueOf(cbcReports.getTotalRevenueAmount().replace(",", "")));
+									cbcReports.getTotalRevenueAmount());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTotalRevenueCurrCode())) {
 							cbcpayldreport
@@ -3026,7 +3053,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						}
 						if (!StringUtils.isEmpty(cbcReports.getUnrelatedAmount())) {
 							cbcpayldreport.setRevenuesUnrelatedAmt(
-									Double.valueOf(cbcReports.getUnrelatedAmount().replace(",", "")));
+									cbcReports.getUnrelatedAmount());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getUnrelateCurrCode())) {
 							cbcpayldreport
@@ -3034,7 +3061,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTaxaccruedAmount())) {
 							cbcpayldreport.setTaxAccruedAmt(
-									Double.valueOf(cbcReports.getTaxaccruedAmount().replace(",", "")));
+									cbcReports.getTaxaccruedAmount());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTaxaccruedCurrCode())) {
 							cbcpayldreport.setTaxAccruedCurrCode(
@@ -3042,7 +3069,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTaxpaidAmount())) {
 							cbcpayldreport
-									.setTaxPaidAmt(Double.valueOf(cbcReports.getTaxpaidAmount().replace(",", "")));
+									.setTaxPaidAmt(cbcReports.getTaxpaidAmount());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTaxpiadCurrCode())) {
 							cbcpayldreport.setTaxPaidCurrCode(findCurrencyById(cbcReports.getTaxpiadCurrCode()));
@@ -3463,6 +3490,161 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 		senderfileid.setSenderfileid("0001");
 		senderfileid = senderfileidRepository.save(senderfileid);
 		return senderfileid;
+	}
+
+	@Override
+	public HidefVo savecrsData(HidefVo hidefVo) {
+		logger.info("<<<<<<<<<<<<<<CRS Saving part begin>>>>>>>>>>>>>>>>>");
+		
+		if(hidefVo != null && hidefVo.getCrsmetadata() != null){
+		logger.info("<<<<<<<<<<<Metadata[Crspayldhdr] begin saving>>>>>>>>>>>>>>>");
+		CrsMetadataVo metadata = hidefVo.getCrsmetadata();
+		Crspayldhdr crspayld = new Crspayldhdr();
+		if(!StringUtils.isEmpty(metadata.getBinaryEncoding())){
+		crspayld.setBinaryEncodingSchemeCd(metadata.getBinaryEncoding());
+		}
+		if(!StringUtils.isEmpty(metadata.getCommunicationType())){
+		crspayld.setCommunicationTypeCd(metadata.getCommunicationType());
+		}
+		if(!StringUtils.isEmpty(metadata.getContact())){
+		crspayld.setContact(metadata.getContact());
+		}
+		crspayld.setCreateDateTime(new Date());
+		if(!StringUtils.isEmpty(hidefVo.getMycbcId())){
+		crspayld.setCrsid(new BigInteger(hidefVo.getMycbcId()));
+		}
+		if(!StringUtils.isEmpty(metadata.getFileCreationTimestramp())){
+		crspayld.setFileCreateTs(metadata.getFileCreationTimestramp());
+		}
+		if(!StringUtils.isEmpty(metadata.getFileFormatCode())){
+		crspayld.setFileFormatCD(metadata.getFileFormatCode());
+		}
+		if(!StringUtils.isEmpty(metadata.getMessageTypeIndic())){
+		crspayld.setFileRevisionInd(Integer.parseInt(metadata.getMessageTypeIndic()));
+		}
+		if(!StringUtils.isEmpty(metadata.getMessageReferenceId())){
+		crspayld.setMessageRefId(metadata.getMessageReferenceId());
+		}
+		if(!StringUtils.isEmpty(metadata.getMessageType())){
+		crspayld.setMessageType(metadata.getMessageType());
+		}
+		
+		crspayld.setMsgTimestamp(new Date());
+		if(!StringUtils.isEmpty(metadata.getReceivingCountry())){
+		crspayld.setReceiverCountryCd(metadata.getReceivingCountry());
+		}
+		if(!StringUtils.isEmpty(metadata.getReportingPeriod())){
+		crspayld.setReportingPeriod(metadata.getReportingPeriod());
+		}
+		if(!StringUtils.isEmpty(metadata.getSenderContactEmail())){
+		crspayld.setSenderContactEmailAddressTxt(metadata.getSenderContactEmail());
+		}
+		if(!StringUtils.isEmpty(metadata.getSendingCountry())){
+		crspayld.setSenderCountryCd(metadata.getSendingCountry());
+		}
+		if(!StringUtils.isEmpty(metadata.getSenderFileId())){
+		crspayld.setSenderFileId(metadata.getSenderFileId());
+		}
+		if(!StringUtils.isEmpty(hidefVo.getMycbcId())){
+		crspayld.setSendingCompanyIN(hidefVo.getMycbcId());
+		}
+		if(!StringUtils.isEmpty(metadata.getTaxYear())){
+		crspayld.setTaxYear(Integer.parseInt(metadata.getTaxYear()));
+		}
+		if(!StringUtils.isEmpty(metadata.getWarning())){
+		crspayld.setWarning(metadata.getWarning());
+		}
+		crspayld = crspayldhdrRepository.saveAndFlush(crspayld);
+		logger.info("<<<<<<<<<<<Metadata[Crspayldhdr] End saving>>>>>>>>>>>>>>>"+crspayld.getId());
+		
+		
+		if(crspayld != null){
+			logger.info("<<<<<<<<<<<Body[Crspayldbody] Begin saving>>>>>>>>>>>>>>>");
+			Crspayldbody crsbody = new Crspayldbody();
+			crsbody.setHdrID(crspayld.getId());
+			crsbody.setCreateDateTime(new Date());
+			crsbody = crspayldbodyRepository.saveAndFlush(crsbody);
+			logger.info("<<<<<<<<<<<Body[Crspayldbody] End saving>>>>>>>>>>>>>>>"+crsbody.getId());
+			
+			if(crsbody != null && crsbody != null && crspayld != null){
+				logger.info("<<<<<<<<<<<<Reposting FI Saving part begin here>>>>>>>>>>>>>>>");
+				if(hidefVo.getCrsreportingfi() != null){
+				logger.info("<<<<<<<<<<<ReportingFI[Crspayldfi] Begin saving>>>>>>>>>>>>>>>");
+				CrsReportingFiVo reportingFi = hidefVo.getCrsreportingfi();
+				Crspayldfi crspayldFi = new Crspayldfi();
+				crspayldFi.setBodyID(crsbody.getId());
+				crspayldFi.setCorrDocRefId(reportingFi.getCorDocRefId());
+				crspayldFi.setCreateDateTime(new Date());
+				crspayldFi.setDocRefId(reportingFi.getDocRefId());
+				crspayldFi.setDocTypeIndic(reportingFi.getDocumentTypeIndic());
+				crspayldFi.setHdrID(crspayld.getId());
+				crspayldFi = crspayldfiRepository.saveAndFlush(crspayldFi);
+				logger.info("<<<<<<<<<<<ReportingFI[Crspayldfi] End saving>>>>>>>>>>>>>>>"+crspayldFi.getId());
+				
+				//Organisation Grid
+				if(reportingFi.getNameList() != null && reportingFi.getNameList().size() > 0){
+					logger.info("<<<<<<<<<<<ReportingFI[Crspayldname] Begin saving>>>>>>>>>>>>>>>");	
+					for(NameVo nameVo : reportingFi.getNameList()){
+						Crspayldname crspayldName = new Crspayldname();
+						crspayldName.setNameOrganisation(nameVo.getFirstName());
+						crspayldName.setNamePersonType(String.valueOf(nameVo.getNameType()));
+						crspayldName = crspayldnameRepository.saveAndFlush(crspayldName);
+						
+					}
+					logger.info("<<<<<<<<<<<ReportingFI[Crspayldname] End saving>>>>>>>>>>>>>>>");
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				}//Reporting FI
+				
+				
+				
+				
+				
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		}//CRS Payldhdr
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		}//MetaDataVo
+		
+		
+		return hidefVo;
 	}
 
 }
