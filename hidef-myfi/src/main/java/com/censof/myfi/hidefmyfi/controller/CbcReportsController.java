@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,12 +35,22 @@ import com.censof.myfi.hidefmyfi.entity.Cbcaddresstype;
 import com.censof.myfi.hidefmyfi.entity.Cbcbizactivitiesreference;
 import com.censof.myfi.hidefmyfi.entity.Cbcdocumenttypeindicator;
 import com.censof.myfi.hidefmyfi.entity.Cbcnametype;
+import com.censof.myfi.hidefmyfi.entity.Cbcpayldaddress;
+import com.censof.myfi.hidefmyfi.entity.Cbcpayldin;
+import com.censof.myfi.hidefmyfi.entity.Cbcpayldname;
+import com.censof.myfi.hidefmyfi.entity.Cbcpayldrescountry;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
+import com.censof.myfi.hidefmyfi.repository.CbcpayldaddressRepository;
+import com.censof.myfi.hidefmyfi.repository.CbcpayldbizactivRepository;
+import com.censof.myfi.hidefmyfi.repository.CbcpayldinRepository;
+import com.censof.myfi.hidefmyfi.repository.CbcpayldnameRepository;
+import com.censof.myfi.hidefmyfi.repository.CbcpayldrescountryRepository;
 import com.censof.myfi.hidefmyfi.service.CtccommonDropdownService;
 import com.censof.myfi.hidefmyfi.vo.AddressVo;
 import com.censof.myfi.hidefmyfi.vo.BizActivitiesTypeVo;
 import com.censof.myfi.hidefmyfi.vo.CBCRepotsVo;
 import com.censof.myfi.hidefmyfi.vo.CbcAdditionalInfo;
+import com.censof.myfi.hidefmyfi.vo.CbcConstituentEntityVO;
 import com.censof.myfi.hidefmyfi.vo.CommonDropdownGridBean;
 import com.censof.myfi.hidefmyfi.vo.HidefVo;
 import com.censof.myfi.hidefmyfi.vo.NameVo;
@@ -55,6 +66,22 @@ public class CbcReportsController {
 
 	@Autowired
 	private CtccommonDropdownService ctccommonDropdownService;
+	
+	@Autowired
+	private CbcpayldbizactivRepository cbcpayldbizactivRepository;
+	
+	@Autowired
+	private CbcpayldrescountryRepository cbcPayldResCountryRepository;
+	
+	@Autowired
+	private CbcpayldnameRepository cbcpayldnameRepository;
+	
+	@Autowired
+	private CbcpayldinRepository cbcpayldinRepository;
+	
+	@Autowired
+	private CbcpayldaddressRepository cbcpayldaddressRepository;
+	
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -70,6 +97,12 @@ public class CbcReportsController {
 		if(hidef.getCbcReports() == null) {
 			hidef.setCbcReports(new CBCRepotsVo());
 		}
+		
+		if(hidef.getCbcReports().getConstituentEntity() == null) {
+			hidef.getCbcReports().setConstituentEntity(new CbcConstituentEntityVO());
+		}
+		
+		
 		
 		ObjectMapper mapper = new ObjectMapper();
 		hidef.setCurrentTab(CTSConstants.HIDEF_CTS_CBC_REPORTS);
@@ -162,9 +195,9 @@ public class CbcReportsController {
 
 		List<ResidentCountryVo> residentCountryList = new ArrayList<ResidentCountryVo>();
 		String residentJson = mapper.writeValueAsString(residentCountryList);
-		if (hidef.getCbcReports() != null && hidef.getCbcReports().getResidentCountryList() != null
-				&& hidef.getCbcReports().getResidentCountryList().size() > 0) {
-			residentJson = mapper.writeValueAsString(hidef.getCbcReports().getResidentCountryList());
+		if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getResidentCountryList() != null
+				&& hidef.getCbcReports().getConstituentEntity().getResidentCountryList().size() > 0) {
+			residentJson = mapper.writeValueAsString(hidef.getCbcReports().getConstituentEntity().getResidentCountryList());
 		}
 
 		model.addAttribute("hidef", hidef);
@@ -183,12 +216,12 @@ public class CbcReportsController {
 			List<ResidentCountryVo> residentCountryList = new ArrayList<ResidentCountryVo>();
 			residentCountryVo = mapper.readValue(insertResident, ResidentCountryVo.class);
 			residentCountryVo.setId(ran.nextInt(10000));
-			if (hidef.getCbcReports() != null && hidef.getCbcReports().getResidentCountryList() != null
-					&& hidef.getCbcReports().getResidentCountryList().size() > 0) {
-				hidef.getCbcReports().getResidentCountryList().add(residentCountryVo);
+			if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getResidentCountryList() != null
+					&& hidef.getCbcReports().getConstituentEntity().getResidentCountryList().size() > 0) {
+				hidef.getCbcReports().getConstituentEntity().getResidentCountryList().add(residentCountryVo);
 			} else {
-				hidef.getCbcReports().setResidentCountryList(residentCountryList);
-				hidef.getCbcReports().getResidentCountryList().add(residentCountryVo);
+				hidef.getCbcReports().getConstituentEntity().setResidentCountryList(residentCountryList);
+				hidef.getCbcReports().getConstituentEntity().getResidentCountryList().add(residentCountryVo);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -204,11 +237,11 @@ public class CbcReportsController {
 			@RequestParam(required = true) int id, BindingResult result, ModelMap model, HttpServletRequest request,
 			HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if (hidef.getCbcReports() != null && hidef.getCbcReports().getResidentCountryList() != null
-				&& hidef.getCbcReports().getResidentCountryList().size() > 0) {
+		if (hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity().getResidentCountryList() != null
+				&& hidef.getCbcReports().getConstituentEntity().getResidentCountryList().size() > 0) {
 			try {
 				ResidentCountryVo residentCountryVo = mapper.readValue(updateResident, ResidentCountryVo.class);
-				for (ResidentCountryVo residentvo : hidef.getCbcReports().getResidentCountryList()) {
+				for (ResidentCountryVo residentvo : hidef.getCbcReports().getConstituentEntity().getResidentCountryList()) {
 					if (residentvo.getId() == residentCountryVo.getId()) {
 						residentvo.setResidentCountryCode(residentCountryVo.getResidentCountryCode());
 						break;
@@ -231,17 +264,23 @@ public class CbcReportsController {
 			@RequestParam(required = true) int id, BindingResult result, ModelMap model, HttpServletRequest request,
 			HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if (deleteResident != null && hidef.getCbcReports() != null
-				&& hidef.getCbcReports().getResidentCountryList() != null
-				&& hidef.getCbcReports().getResidentCountryList().size() > 0) {
+		if (deleteResident != null && hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null
+				&& hidef.getCbcReports().getConstituentEntity().getResidentCountryList() != null
+				&& hidef.getCbcReports().getConstituentEntity().getResidentCountryList().size() > 0) {
 			try {
 				ResidentCountryVo residentCountryVo = mapper.readValue(deleteResident, ResidentCountryVo.class);
 				List<ResidentCountryVo> copyList = new ArrayList<ResidentCountryVo>(
-						hidef.getCbcReports().getResidentCountryList());
-				for (ResidentCountryVo residentCountry : hidef.getCbcReports().getResidentCountryList()) {
+						hidef.getCbcReports().getConstituentEntity().getResidentCountryList());
+				for (ResidentCountryVo residentCountry : hidef.getCbcReports().getConstituentEntity().getResidentCountryList()) {
 					if (residentCountryVo.getId() == residentCountry.getId()) {
 						copyList.remove(residentCountry);
-						hidef.getCbcReports().setResidentCountryList(copyList);
+						if(residentCountry.getId() != 0) {
+							Optional<Cbcpayldrescountry> resCountry = cbcPayldResCountryRepository.findById(BigInteger.valueOf(residentCountry.getId()));
+							if(resCountry.isPresent()) {
+							cbcPayldResCountryRepository.deleteById(BigInteger.valueOf(residentCountry.getId()));
+							}
+						}
+						hidef.getCbcReports().getConstituentEntity().setResidentCountryList(copyList);
 						break;
 					}
 				}
@@ -260,9 +299,9 @@ public class CbcReportsController {
 		ObjectMapper mapper = new ObjectMapper();
 		List<NameVo> nameList = new ArrayList<NameVo>();
 		String nameJson = mapper.writeValueAsString(nameList);
-		if (hidef.getCbcReports() != null && hidef.getCbcReports().getNameList() != null
-				&& hidef.getCbcReports().getNameList().size() > 0) {
-			nameJson = mapper.writeValueAsString(hidef.getCbcReports().getNameList());
+		if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getNameList() != null
+				&& hidef.getCbcReports().getConstituentEntity().getNameList().size() > 0) {
+			nameJson = mapper.writeValueAsString(hidef.getCbcReports().getConstituentEntity().getNameList());
 		}
 		model.addAttribute("hidef", hidef);
 		return nameJson;
@@ -280,12 +319,12 @@ public class CbcReportsController {
 			List<NameVo> nameList = new ArrayList<NameVo>();
 			nameVo = mapper.readValue(insertNameGrid, NameVo.class);
 			nameVo.setId(ran.nextInt(10000));
-			if (hidef.getCbcReports() != null && hidef.getCbcReports().getNameList() != null
-					&& hidef.getCbcReports().getNameList().size() > 0) {
-				hidef.getCbcReports().getNameList().add(nameVo);
+			if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getNameList() != null
+					&& hidef.getCbcReports().getConstituentEntity().getNameList().size() > 0) {
+				hidef.getCbcReports().getConstituentEntity().getNameList().add(nameVo);
 			} else {
-				hidef.getCbcReports().setNameList(nameList);
-				hidef.getCbcReports().getNameList().add(nameVo);
+				hidef.getCbcReports().getConstituentEntity().setNameList(nameList);
+				hidef.getCbcReports().getConstituentEntity().getNameList().add(nameVo);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -301,11 +340,11 @@ public class CbcReportsController {
 			@RequestParam(required = true) int id, BindingResult result, ModelMap model, HttpServletRequest request,
 			HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if (hidef.getCbcReports() != null && hidef.getCbcReports().getNameList() != null
-				&& hidef.getCbcReports().getNameList().size() > 0) {
+		if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getNameList() != null
+				&& hidef.getCbcReports().getConstituentEntity().getNameList().size() > 0) {
 			try {
 				NameVo updatedNameVo = mapper.readValue(updateNameGrid, NameVo.class);
-				for (NameVo namevo : hidef.getCbcReports().getNameList()) {
+				for (NameVo namevo : hidef.getCbcReports().getConstituentEntity().getNameList()) {
 					if (namevo.getId() == id) {
 						namevo.setLastName(updatedNameVo.getLastName());
 						namevo.setFirstName(updatedNameVo.getFirstName());
@@ -330,15 +369,21 @@ public class CbcReportsController {
 			@RequestParam(required = true) int id, BindingResult result, ModelMap model, HttpServletRequest request,
 			HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if (deleteNameGrid != null && hidef.getCbcReports() != null && hidef.getCbcReports().getNameList() != null
-				&& hidef.getCbcReports().getNameList().size() > 0) {
+		if (deleteNameGrid != null && hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getNameList() != null
+				&& hidef.getCbcReports().getConstituentEntity().getNameList().size() > 0) {
 			try {
 				NameVo updatedNameVo = mapper.readValue(deleteNameGrid, NameVo.class);
-				List<NameVo> copyList = new ArrayList<NameVo>(hidef.getCbcReports().getNameList());
-				for (NameVo namevo : hidef.getCbcReports().getNameList()) {
+				List<NameVo> copyList = new ArrayList<NameVo>(hidef.getCbcReports().getConstituentEntity().getNameList());
+				for (NameVo namevo : hidef.getCbcReports().getConstituentEntity().getNameList()) {
 					if (id == namevo.getId()) {
 						copyList.remove(namevo);
-						hidef.getCbcReports().setNameList(copyList);
+						if(hidef.getCbcReports().getConstituentEntity().getConsId() != 0 && namevo.getId() != 0) {
+							Optional<Cbcpayldname> nameOb = cbcpayldnameRepository.findById(BigInteger.valueOf(namevo.getId()));
+							if(nameOb.isPresent()) {
+							cbcpayldnameRepository.deleteById(BigInteger.valueOf(namevo.getId()));
+							}
+						}
+						hidef.getCbcReports().getConstituentEntity().setNameList(copyList);
 						break;
 					}
 				}
@@ -360,9 +405,9 @@ public class CbcReportsController {
 		ObjectMapper mapper = new ObjectMapper();
 		List<OrganisationInTypeVo> organisationList = new ArrayList<OrganisationInTypeVo>();
 		String organisationJson = mapper.writeValueAsString(organisationList);
-		if (hidef.getCbcReports() != null && hidef.getCbcReports().getOrganisationInTypeList() != null
-				&& hidef.getCbcReports().getOrganisationInTypeList().size() > 0) {
-			organisationJson = mapper.writeValueAsString(hidef.getCbcReports().getOrganisationInTypeList());
+		if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getOrganisationInTypeList() != null
+				&& hidef.getCbcReports().getConstituentEntity().getOrganisationInTypeList().size() > 0) {
+			organisationJson = mapper.writeValueAsString(hidef.getCbcReports().getConstituentEntity().getOrganisationInTypeList());
 		}
 		model.addAttribute("hidef", hidef);
 		return organisationJson;
@@ -380,12 +425,12 @@ public class CbcReportsController {
 			List<OrganisationInTypeVo> organisationList = new ArrayList<OrganisationInTypeVo>();
 			organisationVo = mapper.readValue(insertOrganisationGrid, OrganisationInTypeVo.class);
 			organisationVo.setId(ran.nextInt(10000));
-			if (hidef.getCbcReports() != null && hidef.getCbcReports().getOrganisationInTypeList() != null
-					&& hidef.getCbcReports().getOrganisationInTypeList().size() > 0) {
-				hidef.getCbcReports().getOrganisationInTypeList().add(organisationVo);
+			if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getOrganisationInTypeList() != null
+					&& hidef.getCbcReports().getConstituentEntity().getOrganisationInTypeList().size() > 0) {
+				hidef.getCbcReports().getConstituentEntity().getOrganisationInTypeList().add(organisationVo);
 			} else {
-				hidef.getCbcReports().setOrganisationInTypeList(organisationList);
-				hidef.getCbcReports().getOrganisationInTypeList().add(organisationVo);
+				hidef.getCbcReports().getConstituentEntity().setOrganisationInTypeList(organisationList);
+				hidef.getCbcReports().getConstituentEntity().getOrganisationInTypeList().add(organisationVo);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -401,12 +446,12 @@ public class CbcReportsController {
 			@RequestBody String updateOrganisationGrid, BindingResult result, ModelMap model,
 			HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if (hidef.getCbcReports() != null && hidef.getCbcReports().getOrganisationInTypeList() != null
-				&& hidef.getCbcReports().getOrganisationInTypeList().size() > 0) {
+		if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getOrganisationInTypeList() != null
+				&& hidef.getCbcReports().getConstituentEntity().getOrganisationInTypeList().size() > 0) {
 			try {
 				OrganisationInTypeVo updatedorganisationVo = mapper.readValue(updateOrganisationGrid,
 						OrganisationInTypeVo.class);
-				for (OrganisationInTypeVo organisationvo : hidef.getCbcReports().getOrganisationInTypeList()) {
+				for (OrganisationInTypeVo organisationvo : hidef.getCbcReports().getConstituentEntity().getOrganisationInTypeList()) {
 					if (organisationvo.getId() == updatedorganisationVo.getId()) {
 						organisationvo.setIssuedBy(updatedorganisationVo.getIssuedBy());
 						organisationvo.setIn(updatedorganisationVo.getIn());
@@ -430,16 +475,22 @@ public class CbcReportsController {
 			@RequestBody String deleteOrganisationGrid, BindingResult result, ModelMap model,
 			HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if (deleteOrganisationGrid != null && hidef.getCbcReports().getOrganisationInTypeList() != null) {
+		if (deleteOrganisationGrid != null && hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getOrganisationInTypeList() != null) {
 			try {
 				OrganisationInTypeVo updatedorganisationVo = mapper.readValue(deleteOrganisationGrid,
 						OrganisationInTypeVo.class);
 				List<OrganisationInTypeVo> copyList = new ArrayList<OrganisationInTypeVo>(
-						hidef.getCbcReports().getOrganisationInTypeList());
-				for (OrganisationInTypeVo organisation : hidef.getCbcReports().getOrganisationInTypeList()) {
+						hidef.getCbcReports().getConstituentEntity().getOrganisationInTypeList());
+				for (OrganisationInTypeVo organisation : hidef.getCbcReports().getConstituentEntity().getOrganisationInTypeList()) {
 					if (updatedorganisationVo.getId() == organisation.getId()) {
 						copyList.remove(organisation);
-						hidef.getCbcReports().setOrganisationInTypeList(copyList);
+						if(organisation.getId() != 0) {
+							Optional<Cbcpayldin> org = cbcpayldinRepository.findById(BigInteger.valueOf(organisation.getId()));
+							if(org.isPresent()) {
+							cbcpayldinRepository.deleteById(BigInteger.valueOf(organisation.getId()));
+							}
+						}
+						hidef.getCbcReports().getConstituentEntity().setOrganisationInTypeList(copyList);
 						break;
 					}
 				}
@@ -476,68 +527,68 @@ public class CbcReportsController {
 
 		ObjectMapper mapper = new ObjectMapper();
 		List<AddressVo> addressList = null;
-		if (hidef.getCbcReports() != null && hidef.getCbcReports().getAddressList() != null
-				&& hidef.getCbcReports().getAddressList().size() > 0) {
-			addressList = hidef.getCbcReports().getAddressList();
+		if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getAddressList() != null
+				&& hidef.getCbcReports().getConstituentEntity().getAddressList().size() > 0) {
+			addressList = hidef.getCbcReports().getConstituentEntity().getAddressList();
 
 		} else {
 			addressList = new ArrayList<AddressVo>();
-			hidef.getCbcReports().setAddressList(addressList);
+			hidef.getCbcReports().getConstituentEntity().setAddressList(addressList);
 		}
 
-		if (hidef.getCbcReports() != null && hidef.getCbcReports().getAddressVo() != null) {
+		if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getAddressVo() != null) {
 			AddressVo addressVo = new AddressVo();
-			if (!StringUtils.isEmpty(hidef.getCbcReports().getAddressVo().getAddressFree())) {
-				addressVo.setAddressFree(hidef.getCbcReports().getAddressVo().getAddressFree());
+			if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getAddressVo().getAddressFree())) {
+				addressVo.setAddressFree(hidef.getCbcReports().getConstituentEntity().getAddressVo().getAddressFree());
 			}
-			if (!StringUtils.isEmpty(hidef.getCbcReports().getAddressVo().getAddressType())) {
-				addressVo.setAddressType(hidef.getCbcReports().getAddressVo().getAddressType());
+			if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getAddressVo().getAddressType())) {
+				addressVo.setAddressType(hidef.getCbcReports().getConstituentEntity().getAddressVo().getAddressType());
 			}
-			if (!StringUtils.isEmpty(hidef.getCbcReports().getAddressVo().getBuildingIdentifier())) {
-				addressVo.setBuildingIdentifier(hidef.getCbcReports().getAddressVo().getBuildingIdentifier());
+			if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getAddressVo().getBuildingIdentifier())) {
+				addressVo.setBuildingIdentifier(hidef.getCbcReports().getConstituentEntity().getAddressVo().getBuildingIdentifier());
 			}
-			if (!StringUtils.isEmpty(hidef.getCbcReports().getAddressVo().getCity())) {
-				addressVo.setCity(hidef.getCbcReports().getAddressVo().getCity());
+			if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getAddressVo().getCity())) {
+				addressVo.setCity(hidef.getCbcReports().getConstituentEntity().getAddressVo().getCity());
 			}
-			if (!StringUtils.isEmpty(hidef.getCbcReports().getAddressVo().getCountryCode())) {
-				addressVo.setCountryCode(hidef.getCbcReports().getAddressVo().getCountryCode());
+			if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getAddressVo().getCountryCode())) {
+				addressVo.setCountryCode(hidef.getCbcReports().getConstituentEntity().getAddressVo().getCountryCode());
 			}
-			if (!StringUtils.isEmpty(hidef.getCbcReports().getAddressVo().getCountrySubentity())) {
-				addressVo.setCountrySubentity(hidef.getCbcReports().getAddressVo().getCountrySubentity());
+			if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getAddressVo().getCountrySubentity())) {
+				addressVo.setCountrySubentity(hidef.getCbcReports().getConstituentEntity().getAddressVo().getCountrySubentity());
 			}
-			if (!StringUtils.isEmpty(hidef.getCbcReports().getAddressVo().getDistrictName())) {
-				addressVo.setDistrictName(hidef.getCbcReports().getAddressVo().getDistrictName());
+			if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getAddressVo().getDistrictName())) {
+				addressVo.setDistrictName(hidef.getCbcReports().getConstituentEntity().getAddressVo().getDistrictName());
 			}
-			if (!StringUtils.isEmpty(hidef.getCbcReports().getAddressVo().getFloorIdentifier())) {
-				addressVo.setFloorIdentifier(hidef.getCbcReports().getAddressVo().getFloorIdentifier());
+			if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getAddressVo().getFloorIdentifier())) {
+				addressVo.setFloorIdentifier(hidef.getCbcReports().getConstituentEntity().getAddressVo().getFloorIdentifier());
 			}
-			if (!StringUtils.isEmpty(hidef.getCbcReports().getAddressList())
-					&& hidef.getCbcReports().getAddressList().size() > 0) {
-				addressVo.setId(hidef.getCbcReports().getAddressList().size() + 1);
-				hidef.getCbcReports().getAddressVo().setId(hidef.getCbcReports().getAddressList().size() + 1);
+			if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getAddressList())
+					&& hidef.getCbcReports().getConstituentEntity().getAddressList().size() > 0) {
+				addressVo.setId(hidef.getCbcReports().getConstituentEntity().getAddressList().size() + 1);
+				hidef.getCbcReports().getConstituentEntity().getAddressVo().setId(hidef.getCbcReports().getConstituentEntity().getAddressList().size() + 1);
 			} else {
 				addressVo.setId(1);
-				hidef.getCbcReports().getAddressVo().setId(1);
+				hidef.getCbcReports().getConstituentEntity().getAddressVo().setId(1);
 			}
-			if (!StringUtils.isEmpty(hidef.getCbcReports().getAddressVo().getPob())) {
-				addressVo.setPob(hidef.getCbcReports().getAddressVo().getPob());
+			if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getAddressVo().getPob())) {
+				addressVo.setPob(hidef.getCbcReports().getConstituentEntity().getAddressVo().getPob());
 			}
-			if (!StringUtils.isEmpty(hidef.getCbcReports().getAddressVo().getPostCode())) {
-				addressVo.setPostCode(hidef.getCbcReports().getAddressVo().getPostCode());
+			if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getAddressVo().getPostCode())) {
+				addressVo.setPostCode(hidef.getCbcReports().getConstituentEntity().getAddressVo().getPostCode());
 			}
-			if (!StringUtils.isEmpty(hidef.getCbcReports().getAddressVo().getStreet())) {
-				addressVo.setStreet(hidef.getCbcReports().getAddressVo().getStreet());
+			if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getAddressVo().getStreet())) {
+				addressVo.setStreet(hidef.getCbcReports().getConstituentEntity().getAddressVo().getStreet());
 			}
-			if (!StringUtils.isEmpty(hidef.getCbcReports().getAddressVo().getSuitIdentifier())) {
-				addressVo.setSuitIdentifier(hidef.getCbcReports().getAddressVo().getSuitIdentifier());
+			if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getAddressVo().getSuitIdentifier())) {
+				addressVo.setSuitIdentifier(hidef.getCbcReports().getConstituentEntity().getAddressVo().getSuitIdentifier());
 			}
 			addressList.add(addressVo);
 		}
 
-		hidef.getCbcReports().setAddressList(addressList);
+		hidef.getCbcReports().getConstituentEntity().setAddressList(addressList);
 		String arrayToJson = mapper.writeValueAsString(addressList);
 		model.addAttribute("hidef", hidef);
-		return hidef.getCbcReports().getAddressVo();
+		return hidef.getCbcReports().getConstituentEntity().getAddressVo();
 	}
 
 	@RequestMapping(value = "/admin/cbc/cbcReportsviewAddress", method = RequestMethod.GET)
@@ -547,13 +598,13 @@ public class CbcReportsController {
 		ObjectMapper mapper = new ObjectMapper();
 		AddressVo addressView = new AddressVo();
 		List<AddressVo> addressList = null;
-		if (hidef.getCbcReports() != null && hidef.getCbcReports().getAddressList() != null
-				&& hidef.getCbcReports().getAddressList().size() > 0) {
-			addressList = hidef.getCbcReports().getAddressList();
+		if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getAddressList() != null
+				&& hidef.getCbcReports().getConstituentEntity().getAddressList().size() > 0) {
+			addressList = hidef.getCbcReports().getConstituentEntity().getAddressList();
 			for (AddressVo address : addressList) {
 				if (address.getId() == id) {
 					addressView = address;
-					hidef.getCbcReports().setViewAddressVo(addressView);
+					hidef.getCbcReports().getConstituentEntity().setViewAddressVo(addressView);
 				}
 			}
 
@@ -576,13 +627,13 @@ public class CbcReportsController {
 		ObjectMapper mapper = new ObjectMapper();
 		AddressVo addressView = new AddressVo();
 		List<AddressVo> addressList = null;
-		if (hidef.getCbcReports() != null && hidef.getCbcReports().getAddressList() != null
-				&& hidef.getCbcReports().getAddressList().size() > 0) {
-			addressList = hidef.getCbcReports().getAddressList();
+		if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getAddressList() != null
+				&& hidef.getCbcReports().getConstituentEntity().getAddressList().size() > 0) {
+			addressList = hidef.getCbcReports().getConstituentEntity().getAddressList();
 			for (AddressVo address : addressList) {
 				if (address.getId() == id) {
 					addressView = address;
-					hidef.getCbcReports().setEditAddressVo(addressView);
+					hidef.getCbcReports().getConstituentEntity().setEditAddressVo(addressView);
 				}
 			}
 
@@ -604,50 +655,50 @@ public class CbcReportsController {
 		ObjectMapper mapper = new ObjectMapper();
 		AddressVo addressView = new AddressVo();
 		List<AddressVo> addressList = null;
-		if (hidef.getCbcReports() != null && hidef.getCbcReports().getAddressList() != null
-				&& hidef.getCbcReports().getAddressList().size() > 0) {
-			addressList = hidef.getCbcReports().getAddressList();
+		if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getAddressList() != null
+				&& hidef.getCbcReports().getConstituentEntity().getAddressList().size() > 0) {
+			addressList = hidef.getCbcReports().getConstituentEntity().getAddressList();
 			for (AddressVo address : addressList) {
-				if (address.getId() == hidef.getCbcReports().getEditAddressVo().getId()) {
-					if (!StringUtils.isEmpty(hidef.getCbcReports().getEditAddressVo().getAddressFree())) {
-						address.setAddressFree(hidef.getCbcReports().getEditAddressVo().getAddressFree());
+				if (address.getId() == hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getId()) {
+					if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getAddressFree())) {
+						address.setAddressFree(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getAddressFree());
 					}
-					if (!StringUtils.isEmpty(hidef.getCbcReports().getEditAddressVo().getAddressType())) {
-						address.setAddressType(hidef.getCbcReports().getEditAddressVo().getAddressType());
-						address.setAddressTypeId(hidef.getCbcReports().getEditAddressVo().getAddressType());
+					if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getAddressType())) {
+						address.setAddressType(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getAddressType());
+						address.setAddressTypeId(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getAddressType());
 					}
-					if (!StringUtils.isEmpty(hidef.getCbcReports().getEditAddressVo().getBuildingIdentifier())) {
-						address.setBuildingIdentifier(hidef.getCbcReports().getEditAddressVo().getBuildingIdentifier());
+					if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getBuildingIdentifier())) {
+						address.setBuildingIdentifier(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getBuildingIdentifier());
 					}
-					if (!StringUtils.isEmpty(hidef.getCbcReports().getEditAddressVo().getCity())) {
-						address.setCity(hidef.getCbcReports().getEditAddressVo().getCity());
+					if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getCity())) {
+						address.setCity(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getCity());
 					}
-					if (!StringUtils.isEmpty(hidef.getCbcReports().getEditAddressVo().getCountryCode())) {
-						address.setCountryCode(hidef.getCbcReports().getEditAddressVo().getCountryCode());
-						address.setCountryCodeId(hidef.getCbcReports().getEditAddressVo().getCountryCode());
+					if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getCountryCode())) {
+						address.setCountryCode(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getCountryCode());
+						address.setCountryCodeId(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getCountryCode());
 					}
-					if (!StringUtils.isEmpty(hidef.getCbcReports().getEditAddressVo().getCountrySubentity())) {
-						address.setCountrySubentity(hidef.getCbcReports().getEditAddressVo().getCountrySubentity());
+					if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getCountrySubentity())) {
+						address.setCountrySubentity(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getCountrySubentity());
 					}
-					if (!StringUtils.isEmpty(hidef.getCbcReports().getEditAddressVo().getDistrictName())) {
-						address.setDistrictName(hidef.getCbcReports().getEditAddressVo().getDistrictName());
+					if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getDistrictName())) {
+						address.setDistrictName(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getDistrictName());
 					}
-					if (!StringUtils.isEmpty(hidef.getCbcReports().getEditAddressVo().getFloorIdentifier())) {
-						address.setFloorIdentifier(hidef.getCbcReports().getEditAddressVo().getFloorIdentifier());
+					if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getFloorIdentifier())) {
+						address.setFloorIdentifier(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getFloorIdentifier());
 					}
 
 					address.setId(address.getId());
-					if (!StringUtils.isEmpty(hidef.getCbcReports().getEditAddressVo().getPob())) {
-						address.setPob(hidef.getCbcReports().getEditAddressVo().getPob());
+					if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getPob())) {
+						address.setPob(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getPob());
 					}
-					if (!StringUtils.isEmpty(hidef.getCbcReports().getEditAddressVo().getPostCode())) {
-						address.setPostCode(hidef.getCbcReports().getEditAddressVo().getPostCode());
+					if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getPostCode())) {
+						address.setPostCode(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getPostCode());
 					}
-					if (!StringUtils.isEmpty(hidef.getCbcReports().getEditAddressVo().getStreet())) {
-						address.setStreet(hidef.getCbcReports().getEditAddressVo().getStreet());
+					if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getStreet())) {
+						address.setStreet(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getStreet());
 					}
-					if (!StringUtils.isEmpty(hidef.getCbcReports().getEditAddressVo().getSuitIdentifier())) {
-						address.setSuitIdentifier(hidef.getCbcReports().getEditAddressVo().getSuitIdentifier());
+					if (!StringUtils.isEmpty(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getSuitIdentifier())) {
+						address.setSuitIdentifier(hidef.getCbcReports().getConstituentEntity().getEditAddressVo().getSuitIdentifier());
 					}
 				}
 			}
@@ -668,16 +719,22 @@ public class CbcReportsController {
 		ObjectMapper mapper = new ObjectMapper();
 		AddressVo addressView = new AddressVo();
 		List<AddressVo> addressList = null;
-		if (hidef.getCbcReports() != null && hidef.getCbcReports().getAddressList() != null
-				&& hidef.getCbcReports().getAddressList().size() > 0) {
+		if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getAddressList() != null
+				&& hidef.getCbcReports().getConstituentEntity().getAddressList().size() > 0) {
 
-			addressList = hidef.getCbcReports().getAddressList();
+			addressList = hidef.getCbcReports().getConstituentEntity().getAddressList();
 			for (AddressVo address : addressList) {
 				if (address.getId() == id) {
 					addressView = address;
 					List<AddressVo> copyList = new ArrayList<AddressVo>(addressList);
 					copyList.remove(address);
-					hidef.getReportingEntity().setAddressList(copyList);
+					if(address.getId() != 0) {
+						Optional<Cbcpayldaddress> addressOb = cbcpayldaddressRepository.findById(BigInteger.valueOf(address.getId()));
+						if(addressOb.isPresent()) {
+						cbcpayldaddressRepository.deleteById(BigInteger.valueOf(address.getId()));
+						}
+					}
+					hidef.getCbcReports().getConstituentEntity().setAddressList(copyList);
 				}
 			}
 
@@ -696,9 +753,9 @@ public class CbcReportsController {
 
 		List<AddressVo> addressList = new ArrayList<AddressVo>();
 		String addressJson = mapper.writeValueAsString(addressList);
-		if (hidef.getCbcReports() != null && hidef.getCbcReports().getAddressList() != null
-				&& hidef.getCbcReports().getAddressList().size() > 0) {
-			addressJson = mapper.writeValueAsString(hidef.getCbcReports().getAddressList());
+		if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getAddressList() != null
+				&& hidef.getCbcReports().getConstituentEntity().getAddressList().size() > 0) {
+			addressJson = mapper.writeValueAsString(hidef.getCbcReports().getConstituentEntity().getAddressList());
 		}
 		model.addAttribute("hidef", hidef);
 		return addressJson;
@@ -709,7 +766,7 @@ public class CbcReportsController {
 			ModelMap model, HttpServletRequest request, HttpServletResponse response, Map<String, Object> map)
 			throws JsonProcessingException {
 		AddressVo addressVo = new AddressVo();
-		hidef.getCbcReports().setAddressVo(addressVo);
+		hidef.getCbcReports().getConstituentEntity().setAddressVo(addressVo);
 		List<Hicountry> hicountryList = ctccommonDropdownService.getAllCountries();
 		List<Cbcaddresstype> cbcaddresstype = ctccommonDropdownService.getAllAddressType();
 		map.put("tinlist", hicountryList);
@@ -782,7 +839,55 @@ public class CbcReportsController {
 
 		return reportVO;
 	}
+	
+	
+	@GetMapping(value = "/admin/cbc/cbcReports/populateCBCConsitituentEntityGrid")
+	@ResponseBody
+	public CbcConstituentEntityVO populateCBCConsitituentEntityGrid(@ModelAttribute("hidef") HidefVo hidef, BindingResult result,
+			ModelMap model, Map<String, Object> map) {
 
+		CbcConstituentEntityVO reportVO = new CbcConstituentEntityVO();
+		Random rand = new Random();
+		reportVO = hidef.getCbcReports().getConstituentEntity();
+		reportVO.setConsId(rand.nextInt(10000));
+		if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntityList() != null) {
+			hidef.getCbcReports().getConstituentEntityList().add(reportVO);
+		} else if(hidef.getCbcReports() != null) {
+			hidef.getCbcReports().setConstituentEntityList(new ArrayList<CbcConstituentEntityVO>());
+			hidef.getCbcReports().getConstituentEntityList().add(reportVO);
+		}else if(hidef.getCbcReports() == null) {
+			hidef.setCbcReports(new CBCRepotsVo());
+		}
+		hidef.getCbcReports().setConstituentEntity(new CbcConstituentEntityVO());
+		model.addAttribute("hidef", hidef);
+
+		return reportVO;
+	}
+	
+	@GetMapping(value = "/admin/cbc/cbcReports/populateEditedConsitituentEntityGrid")
+	@ResponseBody
+	public CbcConstituentEntityVO populateEditedConsitituentEntityGrid(@ModelAttribute("hidef") HidefVo hidef, BindingResult result,
+			ModelMap model, Map<String, Object> map) {
+
+		CbcConstituentEntityVO reportVO = new CbcConstituentEntityVO();
+		reportVO = hidef.getCbcReports().getConstituentEntity();
+		int newReportId = reportVO.getConsId();
+
+		List<CbcConstituentEntityVO> newCBCReportsEditedList = new ArrayList<CbcConstituentEntityVO>();
+		for (CbcConstituentEntityVO reportsVO : hidef.getCbcReports().getConstituentEntityList()) {
+			if (reportsVO.getConsId() != newReportId) {
+				newCBCReportsEditedList.add(reportsVO);
+			}
+		}
+
+		newCBCReportsEditedList.add(reportVO);
+
+		hidef.getCbcReports().setConstituentEntity(new CbcConstituentEntityVO());
+		model.addAttribute("hidef", hidef);
+
+		return reportVO;
+	}
+	
 	@GetMapping(value = "/admin/cbc/cbcReports/populateEditedCBCReports")
 	@ResponseBody
 	public CBCRepotsVo populateEditedCBCReportsGrid(@ModelAttribute("hidef") HidefVo hidef, BindingResult result,
@@ -843,6 +948,26 @@ public class CbcReportsController {
 
 	}
 	
+	//loadCbcConstituentEntityGrid
+	@GetMapping(value = "/admin/cbc/loadCbcConstituentEntityGrid", consumes = "application/json")
+	@ResponseBody
+	public String loadCbcConstituentEntityGrid(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
+			HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();		
+		
+		List<CbcConstituentEntityVO> cbcReports = new ArrayList<CbcConstituentEntityVO>();
+		String reportsJSON = mapper.writeValueAsString(cbcReports);
+		
+		if(hidef != null && hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntityList() != null && !hidef.getCbcReports().getConstituentEntityList().isEmpty()) {
+			reportsJSON = mapper.writeValueAsString(hidef.getCbcReports().getConstituentEntityList());
+			
+		}
+
+		model.addAttribute("hidef", hidef);
+		return reportsJSON;
+
+	}
+	
 	@GetMapping(value = "/admin/cbc/reportsBizloadGrid", consumes = "application/json")
 	@ResponseBody
 	public String reportsBizloadGrid(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
@@ -850,9 +975,9 @@ public class CbcReportsController {
 		ObjectMapper mapper = new ObjectMapper();
 		List<BizActivitiesTypeVo> bizList = new ArrayList<BizActivitiesTypeVo>();
 		String bizJson = mapper.writeValueAsString(bizList);
-		if (hidef.getCbcReports() != null && hidef.getCbcReports().getBizActivitiesList() != null
-				&& hidef.getCbcReports().getBizActivitiesList().size() > 0) {
-			bizJson = mapper.writeValueAsString(hidef.getCbcReports().getBizActivitiesList());
+		if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getBizActivitiesList() != null
+				&& hidef.getCbcReports().getConstituentEntity().getBizActivitiesList().size() > 0) {
+			bizJson = mapper.writeValueAsString(hidef.getCbcReports().getConstituentEntity().getBizActivitiesList());
 		}
 		model.addAttribute("hidef", hidef);
 		return bizJson;
@@ -869,12 +994,13 @@ public class CbcReportsController {
 			List<BizActivitiesTypeVo> bizList = new ArrayList<BizActivitiesTypeVo>();
 			bizVo = mapper.readValue(insertBizGrid, BizActivitiesTypeVo.class);
 			bizVo.setId(ran.nextInt(10000));
-			if (hidef.getCbcReports() != null && hidef.getCbcReports().getBizActivitiesList() != null
-					&& hidef.getCbcReports().getBizActivitiesList().size() > 0) {
-				hidef.getCbcReports().getBizActivitiesList().add(bizVo);
+			if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getBizActivitiesList() != null
+					&& hidef.getCbcReports().getConstituentEntity().getBizActivitiesList().size() > 0) {
+				hidef.getCbcReports().getConstituentEntity().getBizActivitiesList().add(bizVo);
 			} else {
-				hidef.getCbcReports().setBizActivitiesList(bizList);
-				hidef.getCbcReports().getBizActivitiesList().add(bizVo);
+				hidef.getCbcReports().getConstituentEntity().setBizActivitiesList(bizList);
+				hidef.getCbcReports().getConstituentEntity().getBizActivitiesList().add(bizVo);
+				
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -891,11 +1017,11 @@ public class CbcReportsController {
 			@RequestParam(required = true) int id,
 			HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if (hidef.getCbcReports() != null && hidef.getCbcReports().getBizActivitiesList() != null
-				&& hidef.getCbcReports().getBizActivitiesList().size() > 0) {
+		if (hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getBizActivitiesList() != null
+				&& hidef.getCbcReports().getConstituentEntity().getBizActivitiesList().size() > 0) {
 			try {
 				BizActivitiesTypeVo updatedBizVo = mapper.readValue(updateBizGrid, BizActivitiesTypeVo.class);
-				for (BizActivitiesTypeVo bizvo : hidef.getCbcReports().getBizActivitiesList()) {
+				for (BizActivitiesTypeVo bizvo : hidef.getCbcReports().getConstituentEntity().getBizActivitiesList()) {
 					if (bizvo.getId() == id) {
 						bizvo.setId(updatedBizVo.getId());
 						bizvo.setBizType(updatedBizVo.getBizType());
@@ -919,15 +1045,18 @@ public class CbcReportsController {
 			@RequestParam(required = true) int id, BindingResult result, ModelMap model, HttpServletRequest request,
 			HttpServletResponse response) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if (deleteBizGrid != null && hidef.getCbcReports() != null && hidef.getCbcReports().getBizActivitiesList() != null
-				&& hidef.getCbcReports().getBizActivitiesList().size() > 0) {
+		if (deleteBizGrid != null && hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntity() != null && hidef.getCbcReports().getConstituentEntity().getBizActivitiesList() != null
+				&& hidef.getCbcReports().getConstituentEntity().getBizActivitiesList().size() > 0) {
 			try {
 				BizActivitiesTypeVo updatedBizVo = mapper.readValue(deleteBizGrid, BizActivitiesTypeVo.class);
-				List<BizActivitiesTypeVo> copyList = new ArrayList<BizActivitiesTypeVo>(hidef.getCbcReports().getBizActivitiesList());
-				for (BizActivitiesTypeVo bizvo : hidef.getCbcReports().getBizActivitiesList()) {
+				List<BizActivitiesTypeVo> copyList = new ArrayList<BizActivitiesTypeVo>(hidef.getCbcReports().getConstituentEntity().getBizActivitiesList());
+				for (BizActivitiesTypeVo bizvo : hidef.getCbcReports().getConstituentEntity().getBizActivitiesList()) {
 					if (id == bizvo.getId()) {
 						copyList.remove(bizvo);
-						hidef.getCbcReports().setBizActivitiesList(copyList);
+						if(hidef.getCbcReports().getConstituentEntity().getConsId() != 0 && bizvo.getId() != 0) {
+							cbcpayldbizactivRepository.deleteById(BigInteger.valueOf(bizvo.getId()));
+						}
+						hidef.getCbcReports().getConstituentEntity().setBizActivitiesList(copyList);
 						break;
 					}
 				}
@@ -940,6 +1069,238 @@ public class CbcReportsController {
 		}
 		model.addAttribute("hidef", hidef);
 		return "success";
+	}
+	
+	@GetMapping(value="/admin/cbc/viewConsEntity")
+	public String viewConstEntityBasedOnId(@ModelAttribute("hidef")HidefVo hidef,@RequestParam int viewId,BindingResult result,ModelMap model,
+			Map<String,Object> map) {
+		
+		
+		
+		if(hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntityList() != null && !hidef.getCbcReports().getConstituentEntityList().isEmpty()) {
+		for(CbcConstituentEntityVO constEntity : hidef.getCbcReports().getConstituentEntityList()) {			
+			if(constEntity.getConsId() == viewId) {
+				hidef.getCbcReports().setConstituentEntity(new CbcConstituentEntityVO());
+				hidef.getCbcReports().setConstituentEntity(constEntity);
+			}			
+		}			
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		List<Hicountry> country = ctccommonDropdownService.getAllCountries();
+		List<Cbcnametype> cbcnametype = ctccommonDropdownService.getAllNameType();
+		List<CommonDropdownGridBean> gridBeans = new ArrayList<>();
+		List<Cbcbizactivitiesreference> bizActivitiesList = ctccommonDropdownService.getAllCbcbizactivitiesreference();
+		for (Hicountry residentCountry : country) {
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(residentCountry.getId());
+			gridBean.setName(residentCountry.getCountryCode());
+			gridBeans.add(gridBean);
+
+		}
+		List<CommonDropdownGridBean> nameTypegridBeans = new ArrayList<>();
+		for (Cbcnametype nameType : cbcnametype) {
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(new BigInteger(nameType.getId()));
+			gridBean.setName(nameType.getNameType());
+			nameTypegridBeans.add(gridBean);
+
+		}
+		List<CommonDropdownGridBean> BizgridBeans = new ArrayList<>();
+		for (Cbcbizactivitiesreference bizActivities : bizActivitiesList) {
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(bizActivities.getId());
+			gridBean.setName(bizActivities.getBizType());
+			BizgridBeans.add(gridBean);
+
+		}
+
+		try {
+			String arrayToJson = mapper.writeValueAsString(gridBeans);
+			String nameGridJson = mapper.writeValueAsString(nameTypegridBeans);
+			String bizGridJson = mapper.writeValueAsString(BizgridBeans);
+			map.put("countryList", country);
+			map.put("residentCountry", arrayToJson);
+			map.put("nameTypeList", nameGridJson);
+			map.put("bizTypeList", bizGridJson);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+
+		}
+		
+		model.addAttribute("hidef", hidef);
+		
+		return "cbcReports";
+	}
+	
+	@GetMapping(value="/admin/cbc/deleteConsEntity")
+	public String deleteConsEntity(@ModelAttribute("hidef")HidefVo hidef,@RequestParam int viewId,BindingResult result,ModelMap model,
+			Map<String,Object> map) {
+		
+		
+		List<CbcConstituentEntityVO> constituentEntityList = new ArrayList<CbcConstituentEntityVO>();
+		if(hidef.getCbcReports() != null && hidef.getCbcReports().getConstituentEntityList() != null && !hidef.getCbcReports().getConstituentEntityList().isEmpty()) {
+		for(CbcConstituentEntityVO constEntity : hidef.getCbcReports().getConstituentEntityList()) {			
+			if(constEntity.getConsId() != viewId) {
+				constituentEntityList.add(constEntity);
+			}			
+		}
+		
+		hidef.getCbcReports().setConstituentEntityList(constituentEntityList);
+		
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		List<Hicountry> country = ctccommonDropdownService.getAllCountries();
+		List<Cbcnametype> cbcnametype = ctccommonDropdownService.getAllNameType();
+		List<CommonDropdownGridBean> gridBeans = new ArrayList<>();
+		List<Cbcbizactivitiesreference> bizActivitiesList = ctccommonDropdownService.getAllCbcbizactivitiesreference();
+		for (Hicountry residentCountry : country) {
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(residentCountry.getId());
+			gridBean.setName(residentCountry.getCountryCode());
+			gridBeans.add(gridBean);
+
+		}
+		List<CommonDropdownGridBean> nameTypegridBeans = new ArrayList<>();
+		for (Cbcnametype nameType : cbcnametype) {
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(new BigInteger(nameType.getId()));
+			gridBean.setName(nameType.getNameType());
+			nameTypegridBeans.add(gridBean);
+
+		}
+		List<CommonDropdownGridBean> BizgridBeans = new ArrayList<>();
+		for (Cbcbizactivitiesreference bizActivities : bizActivitiesList) {
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(bizActivities.getId());
+			gridBean.setName(bizActivities.getBizType());
+			BizgridBeans.add(gridBean);
+
+		}
+
+		try {
+			String arrayToJson = mapper.writeValueAsString(gridBeans);
+			String nameGridJson = mapper.writeValueAsString(nameTypegridBeans);
+			String bizGridJson = mapper.writeValueAsString(BizgridBeans);
+			map.put("countryList", country);
+			map.put("residentCountry", arrayToJson);
+			map.put("nameTypeList", nameGridJson);
+			map.put("bizTypeList", bizGridJson);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+
+		}
+		
+		model.addAttribute("hidef", hidef);
+		
+		return "cbcReports";
+	}
+	
+	
+	
+	
+	
+	@GetMapping(value = "/admin/cbc/reloadConstEntityAlone")
+	public String getReportsTabForConsEntity(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
+			Map<String, Object> map) {
+		hidef.getCbcReports().setConstituentEntity(new CbcConstituentEntityVO());
+		
+		ObjectMapper mapper = new ObjectMapper();
+		List<Hicountry> country = ctccommonDropdownService.getAllCountries();
+		List<Cbcnametype> cbcnametype = ctccommonDropdownService.getAllNameType();
+		List<CommonDropdownGridBean> gridBeans = new ArrayList<>();
+		List<Cbcbizactivitiesreference> bizActivitiesList = ctccommonDropdownService.getAllCbcbizactivitiesreference();
+		for (Hicountry residentCountry : country) {
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(residentCountry.getId());
+			gridBean.setName(residentCountry.getCountryCode());
+			gridBeans.add(gridBean);
+
+		}
+		List<CommonDropdownGridBean> nameTypegridBeans = new ArrayList<>();
+		for (Cbcnametype nameType : cbcnametype) {
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(new BigInteger(nameType.getId()));
+			gridBean.setName(nameType.getNameType());
+			nameTypegridBeans.add(gridBean);
+
+		}
+		List<CommonDropdownGridBean> BizgridBeans = new ArrayList<>();
+		for (Cbcbizactivitiesreference bizActivities : bizActivitiesList) {
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(bizActivities.getId());
+			gridBean.setName(bizActivities.getBizType());
+			BizgridBeans.add(gridBean);
+
+		}
+
+		try {
+			String arrayToJson = mapper.writeValueAsString(gridBeans);
+			String nameGridJson = mapper.writeValueAsString(nameTypegridBeans);
+			String bizGridJson = mapper.writeValueAsString(BizgridBeans);
+			map.put("countryList", country);
+			map.put("residentCountry", arrayToJson);
+			map.put("nameTypeList", nameGridJson);
+			map.put("bizTypeList", bizGridJson);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+
+		}
+		
+		model.addAttribute("hidef", hidef);
+		return "cbcReports";
+	}
+	
+	@GetMapping(value = "/admin/cbc/viewConstituentEntityDone")
+	public String viewConstituentEntityDone(@ModelAttribute("hidef") HidefVo hidef, BindingResult result,
+			ModelMap model, Map<String, Object> map) {
+		CbcConstituentEntityVO reportVO = new CbcConstituentEntityVO();
+		hidef.getCbcReports().setConstituentEntity(reportVO);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		List<Hicountry> country = ctccommonDropdownService.getAllCountries();
+		List<Cbcnametype> cbcnametype = ctccommonDropdownService.getAllNameType();
+		List<CommonDropdownGridBean> gridBeans = new ArrayList<>();
+		List<Cbcbizactivitiesreference> bizActivitiesList = ctccommonDropdownService.getAllCbcbizactivitiesreference();
+		for (Hicountry residentCountry : country) {
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(residentCountry.getId());
+			gridBean.setName(residentCountry.getCountryCode());
+			gridBeans.add(gridBean);
+
+		}
+		List<CommonDropdownGridBean> nameTypegridBeans = new ArrayList<>();
+		for (Cbcnametype nameType : cbcnametype) {
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(new BigInteger(nameType.getId()));
+			gridBean.setName(nameType.getNameType());
+			nameTypegridBeans.add(gridBean);
+
+		}
+		List<CommonDropdownGridBean> BizgridBeans = new ArrayList<>();
+		for (Cbcbizactivitiesreference bizActivities : bizActivitiesList) {
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(bizActivities.getId());
+			gridBean.setName(bizActivities.getBizType());
+			BizgridBeans.add(gridBean);
+
+		}
+
+		try {
+			String arrayToJson = mapper.writeValueAsString(gridBeans);
+			String nameGridJson = mapper.writeValueAsString(nameTypegridBeans);
+			String bizGridJson = mapper.writeValueAsString(BizgridBeans);
+			map.put("countryList", country);
+			map.put("residentCountry", arrayToJson);
+			map.put("nameTypeList", nameGridJson);
+			map.put("bizTypeList", bizGridJson);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+
+		}
+		model.addAttribute("hidef", hidef);
+		return "cbcReports";
 	}
 	
 	public String converToString(int i){

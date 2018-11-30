@@ -1,4 +1,7 @@
 $(document).ready(function() {
+	
+	 $('#viewConstEntityButton').hide();
+	 $('#editConstEntityButton').hide();
 		
 	$('#addressTypeReports').change(function() 
 			{ 
@@ -18,7 +21,6 @@ $(document).ready(function() {
 	$("#addressFixReportsContent").hide();
 	
 	var object = {};
-
 	$("#cbcReportsGrid")
 	.jsGrid(
 			{
@@ -224,6 +226,92 @@ function saveCBCReports(){
 	}
 }
 
+function editConstituentEntity(){
+	var errorFlag = false; 
+	errorFlag = validateCbcConstituentEntity();
+	 $("#cbcReportsError").empty();
+	if(!errorFlag){	
+	 var form_data = $('#cbcreports').serialize();
+		$.ajax({
+			url : 'cbc/cbcReports/populateEditedConsitituentEntityGrid',
+			type : 'GET',
+			data : form_data,
+			 async: false,
+			success : function(data) {
+				console.log(data);
+			},error : function(request, error) {
+				alert("Request: " + JSON.stringify(request));
+			}
+		});	
+		
+		$.ajax({
+	        url: 'cbc/reloadConstEntityAlone',
+	        type: 'GET',
+	        async: false,
+	        data : $('#constituentEntities').serialize(),
+	        success: function(response) {	        	
+	        	var htmlFiltered = $("<div>").html(response).find("#constituentEntities").html();
+	        	console.log(htmlFiltered);
+	            $('#constituentEntities').html('');
+	            $('#constituentEntities').html(htmlFiltered);
+	            $('#viewConstEntityButton').hide();    
+	            $('#editConstEntityButton').hide();
+	            showAllReportsGrid();
+	            
+	        },
+	        error: function(request, error) {
+	            alert("Request: " + JSON.stringify(request));
+	        }
+	    });
+	}
+	
+}
+
+
+function saveConstituentEntity(){
+	var errorFlag = false; 
+	errorFlag = validateCbcConstituentEntity();
+	 $("#cbcReportsError").empty();
+	if(!errorFlag){	
+	 var form_data = $('#cbcreports').serialize();
+		$.ajax({
+			url : 'cbc/cbcReports/populateCBCConsitituentEntityGrid',
+			type : 'GET',
+			data : form_data,
+			 async: false,
+			success : function(data) {
+				console.log(data);
+				$("#cbcReportsConstituentEntityGrid").jsGrid("insertItem", data).done(function() {
+					console.log("insertion completed");
+					//showCbcReports(1,0,0);		
+				});
+			},error : function(request, error) {
+				alert("Request: " + JSON.stringify(request));
+			}
+		});	
+		
+		$.ajax({
+	        url: 'cbc/reloadConstEntityAlone',
+	        type: 'GET',
+	        async: false,
+	        data : $('#constituentEntities').serialize(),
+	        success: function(response) {	        	
+	        	var htmlFiltered = $("<div>").html(response).find("#constituentEntities").html();
+	        	console.log(htmlFiltered);
+	            $('#constituentEntities').html('');
+	            $('#constituentEntities').html(htmlFiltered);
+	            $('#viewConstEntityButton').hide(); 
+	            $("#editConstEntityButton").hide();
+	            showAllReportsGrid();
+	            
+	        },
+	        error: function(request, error) {
+	            alert("Request: " + JSON.stringify(request));
+	        }
+	    });
+	}
+}
+
 function viewCBCReports(item){
 	
 	$
@@ -401,6 +489,34 @@ function validate(evt) {
 	theEvent.returnValue = false;
 	if(theEvent.preventDefault) theEvent.preventDefault();
 	}
+}
+
+
+function validateCbcConstituentEntity(){
+	var errorFlag=false;
+	if($("#tin11").val() == ''){
+	   	 $("#tinError11").empty().append("TIN not empty!");
+	   	 errorFlag = true;	
+ }else{
+ 	$("#tinError11").empty();
+}
+ 
+ if($("#tintype11").val() == ''){
+	   	 $("#tintypeError11").empty().append("TIN Type not empty!");
+	   	 errorFlag = true;	
+ }else{
+ 	$("#tintypeError11").empty();
+ }
+ 
+ var issuedBy = $('#issuedBy11').val();
+ if(issuedBy =='0'){
+ 	 $("#issuedByError11").empty().append("TIN Issued By not empty!");
+	   	 errorFlag = true;
+ }else{
+ 	$("#issuedByError11").empty();
+ }
+ 
+ return errorFlag;
 }
 
 function validateCbcReports(){
@@ -594,13 +710,12 @@ function validateCbcReports(){
 
 function currencyValidation(obj){
 	
-	//validate(evt);
-    $(obj).priceFormat({
-    	prefix: '',
-    	centsSeparator: '.',
-        thousandsSeparator: ',',
-        limit: 14,
-        allowNegative: true,
-		insertPlusSign: true
-    }); 	
+	 $(obj).priceFormat({
+	    	prefix: '',
+	    	centsSeparator: '',
+	        thousandsSeparator: '',
+	        limit: 18,
+	        allowNegative: true,
+			insertPlusSign: true
+	    }); 
 } 

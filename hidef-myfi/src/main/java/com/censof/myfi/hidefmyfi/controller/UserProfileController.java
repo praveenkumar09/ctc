@@ -60,6 +60,7 @@ public class UserProfileController {
 	@Autowired
 	private CtcDataSaveService ctcDataSaveService;
 	
+	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@ModelAttribute("hidef")
@@ -244,7 +245,11 @@ public class UserProfileController {
 				for(RecievingCountryVo residentCountry : hidef.getUserprofile().getRecievingCountryList()) {
 					if(residentCountryVo.getId()==residentCountry.getId()){
 						copyList.remove(residentCountry);
+						if(hidef.getUserprofile().getUserProfileId() != null && residentCountry.getId() != 0) {
+							ctcDataSaveService.deleteUserProfileRecievingCountry(hidef.getUserprofile().getUserProfileId(),residentCountry.getId());
+						}
 						hidef.getUserprofile().setRecievingCountryList(copyList);
+						
 						break;
 					}
 				}

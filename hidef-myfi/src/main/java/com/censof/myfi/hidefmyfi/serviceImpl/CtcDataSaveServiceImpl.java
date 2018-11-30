@@ -1063,7 +1063,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 			  userProfile.setReceivingcountrycert(convFile.getAbsolutePath());
 			  }
 			  }else {///TODO
-				  if(!StringUtils.isEmpty(hidefvo.getUserprofile().getConfigurationFileText()) && !StringUtils.isEmpty(fetchProperties("privatecertpath"))){ 
+				  if(!StringUtils.isEmpty(hidefvo.getUserprofile().getConfigurationFileText()) && !StringUtils.isEmpty(fetchProperties("privatecertpath")) && hidefvo.getUserprofile().getConfigurationFile() != null){ 
 					  /*File privateCert = new File(privarecert);
 					  hidefvo.getUserprofile().getConfigurationFile().transferTo(privateCert);*/
 						  File convFile = null;
@@ -1074,13 +1074,15 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							  
 							  convFile = new File(fetchProperties("privatecertpath")+'/'+hidefvo.getUserprofile().getConfigurationFileText());
 						  }
+						  if(hidefvo.getUserprofile().getConfigurationFile() != null) {
 					     convFile.createNewFile();
 					     FileOutputStream fos = new FileOutputStream(convFile);
 					     fos.write(hidefvo.getUserprofile().getConfigurationFile().getBytes());
 					     fos.close();
+						  }
 					  userProfile.setSendingcountrycert(convFile.getAbsolutePath());
 					  }
-					  if(!StringUtils.isEmpty(hidefvo.getUserprofile().getPublicCertFileName()) && !StringUtils.isEmpty(fetchProperties("publiccertpath"))){ 
+					  if(!StringUtils.isEmpty(hidefvo.getUserprofile().getPublicCertFileName()) && !StringUtils.isEmpty(fetchProperties("publiccertpath")) && hidefvo.getUserprofile().getPublicCertPath() != null){ 
 					  /*File publicCert = new File(publiccertpath);
 					  hidefvo.getUserprofile().getConfigurationFile().transferTo(publicCert);*/
 						  File convFile = null;
@@ -1092,10 +1094,12 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							  
 							  convFile = new File(fetchProperties("publiccertpath")+'/'+hidefvo.getUserprofile().getPublicCertFileName());
 						  }
+						  if(hidefvo.getUserprofile().getPublicCertPath() != null) {
 					     convFile.createNewFile();
 					     FileOutputStream fos = new FileOutputStream(convFile);
 					     fos.write(hidefvo.getUserprofile().getPublicCertPath().getBytes());
 					     fos.close();
+						  }
 					  userProfile.setReceivingcountrycert(convFile.getAbsolutePath());
 					  }
 					  }
@@ -3464,5 +3468,18 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 		senderfileid = senderfileidRepository.save(senderfileid);
 		return senderfileid;
 	}
+
+	@Override
+	public void deleteUserProfileRecievingCountry(BigInteger userProfileId,int recievingCountryId) {
+		usereceivingcountryRepository.deleteById(BigInteger.valueOf(recievingCountryId));
+		
+		/*
+		// TODO Auto-generated method stub
+		Userprofile userprofileDetailsById = userprofileRepository.getUserprofileDetailsById(BigInteger.valueOf(userProfileId));
+		if(userprofileDetailsById != null) {
+			List<Usereceivingcountry> allRecivingCountrybyUserProfleId = usereceivingcountryRepository.getAllUserReceivingCountryById(userprofileDetailsById);
+		}
+		
+	*/}
 
 }

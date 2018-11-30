@@ -34,6 +34,10 @@ import com.censof.myfi.hidefmyfi.entity.Cbcnametype;
 import com.censof.myfi.hidefmyfi.entity.Cbcreportingrole;
 import com.censof.myfi.hidefmyfi.entity.Docrefid;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
+import com.censof.myfi.hidefmyfi.repository.CbcpayldaddressRepository;
+import com.censof.myfi.hidefmyfi.repository.CbcpayldinRepository;
+import com.censof.myfi.hidefmyfi.repository.CbcpayldnameRepository;
+import com.censof.myfi.hidefmyfi.repository.CbcpayldrescountryRepository;
 import com.censof.myfi.hidefmyfi.service.CtcDataSaveService;
 import com.censof.myfi.hidefmyfi.service.CtccommonDropdownService;
 import com.censof.myfi.hidefmyfi.vo.AddressVo;
@@ -56,6 +60,19 @@ public class CbcReportingEntityController {
 	
 	@Autowired
 	private CtcDataSaveService ctcDataSaveService;
+	
+	@Autowired
+	private CbcpayldrescountryRepository cbcpayldrescountryRepository;
+	
+	@Autowired
+	private CbcpayldnameRepository cbcpayldnameRepository;
+	
+	@Autowired
+	private CbcpayldinRepository cbcpayldinRepository;
+	
+	
+	@Autowired
+	private CbcpayldaddressRepository cbcpayldaddressRepository;
 	
 	@ModelAttribute("hidef")
     public HidefVo getmetadata () {
@@ -236,6 +253,9 @@ public class CbcReportingEntityController {
 				for(ResidentCountryVo residentCountry: hidef.getReportingEntity().getResidentCountryList()){
 					if(residentCountryVo.getId()==residentCountry.getId()){
 						copyList.remove(residentCountry);
+						if(hidef.getReportingEntity().getId() != null && residentCountry.getId() != 0) {
+							cbcpayldrescountryRepository.deleteById(BigInteger.valueOf(residentCountry.getId()));
+						}
 						hidef.getReportingEntity().setResidentCountryList(copyList);
 						break;
 					}
@@ -330,6 +350,9 @@ public class CbcReportingEntityController {
 			for(NameVo namevo:hidef.getReportingEntity().getNameList()){
 				if(id==namevo.getId()){
 					copyList.remove(namevo);
+					if(hidef.getReportingEntity().getId() != null && namevo.getId() != 0) {
+						cbcpayldnameRepository.deleteById(BigInteger.valueOf(namevo.getId()));
+					}
 					hidef.getReportingEntity().setNameList(copyList);
 					break;
 				}
@@ -425,6 +448,9 @@ public class CbcReportingEntityController {
 			for(OrganisationInTypeVo organisation:hidef.getReportingEntity().getOrganisationInTypeList()){
 				if(id==organisation.getId()){
 					copyList.remove(organisation);
+					if(hidef.getReportingEntity().getId() != null && organisation.getId() != 0) {
+						cbcpayldinRepository.deleteById(BigInteger.valueOf(organisation.getId()));
+					}
 					hidef.getReportingEntity().setOrganisationInTypeList(copyList);
 					break;
 				}
@@ -636,6 +662,9 @@ public class CbcReportingEntityController {
 					addressView = address;
 					List<AddressVo> copyList = new ArrayList<AddressVo>(addressList);
 					copyList.remove(address);
+					if(hidef.getReportingEntity().getId() != null && address.getId() != 0) {
+						cbcpayldaddressRepository.deleteById(BigInteger.valueOf(address.getId()));
+					}
 					hidef.getReportingEntity().setAddressList(copyList);
 				}
 			}

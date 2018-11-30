@@ -296,25 +296,26 @@
 					</div>
 				</fieldset>
 				<div class="clearfix"></div>
+				<div id="constituentEntities">
 				<fieldset class="scheduler-border">
 					<legend class="scheduler-border">Constituent Entities :</legend>
 						<div class="form-group">
 							<div class="form-group col-md-6">
-							<form:label path="reportingEntity.tin">TIN</form:label> <form:input type="text" path="cbcReports.tin"
+							<form:label path="reportingEntity.tin">TIN<font color='red'>*</font></form:label> <form:input type="text" path="cbcReports.constituentEntity.tin"
 								class="form-control" id="tin11"
 								placeholder="TIN"></form:input>
-<!-- 								<font color='red'><span id="tinError11" class="mandatory-flag"></span></font> -->
+ 								<font color='red'><span id="tinError11" class="mandatory-flag"></span></font>
 						</div>
 						<div class="form-group col-md-6">
-							<form:label path="reportingEntity.tinIssuedBy">TIN Type:</form:label> <form:input type="text" path="cbcReports.tinType"
+							<form:label path="reportingEntity.tinIssuedBy">TIN Type<font color='red'>*</font>:</form:label> <form:input type="text" path="cbcReports.constituentEntity.tinType"
 								class="form-control" id="tintype11"
 								placeholder="TIN Type"></form:input>
-<!-- 								<font color='red'><span id="tintypeError11" class="mandatory-flag"></span></font> -->
+ 								<font color='red'><span id="tintypeError11" class="mandatory-flag"></span></font>
 						</div>
 						
 						
 						<div class="form-group col-md-6">
-							<form:label for="" path="cbcReports.tin">TIN Issued By:</form:label> <form:select class="form-control" id="issuedBy11" path="cbcReports.issuedBy">
+							<form:label for="" path="cbcReports.tin">TIN Issued By<font color='red'>*</font>:</form:label> <form:select class="form-control" id="issuedBy11" path="cbcReports.constituentEntity.issuedBy">
 								<form:option value="0">Please choose</form:option>
 							<c:forEach items="${countryList}" var="country">
 							<form:option value="${country.countryCode}">
@@ -322,11 +323,11 @@
 							</form:option>
 						</c:forEach>
 							</form:select>
-<!-- 							<font color='red'><span id="issuedByError11" class="mandatory-flag"></span></font> -->
+ 							<font color='red'><span id="issuedByError11" class="mandatory-flag"></span></font>
 						</div>
 						<div class="form-group col-md-6">
 							<form:label for="" path="cbcReports.incorpCountryCode">Incorp Country Code:</form:label> <form:select
-								class="form-control" id="incorpCountryCode" path="cbcReports.incorpCountryCode">
+								class="form-control" id="incorpCountryCode" path="cbcReports.constituentEntity.incorpCountryCode">
 								<form:option value="0">Please choose</form:option>
 							<c:forEach items="${countryList}" var="country">
 							<form:option value="${country.countryCode}">
@@ -338,7 +339,7 @@
 						<div class="form-group col-md-12">
 							<form:label path="cbcReports.otherEntityInfo">Other Entity Info:</form:label>
 							<form:textarea class="form-control" rows="5" id="otherEntityInfo"
-								placeholder="Other Entity Info" path="cbcReports.otherEntityInfo"></form:textarea>
+								placeholder="Other Entity Info" path="cbcReports.constituentEntity.otherEntityInfo"></form:textarea>
 						</div>
 						<input type="hidden" id="residentCountry" value='${residentCountry}'/>
 						<input type="hidden" id="nameTypedropdown" value='${nameTypeList}'/>
@@ -370,7 +371,25 @@
 							<div class="clearfix"></div>
 						</div>
 					</div>
+					<div class="clearfix"></div>
+					<br/><br/>
+					<div class="text-center">
+						<button id="saveConstEntityButton" name="saveConstEntityButton"
+							onClick="saveConstituentEntity();return false;" class="btn btn-primary">Save Constituent Entity</button><br/>
+							<button id="editConstEntityButton" name="saveConstEntityButton"
+							onClick="editConstituentEntity();return false;" class="btn btn-primary">Edit Constituent Entity</button><br/><br/>
+							<button id="viewConstEntityButton" name="viewConstEntityButton"
+							onClick="returnNormalConstEntity();return false;" class="btn btn-primary">Cancel</button> <br/>
+					</div>
+					<br/><br/>
+					<div class="clearfix"></div>
+						<div class="form-group col-md-6">
+							<div id="cbcReportsConstituentEntityGrid"></div>
+							<div id="pager"></div>
+							<div class="clearfix"></div>
+						</div>
 				</fieldset>
+				</div>
 				<br />
 				<div class="clearfix"></div>
 				<br />
@@ -451,7 +470,7 @@
 				<div class="clearfix"></div>
 				<div class="form-group col-md-6">
 					<label for="">Country Code<font color='red'>*</font>:</label> <form:select class="form-control"
-						id="countryCodeReportingFI" path="cbcReports.addressVo.countryCode">
+						id="countryCodeReportingFI" path="cbcReports.constituentEntity.addressVo.countryCode">
 						<option value="0">--Choose Country code--</option>
 						<c:forEach items="${tinlist}" var="tin">
 							<form:option value="${tin.countryCode}">
@@ -463,7 +482,7 @@
 				<div class="clearfix"></div>
 				<div class="form-group col-md-6">
 					<label for="">Address Type<font color='red'>*</font>:</label> <form:select class="form-control"
-						id="addressTypeReportingFI" path="cbcReports.addressVo.addressType">
+						id="addressTypeReportingFI" path="cbcReports.constituentEntity.addressVo.addressType">
 						<option value="0">--Choose Address Type--</option>
 						<c:forEach items="${addressType}" var="addressType">
 							<form:option value="${addressType.id}">
@@ -476,54 +495,54 @@
 				<div class="form-group col-md-11" id="addressFreeTextField">
 					<label>Address Free:</label>
 					<form:textarea class="form-control" rows="5" id="addressFree"
-						placeholder="Add Address Free" path="cbcReports.addressVo.addressFree"></form:textarea>
+						placeholder="Add Address Free" path="cbcReports.constituentEntity.addressVo.addressFree"></form:textarea>
 				</div>
 				<div class="clearfix"></div>
 				<div id="addressFixContent">
 				    <div class="form-group col-md-6">
 					<label for="language">Street:</label> <form:input
 						class="form-control" id="Street" placeholder="Street"
-						name="language" path="cbcReports.addressVo.street"></form:input>
+						name="language" path="cbcReports.constituentEntity.addressVo.street"></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">Building Identifier:</label> <form:input
 						class="form-control" id="buildingIdentifier" placeholder="Building Identifier"
-						name="language" path="cbcReports.addressVo.buildingIdentifier"></form:input>
+						name="language" path="cbcReports.constituentEntity.addressVo.buildingIdentifier"></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">Suite Identifier:</label> <form:input
 						class="form-control" id="suiteIdentifier" placeholder="Suite Identifier"
-						name="language" path="cbcReports.addressVo.suitIdentifier" ></form:input>
+						name="language" path="cbcReports.constituentEntity.addressVo.suitIdentifier" ></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">Floor Identifier:</label> <form:input
 						class="form-control" id="floorIdentifier" placeholder="Floor Identifier"
-						name="language" path="cbcReports.addressVo.floorIdentifier"></form:input>
+						name="language" path="cbcReports.constituentEntity.addressVo.floorIdentifier"></form:input>
 				    </div>
 				     <div class="form-group col-md-6">
 					<label for="language">District Name:</label> <form:input
 						class="form-control" id="districtName" placeholder="District Name"
-						name="language" path="cbcReports.addressVo.districtName"></form:input>
+						name="language" path="cbcReports.constituentEntity.addressVo.districtName"></form:input>
 				    </div>
 				     <div class="form-group col-md-6">
 					<label for="language">POB:</label> <form:input
 						class="form-control" id="pob" placeholder="POB"
-						name="language" path="cbcReports.addressVo.pob"></form:input>
+						name="language" path="cbcReports.constituentEntity.addressVo.pob"></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">Post Code:</label> <form:input
 						class="form-control" id="postCode" placeholder="Post Code"
-						name="language" path="cbcReports.addressVo.postCode"></form:input>
+						name="language" path="cbcReports.constituentEntity.addressVo.postCode"></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">City<font color='red'>*</font>:</label> <form:input
 						class="form-control" id="city" placeholder="City"
-						name="language" path="cbcReports.addressVo.city"></form:input>
+						name="language" path="cbcReports.constituentEntity.addressVo.city"></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">Country Sub Entity:</label> <form:input
 						class="form-control" id="countrySubEntity" placeholder="Country Sub Entity"
-						name="language" path="cbcReports.addressVo.countrySubentity"></form:input>
+						name="language" path="cbcReports.constituentEntity.addressVo.countrySubentity"></form:input>
 				    </div>				
 				</div>
 				<div class="clearfix"></div>
@@ -556,7 +575,7 @@
 				<div class="clearfix"></div>
 				<div class="form-group col-md-6">
 					<label for="">Country Code<font color='red'>*</font>:</label> <form:select class="form-control"
-						id="countryCodeReportingFI" path="cbcReports.editAddressVo.countryCode" >
+						id="countryCodeReportingFI" path="cbcReports.constituentEntity.editAddressVo.countryCode" >
 						<option value="0">--Choose Country code--</option>
 						<c:forEach items="${tinlist}" var="tin">
 							<form:option value="${tin.countryCode}">
@@ -568,7 +587,7 @@
 				<div class="clearfix"></div>
 				<div class="form-group col-md-6">
 					<label for="">Address Type<font color='red'>*</font>:</label> <form:select class="form-control"
-						id="addressTypeReportingFI" path="cbcReports.editAddressVo.addressType">
+						id="addressTypeReportingFI" path="cbcReports.constituentEntity.editAddressVo.addressType">
 						<option value="0">--Choose Address Type--</option>
 						<c:forEach items="${addressType}" var="addressType">
 							<form:option value="${addressType.id}">
@@ -581,54 +600,54 @@
 				<div class="form-group col-md-11" id="addressFreeTextField">
 					<label>Address Free:</label>
 					<form:textarea class="form-control" rows="5" id="addressFree"
-						placeholder="Add Address Free" path="cbcReports.editAddressVo.addressFree"></form:textarea>
+						placeholder="Add Address Free" path="cbcReports.constituentEntity.editAddressVo.addressFree"></form:textarea>
 				</div>
 				<div class="clearfix"></div>
 				<div id="addressFixContent">
 				    <div class="form-group col-md-6">
 					<label for="language">Street:</label> <form:input
 						class="form-control" id="Street" placeholder="Street"
-						name="language" path="cbcReports.editAddressVo.street"></form:input>
+						name="language" path="cbcReports.constituentEntity.editAddressVo.street"></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">Building Identifier:</label> <form:input
 						class="form-control" id="buildingIdentifier" placeholder="Building Identifier"
-						name="language" path="cbcReports.editAddressVo.buildingIdentifier"></form:input>
+						name="language" path="cbcReports.constituentEntity.editAddressVo.buildingIdentifier"></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">Suite Identifier:</label> <form:input
 						class="form-control" id="suiteIdentifier" placeholder="Suite Identifier"
-						name="language" path="cbcReports.editAddressVo.suitIdentifier" ></form:input>
+						name="language" path="cbcReports.constituentEntity.editAddressVo.suitIdentifier" ></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">Floor Identifier:</label> <form:input
 						class="form-control" id="floorIdentifier" placeholder="Floor Identifier"
-						name="language" path="cbcReports.editAddressVo.floorIdentifier"></form:input>
+						name="language" path="cbcReports.constituentEntity.editAddressVo.floorIdentifier"></form:input>
 				    </div>
 				     <div class="form-group col-md-6">
 					<label for="language">District Name:</label> <form:input
 						class="form-control" id="districtName" placeholder="District Name"
-						name="language" path="cbcReports.editAddressVo.districtName"></form:input>
+						name="language" path="cbcReports.constituentEntity.editAddressVo.districtName"></form:input>
 				    </div>
 				     <div class="form-group col-md-6">
 					<label for="language">POB:</label> <form:input
 						class="form-control" id="pob" placeholder="POB"
-						name="language" path="cbcReports.editAddressVo.pob"></form:input>
+						name="language" path="cbcReports.constituentEntity.editAddressVo.pob"></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">Post Code:</label> <form:input
 						class="form-control" id="postCode" placeholder="Post Code"
-						name="language" path="cbcReports.editAddressVo.postCode"></form:input>
+						name="language" path="cbcReports.constituentEntity.editAddressVo.postCode"></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">City<font color='red'>*</font>:</label> <form:input
 						class="form-control" id="city" placeholder="City"
-						name="language" path="cbcReports.editAddressVo.city"></form:input>
+						name="language" path="cbcReports.constituentEntity.editAddressVo.city"></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">Country Sub Entity:</label> <form:input
 						class="form-control" id="countrySubEntity" placeholder="Country Sub Entity"
-						name="language" path="cbcReports.editAddressVo.countrySubentity"></form:input>
+						name="language" path="cbcReports.constituentEntity.editAddressVo.countrySubentity"></form:input>
 				    </div>				
 				</div>
 				<div class="clearfix"></div>
@@ -664,7 +683,7 @@
 				<div class="form-group col-md-6">
 					<label for="">Country Code<font color='red'>*</font>:</label> 
 					<form:select class="form-control"
-						id="countryCodeReportingFI" path="cbcReports.viewAddressVo.countryCode" disabled="true">
+						id="countryCodeReportingFI" path="cbcReports.constituentEntity.viewAddressVo.countryCode" disabled="true">
 						<option value="0">--Choose Country code--</option>
 						<c:forEach items="${tinlist}" var="tin">
 							<form:option value="${tin.countryCode}">
@@ -676,7 +695,7 @@
 				<div class="clearfix"></div>
 				<div class="form-group col-md-6">
 					<label for="">Address Type<font color='red'>*</font>:</label> <form:select class="form-control"
-						id="addressTypeReportingFI" path="cbcReports.viewAddressVo.addressType" disabled="true">
+						id="addressTypeReportingFI" path="cbcReports.constituentEntity.viewAddressVo.addressType" disabled="true">
 						<option value="0">--Choose Address Type--</option>
 						<c:forEach items="${addressType}" var="addressType">
 							<form:option value="${addressType.id}">
@@ -689,54 +708,54 @@
 				<div class="form-group col-md-11" id="addressFreeTextField">
 					<label>Address Free:</label>
 					<form:textarea class="form-control" rows="5" id="addressFree"
-						placeholder="Add Address Free" path="cbcReports.viewAddressVo.addressFree" readonly="true"></form:textarea>
+						placeholder="Add Address Free" path="cbcReports.constituentEntity.viewAddressVo.addressFree" readonly="true"></form:textarea>
 				</div>
 				<div class="clearfix"></div>
 				<div id="addressFixContent">
 				    <div class="form-group col-md-6">
 					<label for="language">Street:</label> <form:input
 						class="form-control" id="Street" placeholder="Street"
-						name="language" path="cbcReports.viewAddressVo.street" readonly="true"></form:input>
+						name="language" path="cbcReports.constituentEntity.viewAddressVo.street" readonly="true"></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">Building Identifier:</label> <form:input
 						class="form-control" id="buildingIdentifier" placeholder="Building Identifier"
-						name="language" path="cbcReports.viewAddressVo.buildingIdentifier" readonly="true"></form:input>
+						name="language" path="cbcReports.constituentEntity.viewAddressVo.buildingIdentifier" readonly="true"></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">Suite Identifier:</label> <form:input
 						class="form-control" id="suiteIdentifier" placeholder="Suite Identifier"
-						name="language" path="cbcReports.viewAddressVo.suitIdentifier" readonly="true"></form:input>
+						name="language" path="cbcReports.constituentEntity.viewAddressVo.suitIdentifier" readonly="true"></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">Floor Identifier:</label> <form:input
 						class="form-control" id="floorIdentifier" placeholder="Floor Identifier"
-						name="language" path="cbcReports.viewAddressVo.floorIdentifier" readonly="true"></form:input>
+						name="language" path="cbcReports.constituentEntity.viewAddressVo.floorIdentifier" readonly="true"></form:input>
 				    </div>
 				     <div class="form-group col-md-6">
 					<label for="language">District Name:</label> <form:input
 						class="form-control" id="districtName" placeholder="District Name"
-						name="language" path="cbcReports.viewAddressVo.districtName" readonly="true"></form:input>
+						name="language" path="cbcReports.constituentEntity.viewAddressVo.districtName" readonly="true"></form:input>
 				    </div>
 				     <div class="form-group col-md-6">
 					<label for="language">POB:</label> <form:input
 						class="form-control" id="pob" placeholder="POB"
-						name="language" path="cbcReports.viewAddressVo.pob" readonly="true"></form:input>
+						name="language" path="cbcReports.constituentEntity.viewAddressVo.pob" readonly="true"></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">Post Code:</label> <form:input
 						class="form-control" id="postCode" placeholder="Post Code"
-						name="language" path="cbcReports.viewAddressVo.postCode" readonly="true"></form:input>
+						name="language" path="cbcReports.constituentEntity.viewAddressVo.postCode" readonly="true"></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">City<font color='red'>*</font>:</label> <form:input
 						class="form-control" id="city" placeholder="City"
-						name="language" path="cbcReports.viewAddressVo.city" readonly="true"></form:input>
+						name="language" path="cbcReports.constituentEntity.viewAddressVo.city" readonly="true"></form:input>
 				    </div>
 				    <div class="form-group col-md-6">
 					<label for="language">Country Sub Entity:</label> <form:input
 						class="form-control" id="countrySubEntity" placeholder="Country Sub Entity"
-						name="language" path="cbcReports.viewAddressVo.countrySubentity" readonly="true"></form:input>
+						name="language" path="cbcReports.constituentEntity.viewAddressVo.countrySubentity" readonly="true"></form:input>
 				    </div>				
 				</div>
 				<div class="clearfix"></div>

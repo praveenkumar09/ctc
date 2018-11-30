@@ -799,7 +799,16 @@ function showReportingEntity() {
 	} else {
 		$("#sendingCountryError").empty();
 	}
-
+    
+    var year = $('#taxYear').val();
+	if(year == null || year ==''){
+		$("#taxYearError").empty().append("Year not empty!");
+		errorFlag = true;
+	}else{
+		$("#taxYearError").empty();
+	}
+    
+    
 	if (!errorFlag) {
 		$("#metaData").hide();
 		$("#reportingEntity").addClass("active");
@@ -2480,989 +2489,11 @@ function showCbcReports(newForm, editForm, viewForm) {
 							$("#editCancelReportsDone").show();
 							$("#viewNextTab").hide();
 						}
-						var residentCountryCode = $("#residentCountry").val();
-						residentCountryCode = $.parseJSON(residentCountryCode);
-						var issuedBy = residentCountryCode;
-						var nameType = $("#nameTypedropdown").val();
-						nameType = $.parseJSON(nameType);
+						
+						
+						showAllReportsGrid();
 
-						var bizType = $("#bizTypedropdown").val();
-						bizType = $.parseJSON(bizType);
-
-						/* var residentCountryCode = [{
-						     "id": "1",
-						     "name": "MY"
-						 }, {
-						     "id": "2",
-						     "name": "AR"
-						 }, {
-						     "id": "3",
-						     "name": "AU"
-						 }, {
-						     "id": "4",
-						     "name": "US"
-						 }];
-
-						 var issuedBy = [{
-						     "id": "1",
-						     "name": "MY"
-						 }, {
-						     "id": "2",
-						     "name": "AR"
-						 }, {
-						     "id": "3",
-						     "name": "AU"
-						 }, {
-						     "id": "4",
-						     "name": "US"
-						 }];
-
-						 var nameType = [{
-						     "id": "1",
-						     "name": "OECD 201"
-						 }, {
-						     "id": "2",
-						     "name": "OECD 202"
-						 }, {
-						     "id": "3",
-						     "name": "OECD 203"
-						 }, {
-						     "id": "4",
-						     "name": "OECD 204"
-						 }, {
-						     "id": "5",
-						     "name": "OECD 205"
-						 }, {
-						     "id": "6",
-						     "name": "OECD 206"
-						 }, {
-						     "id": "7",
-						     "name": "OECD 207"
-						 }, {
-						     "id": "8",
-						     "name": "OECD 208"
-						 }];*/
-
-						$("#bizActivitiesGrid")
-								.jsGrid(
-										{
-											width : "205%",
-											inserting : true,
-											editing : true,
-											sorting : true,
-											paging : true,
-											pageSize : 5,
-											pageButtonCount : 5,
-											autoload : true,
-											controller : {
-												loadData : function() {
-													var d = $.Deferred();
-
-													$
-															.ajax({
-																type : 'GET',
-																url : 'cbc/reportsBizloadGrid',
-																mimeType : 'application/json',
-																contentType : "application/json; charset=utf-8",
-																success : function(
-																		data) {
-																	d
-																			.resolve(data);
-																},
-																error : function(
-																		e) {
-																	alert("error: "
-																			+ e.responseText);
-																}
-															});
-
-													return d.promise();
-												},
-												/*
-												 * loadData: function() { return
-												 * [{"firstName":"MyAccount","lastName":"111-111-7890","nameType":"123456789"},{"firstName":"venki","lastName":"111-111-7890","nameType":"123456789"}]; },
-												 */
-												/* }, */
-
-												insertItem : function(item) {
-													var d = $.Deferred();
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsinsertBizGrid",
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																		$(
-																				"#bizActivitiesGrid")
-																				.jsGrid(
-																						"loadData");
-
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-												updateItem : function(item) {
-													var d = $.Deferred();
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsupdateBizGrid?id="
-																				+ item.id,
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-												deleteItem : function(item) {
-													var d = $.Deferred();
-													// alert('@@@@@@@@@@@@@' + item.id)
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsdeleteBizGrid?id="
-																				+ item.id,
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-											},
-
-											data : clients1,
-											invalidNotify : function(args) {
-
-											},
-											fields : [
-													{
-														title : "No.<font color='red'>*</font>",
-														name : "id",
-														type : "text",
-														width : 150,
-														validate : "required",
-														visible : false
-													},
-													{
-														title : "Biz Activities Type<font color='red'>*</font>",
-														name : "bizType",
-														type : "select",
-														width : 150,
-														items : bizType,
-														valueField : "id",
-														textField : "name",
-														validate : "required"
-													}, {
-														type : "control"
-													} ]
-										});
-
-						$("#cbcReportsResidentCountryGrid")
-								.jsGrid(
-										{
-											width : "205%",
-											inserting : true,
-											editing : true,
-											sorting : true,
-											paging : true,
-											pageSize : 5,
-											pageButtonCount : 5,
-											autoload : true,
-											controller : {
-
-												loadData : function() {
-													var d = $.Deferred();
-													$
-															.ajax({
-																type : 'GET',
-																url : 'cbc/reportsloadResidentCountryGrid',
-																mimeType : 'application/json',
-																contentType : 'application/json',
-																success : function(
-																		data) {
-																	d
-																			.resolve(data);
-																},
-																error : function(
-																		e) {
-																	alert("error: "
-																			+ e.responseText);
-																}
-															});
-
-													return d.promise();
-												},
-
-												insertItem : function(item) {
-													var d = $.Deferred();
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsinsertResidentCountryGrid",
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																		$(
-																				"#cbcReportsResidentCountryGrid")
-																				.jsGrid(
-																						"loadData");
-
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-												updateItem : function(item) {
-													var d = $.Deferred();
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsupdateResidentCountryGrid?id="
-																				+ item.id,
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-												deleteItem : function(item) {
-													var d = $.Deferred();
-													//alert('@@@@@@@@@@@@@' + item.id)
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsdeleteResidentCountryGrid?id="
-																				+ item.id,
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-											},
-											data : clients,
-											invalidNotify : function(args) {
-												$("#validateTextHere").text("");
-												$("#validateTextHere")
-														.text(
-																"Please fill in all the mandatory fields");
-												$('#crsNameModal')
-														.modal('show');
-											},
-											fields : [
-													{
-														title : "No.<font color='red'>*</font>",
-														name : "id",
-														type : "text",
-														width : 150,
-														validate : "required",
-														visible : false
-													},
-													{
-														title : "Resident Country Code",
-														name : "residentCountryCode",
-														type : "select",
-														items : residentCountryCode,
-														valueField : "id",
-														textField : "name",
-													}, {
-														type : "control"
-													} ]
-										});
-
-						$("#cbcReportsNameGrid")
-								.jsGrid(
-										{
-											width : "205%",
-											inserting : true,
-											editing : true,
-											sorting : true,
-											paging : true,
-											pageSize : 5,
-											pageButtonCount : 5,
-											autoload : true,
-											controller : {
-												loadData : function() {
-													var d = $.Deferred();
-
-													$
-															.ajax({
-																type : 'GET',
-																url : 'cbc/reportsloadNameGrid',
-																mimeType : 'application/json',
-																contentType : "application/json; charset=utf-8",
-																success : function(
-																		data) {
-																	d
-																			.resolve(data);
-																},
-																error : function(
-																		e) {
-																	alert("error: "
-																			+ e.responseText);
-																}
-															});
-
-													return d.promise();
-												},
-												/*
-												 * loadData: function() { return
-												 * [{"firstName":"MyAccount","lastName":"111-111-7890","nameType":"123456789"},{"firstName":"venki","lastName":"111-111-7890","nameType":"123456789"}]; },
-												 */
-												/* }, */
-
-												insertItem : function(item) {
-													var d = $.Deferred();
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsinsertNameGrid",
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																		$(
-																				"#cbcReportsNameGrid")
-																				.jsGrid(
-																						"loadData");
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-												updateItem : function(item) {
-													var d = $.Deferred();
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsupdateNameGrid?id="
-																				+ item.id,
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-												deleteItem : function(item) {
-													var d = $.Deferred();
-													// alert('@@@@@@@@@@@@@' + item.id)
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsdeleteNameGrid?id="
-																				+ item.id,
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-											},
-
-											data : clients1,
-											invalidNotify : function(args) {
-
-											},
-											fields : [
-													{
-														title : "No.<font color='red'>*</font>",
-														name : "id",
-														type : "text",
-														width : 150,
-														validate : "required",
-														visible : false
-													},
-													{
-														title : "Organisation Name<font color='red'>*</font>",
-														name : "firstName",
-														type : "text",
-														validate : "required",
-														align : "center"
-													},
-													{
-														title : "Last Name<font color='red'>*</font>",
-														name : "lastName",
-														type : "text",
-														width : 150,
-														validate : "required",
-														visible : false
-													},
-													{
-														title : "Name Type<font color='red'>*</font>",
-														name : "nameType",
-														type : "select",
-														width : 150,
-														items : nameType,
-														valueField : "id",
-														textField : "name",
-														validate : "required",
-														visible : false
-													}, {
-														type : "control"
-													} ]
-										});
-
-						$("#cbcReportsINGrid")
-								.jsGrid(
-										{
-											width : "205%",
-											inserting : true,
-											editing : true,
-											sorting : true,
-											paging : true,
-											pageSize : 5,
-											pageButtonCount : 5,
-											autoload : true,
-											controller : {
-												loadData : function() {
-													var d = $.Deferred();
-
-													$
-															.ajax({
-																type : 'GET',
-																url : 'cbc/reportsloadOrganisationGrid',
-																mimeType : 'application/json',
-																contentType : "application/json; charset=utf-8",
-																success : function(
-																		data) {
-																	d
-																			.resolve(data);
-																},
-																error : function(
-																		e) {
-																	alert("error: "
-																			+ e.responseText);
-																}
-															});
-
-													return d.promise();
-												},
-												/*
-												 * loadData: function() { return
-												 * [{"firstName":"MyAccount","lastName":"111-111-7890","nameType":"123456789"},{"firstName":"venki","lastName":"111-111-7890","nameType":"123456789"}]; },
-												 */
-												/* }, */
-
-												insertItem : function(item) {
-													var d = $.Deferred();
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsinsertOrganisationGrid",
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																		$(
-																				"#cbcReportsNameGrid")
-																				.jsGrid(
-																						"loadData");
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-												updateItem : function(item) {
-													var d = $.Deferred();
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsupdateOrganisationGrid?id="
-																				+ item.id,
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-												deleteItem : function(item) {
-													var d = $.Deferred();
-													/*alert('@@@@@@@@@@@@@' + item.issuedBy)*/
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsdeleteOrganisationGrid?id="
-																				+ item.id,
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-											},
-											data : clients2,
-											invalidNotify : function(args) {
-
-											},
-											fields : [
-													{
-														title : "No.<font color='red'>*</font>",
-														name : "id",
-														type : "text",
-														width : 150,
-														validate : "required",
-														visible : false
-													},
-													/*{
-													    title: "Organisation IN Type Issued By",
-													    name: "issuedBy",
-													    type: "select",
-													    items: residentCountryCode,
-													    valueField: "id",
-													    textField: "name",
-													}, */
-													{
-														title : "IN",
-														name : "in",
-														width : 150,
-														type : "text",
-														align : "center",
-														validate : "required"
-													},
-													{
-														title : "IN Type<font color='red'>*</font>",
-														name : "inType",
-														type : "text",
-														width : 150
-													},
-													{
-														title : "IN Issued By",
-														name : "issuedBy",
-														type : "select",
-														items : residentCountryCode,
-														valueField : "id",
-														textField : "name",
-													}, {
-														type : "control"
-													} ]
-										});
-
-						var object = {};
-
-						$("#cbcReportsAddressGrid")
-								.jsGrid(
-										{
-											width : "205%",
-											inserting : false,
-											editing : false,
-											sorting : false,
-											paging : true,
-											pageSize : 6,
-											pageButtonCount : 5,
-											autoload : true,
-											controller : {
-												loadData : function() {
-													var d = $.Deferred();
-
-													$
-															.ajax({
-																type : 'GET',
-																url : 'cbc/loadCbcReportsAddress',
-																mimeType : 'application/json',
-																contentType : "application/json; charset=utf-8",
-																success : function(
-																		data) {
-																	d
-																			.resolve(data);
-																},
-																error : function(
-																		e) {
-																	alert("error: "
-																			+ e.responseText);
-																}
-															});
-
-													return d.promise();
-												}
-											},
-											/*controller: object,*/
-											datatype : 'json',
-											invalidNotify : function(args) {
-
-											},
-											fields : [
-													{
-														name : "id",
-														title : "id",
-														type : "text",
-														visible : true,
-														width : 10
-													/*,
-													items: object.id*/
-													},
-													{
-														title : "Address Type",
-														name : "addressType",
-														type : "text",
-														width : 150,
-														/*items: object.addressType,*/
-														visible : true
-													},
-													{
-														title : "Country Code",
-														name : "countryCode",
-														type : "text",
-														width : 150,
-														/*,
-														items: object.countryCode,*/
-														visible : true
-													},
-													{
-														name : "button",
-														headerTemplate : function() {
-															return $("<button>")
-																	.attr(
-																			"type",
-																			"button")
-																	.attr(
-																			"class",
-																			"btn btn-success btn-sm")
-																	.text(
-																			"Click here to Add New Address")
-																	.on(
-																			"click",
-																			function() {
-																				addNewAddressCbcReportsClicked();
-																			});
-														},
-														itemTemplate : function(
-																value, item) {
-															var $result = jsGrid.fields.control.prototype.itemTemplate
-																	.apply(
-																			this,
-																			arguments);
-
-															var $customViewButton = $(
-																	"<button>")
-																	.attr(
-																			"class",
-																			"btn btn-info btn-sm")
-																	.text(
-																			"View")
-																	.click(
-																			function(
-																					e) {
-																				/*alert("ID: " +
-																				    item.id);*/
-																				e
-																						.stopPropagation();
-																				cbcReportsViewAddress(item.id);
-
-																				return false;
-
-																			});
-
-															var $customEditButton = $(
-																	"<button>")
-																	.attr(
-																			"class",
-																			"btn btn-warning btn-sm")
-																	.text(
-																			"Edit")
-																	.click(
-																			function(
-																					e) {
-																				/* alert("ID: " +
-																				     item.id);*/
-																				e
-																						.stopPropagation();
-																				cbcReportsEditAddress(item.id);
-																				return false;
-																			});
-
-															var $customDeleteButton = $(
-																	"<button>")
-																	.attr(
-																			"class",
-																			"btn btn-danger btn-sm")
-																	.text(
-																			"Delete")
-																	.click(
-																			function(
-																					e) {
-																				//alert("ID: " +
-																				//item.id);
-																				e
-																						.stopPropagation();
-																				cbcReportsDeleteAddress(item.id);
-																				return false;
-																			});
-
-															return $("<div>")
-																	.append(
-																			$customViewButton)
-																	.append(
-																			"&nbsp;")
-																	.append(
-																			"&nbsp;")
-																	.append(
-																			$customEditButton)
-																	.append(
-																			"&nbsp;")
-																	.append(
-																			"&nbsp;")
-																	.append(
-																			$customDeleteButton);
-															// return
-															// $result.add($customButton);
-														}
-													} ]
-										});
+						
 					},
 					error : function(request, error) {
 						alert("Request: " + JSON.stringify(request));
@@ -3511,932 +2542,7 @@ function additionalInfoPrevious() {
 						$("#editReportsDone").hide();
 						$("#editCancelReportsDone").hide();
 
-						var residentCountryCode = $("#residentCountry").val();
-						residentCountryCode = $.parseJSON(residentCountryCode);
-						var issuedBy = residentCountryCode;
-						var nameType = $("#nameTypedropdown").val();
-						nameType = $.parseJSON(nameType);
-
-						var bizType = $("#bizTypedropdown").val();
-						bizType = $.parseJSON(bizType);
-
-						$("#bizActivitiesGrid")
-								.jsGrid(
-										{
-											width : "205%",
-											inserting : true,
-											editing : true,
-											sorting : true,
-											paging : true,
-											pageSize : 5,
-											pageButtonCount : 5,
-											autoload : true,
-											controller : {
-												loadData : function() {
-													var d = $.Deferred();
-
-													$
-															.ajax({
-																type : 'GET',
-																url : 'cbc/reportsBizloadGrid',
-																mimeType : 'application/json',
-																contentType : "application/json; charset=utf-8",
-																success : function(
-																		data) {
-																	d
-																			.resolve(data);
-																},
-																error : function(
-																		e) {
-																	alert("error: "
-																			+ e.responseText);
-																}
-															});
-
-													return d.promise();
-												},
-												/*
-												 * loadData: function() { return
-												 * [{"firstName":"MyAccount","lastName":"111-111-7890","nameType":"123456789"},{"firstName":"venki","lastName":"111-111-7890","nameType":"123456789"}]; },
-												 */
-												/* }, */
-
-												insertItem : function(item) {
-													var d = $.Deferred();
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsinsertBizGrid",
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																		$(
-																				"#bizActivitiesGrid")
-																				.jsGrid(
-																						"loadData");
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-												updateItem : function(item) {
-													var d = $.Deferred();
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsupdateBizGrid?id="
-																				+ item.id,
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-												deleteItem : function(item) {
-													var d = $.Deferred();
-													// alert('@@@@@@@@@@@@@' + item.id)
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsdeleteBizGrid?id="
-																				+ item.id,
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-											},
-
-											data : clients1,
-											invalidNotify : function(args) {
-
-											},
-											fields : [
-													{
-														title : "No.<font color='red'>*</font>",
-														name : "id",
-														type : "text",
-														width : 150,
-														validate : "required",
-														visible : false
-													},
-													{
-														title : "Biz Activities Type<font color='red'>*</font>",
-														name : "bizType",
-														type : "select",
-														width : 150,
-														items : bizType,
-														valueField : "id",
-														textField : "name",
-														validate : "required"
-													}, {
-														type : "control"
-													} ]
-										});
-
-						$("#cbcReportsResidentCountryGrid")
-								.jsGrid(
-										{
-											width : "205%",
-											inserting : true,
-											editing : true,
-											sorting : true,
-											paging : true,
-											pageSize : 5,
-											pageButtonCount : 5,
-											autoload : true,
-											controller : {
-
-												loadData : function() {
-													var d = $.Deferred();
-													$
-															.ajax({
-																type : 'GET',
-																url : 'cbc/reportsloadResidentCountryGrid',
-																mimeType : 'application/json',
-																contentType : 'application/json',
-																success : function(
-																		data) {
-																	d
-																			.resolve(data);
-																},
-																error : function(
-																		e) {
-																	alert("error: "
-																			+ e.responseText);
-																}
-															});
-
-													return d.promise();
-												},
-
-												insertItem : function(item) {
-													var d = $.Deferred();
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsinsertResidentCountryGrid",
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																		$(
-																				"#cbcReportsResidentCountryGrid")
-																				.jsGrid(
-																						"loadData");
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-												updateItem : function(item) {
-													var d = $.Deferred();
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsupdateResidentCountryGrid?id="
-																				+ item.id,
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-												deleteItem : function(item) {
-													var d = $.Deferred();
-													/*alert('@@@@@@@@@@@@@' + item.residentCountryCode)*/
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsdeleteResidentCountryGrid?id="
-																				+ item.id,
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-											},
-											data : clients,
-											invalidNotify : function(args) {
-												$("#validateTextHere").text("");
-												$("#validateTextHere")
-														.text(
-																"Please fill in all the mandatory fields");
-												$('#crsNameModal')
-														.modal('show');
-											},
-											fields : [
-													{
-														title : "No.<font color='red'>*</font>",
-														name : "id",
-														type : "text",
-														width : 150,
-														validate : "required",
-														visible : false
-													},
-													{
-														title : "Resident Country Code",
-														name : "residentCountryCode",
-														type : "select",
-														items : residentCountryCode,
-														valueField : "id",
-														textField : "name",
-													}, {
-														type : "control"
-													} ]
-										});
-
-						$("#cbcReportsNameGrid")
-								.jsGrid(
-										{
-											width : "205%",
-											inserting : true,
-											editing : true,
-											sorting : true,
-											paging : true,
-											pageSize : 5,
-											pageButtonCount : 5,
-											autoload : true,
-											controller : {
-												loadData : function() {
-													var d = $.Deferred();
-
-													$
-															.ajax({
-																type : 'GET',
-																url : 'cbc/reportsloadNameGrid',
-																mimeType : 'application/json',
-																contentType : "application/json; charset=utf-8",
-																success : function(
-																		data) {
-																	d
-																			.resolve(data);
-																},
-																error : function(
-																		e) {
-																	alert("error: "
-																			+ e.responseText);
-																}
-															});
-
-													return d.promise();
-												},
-												/*
-												 * loadData: function() { return
-												 * [{"firstName":"MyAccount","lastName":"111-111-7890","nameType":"123456789"},{"firstName":"venki","lastName":"111-111-7890","nameType":"123456789"}]; },
-												 */
-												/* }, */
-
-												insertItem : function(item) {
-													var d = $.Deferred();
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsinsertNameGrid",
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																		$(
-																				"#cbcReportsNameGrid")
-																				.jsGrid(
-																						"loadData");
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-												updateItem : function(item) {
-													var d = $.Deferred();
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsupdateNameGrid?id="
-																				+ item.id,
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-												deleteItem : function(item) {
-													var d = $.Deferred();
-													/* alert('@@@@@@@@@@@@@' + item.firstName)*/
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsdeleteNameGrid?id="
-																				+ item.id,
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-											},
-											data : clients1,
-											invalidNotify : function(args) {
-
-											},
-											fields : [
-													{
-														title : "No.<font color='red'>*</font>",
-														name : "id",
-														type : "text",
-														width : 150,
-														validate : "required",
-														visible : false
-													},
-													{
-														title : "Organisation Name<font color='red'>*</font>",
-														name : "firstName",
-														type : "text",
-														validate : "required",
-														align : "center"
-													},
-													{
-														title : "Last Name<font color='red'>*</font>",
-														name : "lastName",
-														type : "text",
-														width : 150,
-														validate : "required",
-														visible : false
-													},
-													{
-														title : "Name Type<font color='red'>*</font>",
-														name : "nameType",
-														type : "select",
-														width : 150,
-														items : nameType,
-														valueField : "id",
-														textField : "name",
-														validate : "required",
-														visible : false
-													}, {
-														type : "control"
-													} ]
-										});
-
-						$("#cbcReportsINGrid")
-								.jsGrid(
-										{
-											width : "205%",
-											inserting : true,
-											editing : true,
-											sorting : true,
-											paging : true,
-											pageSize : 5,
-											pageButtonCount : 5,
-											autoload : true,
-											controller : {
-												loadData : function() {
-													var d = $.Deferred();
-
-													$
-															.ajax({
-																type : 'GET',
-																url : 'cbc/reportsloadOrganisationGrid',
-																mimeType : 'application/json',
-																contentType : "application/json; charset=utf-8",
-																success : function(
-																		data) {
-																	d
-																			.resolve(data);
-																},
-																error : function(
-																		e) {
-																	alert("error: "
-																			+ e.responseText);
-																}
-															});
-
-													return d.promise();
-												},
-												/*
-												 * loadData: function() { return
-												 * [{"firstName":"MyAccount","lastName":"111-111-7890","nameType":"123456789"},{"firstName":"venki","lastName":"111-111-7890","nameType":"123456789"}]; },
-												 */
-												/* }, */
-
-												insertItem : function(item) {
-													var d = $.Deferred();
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsinsertOrganisationGrid",
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																		$(
-																				"#cbcReportsNameGrid")
-																				.jsGrid(
-																						"loadData");
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-												updateItem : function(item) {
-													var d = $.Deferred();
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsupdateOrganisationGrid?id="
-																				+ item.id,
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-												deleteItem : function(item) {
-													var d = $.Deferred();
-													/*alert('@@@@@@@@@@@@@' + item.issuedBy)*/
-
-													$
-															.ajax(
-																	{
-																		type : "POST",
-																		url : "cbc/reportsdeleteOrganisationGrid?id="
-																				+ item.id,
-																		data : JSON
-																				.stringify(item),
-																		mimeType : 'application/json',
-																		contentType : 'application/json',
-																	})
-															.done(
-																	function(
-																			response) {
-																		console
-																				.log("done: "
-																						+ JSON
-																								.stringify(response));
-																		d
-																				.resolve(response);
-																	})
-															.fail(
-																	function(
-																			msg) {
-																		console
-																				.log("fail"
-																						+ msg);
-																		d
-																				.reject();
-																	});
-												},
-
-											},
-											data : clients2,
-											invalidNotify : function(args) {
-
-											},
-											fields : [
-													{
-														title : "No.<font color='red'>*</font>",
-														name : "id",
-														type : "text",
-														width : 150,
-														validate : "required",
-														visible : false
-													},
-													/*{
-													    title: "Organisation IN Type Issued By",
-													    name: "issuedBy",
-													    type: "select",
-													    items: residentCountryCode,
-													    valueField: "id",
-													    textField: "name",
-													},*/
-													{
-														title : "IN",
-														name : "in",
-														width : 150,
-														type : "text",
-														align : "center",
-														validate : "required"
-													},
-													{
-														title : "IN Type<font color='red'>*</font>",
-														name : "inType",
-														type : "text",
-														width : 150
-													},
-													{
-														title : "IN Issued By",
-														name : "issuedBy",
-														type : "select",
-														items : residentCountryCode,
-														valueField : "id",
-														textField : "name",
-													}, {
-														type : "control"
-													} ]
-										});
-
-						var object = {};
-
-						$("#cbcReportsAddressGrid")
-								.jsGrid(
-										{
-											width : "205%",
-											inserting : false,
-											editing : false,
-											sorting : false,
-											paging : true,
-											pageSize : 6,
-											pageButtonCount : 5,
-											autoload : true,
-											controller : {
-												loadData : function() {
-													var d = $.Deferred();
-
-													$
-															.ajax({
-																type : 'GET',
-																url : 'cbc/loadCbcReportsAddress',
-																mimeType : 'application/json',
-																contentType : "application/json; charset=utf-8",
-																success : function(
-																		data) {
-																	d
-																			.resolve(data);
-																},
-																error : function(
-																		e) {
-																	alert("error: "
-																			+ e.responseText);
-																}
-															});
-
-													return d.promise();
-												}
-											},
-
-											/*controller: object,*/
-											datatype : 'json',
-											invalidNotify : function(args) {
-
-											},
-											fields : [
-													{
-														name : "id",
-														title : "id",
-														type : "text",
-														visible : true,
-														width : 10
-													/*,
-													items: object.id*/
-													},
-													{
-														title : "Address Type",
-														name : "addressType",
-														type : "text",
-														width : 150,
-														/*items: object.addressType,*/
-														visible : true
-													},
-													{
-														title : "Country Code",
-														name : "countryCode",
-														type : "text",
-														width : 150,
-														/* items: object.countryCode,*/
-														visible : true
-													},
-													{
-														name : "button",
-														headerTemplate : function() {
-															return $("<button>")
-																	.attr(
-																			"type",
-																			"button")
-																	.attr(
-																			"class",
-																			"btn btn-success btn-sm")
-																	.text(
-																			"Click here to Add New Address")
-																	.on(
-																			"click",
-																			function() {
-																				addNewAddressCbcReportsClicked();
-																			});
-														},
-														itemTemplate : function(
-																value, item) {
-															var $result = jsGrid.fields.control.prototype.itemTemplate
-																	.apply(
-																			this,
-																			arguments);
-
-															var $customViewButton = $(
-																	"<button>")
-																	.attr(
-																			"class",
-																			"btn btn-info btn-sm")
-																	.text(
-																			"View")
-																	.click(
-																			function(
-																					e) {
-																				/*alert("ID: " +
-																				    item.id);*/
-																				// e.stopPropagation();
-																				e
-																						.stopPropagation();
-																				cbcReportsViewAddress(item.id);
-																				return false;
-
-																			});
-
-															var $customEditButton = $(
-																	"<button>")
-																	.attr(
-																			"class",
-																			"btn btn-warning btn-sm")
-																	.text(
-																			"Edit")
-																	.click(
-																			function(
-																					e) {
-																				/*alert("ID: " +
-																				    item.id);*/
-																				e
-																						.stopPropagation();
-																				cbcReportsEditAddress(item.id);
-																				return false;
-																			});
-
-															var $customDeleteButton = $(
-																	"<button>")
-																	.attr(
-																			"class",
-																			"btn btn-danger btn-sm")
-																	.text(
-																			"Delete")
-																	.click(
-																			function(
-																					e) {
-																				//alert("ID: " +
-																				//item.id);
-																				e
-																						.stopPropagation();
-																				cbcReportsDeleteAddress(item.id);
-																				return false;
-																			});
-
-															return $("<div>")
-																	.append(
-																			$customViewButton)
-																	.append(
-																			"&nbsp;")
-																	.append(
-																			"&nbsp;")
-																	.append(
-																			$customEditButton)
-																	.append(
-																			"&nbsp;")
-																	.append(
-																			"&nbsp;")
-																	.append(
-																			$customDeleteButton);
-															// return
-															// $result.add($customButton);
-														}
-													} ]
-										});
+						showAllReportsGrid();
 					},
 					error : function(request, error) {
 						alert("Request: " + JSON.stringify(request));
@@ -5741,3 +3847,1694 @@ function ReportingFiNext(newForm, editForm, viewForm) {
 	});
 }
 
+
+
+function showAllReportsGrid(){
+	 var residentCountryCode = $("#residentCountry").val();
+		residentCountryCode = $.parseJSON(residentCountryCode);
+		var issuedBy = residentCountryCode;
+		var nameType = $("#nameTypedropdown").val();
+		nameType = $.parseJSON(nameType);
+
+		var bizType = $("#bizTypedropdown").val();
+		bizType = $.parseJSON(bizType);
+		
+		var clients = [];
+		var clients1 = [];
+		var clients2 = [];
+		var clients3 = [];
+     
+     $("#cbcReportsConstituentEntityGrid")
+ 	.jsGrid(
+ 					{
+ 						width : "205%",
+ 						inserting : false,
+ 						editing : false,
+ 						sorting : false,
+ 						paging : true,
+ 						pageSize : 6,
+ 						pageButtonCount : 5,
+ 						autoload : true,
+ 						controller : {
+ 							loadData : function() {
+ 								var d = $.Deferred();
+
+ 								$
+ 										.ajax({
+ 											type : 'GET',
+ 											url : 'cbc/loadCbcConstituentEntityGrid',
+ 											mimeType : 'application/json',
+ 											contentType : "application/json; charset=utf-8",
+ 											success : function(
+ 													data) {
+ 												d.resolve(data);
+ 											},
+ 											error : function(
+ 													e) {
+ 												alert("error: "
+ 														+ e.responseText);
+ 											}
+ 										});
+
+ 								return d.promise();
+ 							}
+ 						},
+ 						/*controller: object,*/
+ 						datatype : 'json',
+ 						invalidNotify : function(args) {
+
+ 						},
+ 						fields : [
+ 								{
+ 									name : "consId",
+ 									title : "ID",
+ 									type : "text",
+ 									visible : false,
+ 									width : 15
+ 								/*,
+ 								items: object.id*/
+ 								},
+ 								{
+ 									title : "TIN",
+ 									name : "tin",
+ 									type : "text",
+ 									width : 150,
+ 									/*items: object.addressType,*/
+ 									visible : true
+ 								},
+ 								{
+ 									title : "TIN Type",
+ 									name : "tinType",
+ 									type : "text",
+ 									width : 150,
+ 									/*,
+ 									items: object.countryCode,*/
+ 									visible : true
+ 								},
+ 								{
+ 									name : "",
+ 									itemTemplate : function(
+ 											value, item) {
+ 										var $result = jsGrid.fields.control.prototype.itemTemplate
+ 												.apply(
+ 														this,
+ 														arguments);
+
+ 										var $customViewButton = $(
+ 												"<button>")
+ 												.attr(
+ 														"class",
+ 														"btn btn-info btn-sm")
+ 												.text(
+ 														"View")
+ 												.click(
+ 														function(
+ 																e) {
+ 															/*alert("ID: " +
+ 															    item.id);*/
+ 															e.stopPropagation();
+ 															cbcViewConstituentEntity(item.consId);
+ 															return false;
+
+ 														});
+
+ 										var $customEditButton = $(
+ 												"<button>")
+ 												.attr(
+ 														"class",
+ 														"btn btn-warning btn-sm")
+ 												.text(
+ 														"Edit")
+ 												.click(
+ 														function(
+ 																e) {
+ 															/* alert("ID: " +
+ 															     item.id);*/
+ 															e
+ 																	.stopPropagation();
+ 															cbcEditConstituentEntity(item.consId);
+ 															return false;
+ 														});
+
+ 										var $customDeleteButton = $(
+ 												"<button>")
+ 												.attr(
+ 														"class",
+ 														"btn btn-danger btn-sm")
+ 												.text(
+ 														"Delete")
+ 												.click(
+ 														function(
+ 																e) {
+ 															//alert("ID: " +
+ 															//item.id);
+ 															e
+ 																	.stopPropagation();
+ 															cbcDeleteConstituentEntity(item.consId);
+ 															return false;
+ 														});
+
+ 										return $("<div>")
+ 												.append(
+ 														$customViewButton)
+ 												.append(
+ 														"&nbsp;")
+ 												.append(
+ 														"&nbsp;")
+ 												.append(
+ 														$customEditButton)
+ 												.append(
+ 														"&nbsp;")
+ 												.append(
+ 														"&nbsp;")
+ 												.append(
+ 														$customDeleteButton);
+ 										// return
+ 										// $result.add($customButton);
+ 									}
+ 								} ]
+ 					});
+     
+     $("#bizActivitiesGrid")
+		.jsGrid(
+				{
+					width : "205%",
+					inserting : true,
+					editing : true,
+					sorting : true,
+					paging : true,
+					pageSize : 5,
+					pageButtonCount : 5,
+					autoload : true,
+					controller : {
+						loadData : function() {
+							var d = $.Deferred();
+
+							$
+									.ajax({
+										type : 'GET',
+										url : 'cbc/reportsBizloadGrid',
+										mimeType : 'application/json',
+										contentType : "application/json; charset=utf-8",
+										success : function(
+												data) {
+											d
+													.resolve(data);
+										},
+										error : function(
+												e) {
+											alert("error: "
+													+ e.responseText);
+										}
+									});
+
+							return d.promise();
+						},
+						/*
+						 * loadData: function() { return
+						 * [{"firstName":"MyAccount","lastName":"111-111-7890","nameType":"123456789"},{"firstName":"venki","lastName":"111-111-7890","nameType":"123456789"}]; },
+						 */
+						/* }, */
+
+						insertItem : function(item) {
+							var d = $.Deferred();
+
+							$
+									.ajax(
+											{
+												type : "POST",
+												url : "cbc/reportsinsertBizGrid",
+												data : JSON
+														.stringify(item),
+												mimeType : 'application/json',
+												contentType : 'application/json',
+											})
+									.done(
+											function(
+													response) {
+												console
+														.log("done: "
+																+ JSON
+																		.stringify(response));
+												d
+														.resolve(response);
+												$(
+														"#bizActivitiesGrid")
+														.jsGrid(
+																"loadData");
+
+											})
+									.fail(
+											function(
+													msg) {
+												console
+														.log("fail"
+																+ msg);
+												d
+														.reject();
+											});
+						},
+
+						updateItem : function(item) {
+							var d = $.Deferred();
+
+							$
+									.ajax(
+											{
+												type : "POST",
+												url : "cbc/reportsupdateBizGrid?id="
+														+ item.id,
+												data : JSON
+														.stringify(item),
+												mimeType : 'application/json',
+												contentType : 'application/json',
+											})
+									.done(
+											function(
+													response) {
+												console
+														.log("done: "
+																+ JSON
+																		.stringify(response));
+												d
+														.resolve(response);
+											})
+									.fail(
+											function(
+													msg) {
+												console
+														.log("fail"
+																+ msg);
+												d
+														.reject();
+											});
+						},
+
+						deleteItem : function(item) {
+							var d = $.Deferred();
+							// alert('@@@@@@@@@@@@@' + item.id)
+
+							$
+									.ajax(
+											{
+												type : "POST",
+												url : "cbc/reportsdeleteBizGrid?id="
+														+ item.id,
+												data : JSON
+														.stringify(item),
+												mimeType : 'application/json',
+												contentType : 'application/json',
+											})
+									.done(
+											function(
+													response) {
+												console
+														.log("done: "
+																+ JSON
+																		.stringify(response));
+												d
+														.resolve(response);
+											})
+									.fail(
+											function(
+													msg) {
+												console
+														.log("fail"
+																+ msg);
+												d
+														.reject();
+											});
+						},
+
+					},
+
+					data : clients1,
+					invalidNotify : function(args) {
+
+					},
+					fields : [
+							{
+								title : "No.<font color='red'>*</font>",
+								name : "id",
+								type : "text",
+								width : 150,
+								validate : "required",
+								visible : false
+							},
+							{
+								title : "Biz Activities Type<font color='red'>*</font>",
+								name : "bizType",
+								type : "select",
+								width : 150,
+								items : bizType,
+								valueField : "id",
+								textField : "name",
+								validate : "required"
+							}, {
+								type : "control"
+							} ]
+				});
+
+$("#cbcReportsResidentCountryGrid")
+		.jsGrid(
+				{
+					width : "205%",
+					inserting : true,
+					editing : true,
+					sorting : true,
+					paging : true,
+					pageSize : 5,
+					pageButtonCount : 5,
+					autoload : true,
+					controller : {
+
+						loadData : function() {
+							var d = $.Deferred();
+							$
+									.ajax({
+										type : 'GET',
+										url : 'cbc/reportsloadResidentCountryGrid',
+										mimeType : 'application/json',
+										contentType : 'application/json',
+										success : function(
+												data) {
+											d
+													.resolve(data);
+										},
+										error : function(
+												e) {
+											alert("error: "
+													+ e.responseText);
+										}
+									});
+
+							return d.promise();
+						},
+
+						insertItem : function(item) {
+							var d = $.Deferred();
+
+							$
+									.ajax(
+											{
+												type : "POST",
+												url : "cbc/reportsinsertResidentCountryGrid",
+												data : JSON
+														.stringify(item),
+												mimeType : 'application/json',
+												contentType : 'application/json',
+											})
+									.done(
+											function(
+													response) {
+												console
+														.log("done: "
+																+ JSON
+																		.stringify(response));
+												d
+														.resolve(response);
+												$(
+														"#cbcReportsResidentCountryGrid")
+														.jsGrid(
+																"loadData");
+
+											})
+									.fail(
+											function(
+													msg) {
+												console
+														.log("fail"
+																+ msg);
+												d
+														.reject();
+											});
+						},
+
+						updateItem : function(item) {
+							var d = $.Deferred();
+							$
+									.ajax(
+											{
+												type : "POST",
+												url : "cbc/reportsupdateResidentCountryGrid?id="
+														+ item.id,
+												data : JSON
+														.stringify(item),
+												mimeType : 'application/json',
+												contentType : 'application/json',
+											})
+									.done(
+											function(
+													response) {
+												console
+														.log("done: "
+																+ JSON
+																		.stringify(response));
+												d
+														.resolve(response);
+											})
+									.fail(
+											function(
+													msg) {
+												console
+														.log("fail"
+																+ msg);
+												d
+														.reject();
+											});
+						},
+
+						deleteItem : function(item) {
+							var d = $.Deferred();
+							//alert('@@@@@@@@@@@@@' + item.id)
+
+							$
+									.ajax(
+											{
+												type : "POST",
+												url : "cbc/reportsdeleteResidentCountryGrid?id="
+														+ item.id,
+												data : JSON
+														.stringify(item),
+												mimeType : 'application/json',
+												contentType : 'application/json',
+											})
+									.done(
+											function(
+													response) {
+												console
+														.log("done: "
+																+ JSON
+																		.stringify(response));
+												d
+														.resolve(response);
+											})
+									.fail(
+											function(
+													msg) {
+												console
+														.log("fail"
+																+ msg);
+												d
+														.reject();
+											});
+						},
+
+					},
+					data : clients,
+					invalidNotify : function(args) {
+						$("#validateTextHere").text("");
+						$("#validateTextHere")
+								.text(
+										"Please fill in all the mandatory fields");
+						$('#crsNameModal')
+								.modal('show');
+					},
+					fields : [
+							{
+								title : "No.<font color='red'>*</font>",
+								name : "id",
+								type : "text",
+								width : 150,
+								validate : "required",
+								visible : false
+							},
+							{
+								title : "Resident Country Code",
+								name : "residentCountryCode",
+								type : "select",
+								items : residentCountryCode,
+								valueField : "id",
+								textField : "name",
+							}, {
+								type : "control"
+							} ]
+				});
+
+$("#cbcReportsNameGrid")
+		.jsGrid(
+				{
+					width : "205%",
+					inserting : true,
+					editing : true,
+					sorting : true,
+					paging : true,
+					pageSize : 5,
+					pageButtonCount : 5,
+					autoload : true,
+					controller : {
+						loadData : function() {
+							var d = $.Deferred();
+
+							$
+									.ajax({
+										type : 'GET',
+										url : 'cbc/reportsloadNameGrid',
+										mimeType : 'application/json',
+										contentType : "application/json; charset=utf-8",
+										success : function(
+												data) {
+											d
+													.resolve(data);
+										},
+										error : function(
+												e) {
+											alert("error: "
+													+ e.responseText);
+										}
+									});
+
+							return d.promise();
+						},
+						/*
+						 * loadData: function() { return
+						 * [{"firstName":"MyAccount","lastName":"111-111-7890","nameType":"123456789"},{"firstName":"venki","lastName":"111-111-7890","nameType":"123456789"}]; },
+						 */
+						/* }, */
+
+						insertItem : function(item) {
+							var d = $.Deferred();
+
+							$
+									.ajax(
+											{
+												type : "POST",
+												url : "cbc/reportsinsertNameGrid",
+												data : JSON
+														.stringify(item),
+												mimeType : 'application/json',
+												contentType : 'application/json',
+											})
+									.done(
+											function(
+													response) {
+												console
+														.log("done: "
+																+ JSON
+																		.stringify(response));
+												d
+														.resolve(response);
+												$(
+														"#cbcReportsNameGrid")
+														.jsGrid(
+																"loadData");
+											})
+									.fail(
+											function(
+													msg) {
+												console
+														.log("fail"
+																+ msg);
+												d
+														.reject();
+											});
+						},
+
+						updateItem : function(item) {
+							var d = $.Deferred();
+
+							$
+									.ajax(
+											{
+												type : "POST",
+												url : "cbc/reportsupdateNameGrid?id="
+														+ item.id,
+												data : JSON
+														.stringify(item),
+												mimeType : 'application/json',
+												contentType : 'application/json',
+											})
+									.done(
+											function(
+													response) {
+												console
+														.log("done: "
+																+ JSON
+																		.stringify(response));
+												d
+														.resolve(response);
+											})
+									.fail(
+											function(
+													msg) {
+												console
+														.log("fail"
+																+ msg);
+												d
+														.reject();
+											});
+						},
+
+						deleteItem : function(item) {
+							var d = $.Deferred();
+							// alert('@@@@@@@@@@@@@' + item.id)
+
+							$
+									.ajax(
+											{
+												type : "POST",
+												url : "cbc/reportsdeleteNameGrid?id="
+														+ item.id,
+												data : JSON
+														.stringify(item),
+												mimeType : 'application/json',
+												contentType : 'application/json',
+											})
+									.done(
+											function(
+													response) {
+												console
+														.log("done: "
+																+ JSON
+																		.stringify(response));
+												d
+														.resolve(response);
+											})
+									.fail(
+											function(
+													msg) {
+												console
+														.log("fail"
+																+ msg);
+												d
+														.reject();
+											});
+						},
+
+					},
+
+					data : clients1,
+					invalidNotify : function(args) {
+
+					},
+					fields : [
+							{
+								title : "No.<font color='red'>*</font>",
+								name : "id",
+								type : "text",
+								width : 150,
+								validate : "required",
+								visible : false
+							},
+							{
+								title : "Organisation Name<font color='red'>*</font>",
+								name : "firstName",
+								type : "text",
+								validate : "required",
+								align : "center"
+							},
+							{
+								title : "Last Name<font color='red'>*</font>",
+								name : "lastName",
+								type : "text",
+								width : 150,
+								validate : "required",
+								visible : false
+							},
+							{
+								title : "Name Type<font color='red'>*</font>",
+								name : "nameType",
+								type : "select",
+								width : 150,
+								items : nameType,
+								valueField : "id",
+								textField : "name",
+								validate : "required",
+								visible : false
+							}, {
+								type : "control"
+							} ]
+				});
+
+$("#cbcReportsINGrid")
+		.jsGrid(
+				{
+					width : "205%",
+					inserting : true,
+					editing : true,
+					sorting : true,
+					paging : true,
+					pageSize : 5,
+					pageButtonCount : 5,
+					autoload : true,
+					controller : {
+						loadData : function() {
+							var d = $.Deferred();
+
+							$
+									.ajax({
+										type : 'GET',
+										url : 'cbc/reportsloadOrganisationGrid',
+										mimeType : 'application/json',
+										contentType : "application/json; charset=utf-8",
+										success : function(
+												data) {
+											d
+													.resolve(data);
+										},
+										error : function(
+												e) {
+											alert("error: "
+													+ e.responseText);
+										}
+									});
+
+							return d.promise();
+						},
+						/*
+						 * loadData: function() { return
+						 * [{"firstName":"MyAccount","lastName":"111-111-7890","nameType":"123456789"},{"firstName":"venki","lastName":"111-111-7890","nameType":"123456789"}]; },
+						 */
+						/* }, */
+
+						insertItem : function(item) {
+							var d = $.Deferred();
+
+							$
+									.ajax(
+											{
+												type : "POST",
+												url : "cbc/reportsinsertOrganisationGrid",
+												data : JSON
+														.stringify(item),
+												mimeType : 'application/json',
+												contentType : 'application/json',
+											})
+									.done(
+											function(
+													response) {
+												console
+														.log("done: "
+																+ JSON
+																		.stringify(response));
+												d
+														.resolve(response);
+												$(
+														"#cbcReportsNameGrid")
+														.jsGrid(
+																"loadData");
+											})
+									.fail(
+											function(
+													msg) {
+												console
+														.log("fail"
+																+ msg);
+												d
+														.reject();
+											});
+						},
+
+						updateItem : function(item) {
+							var d = $.Deferred();
+
+							$
+									.ajax(
+											{
+												type : "POST",
+												url : "cbc/reportsupdateOrganisationGrid?id="
+														+ item.id,
+												data : JSON
+														.stringify(item),
+												mimeType : 'application/json',
+												contentType : 'application/json',
+											})
+									.done(
+											function(
+													response) {
+												console
+														.log("done: "
+																+ JSON
+																		.stringify(response));
+												d
+														.resolve(response);
+											})
+									.fail(
+											function(
+													msg) {
+												console
+														.log("fail"
+																+ msg);
+												d
+														.reject();
+											});
+						},
+
+						deleteItem : function(item) {
+							var d = $.Deferred();
+							/*alert('@@@@@@@@@@@@@' + item.issuedBy)*/
+
+							$
+									.ajax(
+											{
+												type : "POST",
+												url : "cbc/reportsdeleteOrganisationGrid?id="
+														+ item.id,
+												data : JSON
+														.stringify(item),
+												mimeType : 'application/json',
+												contentType : 'application/json',
+											})
+									.done(
+											function(
+													response) {
+												console
+														.log("done: "
+																+ JSON
+																		.stringify(response));
+												d
+														.resolve(response);
+											})
+									.fail(
+											function(
+													msg) {
+												console
+														.log("fail"
+																+ msg);
+												d
+														.reject();
+											});
+						},
+
+					},
+					data : clients2,
+					invalidNotify : function(args) {
+
+					},
+					fields : [
+							{
+								title : "No.<font color='red'>*</font>",
+								name : "id",
+								type : "text",
+								width : 150,
+								validate : "required",
+								visible : false
+							},
+							/*{
+							    title: "Organisation IN Type Issued By",
+							    name: "issuedBy",
+							    type: "select",
+							    items: residentCountryCode,
+							    valueField: "id",
+							    textField: "name",
+							}, */
+							{
+								title : "IN",
+								name : "in",
+								width : 150,
+								type : "text",
+								align : "center",
+								validate : "required"
+							},
+							{
+								title : "IN Type<font color='red'>*</font>",
+								name : "inType",
+								type : "text",
+								width : 150
+							},
+							{
+								title : "IN Issued By",
+								name : "issuedBy",
+								type : "select",
+								items : residentCountryCode,
+								valueField : "id",
+								textField : "name",
+							}, {
+								type : "control"
+							} ]
+				});
+
+var object = {};
+$("#cbcReportsAddressGrid")
+		.jsGrid(
+				{
+					width : "205%",
+					inserting : false,
+					editing : false,
+					sorting : false,
+					paging : true,
+					pageSize : 6,
+					pageButtonCount : 5,
+					autoload : true,
+					controller : {
+						loadData : function() {
+							var d = $.Deferred();
+
+							$
+									.ajax({
+										type : 'GET',
+										url : 'cbc/loadCbcReportsAddress',
+										mimeType : 'application/json',
+										contentType : "application/json; charset=utf-8",
+										success : function(
+												data) {
+											d
+													.resolve(data);
+										},
+										error : function(
+												e) {
+											alert("error: "
+													+ e.responseText);
+										}
+									});
+
+							return d.promise();
+						}
+					},
+					/*controller: object,*/
+					datatype : 'json',
+					invalidNotify : function(args) {
+
+					},
+					fields : [
+							{
+								name : "id",
+								title : "id",
+								type : "text",
+								visible : false,
+								width : 10
+							/*,
+							items: object.id*/
+							},
+							{
+								title : "Address Type",
+								name : "addressType",
+								type : "text",
+								width : 150,
+								/*items: object.addressType,*/
+								visible : true
+							},
+							{
+								title : "Country Code",
+								name : "countryCode",
+								type : "text",
+								width : 150,
+								/*,
+								items: object.countryCode,*/
+								visible : true
+							},
+							{
+								name : "",
+								headerTemplate : function() {
+									return $("<button>")
+											.attr(
+													"type",
+													"button")
+											.attr(
+													"class",
+													"btn btn-success btn-sm")
+											.text(
+													"Click here to Add New Address")
+											.on(
+													"click",
+													function() {
+														addNewAddressCbcReportsClicked();
+													});
+								},
+								itemTemplate : function(
+										value, item) {
+									var $result = jsGrid.fields.control.prototype.itemTemplate
+											.apply(
+													this,
+													arguments);
+
+									var $customViewButton = $(
+											"<button>")
+											.attr(
+													"class",
+													"btn btn-info btn-sm")
+											.text(
+													"View")
+											.click(
+													function(
+															e) {
+														/*alert("ID: " +
+														    item.id);*/
+														e
+																.stopPropagation();
+														cbcReportsViewAddress(item.id);
+
+														return false;
+
+													});
+
+									var $customEditButton = $(
+											"<button>")
+											.attr(
+													"class",
+													"btn btn-warning btn-sm")
+											.text(
+													"Edit")
+											.click(
+													function(
+															e) {
+														/* alert("ID: " +
+														     item.id);*/
+														e
+																.stopPropagation();
+														cbcReportsEditAddress(item.id);
+														return false;
+													});
+
+									var $customDeleteButton = $(
+											"<button>")
+											.attr(
+													"class",
+													"btn btn-danger btn-sm")
+											.text(
+													"Delete")
+											.click(
+													function(
+															e) {
+														//alert("ID: " +
+														//item.id);
+														e
+																.stopPropagation();
+														cbcReportsDeleteAddress(item.id);
+														return false;
+													});
+
+									return $("<div>")
+											.append(
+													$customViewButton)
+											.append(
+													"&nbsp;")
+											.append(
+													"&nbsp;")
+											.append(
+													$customEditButton)
+											.append(
+													"&nbsp;")
+											.append(
+													"&nbsp;")
+											.append(
+													$customDeleteButton);
+									// return
+									// $result.add($customButton);
+								}
+							} ]
+				});
+	
+}
+
+
+function cbcViewConstituentEntity(item){
+	$
+	   .ajax({
+
+	       url: 'cbc/viewConsEntity?viewId='+item,
+	       type: 'GET',
+	       async: false,
+	       success: function(data) {	        	
+	        	var htmlFiltered = $("<div>").html(data).find("#constituentEntities").html();
+	        	console.log(htmlFiltered);
+	            $('#constituentEntities').html('');
+	            $('#constituentEntities').html(htmlFiltered);	            
+	            $('#constituentEntities').find('input, textarea, button, select').attr('disabled','disabled');
+	            $('#saveConstEntityButton').hide();
+	            $('#viewConstEntityButton').show();
+	            $('#editConstEntityButton').hide();
+	            $('#viewConstEntityButton').prop('disabled',false);
+	            showAllViewReportsGrid();
+	            debugger;
+	            return false;	              	
+	       },
+	       error: function(
+	           request,
+	           error) {
+	           console.log(error);
+	       }
+	   });
+	
+	
+}
+
+
+function cbcEditConstituentEntity(item){
+	$
+	   .ajax({
+
+	       url: 'cbc/viewConsEntity?viewId='+item,
+	       type: 'GET',
+	       async: false,
+	       success: function(data) {	        	
+	        	var htmlFiltered = $("<div>").html(data).find("#constituentEntities").html();
+	        	console.log(htmlFiltered);
+	            $('#constituentEntities').html('');
+	            $('#constituentEntities').html(htmlFiltered);	            
+	            $('#saveConstEntityButton').hide();
+	            $('#viewConstEntityButton').show();
+	            $('#editConstEntityButton').show();
+	            showAllReportsGrid();
+	            debugger;
+	            return false;	              	
+	       },
+	       error: function(
+	           request,
+	           error) {
+	           console.log(error);
+	       }
+	   });
+	
+	
+}
+
+function cbcDeleteConstituentEntity(item){
+	
+	$
+	   .ajax({
+
+	       url: 'cbc/deleteConsEntity?viewId='+item,
+	       type: 'GET',
+	       async: false,
+	       success: function(data) {	        	
+	        	var htmlFiltered = $("<div>").html(data).find("#constituentEntities").html();
+	        	console.log(htmlFiltered);
+	            $('#constituentEntities').html('');
+	            $('#constituentEntities').html(htmlFiltered);	            
+	            $('#saveConstEntityButton').show();
+	            $('#viewConstEntityButton').hide();
+	            $('#editConstEntityButton').hide();
+	            showAllReportsGrid();
+	            debugger;
+	            return false;	              	
+	       },
+	       error: function(
+	           request,
+	           error) {
+	           console.log(error);
+	       }
+	   });
+}
+
+
+
+function returnNormalConstEntity(){
+	$
+	   .ajax({
+
+	       url: 'cbc/viewConstituentEntityDone',
+	       type: 'GET',
+	       async: false,
+	       success: function(data) {	        	
+	        	var htmlFiltered = $("<div>").html(data).find("#constituentEntities").html();
+	        	console.log(htmlFiltered);
+	            $('#constituentEntities').html('');
+	            $('#constituentEntities').html(htmlFiltered);	            
+	            $('#saveConstEntityButton').show();
+	            $('#viewConstEntityButton').hide();
+	            $('#editConstEntityButton').hide();
+	            showAllReportsGrid();
+	            debugger;
+	            return false;	              	
+	       },
+	       error: function(
+	           request,
+	           error) {
+	           console.log(error);
+	       }
+	   });	
+}
+
+
+function showAllViewReportsGrid(){
+
+	 var residentCountryCode = $("#residentCountry").val();
+		residentCountryCode = $.parseJSON(residentCountryCode);
+		var issuedBy = residentCountryCode;
+		var nameType = $("#nameTypedropdown").val();
+		nameType = $.parseJSON(nameType);
+
+		var bizType = $("#bizTypedropdown").val();
+		bizType = $.parseJSON(bizType);
+		
+		var clients = [];
+		var clients1 = [];
+		var clients2 = [];
+		var clients3 = [];
+    
+    $("#cbcReportsConstituentEntityGrid")
+	.jsGrid(
+					{
+						width : "205%",
+						inserting : false,
+						editing : false,
+						sorting : true,
+						paging : true,
+						pageSize : 6,
+						pageButtonCount : 5,
+						autoload : true,
+						controller : {
+							loadData : function() {
+								var d = $.Deferred();
+
+								$
+										.ajax({
+											type : 'GET',
+											url : 'cbc/loadCbcConstituentEntityGrid',
+											mimeType : 'application/json',
+											contentType : "application/json; charset=utf-8",
+											success : function(
+													data) {
+												d.resolve(data);
+											},
+											error : function(
+													e) {
+												alert("error: "
+														+ e.responseText);
+											}
+										});
+
+								return d.promise();
+							}
+						},
+						/*controller: object,*/
+						datatype : 'json',
+						invalidNotify : function(args) {
+
+						},
+						fields : [
+								{
+									name : "consId",
+									title : "ID",
+									type : "text",
+									visible : false,
+									width : 15
+								/*,
+								items: object.id*/
+								},
+								{
+									title : "TIN",
+									name : "tin",
+									type : "text",
+									width : 150,
+									/*items: object.addressType,*/
+									visible : true
+								},
+								{
+									title : "TIN Type",
+									name : "tinType",
+									type : "text",
+									width : 150,
+									/*,
+									items: object.countryCode,*/
+									visible : true
+								},
+								{
+									name : "",
+									itemTemplate : function(
+											value, item) {}
+								} ]
+					});
+    
+    $("#bizActivitiesGrid")
+		.jsGrid(
+				{
+					width : "205%",
+					inserting : false,
+					editing : false,
+					sorting : true,
+					paging : true,
+					pageSize : 5,
+					pageButtonCount : 5,
+					autoload : true,
+					controller : {
+						loadData : function() {
+							var d = $.Deferred();
+
+							$
+									.ajax({
+										type : 'GET',
+										url : 'cbc/reportsBizloadGrid',
+										mimeType : 'application/json',
+										contentType : "application/json; charset=utf-8",
+										success : function(
+												data) {
+											d
+													.resolve(data);
+										},
+										error : function(
+												e) {
+											alert("error: "
+													+ e.responseText);
+										}
+									});
+
+							return d.promise();
+						},
+					},
+
+					data : clients1,
+					invalidNotify : function(args) {
+
+					},
+					fields : [
+							{
+								title : "No.<font color='red'>*</font>",
+								name : "id",
+								type : "text",
+								width : 150,
+								validate : "required",
+								visible : false
+							},
+							{
+								title : "Biz Activities Type<font color='red'>*</font>",
+								name : "bizType",
+								type : "select",
+								width : 150,
+								items : bizType,
+								valueField : "id",
+								textField : "name",
+								validate : "required"
+							}]
+				});
+
+$("#cbcReportsResidentCountryGrid")
+		.jsGrid(
+				{
+					width : "205%",
+					inserting : false,
+					editing : false,
+					sorting : true,
+					paging : true,
+					pageSize : 5,
+					pageButtonCount : 5,
+					autoload : true,
+					controller : {
+
+						loadData : function() {
+							var d = $.Deferred();
+							$
+									.ajax({
+										type : 'GET',
+										url : 'cbc/reportsloadResidentCountryGrid',
+										mimeType : 'application/json',
+										contentType : 'application/json',
+										success : function(
+												data) {
+											d
+													.resolve(data);
+										},
+										error : function(
+												e) {
+											alert("error: "
+													+ e.responseText);
+										}
+									});
+
+							return d.promise();
+						},
+					},
+					data : clients,
+					invalidNotify : function(args) {},
+					fields : [
+							{
+								title : "No.<font color='red'>*</font>",
+								name : "id",
+								type : "text",
+								width : 150,
+								validate : "required",
+								visible : false
+							},
+							{
+								title : "Resident Country Code",
+								name : "residentCountryCode",
+								type : "select",
+								items : residentCountryCode,
+								valueField : "id",
+								textField : "name",
+							}]
+				});
+
+$("#cbcReportsNameGrid")
+		.jsGrid(
+				{
+					width : "205%",
+					inserting : false,
+					editing : false,
+					sorting : true,
+					paging : true,
+					pageSize : 5,
+					pageButtonCount : 5,
+					autoload : true,
+					controller : {
+						loadData : function() {
+							var d = $.Deferred();
+
+							$
+									.ajax({
+										type : 'GET',
+										url : 'cbc/reportsloadNameGrid',
+										mimeType : 'application/json',
+										contentType : "application/json; charset=utf-8",
+										success : function(
+												data) {
+											d
+													.resolve(data);
+										},
+										error : function(
+												e) {
+											alert("error: "
+													+ e.responseText);
+										}
+									});
+
+							return d.promise();
+						},
+					},
+
+					data : clients1,
+					invalidNotify : function(args) {
+
+					},
+					fields : [
+							{
+								title : "No.<font color='red'>*</font>",
+								name : "id",
+								type : "text",
+								width : 150,
+								validate : "required",
+								visible : false
+							},
+							{
+								title : "Organisation Name<font color='red'>*</font>",
+								name : "firstName",
+								type : "text",
+								validate : "required",
+								align : "center"
+							},
+							{
+								title : "Last Name<font color='red'>*</font>",
+								name : "lastName",
+								type : "text",
+								width : 150,
+								validate : "required",
+								visible : false
+							},
+							{
+								title : "Name Type<font color='red'>*</font>",
+								name : "nameType",
+								type : "select",
+								width : 150,
+								items : nameType,
+								valueField : "id",
+								textField : "name",
+								validate : "required",
+								visible : false
+							}]
+				});
+
+$("#cbcReportsINGrid")
+		.jsGrid(
+				{
+					width : "205%",
+					inserting : false,
+					editing : false,
+					sorting : true,
+					paging : true,
+					pageSize : 5,
+					pageButtonCount : 5,
+					autoload : true,
+					controller : {
+						loadData : function() {
+							var d = $.Deferred();
+
+							$
+									.ajax({
+										type : 'GET',
+										url : 'cbc/reportsloadOrganisationGrid',
+										mimeType : 'application/json',
+										contentType : "application/json; charset=utf-8",
+										success : function(
+												data) {
+											d
+													.resolve(data);
+										},
+										error : function(
+												e) {
+											alert("error: "
+													+ e.responseText);
+										}
+									});
+
+							return d.promise();
+						},
+					},
+					data : clients2,
+					invalidNotify : function(args) {
+
+					},
+					fields : [
+							{
+								title : "No.<font color='red'>*</font>",
+								name : "id",
+								type : "text",
+								width : 150,
+								validate : "required",
+								visible : false
+							},
+							/*{
+							    title: "Organisation IN Type Issued By",
+							    name: "issuedBy",
+							    type: "select",
+							    items: residentCountryCode,
+							    valueField: "id",
+							    textField: "name",
+							}, */
+							{
+								title : "IN",
+								name : "in",
+								width : 150,
+								type : "text",
+								align : "center",
+								validate : "required"
+							},
+							{
+								title : "IN Type<font color='red'>*</font>",
+								name : "inType",
+								type : "text",
+								width : 150
+							},
+							{
+								title : "IN Issued By",
+								name : "issuedBy",
+								type : "select",
+								items : residentCountryCode,
+								valueField : "id",
+								textField : "name",
+							} ]
+				});
+
+var object = {};
+$("#cbcReportsAddressGrid")
+		.jsGrid(
+				{
+					width : "205%",
+					inserting : false,
+					editing : false,
+					sorting : false,
+					paging : true,
+					pageSize : 6,
+					pageButtonCount : 5,
+					autoload : true,
+					controller : {
+						loadData : function() {
+							var d = $.Deferred();
+
+							$
+									.ajax({
+										type : 'GET',
+										url : 'cbc/loadCbcReportsAddress',
+										mimeType : 'application/json',
+										contentType : "application/json; charset=utf-8",
+										success : function(
+												data) {
+											d
+													.resolve(data);
+										},
+										error : function(
+												e) {
+											alert("error: "
+													+ e.responseText);
+										}
+									});
+
+							return d.promise();
+						}
+					},
+					/*controller: object,*/
+					datatype : 'json',
+					invalidNotify : function(args) {
+
+					},
+					fields : [
+							{
+								name : "id",
+								title : "id",
+								type : "text",
+								visible : false,
+								width : 10
+							/*,
+							items: object.id*/
+							},
+							{
+								title : "Address Type",
+								name : "addressType",
+								type : "text",
+								width : 150,
+								/*items: object.addressType,*/
+								visible : true
+							},
+							{
+								title : "Country Code",
+								name : "countryCode",
+								type : "text",
+								width : 150,
+								/*,
+								items: object.countryCode,*/
+								visible : true
+							},
+							{
+								name : "button",
+								itemTemplate : function(
+										value, item) {
+									var $result = jsGrid.fields.control.prototype.itemTemplate
+											.apply(
+													this,
+													arguments);
+
+									var $customViewButton = $(
+											"<button>")
+											.attr(
+													"class",
+													"btn btn-info btn-sm")
+											.text(
+													"View")
+											.click(
+													function(
+															e) {
+														/*alert("ID: " +
+														    item.id);*/
+														e
+																.stopPropagation();
+														cbcReportsViewAddress(item.id);
+
+														return false;
+
+													});
+
+								
+
+
+									return $("<div>")
+											.append(
+													$customViewButton);
+											
+									// return
+									// $result.add($customButton);
+								}
+							} ]
+				});
+	
+
+}

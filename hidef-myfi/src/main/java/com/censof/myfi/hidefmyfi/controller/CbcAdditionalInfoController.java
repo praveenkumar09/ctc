@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Random;
 import java.util.zip.ZipEntry;
@@ -46,9 +48,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.censof.myfi.hidefmyfi.CTSConstants;
 import com.censof.myfi.hidefmyfi.entity.Cbcdocumenttypeindicator;
+import com.censof.myfi.hidefmyfi.entity.Cbcpayldrescountry;
+import com.censof.myfi.hidefmyfi.entity.Cbcpayldsumref;
 import com.censof.myfi.hidefmyfi.entity.Cbcsummaryreference;
 import com.censof.myfi.hidefmyfi.entity.Docrefid;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
+import com.censof.myfi.hidefmyfi.repository.CbcpayldrescountryRepository;
+import com.censof.myfi.hidefmyfi.repository.CbcpayldsumrefRepository;
 import com.censof.myfi.hidefmyfi.service.CtcDataSaveService;
 import com.censof.myfi.hidefmyfi.service.CtccommonDropdownService;
 import com.censof.myfi.hidefmyfi.service.PackageGenerationService;
@@ -73,6 +79,12 @@ public class CbcAdditionalInfoController {
 	
 	@Autowired
 	private CtcDataSaveService ctcDataSaveService;
+	
+	@Autowired
+	private CbcpayldrescountryRepository cbcPayldResCountryRepository;
+	
+	@Autowired
+	private CbcpayldsumrefRepository cbcPayldSummRefRepository;
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	protected SimpleDateFormat sdfFileName = new SimpleDateFormat("yyyyMMdd'T'HHmmssSSS'Z'");
@@ -242,6 +254,12 @@ public class CbcAdditionalInfoController {
 				for (ResidentCountryVo residentCountry : hidef.getCbcAddionalInfo().getResidentCountryList()) {
 					if (id == residentCountry.getId()) {
 						copyList.remove(residentCountry);
+						if(hidef.getCbcAddionalInfo().getId() != 0 && residentCountry.getId() != 0) {
+							Optional<Cbcpayldrescountry> resCountry = cbcPayldResCountryRepository.findById(BigInteger.valueOf(residentCountry.getId()));
+							if(resCountry.isPresent()) {
+							cbcPayldResCountryRepository.deleteById(BigInteger.valueOf(residentCountry.getId()));
+							}
+						}
 						hidef.getCbcAddionalInfo().setResidentCountryList(copyList);
 						break;
 					}
@@ -342,6 +360,13 @@ public class CbcAdditionalInfoController {
 						// copyList.remove(summaryvo);
 						// break;
 						copyList.add(summary);
+					}else {
+						if(hidef.getCbcAddionalInfo().getId() != 0 && summary.getId() != 0) {
+							Optional<Cbcpayldsumref> resCountry = cbcPayldSummRefRepository.findById(BigInteger.valueOf(summary.getId()));
+							if(resCountry.isPresent()) {
+								cbcPayldSummRefRepository.deleteById(BigInteger.valueOf(summary.getId()));
+							}
+						}
 					}
 				}
 				hidef.getCbcAddionalInfo().setSummaryList(copyList);

@@ -23,5 +23,7 @@ public interface CtcDataSaveService {
 	public Messagerefid saveMessageRefId(String date,String communicationType);
 	public Senderfileid saveSenderFileId(String date,String communicationType);
 	
+	public void deleteUserProfileRecievingCountry(BigInteger userProfileId,int receivingCountryId);
+	
 
 }

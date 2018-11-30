@@ -50,6 +50,9 @@ public class CBCRepotsVo implements Serializable {
 	private int id;
 	private int consId;
 	
+	private CbcConstituentEntityVO constituentEntity;
+	private List<CbcConstituentEntityVO> constituentEntityList;
+	
 	public String getDocumentTypeIndicator() {
 		return documentTypeIndicator;
 	}
@@ -292,6 +295,18 @@ public class CBCRepotsVo implements Serializable {
 	}
 	public void setConsId(int consId) {
 		this.consId = consId;
+	}
+	public List<CbcConstituentEntityVO> getConstituentEntityList() {
+		return constituentEntityList;
+	}
+	public void setConstituentEntityList(List<CbcConstituentEntityVO> constituentEntityList) {
+		this.constituentEntityList = constituentEntityList;
+	}
+	public CbcConstituentEntityVO getConstituentEntity() {
+		return constituentEntity;
+	}
+	public void setConstituentEntity(CbcConstituentEntityVO constituentEntity) {
+		this.constituentEntity = constituentEntity;
 	}
 	
 	
