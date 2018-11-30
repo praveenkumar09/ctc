@@ -36,6 +36,7 @@ public class HidefVo {
 	private CrsReportingFiVo crsreportingfi;
 	private AccountHolderVo accountholder;
 	private List<AccountHolderVo> accountHolderList;
+	private List<ControllingPersonVo> controllingPersonList;
 	
 	
 	
@@ -241,6 +242,16 @@ public class HidefVo {
 	public void setAccountHolderList(List<AccountHolderVo> accountHolderList) {
 		this.accountHolderList = accountHolderList;
 	}
+
+	public List<ControllingPersonVo> getControllingPersonList() {
+		return controllingPersonList;
+	}
+
+	public void setControllingPersonList(
+			List<ControllingPersonVo> controllingPersonList) {
+		this.controllingPersonList = controllingPersonList;
+	}
+	
 	
 	
 	

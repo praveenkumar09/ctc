@@ -8,7 +8,16 @@ public class ControllingPersonVo {
 	private List<ResidentCountryVo> controllingResidentCountryList;
 	private List<OrganisationInTypeVo> controllingOrganisationInTypeList;
 	private List<NameTypeVo> nameTypeList;
+	private NameTypeVo ctrlPersonName;
+	private List<TitleVo> ctrlPersontitleList;
+	private List<MiddleNameVo> ctrlPersonmiddlenameList;
+	private List<GenerationIdentifierVo> ctrlPersongenerateIdentifilerList;
+	private List<SuffixVo> ctrlPersonsuffixList;
+	
 	private List<AddressVo> controllingPersonAddressList;
+	private AddressVo controllingPersonaddressVo;
+	private AddressVo controllingPersonviewAddressVo;
+	private AddressVo controllingPersoneditAddressVo;
 	private String birthDate;
 	private String city;
 	private String citySubEntity;
@@ -84,6 +93,61 @@ public class ControllingPersonVo {
 			List<AddressVo> controllingPersonAddressList) {
 		this.controllingPersonAddressList = controllingPersonAddressList;
 	}
+	public AddressVo getControllingPersonaddressVo() {
+		return controllingPersonaddressVo;
+	}
+	public void setControllingPersonaddressVo(AddressVo controllingPersonaddressVo) {
+		this.controllingPersonaddressVo = controllingPersonaddressVo;
+	}
+	public AddressVo getControllingPersonviewAddressVo() {
+		return controllingPersonviewAddressVo;
+	}
+	public void setControllingPersonviewAddressVo(
+			AddressVo controllingPersonviewAddressVo) {
+		this.controllingPersonviewAddressVo = controllingPersonviewAddressVo;
+	}
+	public AddressVo getControllingPersoneditAddressVo() {
+		return controllingPersoneditAddressVo;
+	}
+	public void setControllingPersoneditAddressVo(
+			AddressVo controllingPersoneditAddressVo) {
+		this.controllingPersoneditAddressVo = controllingPersoneditAddressVo;
+	}
+	public NameTypeVo getCtrlPersonName() {
+		return ctrlPersonName;
+	}
+	public void setCtrlPersonName(NameTypeVo ctrlPersonName) {
+		this.ctrlPersonName = ctrlPersonName;
+	}
+	public List<TitleVo> getCtrlPersontitleList() {
+		return ctrlPersontitleList;
+	}
+	public void setCtrlPersontitleList(List<TitleVo> ctrlPersontitleList) {
+		this.ctrlPersontitleList = ctrlPersontitleList;
+	}
+	public List<MiddleNameVo> getCtrlPersonmiddlenameList() {
+		return ctrlPersonmiddlenameList;
+	}
+	public void setCtrlPersonmiddlenameList(
+			List<MiddleNameVo> ctrlPersonmiddlenameList) {
+		this.ctrlPersonmiddlenameList = ctrlPersonmiddlenameList;
+	}
+	public List<GenerationIdentifierVo> getCtrlPersongenerateIdentifilerList() {
+		return ctrlPersongenerateIdentifilerList;
+	}
+	public void setCtrlPersongenerateIdentifilerList(
+			List<GenerationIdentifierVo> ctrlPersongenerateIdentifilerList) {
+		this.ctrlPersongenerateIdentifilerList = ctrlPersongenerateIdentifilerList;
+	}
+	public List<SuffixVo> getCtrlPersonsuffixList() {
+		return ctrlPersonsuffixList;
+	}
+	public void setCtrlPersonsuffixList(List<SuffixVo> ctrlPersonsuffixList) {
+		this.ctrlPersonsuffixList = ctrlPersonsuffixList;
+	}
+	
+	
+	
 	
 	
 	

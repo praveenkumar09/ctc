@@ -112,10 +112,13 @@
 							</div>
 						</div>
 						<div class="form-group col-md-6">
-							<form:label class="" path="metadata.taxYear">Tax Year:</form:label>
+							<form:label class="" path="metadata.taxYear">Tax Year<font
+									color='red'>*</font>:</form:label>
 							<form:input type="text" class="form-control" id="taxYear"
 								placeholder="Tax Year" path="metadata.taxYear" maxlength="4"
-								onkeypress='validate(event)'></form:input>
+								onchange='generatemessageReferenceId(this.value,event)'></form:input>
+								 <font color='red'><span id="taxYearError"
+									class="mandatory-flag"></span></font>
 						</div>
 					</div>
 					<div class="form-group">

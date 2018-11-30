@@ -799,6 +799,7 @@ function showReportingEntity() {
 	} else {
 		$("#sendingCountryError").empty();
 	}
+<<<<<<< HEAD
     
     var year = $('#taxYear').val();
 	if(year == null || year ==''){
@@ -809,6 +810,16 @@ function showReportingEntity() {
 	}
     
     
+=======
+	var year = $('#taxYear').val();
+	if(year == null || year ==''){
+		$("#taxYearError").empty().append("Year not empty!");
+		errorFlag = true;
+	}else{
+		$("#taxYearError").empty();
+	}
+
+>>>>>>> branch 'master' of https://github.com/praveenkumar09/ctc.git
 	if (!errorFlag) {
 		$("#metaData").hide();
 		$("#reportingEntity").addClass("active");

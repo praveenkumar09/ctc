@@ -76,8 +76,10 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 			Element rootElement = doc.createElement("CTSSenderFileMetadata");
 			rootElement.setAttribute("xmlns", "urn:oecd:ctssenderfilemetadata");
 			rootElement.setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
-			rootElement.setAttribute("xmlns:xmime", "http://www.w3.org/2005/05/xmlmime");
-			rootElement.setAttribute("xmlns:xmime", "urn:oecd:ties:isoctstypes:v1");
+			rootElement.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+			rootElement.setAttribute("xmlns", "urn:oecd:ctssenderfilemetadata");
+			/*rootElement.setAttribute("xmlns:xmime", "http://www.w3.org/2005/05/xmlmime");
+			rootElement.setAttribute("xmlns:xmime", "urn:oecd:ties:isoctstypes:v1");*/
 			doc.appendChild(rootElement);
 			// Create First Name Element
 
@@ -91,7 +93,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 
 				}
 
-				if (hidef.getUserprofile().getRecievingCountryList() != null
+				/*if (hidef.getUserprofile().getRecievingCountryList() != null
 						&& !hidef.getUserprofile().getRecievingCountryList().isEmpty()) {
 					for (RecievingCountryVo recievingCountry : hidef.getUserprofile().getRecievingCountryList()) {
 						Element receivingCountryCode = doc.createElement("CTSReceiverCountryCd");
@@ -100,6 +102,14 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 								.getCountryCode()));
 						rootElement.appendChild(receivingCountryCode);
 					}
+				}*/
+				if (hidef.getUserprofile().getRecievingCountryList() != null
+						&& !hidef.getUserprofile().getRecievingCountryList().isEmpty()) {
+					/*for (RecievingCountryVo recievingCountry : hidef.getUserprofile().getRecievingCountryList()) {*/
+						Element receivingCountryCode = doc.createElement("CTSReceiverCountryCd");
+						receivingCountryCode.appendChild(doc.createTextNode("MY"));
+						rootElement.appendChild(receivingCountryCode);
+					/*}*/
 				}
 
 				if (hidef.getUserprofile().getCommunicationType() != null
@@ -127,7 +137,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 				if (hidef.getUserprofile().getBinaryEncoding() != null
 						&& !hidef.getUserprofile().getBinaryEncoding().isEmpty()) {
 					Element binaryEncoding = doc.createElement("BinaryEncodingSchemeCd");
-					binaryEncoding.appendChild(doc.createTextNode(hidef.getUserprofile().getBinaryEncoding()));
+					binaryEncoding.appendChild(doc.createTextNode("NONE"));
 					rootElement.appendChild(binaryEncoding);
 				}
 
@@ -142,7 +152,14 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 				if (hidef.getUserprofile().getFileTypeIndic() != null
 						&& !hidef.getUserprofile().getFileTypeIndic().isEmpty()) {
 					Element fileTypeIndic = doc.createElement("FileRevisionInd");
+					if(hidef.getUserprofile().getFileTypeIndic().equals("1")){
 					fileTypeIndic.appendChild(doc.createTextNode(hidef.getUserprofile().getFileTypeIndic()));
+					}else if(hidef.getUserprofile().getFileTypeIndic().equals("2")){
+						fileTypeIndic.appendChild(doc.createTextNode(hidef.getUserprofile().getFileTypeIndic()));
+					}
+					else{
+						fileTypeIndic.appendChild(doc.createTextNode(""));
+					}
 					rootElement.appendChild(fileTypeIndic);
 				}
 
@@ -323,7 +340,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 
 				if (hidef.getReportingEntity().getTin() != null && !hidef.getReportingEntity().getTin().isEmpty()) {
 					Element tin = doc.createElement("cbc:TIN");
-					tin.setAttribute("TINType", hidef.getReportingEntity().getTinType());
+					/*tin.setAttribute("TINType", hidef.getReportingEntity().getTinType());*/
 					tin.setAttribute("issuedBy", hidef.getReportingEntity().getTinIssuedBy());
 					tin.appendChild(doc.createTextNode(hidef.getReportingEntity().getTin()));
 					cbcEntity.appendChild(tin);

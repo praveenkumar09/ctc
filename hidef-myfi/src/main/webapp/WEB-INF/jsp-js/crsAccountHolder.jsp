@@ -414,10 +414,12 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 						<br />
 						<button id="singlebutton" name="singlebutton"
 							onClick="accountHolderPrevious();return false;" class="btn btn-warning">Previous</button>
-						<button id="singlebutton" name="singlebutton" onClick="#"
-							class="btn btn-danger">Validate</button>
+						<!-- <button id="singlebutton" name="singlebutton" onClick="#"
+							class="btn btn-danger">Validate</button> -->
 						<!-- <button id="singlebutton" name="singlebutton" onClick="#"
 							class="btn btn-danger">Reset</button> -->
+						<button id="saveCRSDataButton" name="singlebutton" onClick="saveAllCRSData();"
+						class="btn btn-success">Save</button> <br/><br/>
 						<button id="singlebutton" name="singlebutton" onClick="#"
 							class="btn btn-success">Generate Package</button>
 					</div>
@@ -1877,12 +1879,12 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 				<br/>
 				<div class="form-group col-md-6">
 					<label for="language">Name:</label> <form:input
-						class="form-control" id="name" placeholder="Name" path="accountholder.ctrlPersonName.name"
+						class="form-control" id="name" placeholder="Name" path="accountholder.controllingPersonVo.ctrlPersonName.name"
 						name="Name"></form:input>
 				 </div>
 				 <div class="form-group col-md-6">
 					<label for="">Name Type:</label> <form:select class="form-control"
-						id="countryCodeReportingFI" path="accountholder.ctrlPersonName.nameType">
+						id="countryCodeReportingFI" path="accountholder.controllingPersonVo.ctrlPersonName.nameType">
 						<!-- <option value="0">--Choose Name Type--</option>
 						<option value="1">OECD201</option>
 						<option value="2">OECD202</option>
@@ -1903,12 +1905,12 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 				<div class="form-group col-md-6">
 					<label for="language">Preceding Title:</label> <form:input
 						class="form-control" id="precedingTitle" placeholder="Preceding Title"
-						name="precedingTitle" path="accountholder.ctrlPersonName.precedingTitle"></form:input>
+						name="precedingTitle" path="accountholder.controllingPersonVo.ctrlPersonName.precedingTitle"></form:input>
 				 </div>	
 				 <div class="form-group col-md-6">
 					<label for="language">First Name:</label> <form:input
 						class="form-control" id="firstName" placeholder="First Name"
-						name="firstName" path="accountholder.ctrlPersonName.firstName"/> 
+						name="firstName" path="accountholder.controllingPersonVo.ctrlPersonName.firstName"/> 
 				 </div>		
 				 <div class="clearfix"></div>		
 				 <br/>
@@ -1927,12 +1929,12 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 				 <div class="form-group col-md-6">
 					<label for="language">Name Prefix:</label> <form:input
 						class="form-control" id="namePrefix" placeholder="Name Prefix"
-						name="namePrefix" path="accountholder.ctrlPersonName.namePrefix"></form:input>
+						name="namePrefix" path="accountholder.controllingPersonVo.ctrlPersonName.namePrefix"></form:input>
 				 </div>	
 				 <div class="form-group col-md-6">
 					<label for="language">Last Name:</label> <form:input
 						class="form-control" id="lastName" placeholder="Last Name"
-						name="lastName" path="accountholder.ctrlPersonName.lastName"></form:input>
+						name="lastName" path="accountholder.controllingPersonVo.ctrlPersonName.lastName"></form:input>
 				 </div>		
 				 <div class="clearfix"></div>		
 				 <br/>
@@ -1951,13 +1953,118 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 				  <div class="form-group col-md-6">
 					<label for="language">General Suffix:</label> <form:input
 						class="form-control" id="generalSuffix" placeholder="General Suffix"
-						name="generalSuffix" path="accountholder.ctrlPersonName.generalSuffix"></form:input>
+						name="generalSuffix" path="accountholder.controllingPersonVo.ctrlPersonName.generalSuffix"></form:input>
 				 </div>	
 			</div>
 			<div class="clearfix"></div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 				<button type="button" onClick="saveNewCtrlPersonNameClicked();" class="btn btn-primary" data-dismiss="modal">Save</button>
+			</div>
+		</div>
+		</form:form>
+	</div>
+</div>
+<div class="modal fade" id="viewAccountHolderCtrlName1" tabindex="-1"
+	role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	 <form:form  modelAttribute="hidef" name="viewAccountHolderCtrlName1" id="viewAccountHolderCtrlName1">
+		<div class="modal-content">
+			<div class="modal-header" id="popUpModelHeader">
+				<h5 class="modal-title" id="exampleModalLabel">
+					<strong><font color="white">VIEW NAME</font></strong>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="clearfix"></div>
+				<br/>
+				<div class="form-group col-md-6">
+					<label for="language">Name:</label> <form:input
+						class="form-control" id="name" placeholder="Name" path="accountholder.ctrlPersonName.name"
+						name="Name"></form:input>
+				 </div>
+				 <div class="form-group col-md-6">
+					<label for="">Name Type:</label> <form:select class="form-control"
+						id="countryCodeReportingFI" path="accountholder.individualName.nameType">
+						<!-- <option value="0">--Choose Name Type--</option>
+						<option value="1">OECD201</option>
+						<option value="2">OECD202</option>
+						<option value="3">OECD203</option>
+						<option value="4">OECD204</option>
+						<option value="5">OECD205</option>
+						<option value="6">OECD206</option>
+						<option value="7">OECD207</option>
+						<option value="8">OECD208</option> -->
+						<c:forEach items="${nameType}" var="nameType">
+							<form:option value="${nameType.nameType}">
+								${nameType.nameType}
+							</form:option>
+						</c:forEach>
+					</form:select>
+				</div>
+				<div class="clearfix"></div>		
+				<div class="form-group col-md-6">
+					<label for="language">Preceding Title:</label> <form:input
+						class="form-control" id="precedingTitle" placeholder="Preceding Title"
+						name="precedingTitle" path="accountholder.individualName.precedingTitle"></form:input>
+				 </div>	
+				 <div class="form-group col-md-6">
+					<label for="language">First Name:</label> <form:input
+						class="form-control" id="firstName" placeholder="First Name"
+						name="firstName" path="accountholder.ctrlPersonName.firstName"/> 
+				 </div>		
+				 <div class="clearfix"></div>		
+				 <br/>
+				<div class="form-group col-md-6">
+					<div id="viewCtrlNameTitleGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				 <div class="clearfix"></div>		
+				 <br/>
+				 <div class="form-group col-md-6">
+					<div id="viewCtrlNameMiddleNameGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				<div class="clearfix"></div>		
+				 <br/>
+				 <div class="form-group col-md-6">
+					<label for="language">Name Prefix:</label> <form:input
+						class="form-control" id="namePrefix" placeholder="Name Prefix"
+						name="namePrefix" path="accountholder.ctrlPersonName.namePrefix"></form:input>
+				 </div>	
+				 <div class="form-group col-md-6">
+					<label for="language">Last Name:</label> <form:input
+						class="form-control" id="lastName" placeholder="Last Name"
+						name="lastName" path="accountholder.ctrlPersonName.lastName"></form:input>
+				 </div>		
+				 <div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<div id="viewCtrlNameGenerationIdentifierGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				 <div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<div id="viewCtrlNameSuffixGridPU"></div>
+					<div id="pager"></div>
+				</div>
+				<div class="clearfix"></div>		
+				 <br/>
+				  <div class="form-group col-md-6">
+					<label for="language">General Suffix:</label> <form:input
+						class="form-control" id="generalSuffix" placeholder="General Suffix"
+						name="generalSuffix" path="accountholder.ctrlPersonName.generalSuffix"></form:input>
+				 </div>	
+			</div>
+			<div class="clearfix"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				<!-- <button type="button" onClick="saveNewIndividualNameClicked();" class="btn btn-primary" data-dismiss="modal">Save</button> -->
 			</div>
 		</div>
 		</form:form>
@@ -1984,12 +2091,12 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 				<br/>
 				<div class="form-group col-md-6">
 					<label for="language">Name:</label> <form:input
-						class="form-control" id="name" placeholder="Name" path="accountholder.ctrlPersonName.name"
+						class="form-control" id="name" placeholder="Name" path="accountholder.controllingPersonVo.ctrlPersonName.name"
 						name="Name"></form:input>
 				 </div>
 				 <div class="form-group col-md-6">
 					<label for="">Name Type:</label> <form:select class="form-control"
-						id="countryCodeReportingFI" path="accountholder.ctrlPersonName.nameType">
+						id="countryCodeReportingFI" path="accountholder.controllingPersonVo.ctrlPersonName.nameType">
 						<!-- <option value="0">--Choose Name Type--</option>
 						<option value="1">OECD201</option>
 						<option value="2">OECD202</option>
@@ -2010,12 +2117,12 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 				<div class="form-group col-md-6">
 					<label for="language">Preceding Title:</label> <form:input
 						class="form-control" id="precedingTitle" placeholder="Preceding Title"
-						name="precedingTitle" path="accountholder.ctrlPersonName.precedingTitle"></form:input>
+						name="precedingTitle" path="accountholder.controllingPersonVo.ctrlPersonName.precedingTitle"></form:input>
 				 </div>	
 				 <div class="form-group col-md-6">
 					<label for="language">First Name:</label> <form:input
 						class="form-control" id="firstName" placeholder="First Name"
-						name="firstName" path="accountholder.ctrlPersonName.firstName"/> 
+						name="firstName" path="accountholder.controllingPersonVo.ctrlPersonName.firstName"/> 
 				 </div>		
 				 <div class="clearfix"></div>		
 				 <br/>
@@ -2034,12 +2141,12 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 				 <div class="form-group col-md-6">
 					<label for="language">Name Prefix:</label> <form:input
 						class="form-control" id="namePrefix" placeholder="Name Prefix"
-						name="namePrefix" path="accountholder.ctrlPersonName.namePrefix"></form:input>
+						name="namePrefix" path="accountholder.controllingPersonVo.ctrlPersonName.namePrefix"></form:input>
 				 </div>	
 				 <div class="form-group col-md-6">
 					<label for="language">Last Name:</label> <form:input
 						class="form-control" id="lastName" placeholder="Last Name"
-						name="lastName" path="accountholder.ctrlPersonName.lastName"></form:input>
+						name="lastName" path="accountholder.controllingPersonVo.ctrlPersonName.lastName"></form:input>
 				 </div>		
 				 <div class="clearfix"></div>		
 				 <br/>
@@ -2058,7 +2165,7 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 				  <div class="form-group col-md-6">
 					<label for="language">General Suffix:</label> <form:input
 						class="form-control" id="generalSuffix" placeholder="General Suffix"
-						name="generalSuffix" path="accountholder.ctrlPersonName.generalSuffix"></form:input>
+						name="generalSuffix" path="accountholder.controllingPersonVo.ctrlPersonName.generalSuffix"></form:input>
 				 </div>	
 			</div>
 			<div class="clearfix"></div>
