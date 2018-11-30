@@ -684,6 +684,28 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 							reportsConstEntity.appendChild(name);
 						}
 					}
+					
+					if (consEntity.getIncorpCountryCode() != null && !consEntity.getIncorpCountryCode().isEmpty()) {
+						Element reportsIncorpCountryCode = doc.createElement("cbc:IncorpCountryCode");
+						reportsIncorpCountryCode.appendChild(doc.createTextNode(consEntity.getIncorpCountryCode()));
+						reportsConstEntity.appendChild(reportsIncorpCountryCode);
+					}
+
+					if (consEntity.getBizActivitiesList() != null && !consEntity.getBizActivitiesList().isEmpty()) {
+						for (BizActivitiesTypeVo bizActivitiesVO : consEntity.getBizActivitiesList()) {
+							Element bizActivities = doc.createElement("cbc:BizActivities");
+							Cbcbizactivitiesreference bizActivitiesById = commonDropDownService
+									.findBizActivitiesById(bizActivitiesVO.getBizType());
+							bizActivities.appendChild(doc.createTextNode(bizActivitiesById.getBizType()));
+							reportsConstEntity.appendChild(bizActivities);
+						}
+					}
+
+					if (consEntity.getOtherEntityInfo() != null && !consEntity.getOtherEntityInfo().isEmpty()) {
+						Element reportsOtherEntityInfo = doc.createElement("cbc:OtherEntityInfo");
+						reportsOtherEntityInfo.appendChild(doc.createTextNode(consEntity.getOtherEntityInfo()));
+						reportsConstEntity.appendChild(reportsOtherEntityInfo);
+					}
 
 					if (consEntity.getAddressList() != null && !consEntity.getAddressList().isEmpty()) {
 						for (AddressVo address : consEntity.getAddressList()) {
@@ -761,28 +783,11 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 						}
 					}
 
-					if (consEntity.getIncorpCountryCode() != null && consEntity.getIncorpCountryCode().isEmpty()) {
-						Element reportsIncorpCountryCode = doc.createElement("cbc:IncorpCountryCode");
-						reportsIncorpCountryCode.appendChild(doc.createTextNode(consEntity.getIncorpCountryCode()));
-						reportsConstEntities.appendChild(reportsIncorpCountryCode);
+					
+				  }	
+					
+					
 					}
-
-					if (consEntity.getBizActivitiesList() != null && consEntity.getBizActivitiesList().isEmpty()) {
-						for (BizActivitiesTypeVo bizActivitiesVO : consEntity.getBizActivitiesList()) {
-							Element bizActivities = doc.createElement("cbc:BizActivities");
-							Cbcbizactivitiesreference bizActivitiesById = commonDropDownService
-									.findBizActivitiesById(bizActivitiesVO.getBizType());
-							bizActivities.appendChild(doc.createTextNode(bizActivitiesById.getBizType()));
-							reportsConstEntities.appendChild(bizActivities);
-						}
-					}
-
-					if (consEntity.getOtherEntityInfo() != null && !consEntity.getOtherEntityInfo().isEmpty()) {
-						Element reportsOtherEntityInfo = doc.createElement("cbc:OtherEntityInfo");
-						reportsOtherEntityInfo.appendChild(doc.createTextNode(consEntity.getOtherEntityInfo()));
-						reportsConstEntities.appendChild(reportsOtherEntityInfo);
-					}
-				  }	}
 
 				}
 			}
