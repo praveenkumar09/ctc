@@ -48,7 +48,7 @@ public class HidefMyfiApplicationTests {
 	@SuppressWarnings("deprecation")
 	@Test
 	public void contextLoads() throws IOException {
-		HidefVo hidefVo = new HidefVo();
+		/*HidefVo hidefVo = new HidefVo();
 		File file = new File("C:\\CTCTemplate\\SampleTemplate.xlsx");
 		FileInputStream excelFile = new FileInputStream(file);
 		Workbook workbook = new XSSFWorkbook(excelFile);
@@ -562,7 +562,7 @@ public class HidefMyfiApplicationTests {
 		}
 	}
 		
-		System.out.println(hidefVo);
+		System.out.println(hidefVo);*/
 		
 		
 		/*
