@@ -1,6 +1,7 @@
 package com.censof.myfi.hidefmyfi.repository;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +15,7 @@ public interface CbcpayldconstentityRepository extends JpaRepository<Cbcpayldcon
 public static String FIND_CONSTENTITY_BY_REPORTS = "select e from Cbcpayldconstentity e where e.reportID=:reportID";
 	
 	@Query(FIND_CONSTENTITY_BY_REPORTS)
-	public Cbcpayldconstentity getAllconstentityByReportsId(@Param("reportID") BigInteger reportID);
+	public List<Cbcpayldconstentity> getAllconstentityByReportsId(@Param("reportID") BigInteger reportID);
 	
 	public static String FIND_CONSTENTITY_BY_ID = "select e from Cbcpayldconstentity e where e.id=:id";
 	

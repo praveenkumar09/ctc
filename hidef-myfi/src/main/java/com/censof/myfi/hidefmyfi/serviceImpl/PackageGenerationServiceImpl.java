@@ -41,6 +41,7 @@ import com.censof.myfi.hidefmyfi.vo.AddressVo;
 import com.censof.myfi.hidefmyfi.vo.BizActivitiesTypeVo;
 import com.censof.myfi.hidefmyfi.vo.CBCRepotsVo;
 import com.censof.myfi.hidefmyfi.vo.CbcAdditionalInfo;
+import com.censof.myfi.hidefmyfi.vo.CbcConstituentEntityVO;
 import com.censof.myfi.hidefmyfi.vo.ControllingPersonVo;
 import com.censof.myfi.hidefmyfi.vo.GenerationIdentifierVo;
 import com.censof.myfi.hidefmyfi.vo.HidefVo;
@@ -626,14 +627,15 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 						reportsSummary.appendChild(reportsAssetAmount);
 					}
 
-					Element reportsConstEntities = doc.createElement("cbc:ConstEntities");
-					cbcReportsElement.appendChild(reportsConstEntities);
-
+					if(reports.getConstituentEntityList() != null && !reports.getConstituentEntityList().isEmpty()) {
+						Element reportsConstEntities = doc.createElement("cbc:ConstEntities");
+						cbcReportsElement.appendChild(reportsConstEntities);
+					for(CbcConstituentEntityVO consEntity :reports.getConstituentEntityList()) {
 					Element reportsConstEntity = doc.createElement("cbc:ConstEntity");
 					reportsConstEntities.appendChild(reportsConstEntity);
 
-					if (reports.getResidentCountryList() != null && !reports.getResidentCountryList().isEmpty()) {
-						for (ResidentCountryVo residentCountry : reports.getResidentCountryList()) {
+					if (consEntity.getResidentCountryList() != null && !consEntity.getResidentCountryList().isEmpty()) {
+						for (ResidentCountryVo residentCountry : consEntity.getResidentCountryList()) {
 							Element residentCountryCode = doc.createElement("cbc:ResCountryCode");
 							Hicountry countryObject = commonDropDownService
 									.findCountryById(BigInteger.valueOf(residentCountry.getResidentCountryCode()));
@@ -642,20 +644,20 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 						}
 					}
 
-					if (reports.getTin() != null && !reports.getTin().isEmpty()) {
+					if (consEntity.getTin() != null && !consEntity.getTin().isEmpty()) {
 						Element reportsTIN = doc.createElement("cbc:TIN");
-						if(reports.getTinType() != null && !reports.getTinType().isEmpty()) {
-						reportsTIN.setAttribute("TINType", reports.getTinType());
+						if(consEntity.getTinType() != null && !consEntity.getTinType().isEmpty()) {
+						reportsTIN.setAttribute("TINType", consEntity.getTinType());
 						}
-						if(reports.getIssuedBy() != null && !reports.getIssuedBy().isEmpty()) {
-						reportsTIN.setAttribute("issuedBy", reports.getIssuedBy());
+						if(consEntity.getIssuedBy() != null && !consEntity.getIssuedBy().isEmpty()) {
+						reportsTIN.setAttribute("issuedBy", consEntity.getIssuedBy());
 						}
-						reportsTIN.appendChild(doc.createTextNode(reports.getTin()));
+						reportsTIN.appendChild(doc.createTextNode(consEntity.getTin()));
 						reportsConstEntity.appendChild(reportsTIN);
 					}
 
-					if (reports.getOrganisationInTypeList() != null && !reports.getOrganisationInTypeList().isEmpty()) {
-						for (OrganisationInTypeVo orgInType : reports.getOrganisationInTypeList()) {
+					if (consEntity.getOrganisationInTypeList() != null && !consEntity.getOrganisationInTypeList().isEmpty()) {
+						for (OrganisationInTypeVo orgInType : consEntity.getOrganisationInTypeList()) {
 							Element in = doc.createElement("cbc:IN");
 							if (orgInType.getInType() != null && !orgInType.getInType().isEmpty()) {
 								in.setAttribute("INType", orgInType.getInType());
@@ -675,16 +677,16 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 						}
 					}
 
-					if (reports.getNameList() != null && !reports.getNameList().isEmpty()) {
-						for (NameVo nameObject : reports.getNameList()) {
+					if (consEntity.getNameList() != null && !consEntity.getNameList().isEmpty()) {
+						for (NameVo nameObject : consEntity.getNameList()) {
 							Element name = doc.createElement("cbc:Name");
 							name.appendChild(doc.createTextNode(nameObject.getFirstName()));
 							reportsConstEntity.appendChild(name);
 						}
 					}
 
-					if (reports.getAddressList() != null && !reports.getAddressList().isEmpty()) {
-						for (AddressVo address : reports.getAddressList()) {
+					if (consEntity.getAddressList() != null && !consEntity.getAddressList().isEmpty()) {
+						for (AddressVo address : consEntity.getAddressList()) {
 							Element addressElement = doc.createElement("cbc:Address");
 							reportsConstEntity.appendChild(addressElement);
 
@@ -759,14 +761,14 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 						}
 					}
 
-					if (reports.getIncorpCountryCode() != null && reports.getIncorpCountryCode().isEmpty()) {
+					if (consEntity.getIncorpCountryCode() != null && consEntity.getIncorpCountryCode().isEmpty()) {
 						Element reportsIncorpCountryCode = doc.createElement("cbc:IncorpCountryCode");
-						reportsIncorpCountryCode.appendChild(doc.createTextNode(reports.getIncorpCountryCode()));
+						reportsIncorpCountryCode.appendChild(doc.createTextNode(consEntity.getIncorpCountryCode()));
 						reportsConstEntities.appendChild(reportsIncorpCountryCode);
 					}
 
-					if (reports.getBizActivitiesList() != null && reports.getBizActivitiesList().isEmpty()) {
-						for (BizActivitiesTypeVo bizActivitiesVO : reports.getBizActivitiesList()) {
+					if (consEntity.getBizActivitiesList() != null && consEntity.getBizActivitiesList().isEmpty()) {
+						for (BizActivitiesTypeVo bizActivitiesVO : consEntity.getBizActivitiesList()) {
 							Element bizActivities = doc.createElement("cbc:BizActivities");
 							Cbcbizactivitiesreference bizActivitiesById = commonDropDownService
 									.findBizActivitiesById(bizActivitiesVO.getBizType());
@@ -775,11 +777,12 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 						}
 					}
 
-					if (reports.getOtherEntityInfo() != null && !reports.getOtherEntityInfo().isEmpty()) {
+					if (consEntity.getOtherEntityInfo() != null && !consEntity.getOtherEntityInfo().isEmpty()) {
 						Element reportsOtherEntityInfo = doc.createElement("cbc:OtherEntityInfo");
-						reportsOtherEntityInfo.appendChild(doc.createTextNode(reports.getOtherEntityInfo()));
+						reportsOtherEntityInfo.appendChild(doc.createTextNode(consEntity.getOtherEntityInfo()));
 						reportsConstEntities.appendChild(reportsOtherEntityInfo);
 					}
+				  }	}
 
 				}
 			}

@@ -25,6 +25,7 @@ import com.censof.myfi.hidefmyfi.vo.AddressVo;
 import com.censof.myfi.hidefmyfi.vo.BizActivitiesTypeVo;
 import com.censof.myfi.hidefmyfi.vo.CBCRepotsVo;
 import com.censof.myfi.hidefmyfi.vo.CbcAdditionalInfo;
+import com.censof.myfi.hidefmyfi.vo.CbcConstituentEntityVO;
 import com.censof.myfi.hidefmyfi.vo.CrsMetadataVo;
 import com.censof.myfi.hidefmyfi.vo.CrsReportingFiVo;
 import com.censof.myfi.hidefmyfi.vo.HidefVo;
@@ -46,7 +47,525 @@ public class HidefMyfiApplicationTests {
 
 	@SuppressWarnings("deprecation")
 	@Test
-	public void contextLoads() throws IOException {/*
+	public void contextLoads() throws IOException {
+		HidefVo hidefVo = new HidefVo();
+		File file = new File("C:\\CTCTemplate\\SampleTemplate.xlsx");
+		FileInputStream excelFile = new FileInputStream(file);
+		Workbook workbook = new XSSFWorkbook(excelFile);
+		
+		
+		
+		Sheet cbcReportsSheet = workbook.getSheetAt(2);
+		Iterator<Row> cbcReportsIterator = cbcReportsSheet.iterator();
+		hidefVo.setListCBCReports(new ArrayList<CBCRepotsVo>());
+        CBCRepotsVo reports = null;
+		while (cbcReportsIterator.hasNext()) {
+		Row currentRow = cbcReportsIterator.next();
+		if (currentRow.getRowNum() >= 2) {
+			Iterator<Cell> cellIterator = currentRow.iterator();			
+			BizActivitiesTypeVo bizActivitiesVo = null;
+			ResidentCountryVo residentVo = null;
+			NameVo nameVo = null;
+			OrganisationInTypeVo orgINVo = null;
+			AddressVo addressVo = null;
+			
+			while (cellIterator.hasNext()) {
+				Cell currentCell = cellIterator.next();
+				if (currentCell != null && currentCell.getCellType() != Cell.CELL_TYPE_BLANK) {
+
+					if (currentCell.getColumnIndex() == 0) {
+						
+						if (reports == null) {
+							reports = new CBCRepotsVo();
+							reports.setExcelId(reports.getExcelId()+1);
+							if(reports.getConstituentEntity() == null) {
+								reports.setConstituentEntity(new CbcConstituentEntityVO());
+								reports.setConstituentEntityList(new ArrayList<CbcConstituentEntityVO>());
+								reports.getConstituentEntity().setExcelId(reports.getConstituentEntity().getExcelId()+1);
+							}
+						}
+						
+						
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setDocumentTypeIndicator(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setDocumentTypeIndicator("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 1) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setDocumentRefId(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setDocumentRefId("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 2) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setCorrMessageRefId(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setCorrMessageRefId("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 3) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setCorrDocRefId(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setCorrDocRefId("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 4) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setNbEmployees(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setNbEmployees("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 5) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setResidentCountryCode(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setResidentCountryCode("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 6) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setUnrelateCurrCode(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setUnrelateCurrCode("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 7) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setUnrelatedAmount(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setUnrelatedAmount("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 8) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setRelatedCurrCode(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setRelatedCurrCode("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 9) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setRelatedAmount(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setRelatedAmount("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 10) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setTotalRevenueCurrCode(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setTotalRevenueCurrCode("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 11) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setTotalRevenueAmount(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setTotalRevenueAmount("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 12) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setProfitorlossCurrCode(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setProfitorlossCurrCode("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 13) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setPrfitotloassAmount(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setPrfitotloassAmount("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 14) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setTaxpiadCurrCode(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setTaxpiadCurrCode("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 15) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setTaxpaidAmount(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setTaxpaidAmount("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 16) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setTaxaccruedCurrCode(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setTaxaccruedCurrCode("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 17) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setTaxaccruedAmount(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setTaxaccruedAmount("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 18) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setCapitalCurrCode(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setCapitalCurrCode("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 19) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setCapitalAmount(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setCapitalAmount("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 20) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setEarningCurrCode(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setEarningCurrCode("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 21) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setEarningAmount(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setEarningAmount("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 22) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setAssertCurrCode(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setAssertCurrCode("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 23) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.setAssertAmount(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.setAssertAmount("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 24) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.getConstituentEntity().setTin(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.getConstituentEntity().setTin("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 25) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.getConstituentEntity().setIssuedBy(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.getConstituentEntity().setIssuedBy("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 26) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.getConstituentEntity().setTinType(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.getConstituentEntity().setTinType("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 27) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.getConstituentEntity().setIncorpCountryCode(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.getConstituentEntity().setIncorpCountryCode("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 28) {
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							reports.getConstituentEntity().setOtherEntityInfo(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							reports.getConstituentEntity().setOtherEntityInfo("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+
+					if (currentCell.getColumnIndex() == 29) {
+						if (bizActivitiesVo == null) {
+							bizActivitiesVo = new BizActivitiesTypeVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							bizActivitiesVo.setId(Integer.parseInt(currentCell.getStringCellValue()));
+
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							bizActivitiesVo
+									.setId(Integer.parseInt("" + Math.round(currentCell.getNumericCellValue())));
+
+						}
+					}
+
+					if (currentCell.getColumnIndex() == 30) {
+						if (residentVo == null) {
+							residentVo = new ResidentCountryVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+
+							int residentId = Integer.parseInt(currentCell.getStringCellValue());
+							residentVo.setId(residentId);
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							int residentId = Integer.parseInt("" + Math.round(currentCell.getNumericCellValue()));
+							residentVo.setId(residentId);
+						}
+					}
+					if (currentCell.getColumnIndex() == 31) {
+						if (nameVo == null) {
+							nameVo = new NameVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							nameVo.setFirstName(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							int residentId = Integer.parseInt("" + Math.round(currentCell.getNumericCellValue()));
+							nameVo.setFirstName("" + residentId);
+						}
+					}
+
+					if (currentCell.getColumnIndex() == 32) {
+						if (orgINVo == null) {
+							orgINVo = new OrganisationInTypeVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							orgINVo.setIn(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							orgINVo.setIn("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 33) {
+						if (orgINVo == null) {
+							orgINVo = new OrganisationInTypeVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							orgINVo.setInType(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							orgINVo.setInType("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 34) {
+						if (orgINVo == null) {
+							orgINVo = new OrganisationInTypeVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							orgINVo.setIssuedBy(Integer.parseInt(currentCell.getStringCellValue()));
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							orgINVo.setIssuedBy(
+									Integer.parseInt("" + Math.round(currentCell.getNumericCellValue())));
+						}
+					}
+
+					if (currentCell.getColumnIndex() == 35) {
+						if (addressVo == null) {
+							addressVo = new AddressVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							addressVo.setCountryCode(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							addressVo.setCountryCode("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 36) {
+						if (addressVo == null) {
+							addressVo = new AddressVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							addressVo.setAddressType(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							addressVo.setAddressType("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 37) {
+						if (addressVo == null) {
+							addressVo = new AddressVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							addressVo.setAddressFree(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							addressVo.setAddressFree("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 38) {
+						if (addressVo == null) {
+							addressVo = new AddressVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							addressVo.setStreet(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							addressVo.setStreet("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 39) {
+						if (addressVo == null) {
+							addressVo = new AddressVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							addressVo.setBuildingIdentifier(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							addressVo.setBuildingIdentifier("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 40) {
+						if (addressVo == null) {
+							addressVo = new AddressVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							addressVo.setSuitIdentifier(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							addressVo.setSuitIdentifier("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 41) {
+						if (addressVo == null) {
+							addressVo = new AddressVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							addressVo.setFloorIdentifier(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							addressVo.setFloorIdentifier("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 42) {
+						if (addressVo == null) {
+							addressVo = new AddressVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							addressVo.setDistrictName(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							addressVo.setDistrictName("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 43) {
+						if (addressVo == null) {
+							addressVo = new AddressVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							addressVo.setPob(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							addressVo.setPob("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 44) {
+						if (addressVo == null) {
+							addressVo = new AddressVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							addressVo.setPostCode(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							addressVo.setPostCode("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 45) {
+						if (addressVo == null) {
+							addressVo = new AddressVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							addressVo.setCity(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							addressVo.setCity("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+					if (currentCell.getColumnIndex() == 46) {
+						if (addressVo == null) {
+							addressVo = new AddressVo();
+						}
+						if (currentCell.getCellTypeEnum() == CellType.STRING) {
+							addressVo.setCountrySubentity(currentCell.getStringCellValue());
+						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+							addressVo.setCountrySubentity("" + Math.round(currentCell.getNumericCellValue()));
+						}
+					}
+
+				}
+			}
+
+			if (bizActivitiesVo != null) {
+				if (reports.getConstituentEntity().getBizActivitiesList() != null && !reports.getConstituentEntity().getBizActivitiesList().isEmpty()) {
+					reports.getConstituentEntity().getBizActivitiesList().add(bizActivitiesVo);
+				} else {
+					reports.getConstituentEntity().setBizActivitiesList(new ArrayList<BizActivitiesTypeVo>());
+					reports.getConstituentEntity().getBizActivitiesList().add(bizActivitiesVo);
+				}
+			}
+
+			if (residentVo != null) {
+				if (reports.getConstituentEntity().getResidentCountryList() != null && !reports.getConstituentEntity().getResidentCountryList().isEmpty()) {
+					reports.getConstituentEntity().getResidentCountryList().add(residentVo);
+				} else {
+					reports.getConstituentEntity().setResidentCountryList(new ArrayList<ResidentCountryVo>());
+					reports.getConstituentEntity().getResidentCountryList().add(residentVo);
+				}
+			}
+
+			if (nameVo != null) {
+				if (reports.getConstituentEntity().getNameList() != null && !reports.getConstituentEntity().getNameList().isEmpty()) {
+					reports.getConstituentEntity().getNameList().add(nameVo);
+				} else {
+					reports.getConstituentEntity().setNameList(new ArrayList<NameVo>());
+					reports.getConstituentEntity().getNameList().add(nameVo);
+				}
+			}
+
+			if (orgINVo != null) {
+				if (reports.getConstituentEntity().getOrganisationInTypeList() != null && !reports.getConstituentEntity().getOrganisationInTypeList().isEmpty()) {
+					reports.getConstituentEntity().getOrganisationInTypeList().add(orgINVo);
+				} else {
+					reports.getConstituentEntity().setOrganisationInTypeList(new ArrayList<OrganisationInTypeVo>());
+					reports.getConstituentEntity().getOrganisationInTypeList().add(orgINVo);
+				}
+			}
+
+			if (addressVo != null) {
+				if (reports.getConstituentEntity().getAddressList() != null && !reports.getConstituentEntity().getAddressList().isEmpty()) {
+					reports.getConstituentEntity().getAddressList().add(addressVo);
+				} else {
+					reports.getConstituentEntity().setAddressList(new ArrayList<AddressVo>());
+					reports.getConstituentEntity().getAddressList().add(addressVo);
+				}
+			}
+			
+			if(reports != null && reports.getConstituentEntity() != null) {
+				
+				Iterator<CbcConstituentEntityVO> iteratorCE = reports.getConstituentEntityList().iterator();
+				
+				while(iteratorCE.hasNext()) {
+					CbcConstituentEntityVO ceIter = iteratorCE.next();
+					if(ceIter.getExcelId() == reports.getConstituentEntity().getExcelId()) {
+						iteratorCE.remove();
+					}
+				}
+				
+				if(reports.getConstituentEntity().getExcelId() != 0) {
+				reports.getConstituentEntityList().add(reports.getConstituentEntity());
+				}
+			}
+
+			if (reports != null) {					
+					Iterator<CBCRepotsVo> reportListIterator = hidefVo.getListCBCReports().iterator();
+					
+					while(reportListIterator.hasNext()) {						
+						CBCRepotsVo reportsIter = reportListIterator.next();
+						if(reportsIter.getExcelId() == reports.getExcelId()) {
+							reportListIterator.remove();
+						}						
+					}
+					
+				if(reports.getExcelId() != 0) {	
+				hidefVo.getListCBCReports().add(reports);
+				}
+			}
+		}
+	}
+		
+		System.out.println(hidefVo);
+		
+		
+		/*
 
 		String fileName = "D:\\CTC\\To Upload\\CRS\\CRS.xlsx";
 		HidefVo hidefVo = new HidefVo();

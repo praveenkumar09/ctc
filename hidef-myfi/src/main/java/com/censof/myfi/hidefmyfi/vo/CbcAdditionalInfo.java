@@ -18,6 +18,8 @@ public class CbcAdditionalInfo implements Serializable {
 	private List<SummaryVo> summaryList;
 	private int id;
 	
+	private int excelId;
+	
 	public String getDocumentTypeIndic() {
 		return documentTypeIndic;
 	}
@@ -68,6 +70,12 @@ public class CbcAdditionalInfo implements Serializable {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public int getExcelId() {
+		return excelId;
+	}
+	public void setExcelId(int excelId) {
+		this.excelId = excelId;
 	}
 	
 	

@@ -50,6 +50,8 @@ public class CBCRepotsVo implements Serializable {
 	private int id;
 	private int consId;
 	
+	private int excelId;
+	
 	private CbcConstituentEntityVO constituentEntity;
 	private List<CbcConstituentEntityVO> constituentEntityList;
 	
@@ -307,6 +309,12 @@ public class CBCRepotsVo implements Serializable {
 	}
 	public void setConstituentEntity(CbcConstituentEntityVO constituentEntity) {
 		this.constituentEntity = constituentEntity;
+	}
+	public int getExcelId() {
+		return excelId;
+	}
+	public void setExcelId(int excelId) {
+		this.excelId = excelId;
 	}
 	
 	
