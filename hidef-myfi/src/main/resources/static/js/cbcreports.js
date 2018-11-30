@@ -709,13 +709,14 @@ function validateCbcReports(){
 }
 
 function currencyValidation(obj){
-	
-	 $(obj).priceFormat({
-	    	prefix: '',
-	    	centsSeparator: '',
-	        thousandsSeparator: '',
-	        limit: 18,
-	        allowNegative: true,
-			insertPlusSign: true
-	    }); 
+	/*alert('@@@@@@@@@@@@@@@');*/
+	//validate(evt);
+    $(obj).priceFormat({
+    	prefix: '',
+    	centsSeparator: '',
+        thousandsSeparator: '',
+        limit: 18,
+        allowNegative: true,
+		insertPlusSign: true
+    }); 	
 } 

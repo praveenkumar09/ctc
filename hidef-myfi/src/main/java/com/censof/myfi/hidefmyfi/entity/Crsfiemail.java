@@ -1,26 +1,25 @@
 package com.censof.myfi.hidefmyfi.entity;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 
 import javax.persistence.*;
 
 import java.util.Date;
+import java.math.BigInteger;
 
 
 /**
- * The persistent class for the crsctrlpersontype database table.
+ * The persistent class for the crsfiemail database table.
  * 
  */
 @Entity
-@NamedQuery(name="Crsctrlpersontype.findAll", query="SELECT c FROM Crsctrlpersontype c")
-public class Crsctrlpersontype implements Serializable {
+@NamedQuery(name="Crsfiemail.findAll", query="SELECT c FROM Crsfiemail c")
+public class Crsfiemail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private BigInteger id;
+	private String id;
 
 	@Column(name="createby")
 	private String createBy;
@@ -29,8 +28,11 @@ public class Crsctrlpersontype implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDateTime;
 
-	@Column(name="ctrlpersontype")
-	private String ctrlpersontype;
+	@Column(name="email")
+	private String email;
+
+	@Column(name="fiid")
+	private BigInteger fiid;
 
 	@Column(name="modifyby")
 	private String modifyBy;
@@ -39,19 +41,16 @@ public class Crsctrlpersontype implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifyDateTime;
 
-	public Crsctrlpersontype() {
+	public Crsfiemail() {
 	}
 
-	
-	public BigInteger getId() {
-		return id;
+	public String getId() {
+		return this.id;
 	}
 
-
-	public void setId(BigInteger id) {
+	public void setId(String id) {
 		this.id = id;
 	}
-
 
 	public String getCreateBy() {
 		return this.createBy;
@@ -69,12 +68,20 @@ public class Crsctrlpersontype implements Serializable {
 		this.createDateTime = createDateTime;
 	}
 
-	public String getCtrlpersontype() {
-		return this.ctrlpersontype;
+	public String getEmail() {
+		return this.email;
 	}
 
-	public void setCtrlpersontype(String ctrlpersontype) {
-		this.ctrlpersontype = ctrlpersontype;
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public BigInteger getFiid() {
+		return this.fiid;
+	}
+
+	public void setFiid(BigInteger fiid) {
+		this.fiid = fiid;
 	}
 
 	public String getModifyBy() {

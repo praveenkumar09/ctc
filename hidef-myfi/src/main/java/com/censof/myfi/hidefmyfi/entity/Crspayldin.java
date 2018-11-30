@@ -1,57 +1,48 @@
 package com.censof.myfi.hidefmyfi.entity;
 
 import java.io.Serializable;
-import java.math.BigInteger;
-
 import javax.persistence.*;
-
 import java.util.Date;
 
 
 /**
- * The persistent class for the crsctrlpersontype database table.
+ * The persistent class for the crspayldin database table.
  * 
  */
 @Entity
-@NamedQuery(name="Crsctrlpersontype.findAll", query="SELECT c FROM Crsctrlpersontype c")
-public class Crsctrlpersontype implements Serializable {
+@NamedQuery(name="Crspayldin.findAll", query="SELECT c FROM Crspayldin c")
+public class Crspayldin implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private BigInteger id;
+	@EmbeddedId
+	private CrspayldinPK id;
 
-	@Column(name="createby")
 	private String createBy;
 
-	@Column(name="createdatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDateTime;
 
-	@Column(name="ctrlpersontype")
-	private String ctrlpersontype;
+	private String INType;
 
-	@Column(name="modifyby")
+	private String issuedBy;
+
 	private String modifyBy;
 
-	@Column(name="modifydatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifyDateTime;
 
-	public Crsctrlpersontype() {
+	private String tin;
+
+	public Crspayldin() {
 	}
 
-	
-	public BigInteger getId() {
-		return id;
+	public CrspayldinPK getId() {
+		return this.id;
 	}
 
-
-	public void setId(BigInteger id) {
+	public void setId(CrspayldinPK id) {
 		this.id = id;
 	}
-
 
 	public String getCreateBy() {
 		return this.createBy;
@@ -69,12 +60,20 @@ public class Crsctrlpersontype implements Serializable {
 		this.createDateTime = createDateTime;
 	}
 
-	public String getCtrlpersontype() {
-		return this.ctrlpersontype;
+	public String getINType() {
+		return this.INType;
 	}
 
-	public void setCtrlpersontype(String ctrlpersontype) {
-		this.ctrlpersontype = ctrlpersontype;
+	public void setINType(String INType) {
+		this.INType = INType;
+	}
+
+	public String getIssuedBy() {
+		return this.issuedBy;
+	}
+
+	public void setIssuedBy(String issuedBy) {
+		this.issuedBy = issuedBy;
 	}
 
 	public String getModifyBy() {
@@ -91,6 +90,14 @@ public class Crsctrlpersontype implements Serializable {
 
 	public void setModifyDateTime(Date modifyDateTime) {
 		this.modifyDateTime = modifyDateTime;
+	}
+
+	public String getTin() {
+		return this.tin;
+	}
+
+	public void setTin(String tin) {
+		this.tin = tin;
 	}
 
 }

@@ -27,13 +27,13 @@ public class Cbcpayldreport implements Serializable {
 	private BigInteger bodyID;
 
 	@Column(name="assetsamt")
-	private Double assetsAmt;
+	private String assetsAmt;
 
 	@Column(name="assetscurrcode")
 	private String assetsCurrCode;
 
 	@Column(name="capitalamt")
-	private Double capitalAmt;
+	private String capitalAmt;
 
 	@Column(name="capitalcurrcode")
 	private String capitalCurrCode;
@@ -55,7 +55,7 @@ public class Cbcpayldreport implements Serializable {
 	private String docTypeIndic;
 
 	@Column(name="earningsamt")
-	private Double earningsAmt;
+	private String earningsAmt;
 
 	@Column(name="earningscurrcode")
 	private String earningsCurrCode;
@@ -74,7 +74,7 @@ public class Cbcpayldreport implements Serializable {
 	private int nbEmployees;
 
 	@Column(name="profitorlossamt")
-	private Double profitOrLossAmt;
+	private String profitOrLossAmt;
 
 	@Column(name="profitorlosscurrcode")
 	private String profitOrLossCurrCode;
@@ -83,31 +83,31 @@ public class Cbcpayldreport implements Serializable {
 	private String resCountryCode;
 
 	@Column(name="revenuesrelatedamt")
-	private Double revenuesRelatedAmt;
+	private String revenuesRelatedAmt;
 
 	@Column(name="revenuesrelatedcurrcode")
 	private String revenuesRelatedCurrCode;
 
 	@Column(name="revenuestotalamt")
-	private Double revenuesTotalAmt;
+	private String revenuesTotalAmt;
 
 	@Column(name="revenuestotalcurrcode")
 	private String revenuesTotalCurrCode;
 
 	@Column(name="revenuesunrelatedamt")
-	private Double revenuesUnrelatedAmt;
+	private String revenuesUnrelatedAmt;
 
 	@Column(name="revenuesunrelatedcurrcode")
 	private String revenuesUnrelatedCurrCode;
 
 	@Column(name="taxaccruedamt")
-	private Double taxAccruedAmt;
+	private String taxAccruedAmt;
 
 	@Column(name="taxaccruedcurrcode")
 	private String taxAccruedCurrCode;
 
 	@Column(name="taxpaidamt")
-	private Double taxPaidAmt;
+	private String taxPaidAmt;
 
 	@Column(name="taxpaidcurrcode")
 	private String taxPaidCurrCode;
@@ -327,7 +327,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public Double getAssetsAmt() {
+	public String getAssetsAmt() {
 		return assetsAmt;
 	}
 
@@ -335,7 +335,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public void setAssetsAmt(Double assetsAmt) {
+	public void setAssetsAmt(String assetsAmt) {
 		this.assetsAmt = assetsAmt;
 	}
 
@@ -343,7 +343,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public Double getCapitalAmt() {
+	public String getCapitalAmt() {
 		return capitalAmt;
 	}
 
@@ -351,7 +351,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public void setCapitalAmt(Double capitalAmt) {
+	public void setCapitalAmt(String capitalAmt) {
 		this.capitalAmt = capitalAmt;
 	}
 
@@ -359,7 +359,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public Double getEarningsAmt() {
+	public String getEarningsAmt() {
 		return earningsAmt;
 	}
 
@@ -367,7 +367,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public void setEarningsAmt(Double earningsAmt) {
+	public void setEarningsAmt(String earningsAmt) {
 		this.earningsAmt = earningsAmt;
 	}
 
@@ -375,7 +375,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public Double getProfitOrLossAmt() {
+	public String getProfitOrLossAmt() {
 		return profitOrLossAmt;
 	}
 
@@ -383,7 +383,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public void setProfitOrLossAmt(Double profitOrLossAmt) {
+	public void setProfitOrLossAmt(String profitOrLossAmt) {
 		this.profitOrLossAmt = profitOrLossAmt;
 	}
 
@@ -391,7 +391,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public Double getRevenuesRelatedAmt() {
+	public String getRevenuesRelatedAmt() {
 		return revenuesRelatedAmt;
 	}
 
@@ -399,7 +399,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public void setRevenuesRelatedAmt(Double revenuesRelatedAmt) {
+	public void setRevenuesRelatedAmt(String revenuesRelatedAmt) {
 		this.revenuesRelatedAmt = revenuesRelatedAmt;
 	}
 
@@ -407,7 +407,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public Double getRevenuesTotalAmt() {
+	public String getRevenuesTotalAmt() {
 		return revenuesTotalAmt;
 	}
 
@@ -415,7 +415,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public void setRevenuesTotalAmt(Double revenuesTotalAmt) {
+	public void setRevenuesTotalAmt(String revenuesTotalAmt) {
 		this.revenuesTotalAmt = revenuesTotalAmt;
 	}
 
@@ -423,7 +423,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public Double getRevenuesUnrelatedAmt() {
+	public String getRevenuesUnrelatedAmt() {
 		return revenuesUnrelatedAmt;
 	}
 
@@ -431,7 +431,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public void setRevenuesUnrelatedAmt(Double revenuesUnrelatedAmt) {
+	public void setRevenuesUnrelatedAmt(String revenuesUnrelatedAmt) {
 		this.revenuesUnrelatedAmt = revenuesUnrelatedAmt;
 	}
 
@@ -439,7 +439,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public Double getTaxAccruedAmt() {
+	public String getTaxAccruedAmt() {
 		return taxAccruedAmt;
 	}
 
@@ -447,7 +447,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public void setTaxAccruedAmt(Double taxAccruedAmt) {
+	public void setTaxAccruedAmt(String taxAccruedAmt) {
 		this.taxAccruedAmt = taxAccruedAmt;
 	}
 
@@ -455,7 +455,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public Double getTaxPaidAmt() {
+	public String getTaxPaidAmt() {
 		return taxPaidAmt;
 	}
 
@@ -463,7 +463,7 @@ public class Cbcpayldreport implements Serializable {
 
 
 
-	public void setTaxPaidAmt(Double taxPaidAmt) {
+	public void setTaxPaidAmt(String taxPaidAmt) {
 		this.taxPaidAmt = taxPaidAmt;
 	}
 	

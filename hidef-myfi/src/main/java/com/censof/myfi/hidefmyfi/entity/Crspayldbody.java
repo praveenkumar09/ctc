@@ -9,18 +9,22 @@ import java.util.Date;
 
 
 /**
- * The persistent class for the crsctrlpersontype database table.
+ * The persistent class for the crspayldbody database table.
  * 
  */
 @Entity
-@NamedQuery(name="Crsctrlpersontype.findAll", query="SELECT c FROM Crsctrlpersontype c")
-public class Crsctrlpersontype implements Serializable {
+@NamedQuery(name="Crspayldbody.findAll", query="SELECT c FROM Crspayldbody c")
+public class Crspayldbody implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	
+	/*@EmbeddedId
+	private CrspayldbodyPK id;*/
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private BigInteger id;
+
+	@Column(name="hdrid")
+	private BigInteger hdrID;
 
 	@Column(name="createby")
 	private String createBy;
@@ -29,9 +33,6 @@ public class Crsctrlpersontype implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDateTime;
 
-	@Column(name="ctrlpersontype")
-	private String ctrlpersontype;
-
 	@Column(name="modifyby")
 	private String modifyBy;
 
@@ -39,19 +40,16 @@ public class Crsctrlpersontype implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifyDateTime;
 
-	public Crsctrlpersontype() {
+	public Crspayldbody() {
 	}
 
-	
-	public BigInteger getId() {
-		return id;
+	/*public CrspayldbodyPK getId() {
+		return this.id;
 	}
 
-
-	public void setId(BigInteger id) {
+	public void setId(CrspayldbodyPK id) {
 		this.id = id;
-	}
-
+	}*/
 
 	public String getCreateBy() {
 		return this.createBy;
@@ -69,14 +67,6 @@ public class Crsctrlpersontype implements Serializable {
 		this.createDateTime = createDateTime;
 	}
 
-	public String getCtrlpersontype() {
-		return this.ctrlpersontype;
-	}
-
-	public void setCtrlpersontype(String ctrlpersontype) {
-		this.ctrlpersontype = ctrlpersontype;
-	}
-
 	public String getModifyBy() {
 		return this.modifyBy;
 	}
@@ -92,5 +82,22 @@ public class Crsctrlpersontype implements Serializable {
 	public void setModifyDateTime(Date modifyDateTime) {
 		this.modifyDateTime = modifyDateTime;
 	}
+
+	public BigInteger getId() {
+		return id;
+	}
+
+	public void setId(BigInteger id) {
+		this.id = id;
+	}
+
+	public BigInteger getHdrID() {
+		return hdrID;
+	}
+
+	public void setHdrID(BigInteger hdrID) {
+		this.hdrID = hdrID;
+	}
+	
 
 }
