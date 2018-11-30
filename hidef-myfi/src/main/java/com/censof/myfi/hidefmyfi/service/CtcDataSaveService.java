@@ -23,11 +23,8 @@ public interface CtcDataSaveService {
 	public Messagerefid saveMessageRefId(String date,String communicationType);
 	public Senderfileid saveSenderFileId(String date,String communicationType);
 	
-<<<<<<< HEAD
 	public void deleteUserProfileRecievingCountry(BigInteger userProfileId,int receivingCountryId);
 	
-=======
->>>>>>> branch 'master' of https://github.com/praveenkumar09/ctc.git
 	public HidefVo savecrsData(HidefVo hidefVo);
 	
 

@@ -3497,7 +3497,6 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 	}
 
 	@Override
-<<<<<<< HEAD
 	public void deleteUserProfileRecievingCountry(BigInteger userProfileId,int recievingCountryId) {
 		usereceivingcountryRepository.deleteById(BigInteger.valueOf(recievingCountryId));
 		
@@ -3511,8 +3510,6 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 	*/}
 
 	@Override
-=======
->>>>>>> branch 'master' of https://github.com/praveenkumar09/ctc.git
 	public HidefVo savecrsData(HidefVo hidefVo) {
 		logger.info("<<<<<<<<<<<<<<CRS Saving part begin>>>>>>>>>>>>>>>>>");
 		
