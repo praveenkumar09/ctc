@@ -1,7 +1,10 @@
 package com.censof.myfi.hidefmyfi.entity;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+
 import javax.persistence.*;
+
 import java.util.Date;
 
 
@@ -14,54 +17,79 @@ import java.util.Date;
 public class Crspayldaddress implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private CrspayldaddressPK id;
+	/*@EmbeddedId
+	private CrspayldaddressPK id;*/
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private BigInteger id;
+
+	@Column(name="srctype")
+	private String srcType;
+
+	@Column(name="objectid")
+	private BigInteger objectID;
 
 	@Lob
+	@Column(name="addressfree")
 	private String addressFree;
 
+	@Column(name="buildingidentifier")
 	private String buildingIdentifier;
 
+	@Column(name="city")
 	private String city;
 
+	@Column(name="countrycode")
 	private String countryCode;
 
+	@Column(name="countrysubentity")
 	private String countrySubentity;
 
+	@Column(name="createby")
 	private String createBy;
 
+	@Column(name="createdatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDateTime;
 
+	@Column(name="districtname")
 	private String districtName;
 
+	@Column(name="flooridentifier")
 	private String floorIdentifier;
 
+	@Column(name="legaladdresstype")
 	private String legalAddressType;
 
+	@Column(name="modifyby")
 	private String modifyBy;
 
+	@Column(name="modifydatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifyDateTime;
 
+	@Column(name="pob")
 	private String pob;
 
+	@Column(name="postcode")
 	private String postCode;
 
+	@Column(name="street")
 	private String street;
 
+	@Column(name="suiteidentifier")
 	private String suiteIdentifier;
 
 	public Crspayldaddress() {
 	}
 
-	public CrspayldaddressPK getId() {
+	/*public CrspayldaddressPK getId() {
 		return this.id;
 	}
 
 	public void setId(CrspayldaddressPK id) {
 		this.id = id;
-	}
+	}*/
 
 	public String getAddressFree() {
 		return this.addressFree;
@@ -190,5 +218,30 @@ public class Crspayldaddress implements Serializable {
 	public void setSuiteIdentifier(String suiteIdentifier) {
 		this.suiteIdentifier = suiteIdentifier;
 	}
+
+	public BigInteger getId() {
+		return id;
+	}
+
+	public void setId(BigInteger id) {
+		this.id = id;
+	}
+
+	public String getSrcType() {
+		return srcType;
+	}
+
+	public void setSrcType(String srcType) {
+		this.srcType = srcType;
+	}
+
+	public BigInteger getObjectID() {
+		return objectID;
+	}
+
+	public void setObjectID(BigInteger objectID) {
+		this.objectID = objectID;
+	}
+	
 
 }

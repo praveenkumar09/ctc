@@ -10,7 +10,7 @@ public class AccountHolderVo {
 	private String corMessageRefId;
 	private String corMessageDocRefId;
 	private String accountNumber;
-	private String accountNumberType;
+	private List<String> accountNumberType;
 	private String currency;
 	private String accountBalance;
 	private String accountHolderType;
@@ -112,14 +112,21 @@ public class AccountHolderVo {
 	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
 	}
-	public String getAccountNumberType() {
+	/*public String getAccountNumberType() {
 		return accountNumberType;
 	}
 	public void setAccountNumberType(String accountNumberType) {
 		this.accountNumberType = accountNumberType;
-	}
+	}*/
+	
 	public String getCurrency() {
 		return currency;
+	}
+	public List<String> getAccountNumberType() {
+		return accountNumberType;
+	}
+	public void setAccountNumberType(List<String> accountNumberType) {
+		this.accountNumberType = accountNumberType;
 	}
 	public void setCurrency(String currency) {
 		this.currency = currency;

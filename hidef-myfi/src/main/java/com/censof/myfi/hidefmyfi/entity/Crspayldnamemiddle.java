@@ -1,8 +1,17 @@
 package com.censof.myfi.hidefmyfi.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.math.BigInteger;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
@@ -14,31 +23,43 @@ import java.util.Date;
 public class Crspayldnamemiddle implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private CrspayldnamemiddlePK id;
+	/*@EmbeddedId
+	private CrspayldnamemiddlePK id;*/
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private BigInteger id;
 
+	@Column(name="nameid")
+	private BigInteger nameID;
+
+	@Column(name="createby")
 	private String createBy;
 
+	@Column(name="createdatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDateTime;
 
+	@Column(name="middlename")
 	private String middleName;
 
+	@Column(name="modifyby")
 	private String modifyBy;
 
+	@Column(name="modifydatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifyDateTime;
 
 	public Crspayldnamemiddle() {
 	}
 
-	public CrspayldnamemiddlePK getId() {
+	/*public CrspayldnamemiddlePK getId() {
 		return this.id;
 	}
 
 	public void setId(CrspayldnamemiddlePK id) {
 		this.id = id;
-	}
+	}*/
 
 	public String getCreateBy() {
 		return this.createBy;
@@ -79,5 +100,22 @@ public class Crspayldnamemiddle implements Serializable {
 	public void setModifyDateTime(Date modifyDateTime) {
 		this.modifyDateTime = modifyDateTime;
 	}
+
+	public BigInteger getId() {
+		return id;
+	}
+
+	public void setId(BigInteger id) {
+		this.id = id;
+	}
+
+	public BigInteger getNameID() {
+		return nameID;
+	}
+
+	public void setNameID(BigInteger nameID) {
+		this.nameID = nameID;
+	}
+	
 
 }

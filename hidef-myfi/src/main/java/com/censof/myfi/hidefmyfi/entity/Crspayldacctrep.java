@@ -1,7 +1,9 @@
 package com.censof.myfi.hidefmyfi.entity;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.math.BigInteger;
@@ -16,65 +18,93 @@ import java.math.BigInteger;
 public class Crspayldacctrep implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private CrspayldacctrepPK id;
+	/*@EmbeddedId
+	private CrspayldacctrepPK id;*/
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private BigInteger id;
 
+	@Column(name="bodyid")
+	private BigInteger bodyID;
+	
+	@Column(name="accountbalance")
 	private BigDecimal accountBalance;
 
+	@Column(name="accountcurrcode")
 	private String accountCurrCode;
 
+	@Column(name="accountholder")
 	private String accountHolder;
 
+	@Column(name="accountnumber")
 	private String accountNumber;
 
+	@Column(name="acctholdertype")
 	private String acctHolderType;
 
+	@Column(name="acctnumbertype")
 	private String acctNumberType;
 
+	@Column(name="birthcity")
 	private String birthCity;
 
+	@Column(name="birthcitysubent")
 	private String birthCitySubent;
 
+	@Column(name="birthcountry")
 	private String birthCountry;
 
+	@Column(name="birthdate")
 	private String birthDate;
 
+	@Column(name="birthformercountry")
 	private String birthFormerCountry;
 
+	@Column(name="closedaccount")
 	private String closedAccount;
 
+	@Column(name="corrdocrefid")
 	private String corrDocRefId;
 
+	@Column(name="createby")
 	private String createBy;
 
+	@Column(name="createdatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDateTime;
 
+	@Column(name="docrefid")
 	private String docRefId;
 
+	@Column(name="doctypeindic")
 	private String docTypeIndic;
 
+	@Column(name="dormantaccount")
 	private String dormantAccount;
 
+	@Column(name="hdrid")
 	private BigInteger hdrID;
 
+	@Column(name="modifyby")
 	private String modifyBy;
 
+	@Column(name="modifydatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifyDateTime;
 
+	@Column(name="undocumentedaccount")
 	private String undocumentedAccount;
 
 	public Crspayldacctrep() {
 	}
 
-	public CrspayldacctrepPK getId() {
+	/*public CrspayldacctrepPK getId() {
 		return this.id;
 	}
 
 	public void setId(CrspayldacctrepPK id) {
 		this.id = id;
-	}
+	}*/
 
 	public BigDecimal getAccountBalance() {
 		return this.accountBalance;
@@ -251,5 +281,22 @@ public class Crspayldacctrep implements Serializable {
 	public void setUndocumentedAccount(String undocumentedAccount) {
 		this.undocumentedAccount = undocumentedAccount;
 	}
+
+	public BigInteger getId() {
+		return id;
+	}
+
+	public void setId(BigInteger id) {
+		this.id = id;
+	}
+
+	public BigInteger getBodyID() {
+		return bodyID;
+	}
+
+	public void setBodyID(BigInteger bodyID) {
+		this.bodyID = bodyID;
+	}
+	
 
 }

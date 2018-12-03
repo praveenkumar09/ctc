@@ -153,14 +153,14 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 				if (hidef.getUserprofile().getFileTypeIndic() != null
 						&& !hidef.getUserprofile().getFileTypeIndic().isEmpty()) {
 					Element fileTypeIndic = doc.createElement("FileRevisionInd");
-					if(hidef.getUserprofile().getFileTypeIndic().equals("1")){
+				/*	if(hidef.getUserprofile().getFileTypeIndic().equals("1")){*/
 					fileTypeIndic.appendChild(doc.createTextNode(hidef.getUserprofile().getFileTypeIndic()));
-					}else if(hidef.getUserprofile().getFileTypeIndic().equals("2")){
+					/*}else if(hidef.getUserprofile().getFileTypeIndic().equals("2")){
 						fileTypeIndic.appendChild(doc.createTextNode(hidef.getUserprofile().getFileTypeIndic()));
 					}
 					else{
 						fileTypeIndic.appendChild(doc.createTextNode(""));
-					}
+					}*/
 					rootElement.appendChild(fileTypeIndic);
 				}
 
