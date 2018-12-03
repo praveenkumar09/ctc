@@ -94,7 +94,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.unrelatedAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="unrelatedAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.unrelatedAmount" onkeypress='validate1(event)' maxlength="18"></form:input>
+								id="unrelatedAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.unrelatedAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="unrelatedAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
@@ -119,7 +119,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.relatedAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="relatedAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.relatedAmount" onkeypress='validate1(event)' maxlength="18"></form:input>
+								id="relatedAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.relatedAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="relatedAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
@@ -144,7 +144,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.totalRevenueAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="totalAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.totalRevenueAmount" onkeypress='validate1(event)' maxlength="18"></form:input>
+								id="totalAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.totalRevenueAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="totalAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
@@ -169,7 +169,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.prfitotloassAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="profitOrLossAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.prfitotloassAmount" onkeypress='validate1(event)' maxlength="18"></form:input>
+								id="profitOrLossAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.prfitotloassAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="profitOrLossAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
@@ -193,7 +193,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.taxpaidAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="taxPaidAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.taxpaidAmount" onkeypress='validate1(event)' maxlength="18"></form:input>
+								id="taxPaidAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.taxpaidAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="taxPaidAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
@@ -218,7 +218,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.taxaccruedAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="taxAccruedAmount" placeholder="Amount" path="cbcReports.taxaccruedAmount" onkeypress='validate1(event)' maxlength="18"></form:input>
+								id="taxAccruedAmount" placeholder="Amount" path="cbcReports.taxaccruedAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="taxAccruedAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
@@ -242,7 +242,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.capitalAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="capitalAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.capitalAmount" onkeypress='validate1(event)' maxlength="18"></form:input>
+								id="capitalAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.capitalAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="capitalAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
@@ -266,7 +266,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.earningAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="earningsAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.earningAmount" onkeypress='validate1(event)' maxlength="18"></form:input>
+								id="earningsAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.earningAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="earningsAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
@@ -290,7 +290,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.assertAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="assetsAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.assertAmount" onkeypress='validate1(event)' maxlength="18"></form:input>
+								id="assetsAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.assertAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="assetsAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
