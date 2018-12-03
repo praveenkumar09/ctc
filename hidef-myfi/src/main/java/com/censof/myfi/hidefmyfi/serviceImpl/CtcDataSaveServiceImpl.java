@@ -4026,10 +4026,123 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						else if(accountHolderVo.getAccountHolderType().equals("organization")){
 							logger.info("Organisation Section Saving part Begin Here");	
 							
+							if(accountHolderVo.getOrganisationAddressList() != null && accountHolderVo.getOrganisationAddressList().size()  > 0){
+								logger.info("<<<<<<<<<<<Organisation Address[Crspayldaddress] Begin saving>>>>>>>>>>>>>>>");
+								for(AddressVo addressVo :accountHolderVo.getOrganisationAddressList()){
+									Crspayldaddress address = new Crspayldaddress();
+									if(!StringUtils.isEmpty(addressVo.getAddressFree())){
+									address.setAddressFree(addressVo.getAddressFree());
+									}
+									if(!StringUtils.isEmpty(addressVo.getBuildingIdentifier())){
+									address.setBuildingIdentifier(addressVo.getBuildingIdentifier());
+									}
+									if(!StringUtils.isEmpty(addressVo.getCity())){
+									address.setCity(addressVo.getCity());
+									}
+									if(!StringUtils.isEmpty(addressVo.getCountryCode())){
+									address.setCountryCode(addressVo.getCountryCode());
+									}
+									if(!StringUtils.isEmpty(addressVo.getCountrySubentity())){
+									address.setCountrySubentity(addressVo.getCountrySubentity());
+									}
+									address.setCreateDateTime(new Date());
+									if(!StringUtils.isEmpty(addressVo.getDistrictName())){
+									address.setDistrictName(addressVo.getDistrictName());
+									}
+									if(!StringUtils.isEmpty(addressVo.getFloorIdentifier())){
+									address.setFloorIdentifier(addressVo.getFloorIdentifier());
+									}
+									if(!StringUtils.isEmpty(addressVo.getAddressType())){
+									address.setLegalAddressType(addressVo.getAddressType());
+									}
+									address.setObjectID(crspayldacct.getId());
+									if(!StringUtils.isEmpty(addressVo.getPob())){
+									address.setPob(addressVo.getPob());
+									}
+									if(!StringUtils.isEmpty(addressVo.getPostCode())){
+									address.setPostCode(addressVo.getPostCode());
+									}
+									address.setSrcType("0");
+									if(!StringUtils.isEmpty(addressVo.getStreet())){
+									address.setStreet(addressVo.getStreet());
+									}
+									if(!StringUtils.isEmpty(addressVo.getSuitIdentifier())){
+									address.setSuiteIdentifier(addressVo.getSuitIdentifier());
+									}
+									address = crspayldaddressRepository.saveAndFlush(address);
+								}
+								logger.info("<<<<<<<<<<<Organisation Address[Crspayldaddress] End saving>>>>>>>>>>>>>>>");
+								
+							
+							}
+							
+							//Organisation Resident Country
+							if(accountHolderVo.getOrganisationResidentCountryList() != null && accountHolderVo.getOrganisationResidentCountryList().size() >0){
+								logger.info("<<<<<<<<<<<Organisation Resident Country[Crspayldrescountry] Begin saving>>>>>>>>>>>>>>>");
+								for(ResidentCountryVo residentCountry : accountHolderVo.getOrganisationResidentCountryList()){
+									Crspayldrescountry crspayldrescountry = new Crspayldrescountry();
+									if(residentCountry.getResidentCountryCode() > 0){
+									crspayldrescountry.setResCountryCode(String.valueOf(residentCountry.getResidentCountryCode()));
+									}
+									crspayldrescountry.setObjectID(crspayldacct.getId());
+									crspayldrescountry.setSrcType("0");
+									crspayldrescountry = crspayldrescountryRepository.saveAndFlush(crspayldrescountry);
+								}
+								logger.info("<<<<<<<<<<<Organisation Resident Country[Crspayldrescountry] End saving>>>>>>>>>>>>>>>");
+								
+							}
+							
+							//Organisation  IN
+							if(accountHolderVo.getOrgOrganisationInTypeList() != null && accountHolderVo.getOrgOrganisationInTypeList().size() > 0){
+								logger.info("<<<<<<<<<<<Organisation In type[Crspayldin] Begin saving>>>>>>>>>>>>>>>");
+								for(OrganisationInTypeVo organisation : accountHolderVo.getOrgOrganisationInTypeList()){
+									Crspayldin crsPayldin = new Crspayldin();
+									if(!StringUtils.isEmpty(organisation.getIn())){
+									crsPayldin.setTin(organisation.getIn());
+									}
+									if(!StringUtils.isEmpty(organisation.getInType())){
+									crsPayldin.setINType(organisation.getInType());
+									}
+									if(organisation.getIssuedBy() >0){
+									crsPayldin.setIssuedBy(String.valueOf(organisation.getIssuedBy()));
+									}
+									crsPayldin.setObjectID(crspayldacct.getId());
+									crsPayldin.setSrcType("0");
+									crsPayldin = crspayldinRepository.saveAndFlush(crsPayldin);
+								}
+								logger.info("<<<<<<<<<<<Organisation In typ[Crspayldin] End saving>>>>>>>>>>>>>>>");
+								
+							}
+							
+							//Organisation Grid
+							if(accountHolderVo.getOrganisationList() != null && accountHolderVo.getOrganisationList().size() > 0){
+								logger.info("<<<<<<<<<<<Organisation[Crspayldname] Begin saving>>>>>>>>>>>>>>>");	
+								for(NameVo nameVo : accountHolderVo.getOrganisationList()){
+									Crspayldname crspayldName = new Crspayldname();
+									crspayldName.setNameOrganisation(nameVo.getFirstName());
+									crspayldName.setNamePersonType(String.valueOf(nameVo.getNameType()));
+									crspayldName.setObjectID(crspayldacct.getId());
+									crspayldName.setSrcType("0");
+									crspayldName = crspayldnameRepository.saveAndFlush(crspayldName);
+									
+								}
+								logger.info("<<<<<<<<<<<Organisation[Crspayldname] End saving>>>>>>>>>>>>>>>");
+							}
 							
 							
 							
 						}//Organisation
+					
+					
+					//Controlling Person
+					if(accountHolderVo.getControllingPersonList() != null && accountHolderVo.getControllingPersonList().size() > 0){
+						logger.info("<<<<<<<<<<<Controlling Person[Crspayldname] Begin saving>>>>>>>>>>>>>>>");	
+						
+						
+						
+					}
+					
+					
 						
 						
 						
