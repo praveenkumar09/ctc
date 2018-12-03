@@ -574,7 +574,7 @@ public class CbcAdditionalInfoController {
 	     outZip.finish();
 	     outZip.close();*/
 	     
-	     
+	     // download zip file code
 	     File zipFile = new File(packageFolderPath);
 	     InputStream ioStream = new FileInputStream(zipFile);
 	     IOUtils.copy(ioStream, response.getOutputStream());
