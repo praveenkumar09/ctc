@@ -170,16 +170,16 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<div class="form-group col-md-6">
+						<%-- <div class="form-group col-md-6">
 							<form:label for="" path="metadata.binaryEncoding">Binary Encoding:</form:label>
 							<form:select class="form-control" id="binaryEncoding"
 								path="metadata.binaryEncoding" disabled="true">
 								<form:option value="0">Please choose</form:option>
-								<%-- 	<form:option value="1">MY</form:option>
+									<form:option value="1">MY</form:option>
 							<form:option value="2">SG</form:option>
 							<form:option value="3">CN</form:option>
 							<form:option value="4">AU</form:option>
-							<form:option value="5">US</form:option> --%>
+							<form:option value="5">US</form:option>
 								<c:forEach items="${binaryencodingList}"
 									var="binaryencodingList">
 									<form:option value="${binaryencodingList.type}">
@@ -187,7 +187,14 @@
 							</form:option>
 								</c:forEach>
 							</form:select>
-						</div>
+						</div> --%>
+						<div class="form-group col-md-6">
+						<form:label path="metadata.binaryEncoding">Binary Encoding:</form:label>
+						<form:input type="text" class="form-control"
+							id="binaryEncoding" value="None"
+							placeholder="Message Type" path="metadata.binaryEncoding"
+							readonly="true"></form:input>
+					   </div>
 						<div class="form-group col-md-6">
 							<form:label class="" path="metadata.messageRefId">Message Reference Id: </form:label>
 							<form:input type="text" path="metadata.messageRefId"

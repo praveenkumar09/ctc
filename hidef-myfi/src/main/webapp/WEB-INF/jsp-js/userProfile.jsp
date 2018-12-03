@@ -91,22 +91,29 @@ $(document).ready(function() {
 							</c:forEach>
 						</form:select>
 					</div>
-					<div class="form-group col-md-6">
+					<%-- <div class="form-group col-md-6">
 						<form:label for="" path="userprofile.binaryEncoding">Binary Encoding:</form:label>
 						<form:select class="form-control" id="binaryEncoding"
 							path="userprofile.binaryEncoding">
 							<form:option value="0">Please choose</form:option>
-							<%-- 	<form:option value="1">MY</form:option>
+								<form:option value="1">MY</form:option>
 							<form:option value="2">SG</form:option>
 							<form:option value="3">CN</form:option>
 							<form:option value="4">AU</form:option>
-							<form:option value="5">US</form:option> --%>
+							<form:option value="5">US</form:option>
 							<c:forEach items="${binaryencodingList}" var="binaryencodingList">
 								<form:option value="${binaryencodingList.type}">
 								${binaryencodingList.type}
 							</form:option>
 							</c:forEach>
 						</form:select>
+					</div> --%>
+					<div class="form-group col-md-6">
+						<form:label path="userprofile.binaryEncoding">Binary Encoding:</form:label>
+						<form:input type="text" class="form-control"
+							id="binaryEncoding" value="None"
+							placeholder="Message Type" path="userprofile.binaryEncoding"
+							readonly="true"></form:input>
 					</div>
 					<%-- <div class="form-group col-md-6">
 						<form:label class="" path="userprofile.messageRefID">Message Reference Id: </form:label>
