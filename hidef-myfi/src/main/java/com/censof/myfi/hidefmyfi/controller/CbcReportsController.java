@@ -864,6 +864,30 @@ public class CbcReportsController {
 		return reportVO;
 	}
 	
+	
+	@GetMapping(value = "/admin/cbc/cbcReports/validateConstiituentEntityGrids")
+	@ResponseBody
+	public String validateConstiituentEntityGrids(@ModelAttribute("hidef") HidefVo hidef, BindingResult result,
+			ModelMap model, Map<String, Object> map) {
+		String errorFlag = "false";
+		
+		CbcConstituentEntityVO constituentEntityVo = hidef.getCbcReports().getConstituentEntity();
+		
+		if(constituentEntityVo.getBizActivitiesList() == null || constituentEntityVo.getBizActivitiesList().isEmpty()) {
+			errorFlag = "true";
+		}
+		
+		if(constituentEntityVo.getNameList() == null || constituentEntityVo.getNameList().isEmpty()) {
+			errorFlag = "true";
+		}
+		
+		if(constituentEntityVo.getOrganisationInTypeList() == null || constituentEntityVo.getOrganisationInTypeList().isEmpty()) {
+			errorFlag = "true";
+		}
+		
+		return errorFlag; 
+	}
+	
 	@GetMapping(value = "/admin/cbc/cbcReports/populateEditedConsitituentEntityGrid")
 	@ResponseBody
 	public CbcConstituentEntityVO populateEditedConsitituentEntityGrid(@ModelAttribute("hidef") HidefVo hidef, BindingResult result,

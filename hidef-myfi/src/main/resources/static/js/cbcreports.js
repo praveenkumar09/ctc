@@ -228,10 +228,11 @@ function saveCBCReports(){
 
 function editConstituentEntity(){
 	var errorFlag = false; 
-	errorFlag = validateCbcConstituentEntity();
+	var form_data = $('#cbcreports').serialize();
+	errorFlag = validateCbcConstituentEntity(form_data);
 	 $("#cbcReportsError").empty();
 	if(!errorFlag){	
-	 var form_data = $('#cbcreports').serialize();
+		 $("#issuedByError11").empty()
 		$.ajax({
 			url : 'cbc/cbcReports/populateEditedConsitituentEntityGrid',
 			type : 'GET',
@@ -270,10 +271,11 @@ function editConstituentEntity(){
 
 function saveConstituentEntity(){
 	var errorFlag = false; 
-	errorFlag = validateCbcConstituentEntity();
+	 var form_data = $('#cbcreports').serialize();
+	errorFlag = validateCbcConstituentEntity(form_data);
 	 $("#cbcReportsError").empty();
 	if(!errorFlag){	
-	 var form_data = $('#cbcreports').serialize();
+		 $("#issuedByError11").empty()
 		$.ajax({
 			url : 'cbc/cbcReports/populateCBCConsitituentEntityGrid',
 			type : 'GET',
@@ -504,9 +506,9 @@ function validate(evt) {
 }
 
 
-function validateCbcConstituentEntity(){
+function validateCbcConstituentEntity(form_data){
 	var errorFlag=false;
-	if($("#tin11").val() == ''){
+/*	if($("#tin11").val() == ''){
 	   	 $("#tinError11").empty().append("TIN not empty!");
 	   	 errorFlag = true;	
  }else{
@@ -518,15 +520,30 @@ function validateCbcConstituentEntity(){
 	   	 errorFlag = true;	
  }else{
  	$("#tintypeError11").empty();
- }
+ }*/
  
- var issuedBy = $('#issuedBy11').val();
+/* var issuedBy = $('#issuedBy11').val();
  if(issuedBy =='0'){
  	 $("#issuedByError11").empty().append("TIN Issued By not empty!");
 	   	 errorFlag = true;
  }else{
  	$("#issuedByError11").empty();
- }
+ }*/
+ 
+ $.ajax({
+		url : 'cbc/cbcReports/validateConstiituentEntityGrids',
+		type : 'GET',
+		data : form_data,
+		 async: false,
+		success : function(data) {
+			if(data == "true"){
+				 $("#issuedByError11").empty().append("Please fill up all the mandatory Grids!.");
+				 errorFlag = true;
+			}
+		},error : function(request, error) {
+			alert("Request: " + JSON.stringify(request));
+		}
+	});	
  
  return errorFlag;
 }
