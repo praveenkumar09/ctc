@@ -1,7 +1,10 @@
 package com.censof.myfi.hidefmyfi.entity;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+
 import javax.persistence.*;
+
 import java.util.Date;
 
 
@@ -14,32 +17,42 @@ import java.util.Date;
 public class Crspayldnamesuffix implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private CrspayldnamesuffixPK id;
+	/*@EmbeddedId
+	private CrspayldnamesuffixPK id;*/
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private BigInteger id;
+	@Column(name="nameid")
+	private BigInteger nameID;
 
+	@Column(name="createby")
 	private String createBy;
 
+	@Column(name="createdatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDateTime;
 
+	@Column(name="modifyby")
 	private String modifyBy;
 
+	@Column(name="modifydatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifyDateTime;
 
+	@Column(name="suffix")
 	private String suffix;
 
 	public Crspayldnamesuffix() {
 	}
 
-	public CrspayldnamesuffixPK getId() {
+	/*public CrspayldnamesuffixPK getId() {
 		return this.id;
 	}
 
 	public void setId(CrspayldnamesuffixPK id) {
 		this.id = id;
 	}
-
+*/
 	public String getCreateBy() {
 		return this.createBy;
 	}
@@ -79,5 +92,22 @@ public class Crspayldnamesuffix implements Serializable {
 	public void setSuffix(String suffix) {
 		this.suffix = suffix;
 	}
+
+	public BigInteger getId() {
+		return id;
+	}
+
+	public void setId(BigInteger id) {
+		this.id = id;
+	}
+
+	public BigInteger getNameID() {
+		return nameID;
+	}
+
+	public void setNameID(BigInteger nameID) {
+		this.nameID = nameID;
+	}
+	
 
 }

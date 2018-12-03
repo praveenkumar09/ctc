@@ -5,8 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,10 +45,18 @@ import com.censof.myfi.hidefmyfi.entity.Cbcpayldreceivingcountry;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldreport;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldrescountry;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldsumref;
+import com.censof.myfi.hidefmyfi.entity.Crspayldacctrep;
+import com.censof.myfi.hidefmyfi.entity.Crspayldaddress;
 import com.censof.myfi.hidefmyfi.entity.Crspayldbody;
 import com.censof.myfi.hidefmyfi.entity.Crspayldfi;
 import com.censof.myfi.hidefmyfi.entity.Crspayldhdr;
+import com.censof.myfi.hidefmyfi.entity.Crspayldin;
 import com.censof.myfi.hidefmyfi.entity.Crspayldname;
+import com.censof.myfi.hidefmyfi.entity.Crspayldnamegeneration;
+import com.censof.myfi.hidefmyfi.entity.Crspayldnamemiddle;
+import com.censof.myfi.hidefmyfi.entity.Crspayldnamesuffix;
+import com.censof.myfi.hidefmyfi.entity.Crspayldnametitle;
+import com.censof.myfi.hidefmyfi.entity.Crspayldrescountry;
 import com.censof.myfi.hidefmyfi.entity.Docrefid;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
 import com.censof.myfi.hidefmyfi.entity.Messagerefid;
@@ -69,10 +77,18 @@ import com.censof.myfi.hidefmyfi.repository.CbcpayldreceivingcountryRepository;
 import com.censof.myfi.hidefmyfi.repository.CbcpayldreportRepository;
 import com.censof.myfi.hidefmyfi.repository.CbcpayldrescountryRepository;
 import com.censof.myfi.hidefmyfi.repository.CbcpayldsumrefRepository;
+import com.censof.myfi.hidefmyfi.repository.CrspayldacctrepRepository;
+import com.censof.myfi.hidefmyfi.repository.CrspayldaddressRepository;
 import com.censof.myfi.hidefmyfi.repository.CrspayldbodyRepository;
 import com.censof.myfi.hidefmyfi.repository.CrspayldfiRepository;
 import com.censof.myfi.hidefmyfi.repository.CrspayldhdrRepository;
+import com.censof.myfi.hidefmyfi.repository.CrspayldinRepository;
 import com.censof.myfi.hidefmyfi.repository.CrspayldnameRepository;
+import com.censof.myfi.hidefmyfi.repository.CrspayldnamegenerationRepository;
+import com.censof.myfi.hidefmyfi.repository.CrspayldnamemiddleRepository;
+import com.censof.myfi.hidefmyfi.repository.CrspayldnamesuffixRepository;
+import com.censof.myfi.hidefmyfi.repository.CrspayldnametitleRepository;
+import com.censof.myfi.hidefmyfi.repository.CrspayldrescountryRepository;
 import com.censof.myfi.hidefmyfi.repository.DocrefidRepository;
 import com.censof.myfi.hidefmyfi.repository.MessagerefidRepository;
 import com.censof.myfi.hidefmyfi.repository.SenderfileidRepository;
@@ -81,6 +97,7 @@ import com.censof.myfi.hidefmyfi.repository.UsereceivingcountryRepository;
 import com.censof.myfi.hidefmyfi.repository.UserprofileRepository;
 import com.censof.myfi.hidefmyfi.service.CtcDataSaveService;
 import com.censof.myfi.hidefmyfi.service.CtccommonDropdownService;
+import com.censof.myfi.hidefmyfi.vo.AccountHolderVo;
 import com.censof.myfi.hidefmyfi.vo.AddressVo;
 import com.censof.myfi.hidefmyfi.vo.BizActivitiesTypeVo;
 import com.censof.myfi.hidefmyfi.vo.CBCRepotsVo;
@@ -89,14 +106,19 @@ import com.censof.myfi.hidefmyfi.vo.CbcAdditionalInfo;
 import com.censof.myfi.hidefmyfi.vo.CbcConstituentEntityVO;
 import com.censof.myfi.hidefmyfi.vo.CrsMetadataVo;
 import com.censof.myfi.hidefmyfi.vo.CrsReportingFiVo;
+import com.censof.myfi.hidefmyfi.vo.GenerationIdentifierVo;
 import com.censof.myfi.hidefmyfi.vo.HidefVo;
 import com.censof.myfi.hidefmyfi.vo.MetaDataVo;
+import com.censof.myfi.hidefmyfi.vo.MiddleNameVo;
+import com.censof.myfi.hidefmyfi.vo.NameTypeVo;
 import com.censof.myfi.hidefmyfi.vo.NameVo;
 import com.censof.myfi.hidefmyfi.vo.OrganisationInTypeVo;
 import com.censof.myfi.hidefmyfi.vo.RecievingCountryVo;
 import com.censof.myfi.hidefmyfi.vo.ReportingEntityVo;
 import com.censof.myfi.hidefmyfi.vo.ResidentCountryVo;
+import com.censof.myfi.hidefmyfi.vo.SuffixVo;
 import com.censof.myfi.hidefmyfi.vo.SummaryVo;
+import com.censof.myfi.hidefmyfi.vo.TitleVo;
 import com.censof.myfi.hidefmyfi.vo.UserProfileVo;
 
 @Service("ctcDataSaveService")
@@ -183,6 +205,30 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 	
 	@Autowired
 	private CrspayldnameRepository crspayldnameRepository;
+	
+	@Autowired
+	private CrspayldinRepository crspayldinRepository;
+	
+	@Autowired
+	private CrspayldrescountryRepository crspayldrescountryRepository;
+	
+	@Autowired
+	private CrspayldaddressRepository crspayldaddressRepository;
+	
+	@Autowired
+	private CrspayldacctrepRepository crspayldacctrepRepository;
+	
+	@Autowired
+	private CrspayldnametitleRepository crspayldnametitleRepository;
+	
+	@Autowired
+	private CrspayldnamemiddleRepository crspayldnamemiddleRepository;
+	
+	@Autowired
+	private CrspayldnamegenerationRepository crspayldnamegenerationRepository;
+	
+	@Autowired
+	private CrspayldnamesuffixRepository crspayldnamesuffixRepository;
 
 	@Override
 	@Transactional
@@ -3676,63 +3722,452 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						Crspayldname crspayldName = new Crspayldname();
 						crspayldName.setNameOrganisation(nameVo.getFirstName());
 						crspayldName.setNamePersonType(String.valueOf(nameVo.getNameType()));
+						crspayldName.setObjectID(crspayldFi.getId());
+						crspayldName.setSrcType("0");
 						crspayldName = crspayldnameRepository.saveAndFlush(crspayldName);
 						
 					}
 					logger.info("<<<<<<<<<<<ReportingFI[Crspayldname] End saving>>>>>>>>>>>>>>>");
 				}
+				//Reporting FI IN
+				if(reportingFi.getOrganisationInTypeList() != null && reportingFi.getOrganisationInTypeList().size() > 0){
+					logger.info("<<<<<<<<<<<ReportingFI[Crspayldin] Begin saving>>>>>>>>>>>>>>>");
+					for(OrganisationInTypeVo organisation : reportingFi.getOrganisationInTypeList()){
+						Crspayldin crsPayldin = new Crspayldin();
+						if(!StringUtils.isEmpty(organisation.getIn())){
+						crsPayldin.setTin(organisation.getIn());
+						}
+						if(!StringUtils.isEmpty(organisation.getInType())){
+						crsPayldin.setINType(organisation.getInType());
+						}
+						if(organisation.getIssuedBy() >0){
+						crsPayldin.setIssuedBy(String.valueOf(organisation.getIssuedBy()));
+						}
+						crsPayldin.setObjectID(crspayldFi.getId());
+						crsPayldin.setSrcType("0");
+						crsPayldin = crspayldinRepository.saveAndFlush(crsPayldin);
+					}
+					logger.info("<<<<<<<<<<<ReportingFI[Crspayldin] End saving>>>>>>>>>>>>>>>");
+					
+				}
+				//Resident Country
+				if(reportingFi.getResidentCountryList() != null && reportingFi.getResidentCountryList().size() >0){
+					logger.info("<<<<<<<<<<<ReportingFI[Crspayldrescountry] Begin saving>>>>>>>>>>>>>>>");
+					for(ResidentCountryVo residentCountry : reportingFi.getResidentCountryList()){
+						Crspayldrescountry crspayldrescountry = new Crspayldrescountry();
+						if(residentCountry.getResidentCountryCode() > 0){
+						crspayldrescountry.setResCountryCode(String.valueOf(residentCountry.getResidentCountryCode()));
+						}
+						crspayldrescountry.setObjectID(crspayldFi.getId());
+						crspayldrescountry.setSrcType("0");
+						crspayldrescountry = crspayldrescountryRepository.saveAndFlush(crspayldrescountry);
+					}
+					logger.info("<<<<<<<<<<<ReportingFI[Crspayldrescountry] End saving>>>>>>>>>>>>>>>");
+					
+				}	
 				
-				
-				
-				
-				
-				
-				
-				
-				
+				//Address
+				if(reportingFi.getAddressList() != null && reportingFi.getAddressList().size()>0){
+					logger.info("<<<<<<<<<<<ReportingFI[Crspayldaddress] Begin saving>>>>>>>>>>>>>>>");
+					for(AddressVo addressVo :reportingFi.getAddressList() ){
+						Crspayldaddress address = new Crspayldaddress();
+						if(!StringUtils.isEmpty(addressVo.getAddressFree())){
+						address.setAddressFree(addressVo.getAddressFree());
+						}
+						if(!StringUtils.isEmpty(addressVo.getBuildingIdentifier())){
+						address.setBuildingIdentifier(addressVo.getBuildingIdentifier());
+						}
+						if(!StringUtils.isEmpty(addressVo.getCity())){
+						address.setCity(addressVo.getCity());
+						}
+						if(!StringUtils.isEmpty(addressVo.getCountryCode())){
+						address.setCountryCode(addressVo.getCountryCode());
+						}
+						if(!StringUtils.isEmpty(addressVo.getCountrySubentity())){
+						address.setCountrySubentity(addressVo.getCountrySubentity());
+						}
+						address.setCreateDateTime(new Date());
+						if(!StringUtils.isEmpty(addressVo.getDistrictName())){
+						address.setDistrictName(addressVo.getDistrictName());
+						}
+						if(!StringUtils.isEmpty(addressVo.getFloorIdentifier())){
+						address.setFloorIdentifier(addressVo.getFloorIdentifier());
+						}
+						if(!StringUtils.isEmpty(addressVo.getAddressType())){
+						address.setLegalAddressType(addressVo.getAddressType());
+						}
+						address.setObjectID(crspayldFi.getId());
+						if(!StringUtils.isEmpty(addressVo.getPob())){
+						address.setPob(addressVo.getPob());
+						}
+						if(!StringUtils.isEmpty(addressVo.getPostCode())){
+						address.setPostCode(addressVo.getPostCode());
+						}
+						address.setSrcType("0");
+						if(!StringUtils.isEmpty(addressVo.getStreet())){
+						address.setStreet(addressVo.getStreet());
+						}
+						if(!StringUtils.isEmpty(addressVo.getSuitIdentifier())){
+						address.setSuiteIdentifier(addressVo.getSuitIdentifier());
+						}
+						address = crspayldaddressRepository.saveAndFlush(address);
+					}
+					logger.info("<<<<<<<<<<<ReportingFI[Crspayldaddress] End saving>>>>>>>>>>>>>>>");
+					
+				}
 				
 				}//Reporting FI
 				
 				
+				if(hidefVo.getAccountHolderList() != null && hidefVo.getAccountHolderList().size() >0){
+				logger.info("<<<<<<<<<<<AccountHolder[Crspayldacctrep] Begin saving>>>>>>>>>>>>>>>");
+				List<AccountHolderVo> accountHolderList = 	hidefVo.getAccountHolderList();
+				for(AccountHolderVo accountHolderVo : accountHolderList){
+					
+					Crspayldacctrep crspayldacct = new Crspayldacctrep();
+					if(!StringUtils.isEmpty(accountHolderVo.getAccountBalance())){
+					crspayldacct.setAccountBalance(new BigDecimal(accountHolderVo.getAccountBalance()));
+					}
+					crspayldacct.setAccountCurrCode(accountHolderVo.getCurrency());
+					crspayldacct.setAccountHolder(accountHolderVo.getAccountHolderType());
+					crspayldacct.setAccountNumber(accountHolderVo.getAccountNumber());
+					/*crspayldacct.setAcctNumberType(accountHolderVo.getA);*/
+					
+					crspayldacct.setBirthCity(accountHolderVo.getCity());
+					crspayldacct.setBirthCountry(accountHolderVo.getCountryCode());
+					crspayldacct.setBirthDate(accountHolderVo.getBirthDate());
+					crspayldacct.setBirthFormerCountry(accountHolderVo.getCountryName());
+					crspayldacct.setBirthCitySubent(accountHolderVo.getCitySubEntity());
+					crspayldacct.setBodyID(crsbody.getId());
+					crspayldacct.setHdrID(crspayld.getId());
+					if(accountHolderVo.getAccountNumberType() != null && accountHolderVo.getAccountNumberType().size() > 0){
+						for(String s : accountHolderVo.getAccountNumberType()){
+							if(s.equals("Closed")){
+								crspayldacct.setClosedAccount("Y");
+							}else if(s.equals("Dormant")){
+								crspayldacct.setDormantAccount("Y");
+							}else if(s.equals("Undocumented")){
+								crspayldacct.setUndocumentedAccount("Y");
+							}
+							
+						}
+					}else{
+						crspayldacct.setClosedAccount("N");
+						crspayldacct.setDormantAccount("N");
+						crspayldacct.setUndocumentedAccount("N");
+					}
+					crspayldacct.setCorrDocRefId(accountHolderVo.getCorMessageDocRefId());
+					crspayldacct.setCreateDateTime(new Date());
+					crspayldacct.setDocRefId(accountHolderVo.getDocumentRefId());
+					crspayldacct.setDocTypeIndic(accountHolderVo.getDocumentTypeIndic());
+					crspayldacct = crspayldacctrepRepository.saveAndFlush(crspayldacct);
+					logger.info("<<<<<<<<<<<AccountHolder[Crspayldacctrep] End saving>>>>>>>>>>>>>>>"+crspayldacct.getId());
+					
+					if(accountHolderVo.getAccountHolderType() != null){
+						if(accountHolderVo.getAccountHolderType().equals("individual")){
+						logger.info("Individual Section Saving part Begin Here");
+						
+						//Individual Address
+						if(accountHolderVo.getIndividualAddressList() != null && accountHolderVo.getIndividualAddressList().size()  > 0){
+						
+							logger.info("<<<<<<<<<<<Individual Address[Crspayldaddress] Begin saving>>>>>>>>>>>>>>>");
+							for(AddressVo addressVo :accountHolderVo.getIndividualAddressList()){
+								Crspayldaddress address = new Crspayldaddress();
+								if(!StringUtils.isEmpty(addressVo.getAddressFree())){
+								address.setAddressFree(addressVo.getAddressFree());
+								}
+								if(!StringUtils.isEmpty(addressVo.getBuildingIdentifier())){
+								address.setBuildingIdentifier(addressVo.getBuildingIdentifier());
+								}
+								if(!StringUtils.isEmpty(addressVo.getCity())){
+								address.setCity(addressVo.getCity());
+								}
+								if(!StringUtils.isEmpty(addressVo.getCountryCode())){
+								address.setCountryCode(addressVo.getCountryCode());
+								}
+								if(!StringUtils.isEmpty(addressVo.getCountrySubentity())){
+								address.setCountrySubentity(addressVo.getCountrySubentity());
+								}
+								address.setCreateDateTime(new Date());
+								if(!StringUtils.isEmpty(addressVo.getDistrictName())){
+								address.setDistrictName(addressVo.getDistrictName());
+								}
+								if(!StringUtils.isEmpty(addressVo.getFloorIdentifier())){
+								address.setFloorIdentifier(addressVo.getFloorIdentifier());
+								}
+								if(!StringUtils.isEmpty(addressVo.getAddressType())){
+								address.setLegalAddressType(addressVo.getAddressType());
+								}
+								address.setObjectID(crspayldacct.getId());
+								if(!StringUtils.isEmpty(addressVo.getPob())){
+								address.setPob(addressVo.getPob());
+								}
+								if(!StringUtils.isEmpty(addressVo.getPostCode())){
+								address.setPostCode(addressVo.getPostCode());
+								}
+								address.setSrcType("0");
+								if(!StringUtils.isEmpty(addressVo.getStreet())){
+								address.setStreet(addressVo.getStreet());
+								}
+								if(!StringUtils.isEmpty(addressVo.getSuitIdentifier())){
+								address.setSuiteIdentifier(addressVo.getSuitIdentifier());
+								}
+								address = crspayldaddressRepository.saveAndFlush(address);
+							}
+							logger.info("<<<<<<<<<<<Individual Address[Crspayldaddress] End saving>>>>>>>>>>>>>>>");
+							
+						
+						}
+						
+						//Individual Resident Country
+						if(accountHolderVo.getIndividualResidentCountryList() != null && accountHolderVo.getIndividualResidentCountryList().size() >0){
+							logger.info("<<<<<<<<<<<Indidivual Resident Country[Crspayldrescountry] Begin saving>>>>>>>>>>>>>>>");
+							for(ResidentCountryVo residentCountry : accountHolderVo.getIndividualResidentCountryList()){
+								Crspayldrescountry crspayldrescountry = new Crspayldrescountry();
+								if(residentCountry.getResidentCountryCode() > 0){
+								crspayldrescountry.setResCountryCode(String.valueOf(residentCountry.getResidentCountryCode()));
+								}
+								crspayldrescountry.setObjectID(crspayldacct.getId());
+								crspayldrescountry.setSrcType("0");
+								crspayldrescountry = crspayldrescountryRepository.saveAndFlush(crspayldrescountry);
+							}
+							logger.info("<<<<<<<<<<<Indidivual Resident Country[Crspayldrescountry] End saving>>>>>>>>>>>>>>>");
+							
+						}
+						
+						//Individaul  IN
+						if(accountHolderVo.getIndividualOrganisationInTypeList() != null && accountHolderVo.getIndividualOrganisationInTypeList().size() > 0){
+							logger.info("<<<<<<<<<<<Individual In type[Crspayldin] Begin saving>>>>>>>>>>>>>>>");
+							for(OrganisationInTypeVo organisation : accountHolderVo.getIndividualOrganisationInTypeList()){
+								Crspayldin crsPayldin = new Crspayldin();
+								if(!StringUtils.isEmpty(organisation.getIn())){
+								crsPayldin.setTin(organisation.getIn());
+								}
+								if(!StringUtils.isEmpty(organisation.getInType())){
+								crsPayldin.setINType(organisation.getInType());
+								}
+								if(organisation.getIssuedBy() >0){
+								crsPayldin.setIssuedBy(String.valueOf(organisation.getIssuedBy()));
+								}
+								crsPayldin.setObjectID(crspayldacct.getId());
+								crsPayldin.setSrcType("0");
+								crsPayldin = crspayldinRepository.saveAndFlush(crsPayldin);
+							}
+							logger.info("<<<<<<<<<<<Individual In typ[Crspayldin] End saving>>>>>>>>>>>>>>>");
+							
+						}
+						
+						//Individual NameType Grid
+						if(accountHolderVo.getIndividualNameList() != null && accountHolderVo.getIndividualNameList().size() > 0){
+							logger.info("<<<<<<<<<<<Individual NameType Grid[Crspayldname] Begin saving>>>>>>>>>>>>>>>");	
+							for(NameTypeVo nameVo : accountHolderVo.getIndividualNameList()){
+								Crspayldname crspayldName = new Crspayldname();
+								crspayldName.setCreateDateTime(new Date());
+								crspayldName.setFirstName(nameVo.getFirstName());
+								crspayldName.setGeneralSuffix(nameVo.getGeneralSuffix());
+								crspayldName.setLastName(nameVo.getLastName());
+								crspayldName.setNamePrefix(nameVo.getNamePrefix());
+								crspayldName.setPrecedingTitle(nameVo.getPrecedingTitle());
+								crspayldName.setObjectID(crspayldacct.getId());
+								crspayldName.setSrcType("0");
+								crspayldName = crspayldnameRepository.saveAndFlush(crspayldName);
+								
+								
+								if(nameVo.getTitleList() != null &&nameVo.getTitleList().size() >0 ){
+									for(TitleVo titleVo : nameVo.getTitleList()){
+									Crspayldnametitle title = new Crspayldnametitle();
+									title.setTitle(titleVo.getName());
+									title.setNameID(crspayldName.getId());
+									title.setCreateDateTime(new Date());
+									title = crspayldnametitleRepository.saveAndFlush(title);
+									}
+								}
+								
+								if(nameVo.getMiddlenameList() != null && nameVo.getMiddlenameList().size() > 0){
+									for(MiddleNameVo middileNamevo :nameVo.getMiddlenameList() ){
+										Crspayldnamemiddle middilename = new Crspayldnamemiddle();
+										middilename.setMiddleName(middileNamevo.getMiddleName());
+										middilename.setCreateDateTime(new Date());
+										middilename.setNameID(crspayldName.getId());
+										middilename = crspayldnamemiddleRepository.saveAndFlush(middilename);
+									}
+								}
+								
+								if(nameVo.getGenerateIdentifilerList() != null &&nameVo.getGenerateIdentifilerList().size() >0 ){
+									for(GenerationIdentifierVo generateId :nameVo.getGenerateIdentifilerList() ){
+										Crspayldnamegeneration generationid = new Crspayldnamegeneration();
+										generationid.setGenerationIdentifier(generateId.getGenerateIdentifier());
+										generationid.setCreateDateTime(new Date());
+										generationid.setNameID(crspayldName.getId());
+										generationid = crspayldnamegenerationRepository.saveAndFlush(generationid);
+									}
+								}
+								if(nameVo.getSuffixList() != null && nameVo.getSuffixList().size() >0){
+									for(SuffixVo suffix :nameVo.getSuffixList() ){
+										Crspayldnamesuffix suffi= new Crspayldnamesuffix();
+										suffi.setSuffix(suffix.getSuffix());
+										suffi.setNameID(crspayldName.getId());
+										suffi.setCreateDateTime(new Date());
+										suffi = crspayldnamesuffixRepository.saveAndFlush(suffi);
+									}
+								}	
+								
+							}
+							logger.info("<<<<<<<<<<<Individual NameType Grid[Crspayldname] End saving>>>>>>>>>>>>>>>");
+						}//NameList
+						
+						
+						}
+						
+							
+							
+						}//Individual
+						
+						else if(accountHolderVo.getAccountHolderType().equals("organization")){
+							logger.info("Organisation Section Saving part Begin Here");	
+							
+							if(accountHolderVo.getOrganisationAddressList() != null && accountHolderVo.getOrganisationAddressList().size()  > 0){
+								logger.info("<<<<<<<<<<<Organisation Address[Crspayldaddress] Begin saving>>>>>>>>>>>>>>>");
+								for(AddressVo addressVo :accountHolderVo.getOrganisationAddressList()){
+									Crspayldaddress address = new Crspayldaddress();
+									if(!StringUtils.isEmpty(addressVo.getAddressFree())){
+									address.setAddressFree(addressVo.getAddressFree());
+									}
+									if(!StringUtils.isEmpty(addressVo.getBuildingIdentifier())){
+									address.setBuildingIdentifier(addressVo.getBuildingIdentifier());
+									}
+									if(!StringUtils.isEmpty(addressVo.getCity())){
+									address.setCity(addressVo.getCity());
+									}
+									if(!StringUtils.isEmpty(addressVo.getCountryCode())){
+									address.setCountryCode(addressVo.getCountryCode());
+									}
+									if(!StringUtils.isEmpty(addressVo.getCountrySubentity())){
+									address.setCountrySubentity(addressVo.getCountrySubentity());
+									}
+									address.setCreateDateTime(new Date());
+									if(!StringUtils.isEmpty(addressVo.getDistrictName())){
+									address.setDistrictName(addressVo.getDistrictName());
+									}
+									if(!StringUtils.isEmpty(addressVo.getFloorIdentifier())){
+									address.setFloorIdentifier(addressVo.getFloorIdentifier());
+									}
+									if(!StringUtils.isEmpty(addressVo.getAddressType())){
+									address.setLegalAddressType(addressVo.getAddressType());
+									}
+									address.setObjectID(crspayldacct.getId());
+									if(!StringUtils.isEmpty(addressVo.getPob())){
+									address.setPob(addressVo.getPob());
+									}
+									if(!StringUtils.isEmpty(addressVo.getPostCode())){
+									address.setPostCode(addressVo.getPostCode());
+									}
+									address.setSrcType("0");
+									if(!StringUtils.isEmpty(addressVo.getStreet())){
+									address.setStreet(addressVo.getStreet());
+									}
+									if(!StringUtils.isEmpty(addressVo.getSuitIdentifier())){
+									address.setSuiteIdentifier(addressVo.getSuitIdentifier());
+									}
+									address = crspayldaddressRepository.saveAndFlush(address);
+								}
+								logger.info("<<<<<<<<<<<Organisation Address[Crspayldaddress] End saving>>>>>>>>>>>>>>>");
+								
+							
+							}
+							
+							//Organisation Resident Country
+							if(accountHolderVo.getOrganisationResidentCountryList() != null && accountHolderVo.getOrganisationResidentCountryList().size() >0){
+								logger.info("<<<<<<<<<<<Organisation Resident Country[Crspayldrescountry] Begin saving>>>>>>>>>>>>>>>");
+								for(ResidentCountryVo residentCountry : accountHolderVo.getOrganisationResidentCountryList()){
+									Crspayldrescountry crspayldrescountry = new Crspayldrescountry();
+									if(residentCountry.getResidentCountryCode() > 0){
+									crspayldrescountry.setResCountryCode(String.valueOf(residentCountry.getResidentCountryCode()));
+									}
+									crspayldrescountry.setObjectID(crspayldacct.getId());
+									crspayldrescountry.setSrcType("0");
+									crspayldrescountry = crspayldrescountryRepository.saveAndFlush(crspayldrescountry);
+								}
+								logger.info("<<<<<<<<<<<Organisation Resident Country[Crspayldrescountry] End saving>>>>>>>>>>>>>>>");
+								
+							}
+							
+							//Organisation  IN
+							if(accountHolderVo.getOrgOrganisationInTypeList() != null && accountHolderVo.getOrgOrganisationInTypeList().size() > 0){
+								logger.info("<<<<<<<<<<<Organisation In type[Crspayldin] Begin saving>>>>>>>>>>>>>>>");
+								for(OrganisationInTypeVo organisation : accountHolderVo.getOrgOrganisationInTypeList()){
+									Crspayldin crsPayldin = new Crspayldin();
+									if(!StringUtils.isEmpty(organisation.getIn())){
+									crsPayldin.setTin(organisation.getIn());
+									}
+									if(!StringUtils.isEmpty(organisation.getInType())){
+									crsPayldin.setINType(organisation.getInType());
+									}
+									if(organisation.getIssuedBy() >0){
+									crsPayldin.setIssuedBy(String.valueOf(organisation.getIssuedBy()));
+									}
+									crsPayldin.setObjectID(crspayldacct.getId());
+									crsPayldin.setSrcType("0");
+									crsPayldin = crspayldinRepository.saveAndFlush(crsPayldin);
+								}
+								logger.info("<<<<<<<<<<<Organisation In typ[Crspayldin] End saving>>>>>>>>>>>>>>>");
+								
+							}
+							
+							//Organisation Grid
+							if(accountHolderVo.getOrganisationList() != null && accountHolderVo.getOrganisationList().size() > 0){
+								logger.info("<<<<<<<<<<<Organisation[Crspayldname] Begin saving>>>>>>>>>>>>>>>");	
+								for(NameVo nameVo : accountHolderVo.getOrganisationList()){
+									Crspayldname crspayldName = new Crspayldname();
+									crspayldName.setNameOrganisation(nameVo.getFirstName());
+									crspayldName.setNamePersonType(String.valueOf(nameVo.getNameType()));
+									crspayldName.setObjectID(crspayldacct.getId());
+									crspayldName.setSrcType("0");
+									crspayldName = crspayldnameRepository.saveAndFlush(crspayldName);
+									
+								}
+								logger.info("<<<<<<<<<<<Organisation[Crspayldname] End saving>>>>>>>>>>>>>>>");
+							}
+							
+							
+							
+						}//Organisation
+					
+					
+					//Controlling Person
+					if(accountHolderVo.getControllingPersonList() != null && accountHolderVo.getControllingPersonList().size() > 0){
+						logger.info("<<<<<<<<<<<Controlling Person[Crspayldname] Begin saving>>>>>>>>>>>>>>>");	
+						
+						
+						
+					}
+					
+					
+						
+						
+						
+					}
+							
+					
+				}//Account holder List
+					
+								
+					
+				}//Account Holder
 				
 				
 				
-			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+					
 			
 		}//CRS Payldhdr
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 		
 		}//MetaDataVo
 		
 		
 		return hidefVo;
 	}
-
+	
 }
