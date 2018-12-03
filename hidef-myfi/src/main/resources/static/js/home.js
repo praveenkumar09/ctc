@@ -2472,6 +2472,9 @@ function showCbcReports(newForm, editForm, viewForm) {
 					success : function(response) {
 						$("#metaData").show();
 						$("#metaData").html(response);
+						
+						showAllReportsGrid();
+						
 						if (newForm == 1 && editForm == 0 && viewForm == 0) {
 							$("#viewReportsDone").hide();
 							$("#saveCBCReportButton").show();
@@ -2489,6 +2492,8 @@ function showCbcReports(newForm, editForm, viewForm) {
 							$("#viewReportsDone").prop('disabled', false);
 							$("#gridCbcReportsList").prop('disabled', false);
 							$("#viewNextTab").prop('disabled',false);
+							$("#constituentEntityViewBtn").prop('disabled',false);
+							$("#constituentEntityViewBtn").prop('readOnly',false);
 						} else if (newForm == 0 && editForm == 1
 								&& viewForm == 0) {
 							$("#viewReportsDone").hide();
@@ -2496,12 +2501,7 @@ function showCbcReports(newForm, editForm, viewForm) {
 							$("#editReportsDone").show();
 							$("#editCancelReportsDone").show();
 							$("#viewNextTab").hide();
-						}
-						
-						
-						showAllReportsGrid();
-
-						
+						}					
 					},
 					error : function(request, error) {
 						alert("Request: " + JSON.stringify(request));
@@ -3953,6 +3953,7 @@ function showAllReportsGrid(){
  												.attr(
  														"class",
  														"btn btn-info btn-sm")
+ 												.attr("id","constituentEntityViewBtn")		
  												.text(
  														"View")
  												.click(

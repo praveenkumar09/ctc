@@ -153,14 +153,14 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 				if (hidef.getUserprofile().getFileTypeIndic() != null
 						&& !hidef.getUserprofile().getFileTypeIndic().isEmpty()) {
 					Element fileTypeIndic = doc.createElement("FileRevisionInd");
-					if(hidef.getUserprofile().getFileTypeIndic().equals("1")){
+				/*	if(hidef.getUserprofile().getFileTypeIndic().equals("1")){*/
 					fileTypeIndic.appendChild(doc.createTextNode(hidef.getUserprofile().getFileTypeIndic()));
-					}else if(hidef.getUserprofile().getFileTypeIndic().equals("2")){
+					/*}else if(hidef.getUserprofile().getFileTypeIndic().equals("2")){
 						fileTypeIndic.appendChild(doc.createTextNode(hidef.getUserprofile().getFileTypeIndic()));
 					}
 					else{
 						fileTypeIndic.appendChild(doc.createTextNode(""));
-					}
+					}*/
 					rootElement.appendChild(fileTypeIndic);
 				}
 
@@ -908,8 +908,8 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 		PrivateKey myPrivateKey = null;
 		X509Certificate myPublicCert = null;
 		X509Certificate receiverPublicCert = null;
-		String senderGiin = "";
-		String receiverGiin = "";
+		String senderGiin = hidef.getMycbcId();
+		String receiverGiin =  hidef.getMycbcId();
 		int taxyear = 2017;
 		String targetFolderPath = fetchProperties("packageTargetFolder");
 		String publicCertPath = "";

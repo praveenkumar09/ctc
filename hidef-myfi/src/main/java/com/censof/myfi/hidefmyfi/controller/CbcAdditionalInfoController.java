@@ -25,6 +25,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -565,13 +566,21 @@ public class CbcAdditionalInfoController {
 	     //Path sourcePath = sourceFile.toPath();
 	     Path sourcePath = Paths.get(packageFolderPath);
 	     response.setHeader("Content-Disposition", "attachment;filename=\""+sourcePath.getFileName()+"\"");
-	     ZipOutputStream outZip = new ZipOutputStream(response.getOutputStream(),StandardCharsets.UTF_8);
+	     /*ZipOutputStream outZip = new ZipOutputStream(response.getOutputStream(),StandardCharsets.UTF_8);
 
 	     outZip.putNextEntry(new ZipEntry(sourcePath.getFileName().toString()));
 	     Files.copy(sourcePath, outZip);
 	     outZip.closeEntry();
 	     outZip.finish();
-	     outZip.close();
+	     outZip.close();*/
+	     
+	     
+	     File zipFile = new File(packageFolderPath);
+	     InputStream ioStream = new FileInputStream(zipFile);
+	     IOUtils.copy(ioStream, response.getOutputStream());
+	     response.flushBuffer();
+	     
+	     ioStream.close();
 		
 		//FileCopyUtils.copy(metaDataContentInString, response.getWriter());
 		return null;

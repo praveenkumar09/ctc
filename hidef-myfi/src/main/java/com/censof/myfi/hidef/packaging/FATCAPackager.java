@@ -705,7 +705,7 @@ public class FATCAPackager implements IPackager {
 		int attempts = maxAttemptsToCreateNewFile;
 		while(true) {
 			//outfile = folder + sdfFileName.format(new Date(System.currentTimeMillis())) + "_" + senderGiin + ".zip";
-			outfile = folder +receiverGiin+"_"+senderGiin + "_" + sdfFileName.format(new Date(System.currentTimeMillis())) + ".zip";
+			outfile = folder +senderGiin + "_" + sdfFileName.format(new Date(System.currentTimeMillis())) + ".zip";
 			file = new File(outfile);
 			if (!file.exists()) {
 				if (file.createNewFile() || attempts-- <= 0)
@@ -1482,7 +1482,7 @@ public class FATCAPackager implements IPackager {
 			fileFormat = null; 
 			binaryEncoding = null;
 		}
-		if(fileSource.equalsIgnoreCase("LFI")){
+		/*if(fileSource.equalsIgnoreCase("LFI")){
 			senderGiin = "10000007";
 			logger.debug("senderGiin==>"+senderGiin);
 			receiverGiin = "10000007";
@@ -1493,7 +1493,7 @@ public class FATCAPackager implements IPackager {
 		logger.debug("senderGiin==>"+senderGiin);
 		receiverGiin = GetXPathData (myMetaXml, "/CTSSenderFileMetadata/CTSReceiverCountryCd");
 		logger.debug("receiverGiin==>"+receiverGiin);
-		}
+		}*/
 		String txYear = GetXPathData (myMetaXml, "/CTSSenderFileMetadata/TaxYear");
 		logger.debug("txYear==>"+txYear);
 		senderGiin += "_"+GetXPathData (myMetaXml, "/CTSSenderFileMetadata/CTSCommunicationTypeCd");
