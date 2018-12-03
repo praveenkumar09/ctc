@@ -41,6 +41,7 @@ import com.censof.myfi.hidefmyfi.service.CtccommonDropdownService;
 import com.censof.myfi.hidefmyfi.vo.AccountHolderVo;
 import com.censof.myfi.hidefmyfi.vo.AddressVo;
 import com.censof.myfi.hidefmyfi.vo.CBCRepotsVo;
+import com.censof.myfi.hidefmyfi.vo.CbcConstituentEntityVO;
 import com.censof.myfi.hidefmyfi.vo.CommonDropdownGridBean;
 import com.censof.myfi.hidefmyfi.vo.ControllingPersonVo;
 import com.censof.myfi.hidefmyfi.vo.GenerationIdentifierVo;
@@ -2267,28 +2268,14 @@ public class CrsAccountHolderController {
 		Random rand = new Random();
 		ctrlPerson = hidef.getAccountholder().getControllingPersonVo();
 		ctrlPerson.setId(rand.nextInt(10000));
-		/*if(ctrlPerson != null){
-		if(ctrlPerson.getControllingOrganisationInTypeList() != null && ctrlPerson.getControllingOrganisationInTypeList().size() >0){
-		ctrlPerson.setControllingOrganisationInTypeList(ctrlPerson.getControllingOrganisationInTypeList());
-		}
-		if(ctrlPerson.getControllingPersonAddressList() != null && ctrlPerson.getControllingPersonAddressList().size() >0){
-		ctrlPerson.setControllingPersonAddressList(ctrlPerson.getControllingPersonAddressList());
-		}
-		if(hidef.getAccountholder().getCtrlPersonNameList() != null && hidef.getAccountholder().getCtrlPersonNameList().size() >0){
-		ctrlPerson.setNameTypeList(hidef.getAccountholder().getCtrlPersonNameList());
-		}
-		if(hidef.getAccountholder().getControllingPersonResidentCountryList() != null && hidef.getAccountholder().getControllingPersonResidentCountryList().size() >0){
-		ctrlPerson.setControllingResidentCountryList(hidef.getAccountholder().getControllingPersonResidentCountryList());
-		}*/
-		if (hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonList() != null) {
+		if (hidef.getControllingPersonList() != null && hidef.getControllingPersonList().size() >0) {
 			hidef.getControllingPersonList().add(ctrlPerson);
 		} else {
 			hidef.setControllingPersonList(new ArrayList<ControllingPersonVo>());
 			hidef.getControllingPersonList().add(ctrlPerson);
 		}
-		/*}*/
-		/*hidef.setAccountholder(new AccountHolderVo());
-		hidef.getAccountholder().setControllingPersonVo(new ControllingPersonVo());;*/
+		
+		hidef.getAccountholder().setControllingPersonVo(new ControllingPersonVo());
 		model.addAttribute("hidef", hidef);
 		
 		return ctrlPerson;
@@ -3032,16 +3019,15 @@ public class CrsAccountHolderController {
 		
 		List<NameTypeVo> nameTypeList = new ArrayList<NameTypeVo>();
 		String nameTypeJson = mapper.writeValueAsString(nameTypeList);
-		if(hidef.getAccountholder() != null && hidef.getAccountholder().getCtrlPersonNameList() != null 
-				&& hidef.getAccountholder().getCtrlPersonNameList().size() >0) {
-			nameTypeJson = mapper.writeValueAsString(hidef.getAccountholder().getCtrlPersonNameList());
+		if(hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonVo() != null &&  hidef.getAccountholder().getControllingPersonVo().getNameTypeList() != null 
+				&& hidef.getAccountholder().getControllingPersonVo().getNameTypeList().size() >0) {
+			nameTypeJson = mapper.writeValueAsString(hidef.getAccountholder().getControllingPersonVo().getNameTypeList());
 		}
 		model.addAttribute("hidef", hidef);
 		return nameTypeJson;
 	}
 	
 	@GetMapping(value = "/admin/crs/viewControllingPersonMain")
-	@ResponseBody
 	public String viewControllingPersonMain(@ModelAttribute("hidef") HidefVo hidef, @RequestParam int viewId, BindingResult result,
 			ModelMap model, Map<String, Object> map) throws JsonParseException, JsonMappingException, IOException {
 		ControllingPersonVo controllingPersonVo = new ControllingPersonVo();
@@ -3054,7 +3040,22 @@ public class CrsAccountHolderController {
 
 		hidef.getAccountholder().setControllingPersonVo(controllingPersonVo);;
 		model.addAttribute("hidef", hidef);
-		return "success";
+		return "crsAccountHolder";
+	}
+	@GetMapping(value = "/admin/crs/editControllingPersonMain")
+	public String editControllingPersonMain(@ModelAttribute("hidef") HidefVo hidef, @RequestParam int editId, BindingResult result,
+			ModelMap model, Map<String, Object> map) throws JsonParseException, JsonMappingException, IOException {
+		ControllingPersonVo controllingPersonVo = new ControllingPersonVo();
+		
+		for (ControllingPersonVo ctrlPerson: hidef.getControllingPersonList()) {
+			if (ctrlPerson.getId() == editId) {
+				controllingPersonVo =ctrlPerson;
+			}
+		}
+
+		hidef.getAccountholder().setControllingPersonVo(controllingPersonVo);;
+		model.addAttribute("hidef", hidef);
+		return "crsAccountHolder";
 	}
 	
 	@PostMapping(value = "/admin/crs/save")
@@ -3070,6 +3071,39 @@ public class CrsAccountHolderController {
 		return "success";
 
 	}
+	@GetMapping(value = "/admin/crs/viewControllingPersonDone")
+	public String viewControllingPersonDone(@ModelAttribute("hidef") HidefVo hidef, BindingResult result,
+			ModelMap model, Map<String, Object> map) {
+		ControllingPersonVo controllingVO = new ControllingPersonVo();
+		hidef.getAccountholder().setControllingPersonVo(controllingVO);
+		model.addAttribute("hidef", hidef);
+		return "crsAccountHolder";
+	}
+	@GetMapping(value = "/admin/crs/editsaveControllingPersonDone")
+	public String saveEditedControllingPersonData(@ModelAttribute("hidef") HidefVo hidef, BindingResult result,
+			ModelMap model, Map<String, Object> map) {
+
+		ControllingPersonVo controllingVO = new ControllingPersonVo();
+		controllingVO = hidef.getAccountholder().getControllingPersonVo();
+		int newAccountId = controllingVO.getId();
+
+		List<ControllingPersonVo> newCRSAccountEditedList = new ArrayList<ControllingPersonVo>();
+		for (ControllingPersonVo accountVO : hidef.getControllingPersonList()) {
+			if (accountVO.getId() != newAccountId) {
+				newCRSAccountEditedList.add(accountVO);
+			}
+		}
+
+		newCRSAccountEditedList.add(controllingVO);
+		hidef.setControllingPersonList(newCRSAccountEditedList);
+		ControllingPersonVo controlling = new ControllingPersonVo();
+		hidef.getAccountholder().setControllingPersonVo(controlling);
+		model.addAttribute("hidef", hidef);
+
+		return "crsAccountHolder";
+	}
+	
+	
 	
 	
 	

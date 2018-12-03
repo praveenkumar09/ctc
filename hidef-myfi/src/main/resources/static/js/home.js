@@ -3827,6 +3827,11 @@ function ReportingFiNext(newForm, editForm, viewForm) {
 				$("#saveaccountholder").show();
 				$("#editAccountDone").hide();
 				$("#editCancelAccountDone").hide();
+				
+				$('#saveControllingPersonButton').show();
+		        $('#viewControllingDone').hide();
+		        $('#editviewControllingDoneDone').hide();
+		        $('#editCancelviewControllingDoneDone').hide();
 				/*$("#viewNextTab").hide();*/
 			} else if (newForm == 0 && editForm == 0
 					&& viewForm == 1) {
@@ -3847,6 +3852,16 @@ function ReportingFiNext(newForm, editForm, viewForm) {
 				$("#editAccountDone").show();
 				$("#editCancelAccountDone").show();
 				/*$("#viewNextTab").hide();*/
+			}else{
+				$("#viewAccountDone").hide();
+				$("#saveaccountholder").show();
+				$("#editAccountDone").hide();
+				$("#editCancelAccountDone").hide();
+				
+				$('#saveControllingPersonButton').show();
+		        $('#viewControllingDone').hide();
+		        $('#editviewControllingDoneDone').hide();
+		        $('#editCancelviewControllingDoneDone').hide();
 			}
 		},
 		error : function(request, error) {

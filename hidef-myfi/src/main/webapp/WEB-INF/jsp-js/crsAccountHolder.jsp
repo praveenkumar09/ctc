@@ -120,6 +120,7 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 					<div id="pager"></div>
 				</div> -->
 				<fieldset class="scheduler-border">
+				<div id="controllingPerson">
 					<legend class="scheduler-border">Controlling Person:</legend>
 					<div class="form-group">
 						<div class="clearfix"></div>
@@ -236,6 +237,13 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 							<button id="saveControllingPersonButton" name="singlebutton"
 								onClick="saveCtrlPersonMain();return false;"
 								class="btn btn-success">Save Controlling Person</button>
+							<button id="viewControllingDone" name="singlebutton"
+							onClick="doneViewControllingPerson();return false;" class="btn btn-success">Cancel</button>
+							<button id="editviewControllingDoneDone" name="singlebutton"
+							onClick="doneEditSaveControllingPerson();return false;" class="btn btn-success">Save Edited Changes</button>
+							<button id="editCancelviewControllingDoneDone" name="singlebutton"
+							onClick="doneViewControllingPerson();return false;" class="btn btn-danger">Cancel</button>
+								
 						</div>
 						<div class="clearfix"></div>
 						<br />
@@ -246,6 +254,7 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 							<div id="pager"></div>
 						</div>
 						<br />
+					</div>
 					</div>
 				</fieldset>
 				<div class="clearfix"></div>

@@ -1,8 +1,11 @@
 package com.censof.myfi.hidefmyfi.entity;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 
 
@@ -15,35 +18,48 @@ import java.util.Date;
 public class Crspayldpymt implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private CrspayldpymtPK id;
+	/*@EmbeddedId
+	private CrspayldpymtPK id;*/
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private BigInteger id;
 
+	@Column(name="acctrepid")
+	private BigInteger acctRepID;
+
+	@Column(name="createby")
 	private String createBy;
 
+	@Column(name="createdatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDateTime;
 
+	@Column(name="currcode")
 	private String currCode;
 
+	@Column(name="modifyby")
 	private String modifyBy;
 
+	@Column(name="modifydatetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifyDateTime;
 
+	@Column(name="paymentamt")
 	private BigDecimal paymentAmt;
 
+	@Column(name="paymenttype")
 	private String paymentType;
 
 	public Crspayldpymt() {
 	}
 
-	public CrspayldpymtPK getId() {
+	/*public CrspayldpymtPK getId() {
 		return this.id;
 	}
 
 	public void setId(CrspayldpymtPK id) {
 		this.id = id;
-	}
+	}*/
 
 	public String getCreateBy() {
 		return this.createBy;
@@ -100,5 +116,22 @@ public class Crspayldpymt implements Serializable {
 	public void setPaymentType(String paymentType) {
 		this.paymentType = paymentType;
 	}
+
+	public BigInteger getId() {
+		return id;
+	}
+
+	public void setId(BigInteger id) {
+		this.id = id;
+	}
+
+	public BigInteger getAcctRepID() {
+		return acctRepID;
+	}
+
+	public void setAcctRepID(BigInteger acctRepID) {
+		this.acctRepID = acctRepID;
+	}
+	
 
 }
