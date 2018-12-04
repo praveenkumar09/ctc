@@ -24,6 +24,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
+import org.springframework.util.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -341,8 +342,12 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 
 				if (hidef.getReportingEntity().getTin() != null && !hidef.getReportingEntity().getTin().isEmpty()) {
 					Element tin = doc.createElement("cbc:TIN");
-					/*tin.setAttribute("TINType", hidef.getReportingEntity().getTinType());*/
-					tin.setAttribute("issuedBy", hidef.getReportingEntity().getTinIssuedBy());
+					if(!StringUtils.isEmpty(hidef.getReportingEntity().getTinIssuedBy())){
+					tin.setAttribute("TINType", hidef.getReportingEntity().getTinIssuedBy());
+					}
+					if(!StringUtils.isEmpty(hidef.getReportingEntity().getTinType())){
+					tin.setAttribute("issuedBy", hidef.getReportingEntity().getTinType());
+					}
 					tin.appendChild(doc.createTextNode(hidef.getReportingEntity().getTin()));
 					cbcEntity.appendChild(tin);
 				}
