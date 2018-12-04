@@ -81,7 +81,9 @@
 							<br/>  -->
 							<br/>
 							<br/>
-							<div id="summary" class="summary">
+	<div id="summary" class="summary">
+	<c:choose>
+	<c:when test="${messageType eq 'CBC'}">
 	<div class="container">
 		<div class="row">
 			<div class="panel panel-default">
@@ -110,6 +112,39 @@
 				</div>
 			</div>
 		</div>
+		</c:when>
+		<c:otherwise>
+			<div class="container">
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+				<div class="text-center">
+					<strong>CRS SUMMARY</strong>
+					</div>
+				</div>
+				<div class="panel-body">
+						<div class="form-group col-md-6">
+						<br/>
+						<br/>
+							<button id="singlebutton" name="singlebutton"
+								onClick="doenloadExcel()" class="btn btn-primary">Click here to download
+								Excel Template</button>
+						</div>
+						<br/>
+						<div class="clearfix"></div>
+						<br />
+						<div class="form-group col-md-6">
+							<div id="crssummaryGrid"></div>
+							<div id="pager"></div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		</c:otherwise>
+		</c:choose>
 	</div>
 	<script type="text/javascript">
 		$(function() {

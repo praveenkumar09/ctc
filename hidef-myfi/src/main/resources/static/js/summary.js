@@ -160,6 +160,166 @@ $(document).ready(function() {
                   }
               ]
           });
+      
+      
+      
+      $("#crssummaryGrid")
+      .jsGrid({
+          width: "205%",
+          inserting: false,
+          editing: false,
+          sorting: false,
+          paging: true,
+          pageSize: 6,
+          pageButtonCount: 5,
+          autoload: true,
+          controller: {
+              loadData: function() {
+                  var d = $.Deferred();
+
+                  $
+                      .ajax({
+                          type: 'GET',
+                          url: 'crs/summary',
+                          mimeType: 'application/json',
+                          contentType: "application/json; charset=utf-8",
+                          success: function(
+                              data) {
+                              d.resolve(data);
+                          },
+                          error: function(e) {
+                              alert("error: " +
+                                  e.responseText);
+                          }
+                      });
+
+                  return d.promise();
+              }
+          },
+        /*  controller: object,*/
+          datatype: 'json',
+          invalidNotify: function(args) {
+
+          },
+          fields: [{
+                  name: "id",
+                  title: "id",
+                  type: "text",
+                  visible: false,
+                  width: 10
+                  /*,
+                  items: object.id*/
+              },
+              {
+                  title: "Sending Country",
+                  name: "sendingCountry",
+                  type: "text",
+                  width: 40
+                  ,
+                  /*items: object.addressType,*/
+                  visible: true
+              },
+              {
+                  title: "Message Type",
+                  name: "messageType",
+                  type: "text",
+                  width: 40,
+                  /*,
+                  items: object.countryCode,*/
+                  visible: true
+              },
+                 {
+                  name: "button",
+                  width: 20,
+                  align:"center",
+                  headerTemplate: function() {
+                      return $("<button>")
+                          .attr("type",
+                              "button")
+                          .attr("class",
+                              "btn btn-success btn-sm")
+                          .text(
+                              "Import Excel here!")
+                          .on(
+                              "click",
+                              function() {
+                            	  clickImport();
+                              }) 
+                  },
+                  itemTemplate: function(
+                      value, item) {
+                      var $result = jsGrid.fields.control.prototype.itemTemplate
+                          .apply(this,
+                              arguments);
+
+                      var $customViewButton = $(
+                              "<button>")
+                          .attr("class",
+                              "btn btn-info btn-sm")
+                          .text("View")
+                          .click(
+                              function(
+                                  e) {
+                                  /*alert("ID: " +
+                                      item.id);*/
+                                  e.stopPropagation();
+                                  viewCRSSummaryGrid(item);
+                                  
+                                  return false;
+
+                              });
+
+                      var $customEditButton = $(
+                              "<button>")
+                          .attr("class",
+                              "btn btn-warning btn-sm")
+                          .text("Edit")
+                          .click(
+                              function(
+                                  e) {
+                                 /* alert("ID: " +
+                                      item.id);*/
+                                  e.stopPropagation();
+                                  editCBCSummaryGrid(item);
+                                  return false;
+                              });
+
+                      var $customDeleteButton = $(
+                              "<button>")
+                          .attr("class",
+                              "btn btn-danger btn-sm")
+                          .text("Delete")
+                          .click(
+                              function(
+                                  e) {
+                                  //alert("ID: " +
+                                      //item.id);
+                                  e.stopPropagation();
+                                  deleteCBCSummaryClicked(item);
+                                  return false;
+                              });
+
+                      return $("<div>")
+                          .append(
+                              $customViewButton)
+                          .append(
+                              "&nbsp;")
+                          .append(
+                              "&nbsp;")
+                          .append(
+                              $customEditButton)
+                          .append(
+                              "&nbsp;")
+                          .append(
+                              "&nbsp;")
+                          .append(
+                              $customDeleteButton);
+                      // return
+                      // $result.add($customButton);
+                  }
+              }
+          ]
+      });
 });
 
 
@@ -309,5 +469,30 @@ function deleteCBCSummaryClicked(item){
 	$("#deleteConfirmationBox").modal('show');
 	$("#idToDelete").html(item.hrdId);
 	$("#formId").html(7);
+}
+
+function viewCRSSummaryGrid(item){
+	debugger;
+	$
+   .ajax({
+
+       url: 'crs/viewSummaryGrid?id='+item.hrdId,
+       type: 'GET',
+       async: false,
+       success: function(response) {
+           console
+               .log("data ====>"+response);
+           //newCBCOnClick();
+           newCRSOnClick();
+          // $('#cbcmetadata *').prop('disabled',true);
+           
+       },
+       error: function(
+           request,
+           error) {
+           console.log(error);
+       }
+   });
+
 }
 

@@ -47,6 +47,7 @@ import com.censof.myfi.hidefmyfi.service.SecurityService;
 import com.censof.myfi.hidefmyfi.service.UserService;
 import com.censof.myfi.hidefmyfi.validation.UserValidator;
 import com.censof.myfi.hidefmyfi.vo.CBCSummaryGridVo;
+import com.censof.myfi.hidefmyfi.vo.CRSSummaryGridVo;
 import com.censof.myfi.hidefmyfi.vo.HidefVo;
 import com.censof.myfi.hidefmyfi.vo.UserVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -344,6 +345,34 @@ public class LoginController {
 		}
 		return value;
 	}
+	
+	@GetMapping(value = "/admin/crs/summary", consumes = "application/json")
+	@ResponseBody
+	public List<CRSSummaryGridVo> loadcrsSummaryGrid(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
+			HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		
+		List<CRSSummaryGridVo> crsReports = new ArrayList<CRSSummaryGridVo>();
+		String reportsJSON = mapper.writeValueAsString(crsReports);
+		hidef = ctcDataSaveService.getAllDatabyCRSId(hidef);//todo need to change login cbcid
+		if(hidef.getCrssummary() != null && hidef.getCrssummary().size()>0){
+		crsReports = hidef.getCrssummary();
+		//reportsJSON = mapper.writeValueAsString(cbcReports);
+		}
+		model.addAttribute("hidef", hidef);
+		return crsReports;
+
+	}
+	@GetMapping(value = "/admin/crs/viewSummaryGrid")
+	@ResponseBody
+	public String viewCRSSummaryGrid(@ModelAttribute("hidef") HidefVo hidef, @RequestParam String id, BindingResult result,
+			ModelMap model, Map<String, Object> map) throws JsonParseException, JsonMappingException, IOException {
+		hidef = ctcDataSaveService.viewAllDatabyCRSId(hidef, id);
+		hidef.setIsSummaryView("true");
+		model.addAttribute("hidef", hidef);
+		return "success";
+	}
+	
 
 
 }

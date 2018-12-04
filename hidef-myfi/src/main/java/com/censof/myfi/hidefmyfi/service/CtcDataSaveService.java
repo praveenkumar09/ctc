@@ -26,6 +26,8 @@ public interface CtcDataSaveService {
 	public void deleteUserProfileRecievingCountry(BigInteger userProfileId,int receivingCountryId);
 	
 	public HidefVo savecrsData(HidefVo hidefVo);
+	public HidefVo getAllDatabyCRSId(HidefVo hidefvo);
+	public HidefVo viewAllDatabyCRSId(HidefVo hidefvo, String id);
 	
 
 }

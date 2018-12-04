@@ -37,6 +37,7 @@ public class HidefVo {
 	private AccountHolderVo accountholder;
 	private List<AccountHolderVo> accountHolderList;
 	private List<ControllingPersonVo> controllingPersonList;
+	private List<CRSSummaryGridVo> crssummary;
 	
 	
 	
@@ -250,6 +251,14 @@ public class HidefVo {
 	public void setControllingPersonList(
 			List<ControllingPersonVo> controllingPersonList) {
 		this.controllingPersonList = controllingPersonList;
+	}
+
+	public List<CRSSummaryGridVo> getCrssummary() {
+		return crssummary;
+	}
+
+	public void setCrssummary(List<CRSSummaryGridVo> crssummary) {
+		this.crssummary = crssummary;
 	}
 	
 	

@@ -106,6 +106,7 @@ import com.censof.myfi.hidefmyfi.vo.AddressVo;
 import com.censof.myfi.hidefmyfi.vo.BizActivitiesTypeVo;
 import com.censof.myfi.hidefmyfi.vo.CBCRepotsVo;
 import com.censof.myfi.hidefmyfi.vo.CBCSummaryGridVo;
+import com.censof.myfi.hidefmyfi.vo.CRSSummaryGridVo;
 import com.censof.myfi.hidefmyfi.vo.CbcAdditionalInfo;
 import com.censof.myfi.hidefmyfi.vo.CbcConstituentEntityVO;
 import com.censof.myfi.hidefmyfi.vo.ControllingPersonVo;
@@ -4373,6 +4374,169 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 		
 		
 		return hidefVo;
+	}
+
+	@Override
+	public HidefVo getAllDatabyCRSId(HidefVo hidefvo) {
+		logger.info("Get all the CBC Details based on CRSID:::" + hidefvo.getMycbcId());
+		List<HidefVo> hidefList = new ArrayList<HidefVo>();
+		List<CRSSummaryGridVo> summaryList = new ArrayList<CRSSummaryGridVo>();
+		List<Crspayldhdr> crsPayldhdr = crspayldhdrRepository.getAllCrsDetails(new BigInteger(hidefvo.getMycbcId()));
+		
+		if(crsPayldhdr != null && crsPayldhdr.size() >0){
+			for(Crspayldhdr crspayldhdr : crsPayldhdr){
+				CRSSummaryGridVo summary = new CRSSummaryGridVo();
+
+				summary.setMessageType(crspayldhdr.getMessageType());
+				summary.setSendingCountry(crspayldhdr.getSenderCountryCd());
+				summary.setId(summaryList.size() + 1);
+				summary.setHrdId(crspayldhdr.getId());
+				summaryList.add(summary);
+				
+			}
+			
+			
+		}//Payloadhdr
+		
+		hidefvo.setCrssummary(summaryList);
+		
+		return hidefvo;
+	}
+
+	@Override
+	public HidefVo viewAllDatabyCRSId(HidefVo hidefvo, String id) {
+		// TODO Auto-generated method stub
+		
+		Crspayldhdr crspayldhdr = crspayldhdrRepository.getAllById(new BigInteger(id));
+		if(crspayldhdr  != null){
+			CrsMetadataVo crsMeta = new CrsMetadataVo();
+			crsMeta.setBinaryEncoding(crspayldhdr.getBinaryEncodingSchemeCd());
+			crsMeta.setCommunicationType(crspayldhdr.getCommunicationTypeCd());
+			crsMeta.setContact(crspayldhdr.getContact());
+			/*crsMeta.setCorMessageReferenceId(crspayldhdr.);*/
+			crsMeta.setFileCreationTimestramp(crspayldhdr.getFileCreateTs());
+			crsMeta.setFileFormatCode(crspayldhdr.getFileFormatCD());
+			crsMeta.setMessageReferenceId(crspayldhdr.getMessageRefId());
+			crsMeta.setMessageType(crspayldhdr.getMessageType());
+			crsMeta.setMessageTypeIndic(crspayldhdr.getMessageTypeIndic());
+			crsMeta.setReceivingCountry(crspayldhdr.getReceivingCountry());
+			crsMeta.setReportingPeriod(crspayldhdr.getReportingPeriod());
+			crsMeta.setSenderContactEmail(crspayldhdr.getSenderContactEmailAddressTxt());
+			crsMeta.setSenderFileId(crspayldhdr.getSenderFileId());
+			crsMeta.setSendingCompanyIn(crspayldhdr.getSendingCompanyIN());
+			crsMeta.setSendingCountry(crspayldhdr.getSenderCountryCd());
+			if(crspayldhdr.getTaxYear() != null){
+			crsMeta.setTaxYear(String.valueOf(crspayldhdr.getTaxYear()));
+			}
+			crsMeta.setWarning(crspayldhdr.getWarning());
+			crsMeta.setId(crspayldhdr.getId());
+			
+			hidefvo.setCrsmetadata(crsMeta);
+			
+			Crspayldbody crsbody = crspayldbodyRepository.getAllCrsBodyDetailsByHrdid(crspayldhdr.getId());
+			if(crsbody != null){
+				
+				Crspayldfi  crsReportingFI = crspayldfiRepository.getAllCrspayldfiByBodyID(crsbody.getId());
+				if(crsReportingFI != null){
+					CrsReportingFiVo crsReportingFIVo = new CrsReportingFiVo();
+					crsReportingFIVo.setCorDocRefId(crsReportingFI.getCorrDocRefId());
+					/*crsReportingFIVo.setCorMmsgRefId(crsReportingFI.get);*/
+					crsReportingFIVo.setDocRefId(crsReportingFI.getDocRefId());
+					crsReportingFIVo.setDocumentTypeIndic(crsReportingFI.getDocTypeIndic());
+					crsReportingFIVo.setId(crsReportingFI.getId());
+					
+					List<Crspayldname> payldName= crspayldnameRepository.getAllCrspayldfiByObjectID(crsReportingFI.getId());
+					List<NameVo> nameList = new ArrayList<NameVo>();
+					if(payldName != null && payldName.size()>0){
+						
+						for(Crspayldname name:payldName){
+							NameVo nameVo = new NameVo();
+							nameVo.setFirstName(name.getNameOrganisation());
+							if(name.getNamePersonType() != null){
+							nameVo.setNameType(Integer.parseInt(name.getNamePersonType()));
+							}
+							nameVo.setId(name.getId().intValue());
+							nameList.add(nameVo);
+						}
+					}
+					crsReportingFIVo.setNameList(nameList);
+					
+					List<OrganisationInTypeVo> organisationInTypeList = new ArrayList<OrganisationInTypeVo>();
+					List<Crspayldin>  reportingFiIn = crspayldinRepository.getAllCrspayldinByObjectID(crsReportingFI.getId());
+					if(reportingFiIn != null && reportingFiIn.size() > 0){
+						for(Crspayldin in : reportingFiIn){
+							OrganisationInTypeVo orgIn = new OrganisationInTypeVo();
+							orgIn.setIn(in.getTin());
+							orgIn.setInType(in.getINType());
+							if(in.getIssuedBy() != null){
+							orgIn.setIssuedBy(Integer.parseInt(in.getIssuedBy()));
+							}
+							orgIn.setId(in.getId().intValue());
+							organisationInTypeList.add(orgIn);
+							
+						}
+					}
+					crsReportingFIVo.setOrganisationInTypeList(organisationInTypeList);
+					
+					List<ResidentCountryVo> residentCountryList = new ArrayList<ResidentCountryVo>();
+					List<Crspayldrescountry> crspayldrec = crspayldrescountryRepository.getAllCrspayldrescountryByObjectID(crsReportingFI.getId());
+					if(crspayldrec != null && crspayldrec.size()>0){
+						for(Crspayldrescountry res :crspayldrec){
+							ResidentCountryVo residentCountry = new ResidentCountryVo();
+							residentCountry.setId(res.getId().intValue());
+							if(res.getResCountryCode() != null){
+							residentCountry.setResidentCountryCode(Integer.parseInt(res.getResCountryCode()));
+							}
+							residentCountryList.add(residentCountry);
+						}
+					}
+					crsReportingFIVo.setResidentCountryList(residentCountryList);
+					
+					List<AddressVo> addressList= new ArrayList<AddressVo>();
+					List<Crspayldaddress> crsReposrtingFiaddress = crspayldaddressRepository.getAllCrspayldaddressByObjectID(crsReportingFI.getId());
+					if(crsReposrtingFiaddress != null && crsReposrtingFiaddress.size() >0){
+						for(Crspayldaddress address : crsReposrtingFiaddress){
+							AddressVo addressVo = new AddressVo();
+							addressVo.setAddressFree(address.getAddressFree());
+							addressVo.setAddressType(address.getLegalAddressType());
+							addressVo.setAddressTypeId(address.getLegalAddressType());
+							addressVo.setBuildingIdentifier(address.getBuildingIdentifier());
+							addressVo.setCity(address.getCity());
+							addressVo.setCountryCode(address.getCountryCode());
+							addressVo.setCountryCodeId(address.getCountryCode());
+							addressVo.setCountrySubentity(address.getCountrySubentity());
+							addressVo.setDistrictName(address.getDistrictName());
+							addressVo.setFloorIdentifier(address.getFloorIdentifier());
+							addressVo.setId(address.getId().intValue());
+							addressVo.setPob(address.getPob());
+							addressVo.setPostCode(address.getPostCode());
+							addressVo.setStreet(address.getStreet());
+							addressVo.setSuitIdentifier(address.getSuiteIdentifier());
+							addressList.add(addressVo);
+						}
+					}
+					crsReportingFIVo.setAddressList(addressList);
+					
+					
+					hidefvo.setCrsreportingfi(crsReportingFIVo);
+					
+					
+				}
+				
+				
+				
+				
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+		}
+		return hidefvo;
 	}
 	
 }

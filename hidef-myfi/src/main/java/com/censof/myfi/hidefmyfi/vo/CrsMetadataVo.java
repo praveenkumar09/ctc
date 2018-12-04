@@ -1,6 +1,7 @@
 package com.censof.myfi.hidefmyfi.vo;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.List;
 
 public class CrsMetadataVo implements Serializable{
@@ -27,6 +28,7 @@ public class CrsMetadataVo implements Serializable{
 	private String sendingCompanyIn;
 	private String corMessageReferenceId;
 	private List<RecievingCountryVo> recievingCountryList;
+	private BigInteger id;
 	public String getSendingCountry() {
 		return sendingCountry;
 	}
@@ -136,6 +138,13 @@ public class CrsMetadataVo implements Serializable{
 	public void setCorMessageReferenceId(String corMessageReferenceId) {
 		this.corMessageReferenceId = corMessageReferenceId;
 	}
+	public BigInteger getId() {
+		return id;
+	}
+	public void setId(BigInteger id) {
+		this.id = id;
+	}
+	
 	
 	
 	
