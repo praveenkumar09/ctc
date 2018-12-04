@@ -550,7 +550,12 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 						if (reports.getUnrelateCurrCode() != null && !reports.getUnrelateCurrCode().isEmpty()) {
 							reportsUnRelatedRevenues.setAttribute("currCode", reports.getUnrelateCurrCode());
 						}
+						if(reports.getUnrelatedAmount().contains("+") || reports.getUnrelatedAmount().contains("-")) {
 						reportsUnRelatedRevenues.appendChild(doc.createTextNode(reports.getUnrelatedAmount()));
+						}else
+						{
+							reportsUnRelatedRevenues.appendChild(doc.createTextNode("+"+reports.getUnrelatedAmount()));
+						}
 						reportsRevenues.appendChild(reportsUnRelatedRevenues);
 					}
 
@@ -559,7 +564,11 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 						if (reports.getRelatedCurrCode() != null && !reports.getRelatedCurrCode().isEmpty()) {
 							reportsRelatedRevenues.setAttribute("currCode", reports.getRelatedCurrCode());
 						}
+						if(reports.getRelatedAmount().contains("+") || reports.getRelatedAmount().contains("-")) {
 						reportsRelatedRevenues.appendChild(doc.createTextNode(reports.getRelatedAmount()));
+						}else {
+							reportsRelatedRevenues.appendChild(doc.createTextNode("+"+reports.getRelatedAmount()));
+						}
 						reportsRevenues.appendChild(reportsRelatedRevenues);
 					}
 
@@ -568,7 +577,11 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 						if (reports.getTotalRevenueCurrCode() != null && !reports.getTotalRevenueCurrCode().isEmpty()) {
 							reportsTotalRevenues.setAttribute("currCode", reports.getTotalRevenueCurrCode());
 						}
+						if(reports.getTotalRevenueAmount().contains("+") || reports.getTotalRevenueAmount().contains("-")) {
 						reportsTotalRevenues.appendChild(doc.createTextNode(reports.getTotalRevenueAmount()));
+						}else {
+							reportsTotalRevenues.appendChild(doc.createTextNode("+"+reports.getTotalRevenueAmount()));
+						}
 						reportsRevenues.appendChild(reportsTotalRevenues);
 					}
 
@@ -577,7 +590,11 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 						if (reports.getProfitorlossCurrCode() != null && !reports.getProfitorlossCurrCode().isEmpty()) {
 							reportsProfitOrLoss.setAttribute("currCode", reports.getProfitorlossCurrCode());
 						}
+						if(reports.getPrfitotloassAmount().contains("+") || reports.getPrfitotloassAmount().contains("-")) {
 						reportsProfitOrLoss.appendChild(doc.createTextNode(reports.getPrfitotloassAmount()));
+						}else {
+							reportsProfitOrLoss.appendChild(doc.createTextNode("+"+reports.getPrfitotloassAmount()));
+						}
 						reportsSummary.appendChild(reportsProfitOrLoss);
 					}
 
@@ -586,7 +603,11 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 						if (reports.getTaxpiadCurrCode() != null && !reports.getTaxpiadCurrCode().isEmpty()) {
 							reportsTaxPaid.setAttribute("currCode", reports.getTaxpiadCurrCode());
 						}
+						if(reports.getTaxpaidAmount().contains("+") || reports.getTaxpaidAmount().contains("-")) {
 						reportsTaxPaid.appendChild(doc.createTextNode(reports.getTaxpaidAmount()));
+						}else {
+							reportsTaxPaid.appendChild(doc.createTextNode("+"+reports.getTaxpaidAmount()));
+						}
 						reportsSummary.appendChild(reportsTaxPaid);
 					}
 
@@ -595,7 +616,11 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 						if (reports.getTaxaccruedCurrCode() != null && !reports.getTaxaccruedCurrCode().isEmpty()) {
 							reportsTaxAccured.setAttribute("currCode", reports.getTaxaccruedCurrCode());
 						}
+						if(reports.getTaxaccruedAmount().contains("+") || reports.getTaxaccruedAmount().contains("-")) {
 						reportsTaxAccured.appendChild(doc.createTextNode(reports.getTaxaccruedAmount()));
+						}else {
+							reportsTaxAccured.appendChild(doc.createTextNode("+"+reports.getTaxaccruedAmount()));
+						}
 						reportsSummary.appendChild(reportsTaxAccured);
 					}
 
@@ -604,7 +629,11 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 						if (reports.getCapitalCurrCode() != null && !reports.getCapitalCurrCode().isEmpty()) {
 							reportsCapitalAmount.setAttribute("currCode", reports.getCapitalCurrCode());
 						}
+						if(reports.getCapitalAmount().contains("+") || reports.getCapitalAmount().contains("-")) {
 						reportsCapitalAmount.appendChild(doc.createTextNode(reports.getCapitalAmount()));
+						}else {
+							reportsCapitalAmount.appendChild(doc.createTextNode("+"+reports.getCapitalAmount()));
+						}
 						reportsSummary.appendChild(reportsCapitalAmount);
 					}
 
@@ -613,7 +642,11 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 						if (reports.getEarningCurrCode() != null && !reports.getEarningCurrCode().isEmpty()) {
 							reportsEarningAmount.setAttribute("currCode", reports.getEarningCurrCode());
 						}
+						if(reports.getEarningAmount().contains("+") || reports.getEarningAmount().contains("-")) {
 						reportsEarningAmount.appendChild(doc.createTextNode(reports.getEarningAmount()));
+						}else {
+							reportsEarningAmount.appendChild(doc.createTextNode("+"+reports.getEarningAmount()));
+						}
 						reportsSummary.appendChild(reportsEarningAmount);
 					}
 
@@ -628,7 +661,11 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 						if (reports.getAssertCurrCode() != null && !reports.getAssertCurrCode().isEmpty()) {
 							reportsAssetAmount.setAttribute("currCode", reports.getAssertCurrCode());
 						}
+						if(reports.getAssertAmount().contains("+") || reports.getAssertAmount().contains("-")) {
 						reportsAssetAmount.appendChild(doc.createTextNode(reports.getAssertAmount()));
+						}else {
+							reportsAssetAmount.appendChild(doc.createTextNode("+"+reports.getAssertAmount()));
+						}
 						reportsSummary.appendChild(reportsAssetAmount);
 					}
 
