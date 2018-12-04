@@ -4524,7 +4524,19 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 				}
 				
 				
+				Crspayldacctrep crspayldacctrep = crspayldacctrepRepository.getAllCrspayldacctrepByBodyID(crsbody.getHdrID());
+				AccountHolderVo accountholder = new AccountHolderVo();
+				if(crspayldacctrep != null){
+					accountholder.setAccountHolderType(crspayldacctrep.getAcctHolderType());
+					accountholder.setAccountNumber(crspayldacctrep.getAccountNumber());
+					accountholder.setBirthDate(crspayldacctrep.getBirthDate());
+					accountholder.setCity(crspayldacctrep.getBirthCity());
+					accountholder.setCitySubEntity(crspayldacctrep.getBirthCitySubent());
+					accountholder.setCurrency(crspayldacctrep.getAccountCurrCode());
+					
+				}
 				
+				hidefvo.setAccountholder(accountholder);
 				
 			}
 			
