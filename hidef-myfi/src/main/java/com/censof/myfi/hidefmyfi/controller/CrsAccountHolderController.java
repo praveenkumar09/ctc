@@ -2250,9 +2250,9 @@ public class CrsAccountHolderController {
 
 		List<AccountHolderVo> accountHolderList = new ArrayList<AccountHolderVo>();
 		String reportsJSON = mapper.writeValueAsString(accountHolderList);
-		if (hidef.getAccountholder() != null && hidef.getControllingPersonList() != null 
-				&& !hidef.getControllingPersonList().isEmpty()) {
-			reportsJSON = mapper.writeValueAsString(hidef.getControllingPersonList());
+		if (hidef.getAccountholder() != null && hidef.getAccountholder().getControllingPersonList() != null 
+				&& !hidef.getAccountholder().getControllingPersonList().isEmpty()) {
+			reportsJSON = mapper.writeValueAsString(hidef.getAccountholder().getControllingPersonList());
 		}
 
 		model.addAttribute("hidef", hidef);
@@ -2268,11 +2268,11 @@ public class CrsAccountHolderController {
 		Random rand = new Random();
 		ctrlPerson = hidef.getAccountholder().getControllingPersonVo();
 		ctrlPerson.setId(rand.nextInt(10000));
-		if (hidef.getControllingPersonList() != null && hidef.getControllingPersonList().size() >0) {
-			hidef.getControllingPersonList().add(ctrlPerson);
+		if (hidef.getAccountholder().getControllingPersonList() != null && hidef.getAccountholder().getControllingPersonList().size() >0) {
+			hidef.getAccountholder().getControllingPersonList().add(ctrlPerson);
 		} else {
-			hidef.setControllingPersonList(new ArrayList<ControllingPersonVo>());
-			hidef.getControllingPersonList().add(ctrlPerson);
+			hidef.getAccountholder().setControllingPersonList(new ArrayList<ControllingPersonVo>());
+			hidef.getAccountholder().getControllingPersonList().add(ctrlPerson);
 		}
 		
 		hidef.getAccountholder().setControllingPersonVo(new ControllingPersonVo());
@@ -3032,7 +3032,7 @@ public class CrsAccountHolderController {
 			ModelMap model, Map<String, Object> map) throws JsonParseException, JsonMappingException, IOException {
 		ControllingPersonVo controllingPersonVo = new ControllingPersonVo();
 		
-		for (ControllingPersonVo ctrlPerson: hidef.getControllingPersonList()) {
+		for (ControllingPersonVo ctrlPerson: hidef.getAccountholder().getControllingPersonList()) {
 			if (ctrlPerson.getId() == viewId) {
 				controllingPersonVo =ctrlPerson;
 			}
@@ -3047,13 +3047,28 @@ public class CrsAccountHolderController {
 			ModelMap model, Map<String, Object> map) throws JsonParseException, JsonMappingException, IOException {
 		ControllingPersonVo controllingPersonVo = new ControllingPersonVo();
 		
-		for (ControllingPersonVo ctrlPerson: hidef.getControllingPersonList()) {
+		for (ControllingPersonVo ctrlPerson: hidef.getAccountholder().getControllingPersonList()) {
 			if (ctrlPerson.getId() == editId) {
 				controllingPersonVo =ctrlPerson;
 			}
 		}
 
 		hidef.getAccountholder().setControllingPersonVo(controllingPersonVo);;
+		model.addAttribute("hidef", hidef);
+		return "crsAccountHolder";
+	}
+	@GetMapping(value = "/admin/crs/deleteControllingPersonMain")
+	public String deleteControllingPersonMain(@ModelAttribute("hidef") HidefVo hidef, @RequestParam int viewId, BindingResult result,
+			ModelMap model, Map<String, Object> map) throws JsonParseException, JsonMappingException, IOException {
+		ControllingPersonVo controllingPersonVo = new ControllingPersonVo();
+		List<ControllingPersonVo> controllingPersonList = new ArrayList<ControllingPersonVo>();
+		for (ControllingPersonVo ctrlPerson: hidef.getAccountholder().getControllingPersonList()) {
+			if (ctrlPerson.getId()!= viewId) {
+				controllingPersonList.add(ctrlPerson);
+			}
+		}
+
+		hidef.getAccountholder().setControllingPersonList(controllingPersonList);
 		model.addAttribute("hidef", hidef);
 		return "crsAccountHolder";
 	}
@@ -3088,14 +3103,14 @@ public class CrsAccountHolderController {
 		int newAccountId = controllingVO.getId();
 
 		List<ControllingPersonVo> newCRSAccountEditedList = new ArrayList<ControllingPersonVo>();
-		for (ControllingPersonVo accountVO : hidef.getControllingPersonList()) {
+		for (ControllingPersonVo accountVO : hidef.getAccountholder().getControllingPersonList()) {
 			if (accountVO.getId() != newAccountId) {
 				newCRSAccountEditedList.add(accountVO);
 			}
 		}
 
 		newCRSAccountEditedList.add(controllingVO);
-		hidef.setControllingPersonList(newCRSAccountEditedList);
+		hidef.getAccountholder().setControllingPersonList(newCRSAccountEditedList);
 		ControllingPersonVo controlling = new ControllingPersonVo();
 		hidef.getAccountholder().setControllingPersonVo(controlling);
 		model.addAttribute("hidef", hidef);

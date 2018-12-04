@@ -3841,7 +3841,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 					crspayldacct.setAccountBalance(new BigDecimal(accountHolderVo.getAccountBalance()));
 					}
 					crspayldacct.setAccountCurrCode(accountHolderVo.getCurrency());
-					crspayldacct.setAccountHolder(accountHolderVo.getAccountHolderType());
+					/*crspayldacct.setAccountHolder(accountHolderVo.getAccountHolderType());*/
 					crspayldacct.setAccountNumber(accountHolderVo.getAccountNumber());
 					/*crspayldacct.setAcctNumberType(accountHolderVo.getA);*/
 					

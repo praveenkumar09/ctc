@@ -1326,6 +1326,12 @@ $(document)
 																	+ item.id);*/
 															e
 																	.stopPropagation();
+															deleteControllingPersonMain(item.id);
+															$(
+															"#accountHolderControllingPersonGrid")
+															.jsGrid(
+																	"loadData");
+															return false;
 														});
 
 										return $("<div>")
@@ -9614,7 +9620,6 @@ function editControllingPersonMain(id){
            console.log(error);
        }
    });
-
 }
 
 function saveAllCRSData(){
@@ -10421,6 +10426,12 @@ function showAllControllingPersonGrid(){
 													+ item.id);*/
 											e
 													.stopPropagation();
+											deleteControllingPersonMain(item.id);
+											$(
+											"#accountHolderControllingPersonGrid")
+											.jsGrid(
+													"loadData");
+											return false;
 										});
 
 						return $("<div>")
@@ -10534,6 +10545,39 @@ function deleteControllingPersonMain(item){
 	       }
 	   });
 }
+
+function deleteControllingPersonMain(item){
+	alert('@@@@@@@@@@@@@@@@@')
+	$
+	   .ajax({
+
+	       url: 'crs/deleteControllingPersonMain?viewId='+item,
+	       type: 'GET',
+	       async: false,
+	       success: function(data) {	        	
+	        	var htmlFiltered = $("<div>").html(data).find("#controllingPerson").html();
+	        	console.log(htmlFiltered);
+	            $('#controllingPerson').html('');
+	            $('#controllingPerson').html(htmlFiltered);	            
+	            $('#saveControllingPersonButton').show();
+	            $('#viewControllingDone').hide();
+	            $('#editviewControllingDoneDone').hide();
+	            $('#editCancelviewControllingDoneDone').hide();
+	            showAllControllingPersonGrid();
+	            debugger;
+	            return false;	              	
+	       },
+	       error: function(
+	           request,
+	           error) {
+	           console.log(error);
+	       }
+	   });
+}
+
+
+
+
 
 
 
