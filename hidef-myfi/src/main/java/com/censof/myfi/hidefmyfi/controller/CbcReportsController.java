@@ -881,9 +881,9 @@ public class CbcReportsController {
 			errorFlag = "true";
 		}
 		
-		if(constituentEntityVo.getOrganisationInTypeList() == null || constituentEntityVo.getOrganisationInTypeList().isEmpty()) {
+		/*if(constituentEntityVo.getOrganisationInTypeList() == null || constituentEntityVo.getOrganisationInTypeList().isEmpty()) {
 			errorFlag = "true";
-		}
+		}*/
 		
 		return errorFlag; 
 	}

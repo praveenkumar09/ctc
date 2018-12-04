@@ -4771,7 +4771,7 @@ $("#cbcReportsINGrid")
 								validate : "required"
 							},
 							{
-								title : "IN Type<font color='red'>*</font>",
+								title : "IN Type",
 								name : "inType",
 								type : "text",
 								width : 150
