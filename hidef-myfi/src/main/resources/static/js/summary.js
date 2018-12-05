@@ -232,7 +232,7 @@ $(document).ready(function() {
                   title: "Sending Country",
                   name: "sendingCountry",
                   type: "text",
-                  width: 40
+                  width: 10
                   ,
                   /*items: object.addressType,*/
                   visible: true
@@ -241,14 +241,32 @@ $(document).ready(function() {
                   title: "Message Type",
                   name: "messageType",
                   type: "text",
-                  width: 40,
+                  width: 10,
+                  /*,
+                  items: object.countryCode,*/
+                  visible: true
+              },
+              {
+                  title: "PackageName",
+                  name: "filename",
+                  type: "text",
+                  width: 50,
+                  /*,
+                  items: object.countryCode,*/
+                  visible: true
+              },
+              {
+                  title: "Created Date Time",
+                  name: "createdDateTime",
+                  type: "text",
+                  width: 30,
                   /*,
                   items: object.countryCode,*/
                   visible: true
               },
                  {
                   name: "button",
-                  width: 20,
+                  width: 40,
                   align:"center",
                   headerTemplate: function() {
                       return $("<button>")
