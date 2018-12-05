@@ -36,6 +36,7 @@ import com.censof.myfi.hidefmyfi.entity.Cbcbizactivitiesreference;
 import com.censof.myfi.hidefmyfi.entity.Cbcdocumenttypeindicator;
 import com.censof.myfi.hidefmyfi.entity.Cbcnametype;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldaddress;
+import com.censof.myfi.hidefmyfi.entity.Cbcpayldbizactiv;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldin;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldname;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldrescountry;
@@ -789,7 +790,10 @@ public class CbcReportsController {
 					if(address.getId() != 0) {
 						Optional<Cbcpayldaddress> addressOb = cbcpayldaddressRepository.findById(BigInteger.valueOf(address.getId()));
 						if(addressOb.isPresent()) {
-						cbcpayldaddressRepository.deleteById(BigInteger.valueOf(address.getId()));
+						Cbcpayldaddress cbcpayldaddress =	cbcpayldaddressRepository.getAllPayldAddressById(BigInteger.valueOf(address.getId()));	
+						if(cbcpayldaddress != null){
+						cbcpayldaddressRepository.deleteById(cbcpayldaddress.getId());
+						}
 						}
 					}
 					hidef.getCbcReports().getConstituentEntity().setAddressList(copyList);
@@ -1149,7 +1153,10 @@ public class CbcReportsController {
 					if (id == bizvo.getId()) {
 						copyList.remove(bizvo);
 						if(hidef.getCbcReports().getConstituentEntity().getConsId() != 0 && bizvo.getId() != 0) {
-							cbcpayldbizactivRepository.deleteById(BigInteger.valueOf(bizvo.getId()));
+							Cbcpayldbizactiv cbcpayldbizactiv =cbcpayldbizactivRepository.getAllBizActivitiesByID(BigInteger.valueOf(bizvo.getId()));
+							if(cbcpayldbizactiv != null){
+							cbcpayldbizactivRepository.deleteById(cbcpayldbizactiv.getId());
+							}
 						}
 						hidef.getCbcReports().getConstituentEntity().setBizActivitiesList(copyList);
 						break;

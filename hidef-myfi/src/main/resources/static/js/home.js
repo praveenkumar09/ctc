@@ -3609,6 +3609,10 @@ function reportEntityEditSaveAddress() {
 				$('#editNewReportingEntityAddress').html(htmlFiltered);
 				/*$("#editNewReportingEntityAddress").modal('close');*/
 				$('#editNewReportingEntityAddress').modal('toggle');
+				$(
+				"#reportingEntityAddressGrid")
+				.jsGrid(
+						"loadData");
 				return false;
 			}
 		});
@@ -3629,6 +3633,10 @@ function reportEntityDeleteAddress(id) {
 			});*/
 
 			// alert('@@@@@@@@@@@@@@@' + response);
+			$(
+			"#reportingEntityAddressGrid")
+			.jsGrid(
+					"loadData");
 			return false;
 			//addNewAddressReportingFIClicked();
 
@@ -3743,6 +3751,10 @@ function cbcReportsEditSaveAddress() {
 				$('#editCbcReportsAddress').html(htmlFiltered);
 				/*$("#editNewReportingEntityAddress").modal('close');*/
 				$('#editCbcReportsAddress').modal('toggle');
+				$(
+				"#cbcReportsAddressGrid")
+				.jsGrid(
+						"loadData");
 				return false;
 			}
 		});
@@ -3756,6 +3768,10 @@ function cbcReportsDeleteAddress(id) {
 		type : 'GET',
 		async : false,
 		success : function(response) {
+			$(
+			"#cbcReportsAddressGrid")
+			.jsGrid(
+					"loadData");
 			return false;
 
 		},

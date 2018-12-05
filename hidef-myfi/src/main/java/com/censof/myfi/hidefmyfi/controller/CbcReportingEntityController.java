@@ -31,6 +31,10 @@ import com.censof.myfi.hidefmyfi.CTSConstants;
 import com.censof.myfi.hidefmyfi.entity.Cbcaddresstype;
 import com.censof.myfi.hidefmyfi.entity.Cbcdocumenttypeindicator;
 import com.censof.myfi.hidefmyfi.entity.Cbcnametype;
+import com.censof.myfi.hidefmyfi.entity.Cbcpayldaddress;
+import com.censof.myfi.hidefmyfi.entity.Cbcpayldin;
+import com.censof.myfi.hidefmyfi.entity.Cbcpayldname;
+import com.censof.myfi.hidefmyfi.entity.Cbcpayldrescountry;
 import com.censof.myfi.hidefmyfi.entity.Cbcreportingrole;
 import com.censof.myfi.hidefmyfi.entity.Docrefid;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
@@ -46,7 +50,6 @@ import com.censof.myfi.hidefmyfi.vo.CommonDropdownGridBean;
 import com.censof.myfi.hidefmyfi.vo.HidefVo;
 import com.censof.myfi.hidefmyfi.vo.NameVo;
 import com.censof.myfi.hidefmyfi.vo.OrganisationInTypeVo;
-import com.censof.myfi.hidefmyfi.vo.RecievingCountryVo;
 import com.censof.myfi.hidefmyfi.vo.ReportingEntityVo;
 import com.censof.myfi.hidefmyfi.vo.ResidentCountryVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -257,7 +260,10 @@ public class CbcReportingEntityController {
 					if(residentCountryVo.getId()==residentCountry.getId()){
 						copyList.remove(residentCountry);
 						if(hidef.getReportingEntity().getId() != null && residentCountry.getId() != 0) {
-							cbcpayldrescountryRepository.deleteById(BigInteger.valueOf(residentCountry.getId()));
+							Cbcpayldrescountry cbcpayldrescountry = cbcpayldrescountryRepository.getAllPayldResidentCountryById(BigInteger.valueOf(residentCountry.getId()));
+							if(cbcpayldrescountry != null){
+							cbcpayldrescountryRepository.deleteById(cbcpayldrescountry.getId());
+							}
 						}
 						hidef.getReportingEntity().setResidentCountryList(copyList);
 						break;
@@ -354,7 +360,10 @@ public class CbcReportingEntityController {
 				if(id==namevo.getId()){
 					copyList.remove(namevo);
 					if(hidef.getReportingEntity().getId() != null && namevo.getId() != 0) {
-						cbcpayldnameRepository.deleteById(BigInteger.valueOf(namevo.getId()));
+						Cbcpayldname cbcpayldname = cbcpayldnameRepository.getAllPayldNameDetailsById(BigInteger.valueOf(namevo.getId()));
+						if(cbcpayldname != null){
+						cbcpayldnameRepository.deleteById(cbcpayldname.getId());
+						}
 					}
 					hidef.getReportingEntity().setNameList(copyList);
 					break;
@@ -452,7 +461,10 @@ public class CbcReportingEntityController {
 				if(id==organisation.getId()){
 					copyList.remove(organisation);
 					if(hidef.getReportingEntity().getId() != null && organisation.getId() != 0) {
-						cbcpayldinRepository.deleteById(BigInteger.valueOf(organisation.getId()));
+						Cbcpayldin cbcpayldin = cbcpayldinRepository.getAllPayldInDetailsById(BigInteger.valueOf(organisation.getId()));
+						if(cbcpayldin != null){
+						cbcpayldinRepository.deleteById(cbcpayldin.getId());
+						}
 					}
 					hidef.getReportingEntity().setOrganisationInTypeList(copyList);
 					break;
@@ -665,10 +677,17 @@ public class CbcReportingEntityController {
 					addressView = address;
 					List<AddressVo> copyList = new ArrayList<AddressVo>(addressList);
 					copyList.remove(address);
-					if(hidef.getReportingEntity().getId() != null && address.getId() != 0) {
-						cbcpayldaddressRepository.deleteById(BigInteger.valueOf(address.getId()));
-					}
 					hidef.getReportingEntity().setAddressList(copyList);
+					try{
+					if(hidef.getReportingEntity().getId() != null && address.getId() != 0) {
+						Cbcpayldaddress cbcAddress = cbcpayldaddressRepository.getAllPayldAddressById(BigInteger.valueOf(address.getId()));
+						if(cbcAddress != null){
+						cbcpayldaddressRepository.deleteById(cbcAddress.getId());
+						}
+					}
+					}catch(Exception e){
+						e.printStackTrace();
+					}
 				}
 			}
 			
