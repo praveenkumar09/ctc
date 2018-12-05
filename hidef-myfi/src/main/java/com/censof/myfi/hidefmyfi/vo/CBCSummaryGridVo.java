@@ -8,6 +8,8 @@ public class CBCSummaryGridVo {
 	private String sendingCountry;
 	private String messageType;
 	private BigInteger hrdId;
+	private String filename;
+	private String createdDateTime;
 	
 	/*private HidefVo hidefvo;*/
 	public int getId() {
@@ -40,6 +42,19 @@ public class CBCSummaryGridVo {
 	public void setHrdId(BigInteger hrdId) {
 		this.hrdId = hrdId;
 	}
+	public String getFilename() {
+		return filename;
+	}
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+	public String getCreatedDateTime() {
+		return createdDateTime;
+	}
+	public void setCreatedDateTime(String createdDateTime) {
+		this.createdDateTime = createdDateTime;
+	}
+	
 	
 	
 	

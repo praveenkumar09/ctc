@@ -1,5 +1,6 @@
 package com.censof.myfi.hidefmyfi.vo;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -38,6 +39,7 @@ public class HidefVo {
 	private List<AccountHolderVo> accountHolderList;
 	private List<ControllingPersonVo> controllingPersonList;
 	private List<CRSSummaryGridVo> crssummary;
+	private BigInteger payldId;
 	
 	
 	
@@ -260,6 +262,15 @@ public class HidefVo {
 	public void setCrssummary(List<CRSSummaryGridVo> crssummary) {
 		this.crssummary = crssummary;
 	}
+
+	public BigInteger getPayldId() {
+		return payldId;
+	}
+
+	public void setPayldId(BigInteger payldId) {
+		this.payldId = payldId;
+	}
+	
 	
 	
 	

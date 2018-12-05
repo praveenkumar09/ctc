@@ -1065,6 +1065,9 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 					senderFileId.setSenderfileid(senderFieIdNew.substring(senderFieIdNew.length() - 4));
 					senderFileId = senderfileidRepository.saveAndFlush(senderFileId);
 				}
+				if(payldhdr != null){
+				hidefVo.setPayldId(payldhdr.getId());
+				}
 
 			} // metadata
 
@@ -1091,6 +1094,8 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 			summary.setSendingCountry(payldhdr.getSenderCountryCd());
 			summary.setId(summaryList.size() + 1);
 			summary.setHrdId(payldhdr.getId());
+			summary.setFilename(payldhdr.getFilename());
+			summary.setCreatedDateTime(payldhdr.getCreateDateTime().toString());
 			summaryList.add(summary);
 
 		}

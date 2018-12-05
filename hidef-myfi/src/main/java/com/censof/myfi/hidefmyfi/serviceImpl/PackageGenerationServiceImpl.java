@@ -32,9 +32,11 @@ import com.censof.myfi.hidef.packaging.FATCAPackager;
 import com.censof.myfi.hidefmyfi.configuration.UtilShared;
 import com.censof.myfi.hidefmyfi.entity.Cbcbizactivitiesreference;
 import com.censof.myfi.hidefmyfi.entity.Cbcnametype;
+import com.censof.myfi.hidefmyfi.entity.Cbcpayldhdr;
 import com.censof.myfi.hidefmyfi.entity.Cbcsummaryreference;
 import com.censof.myfi.hidefmyfi.entity.Crspaymenttype;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
+import com.censof.myfi.hidefmyfi.repository.CbcpayldhdrRepository;
 import com.censof.myfi.hidefmyfi.service.CtcDataSaveService;
 import com.censof.myfi.hidefmyfi.service.PackageGenerationService;
 import com.censof.myfi.hidefmyfi.vo.AccountHolderVo;
@@ -65,6 +67,9 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 
 	@Autowired
 	CtcDataSaveService ctcDataSaveService;
+	
+	@Autowired
+	private CbcpayldhdrRepository cbcpayldhdrRepository;
 
 	@Override
 	public String generateCBCXMLMetData(HidefVo hidef) throws IOException {
@@ -967,6 +972,20 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 		FATCAPackager fatcaPackager = new FATCAPackager();
 		String folderPath = fatcaPackager.signAndCreatePkgStreaming(payloadxml, myPrivateKey, myPublicCert, senderGiin,
 				receiverGiin, receiverPublicCert, taxyear, metadataxml, targetFolderPath);
+		if(folderPath != null){
+			File file = new File(folderPath);
+			if(file.isFile()){
+				String fileName = file.getName();
+				if(hidef.getPayldId() != null){
+					Cbcpayldhdr payldhdr = cbcpayldhdrRepository.getCbcDetailsById(hidef.getPayldId());
+					if(payldhdr != null){
+						System.out.println("Fallowing File name Updated:::>"+fileName+"in PayldID:::>"+payldhdr.getId());
+						payldhdr.setFilename(fileName);
+						cbcpayldhdrRepository.saveAndFlush(payldhdr);
+					}
+				}
+			}
+		}
 		return folderPath;
 	}
 
