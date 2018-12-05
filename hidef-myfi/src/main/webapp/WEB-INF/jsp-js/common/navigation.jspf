@@ -37,8 +37,8 @@ box-shadow: 0 0 20px black;
 							class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a href="#" onclick="newCRSOnClick();">New</a></li>
-							<li><a href="#" onclick="newCRSOnClick();">Clone</a></li>
-							<li><a href="#" onclick="newCRSOnClick();">View</a></li>
+							<!-- <li><a href="#" onclick="newCRSOnClick();">Clone</a></li>
+							<li><a href="#" onclick="newCRSOnClick();">View</a></li> -->
 							<li role="separator" class="divider"></li>
 							<li><a href="#" onclick="crsUserProfileOnClick(); ">Create
 									Profile</a></li>
@@ -51,8 +51,8 @@ box-shadow: 0 0 20px black;
 							class="caret"></span></a>
 							<ul class="dropdown-menu">
 							<li><a href="#" onclick="newNewCBCOnClick();">New</a></li>
-							<li><a href="#" onclick="newCBCOnClick();">Clone</a></li>
-							<li><a href="#" onclick="newCBCOnClick();">View</a></li>
+						<!-- 	<li><a href="#" onclick="newCBCOnClick();">Clone</a></li>
+							<li><a href="#" onclick="newCBCOnClick();">View</a></li> -->
 							<li role="separator" class="divider"></li>
 							<li><a href="#" onclick="userProfileOnClick();">Create
 									Profile</a></li>
