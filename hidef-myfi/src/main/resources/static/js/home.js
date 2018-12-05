@@ -2626,8 +2626,10 @@ function showCbcAddInfo1(newForm, editForm, viewForm) {
 					$("#metaData").show();
 					$("#metaData").html(response);
 
-					var residentCountryCode = $("#residentCountry").val();
-					residentCountryCode = $.parseJSON(residentCountryCode);
+					/*var residentCountryCode = $("#residentCountry").val();
+					residentCountryCode = $.parseJSON(residentCountryCode);*/
+					var residentCountry = $("#userPropCountry").val();
+				    residentCountry = $.parseJSON(residentCountry);
 					/*var issuedBy = residentCountryCode;*/
 					var summeryReference = $("#summaryTypedropdown").val();
 					summeryReference = $.parseJSON(summeryReference);
@@ -2787,7 +2789,7 @@ function showCbcAddInfo1(newForm, editForm, viewForm) {
 													title : "Resident Country Code",
 													name : "residentCountryCode",
 													type : "select",
-													items : residentCountryCode,
+													items : residentCountry,
 													valueField : "id",
 													textField : "name",
 												}, {
@@ -3057,8 +3059,10 @@ function showCbcAddInfo(newForm, editForm, viewForm) {
 						$("#metaData").show();
 						$("#metaData").html(response);
 
-						var residentCountryCode = $("#residentCountry").val();
-						residentCountryCode = $.parseJSON(residentCountryCode);
+						/*var residentCountryCode = $("#residentCountry").val();
+						residentCountryCode = $.parseJSON(residentCountryCode);*/
+						var residentCountry = $("#userPropCountry").val();
+					    residentCountry = $.parseJSON(residentCountry);
 						/*var issuedBy = residentCountryCode;*/
 						var summeryReference = $("#summaryTypedropdown").val();
 						summeryReference = $.parseJSON(summeryReference);
@@ -3226,7 +3230,7 @@ function showCbcAddInfo(newForm, editForm, viewForm) {
 														title : "Resident Country Code",
 														name : "residentCountryCode",
 														type : "select",
-														items : residentCountryCode,
+														items : residentCountry,
 														valueField : "id",
 														textField : "name",
 													}, {
@@ -3636,6 +3640,7 @@ function reportEntityDeleteAddress(id) {
 }
 
 function cbcReportsViewAddress(id) {
+	
 	$.ajax({
 		url : 'cbc/cbcReportsviewAddress?id=' + id,
 		type : 'GET',
@@ -3711,6 +3716,10 @@ function cbcReportsEditSaveAddress() {
 				$('#editNewReportingEntityAddress').html(htmlFiltered);
 				/*$("#editNewReportingEntityAddress").modal('close');*/
 				$('#editNewReportingEntityAddress').modal('toggle');
+				$(
+				"#cbcReportsAddressGrid")
+				.jsGrid(
+						"loadData");
 				return false;
 			}
 		});
@@ -3719,7 +3728,6 @@ function cbcReportsEditSaveAddress() {
 }
 
 function cbcReportsEditSaveAddress() {
-	alert('cbc reports alert save')
 	$(function() {
 		var ctx = "${pageContext.request.contextPath}";
 		$.ajax({
@@ -4219,6 +4227,10 @@ function showAllReportsGrid(){
 							} ]
 				});
 
+     var residentCountry = $("#userPropCountry").val();
+     residentCountry = $.parseJSON(residentCountry);
+     var issuedCountry = residentCountry;
+
 $("#cbcReportsResidentCountryGrid")
 		.jsGrid(
 				{
@@ -4387,7 +4399,7 @@ $("#cbcReportsResidentCountryGrid")
 								title : "Resident Country Code",
 								name : "residentCountryCode",
 								type : "select",
-								items : residentCountryCode,
+								items : residentCountry,
 								valueField : "id",
 								textField : "name",
 							}, {
@@ -4780,7 +4792,7 @@ $("#cbcReportsINGrid")
 								title : "IN Issued By",
 								name : "issuedBy",
 								type : "select",
-								items : residentCountryCode,
+								items : issuedCountry,
 								valueField : "id",
 								textField : "name",
 							}, {
@@ -5233,6 +5245,9 @@ function showAllViewReportsGrid(){
 							}]
 				});
 
+var residentCountry = $("#userPropCountry").val();
+residentCountry = $.parseJSON(residentCountry);
+var issuedCountry = residentCountry;
 $("#cbcReportsResidentCountryGrid")
 		.jsGrid(
 				{
@@ -5284,7 +5299,7 @@ $("#cbcReportsResidentCountryGrid")
 								title : "Resident Country Code",
 								name : "residentCountryCode",
 								type : "select",
-								items : residentCountryCode,
+								items : residentCountry,
 								valueField : "id",
 								textField : "name",
 							}]
@@ -5443,7 +5458,7 @@ $("#cbcReportsINGrid")
 								title : "IN Issued By",
 								name : "issuedBy",
 								type : "select",
-								items : residentCountryCode,
+								items : issuedCountry,
 								valueField : "id",
 								textField : "name",
 							} ]

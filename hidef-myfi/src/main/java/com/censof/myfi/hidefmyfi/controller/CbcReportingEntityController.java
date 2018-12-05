@@ -46,6 +46,7 @@ import com.censof.myfi.hidefmyfi.vo.CommonDropdownGridBean;
 import com.censof.myfi.hidefmyfi.vo.HidefVo;
 import com.censof.myfi.hidefmyfi.vo.NameVo;
 import com.censof.myfi.hidefmyfi.vo.OrganisationInTypeVo;
+import com.censof.myfi.hidefmyfi.vo.RecievingCountryVo;
 import com.censof.myfi.hidefmyfi.vo.ReportingEntityVo;
 import com.censof.myfi.hidefmyfi.vo.ResidentCountryVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -118,6 +119,8 @@ public class CbcReportingEntityController {
 			nameTypegridBeans.add(gridBean);			
 
 		}
+		
+		
 		
 		try {
 			String arrayToJson = mapper.writeValueAsString(gridBeans);

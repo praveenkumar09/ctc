@@ -62,6 +62,7 @@ import com.censof.myfi.hidefmyfi.service.PackageGenerationService;
 import com.censof.myfi.hidefmyfi.vo.CbcAdditionalInfo;
 import com.censof.myfi.hidefmyfi.vo.CommonDropdownGridBean;
 import com.censof.myfi.hidefmyfi.vo.HidefVo;
+import com.censof.myfi.hidefmyfi.vo.RecievingCountryVo;
 import com.censof.myfi.hidefmyfi.vo.ResidentCountryVo;
 import com.censof.myfi.hidefmyfi.vo.SummaryVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -134,11 +135,24 @@ public class CbcAdditionalInfoController {
 			hidef.setDocRefId(String.valueOf(Integer.parseInt(hidef.getDocRefId())+1));
 			}
 		}
+		List<CommonDropdownGridBean> fromProfileCountrygridBeans = new ArrayList<>();
+		if(hidef.getUserprofile().getRecievingCountryList() != null && hidef.getUserprofile().getRecievingCountryList().size() > 0){
+		for(RecievingCountryVo residentCountry:hidef.getUserprofile().getRecievingCountryList()) {
+			Hicountry hicountry = ctccommonDropdownService.findCountryById(BigInteger.valueOf(residentCountry.getRecievingCountry()));
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(hicountry.getId());
+			gridBean.setName(hicountry.getCountryCode());
+			fromProfileCountrygridBeans.add(gridBean);			
+
+		}
+		}
+		
 
 		try {
 			String arrayToJson = mapper.writeValueAsString(gridBeans);
 			map.put("residentCountry", arrayToJson);
 			map.put("summeryTypeList", mapper.writeValueAsString(nameTypegridBeans));
+			map.put("userPropCountry", mapper.writeValueAsString(fromProfileCountrygridBeans));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 

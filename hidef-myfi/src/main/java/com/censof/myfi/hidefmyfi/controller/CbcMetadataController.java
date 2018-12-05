@@ -139,7 +139,7 @@ public class CbcMetadataController {
 		if(newHidefVo.getMetadata() == null) {
 			newHidefVo.setMetadata(new MetaDataVo());
 			newHidefVo.getMetadata().setSendingCompanyIN(newHidefVo.getMycbcId());
-			newHidefVo = getSenderFileID(newHidefVo,"CBC");
+			/*newHidefVo = getSenderFileID(newHidefVo,"CBC");*/
 			/*newHidefVo = getMessageRefId(newHidefVo,"CBC");*/
 			if(newHidefVo.getUserprofile() != null) {
 				newHidefVo = setUserProfileDataForMetaData(newHidefVo);
@@ -314,6 +314,15 @@ public class CbcMetadataController {
 		model.addAttribute("hidef", hidef);
 		return hidef.getMetadata().getMessageRefId();
 	}
+	@GetMapping(value ="/admin/cbc/generateSenderFileID")
+	@ResponseBody
+	public String generateSenderFileID(@ModelAttribute("hidef")HidefVo hidef, 
+		/*	@RequestParam(required = true) String year,*/
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+		hidef = getSenderFileID(hidef,"CBC");
+		model.addAttribute("hidef", hidef);
+		return hidef.getMetadata().getSenderFileId();
+	}
 	
 	public String converToString(int i){
 		String convertedNum = "";
@@ -340,11 +349,12 @@ public class CbcMetadataController {
 		String date = simpleDateFormat.format(new Date());
 		Senderfileid senderFileId = ctccommonDropdownService.findSenderFileIdByDate(date);
 		String senderFileIdNew = "";
-		String senderFileIdStatic = communicationType+"_MY"+hidef.getMycbcId()+date;
+		String senderFileIdStatic = communicationType+"_MY"+hidef.getMetadata().getTaxYear()+"-"+hidef.getMycbcId()+date;
 		if(senderFileId != null){
 			
 				int sum = Integer.parseInt(senderFileId.getSenderfileid())+ 1;				
-				senderFileIdNew = senderFileIdStatic+String.valueOf(converToString(sum));			
+				senderFileIdNew = senderFileIdStatic+String.valueOf(converToString(sum));	
+				
 			
 			
 		}else{
@@ -353,36 +363,55 @@ public class CbcMetadataController {
 			senderFileIdNew = senderFileIdStatic+String.valueOf(senderFileId.getSenderfileid());
 		}
 		
-		if(hidef.getMetadata() != null && hidef.getMetadata().getSenderFileId() != null && !hidef.getMetadata().getSenderFileId().isEmpty()) {
+		/*if(hidef.getMetadata() != null && hidef.getMetadata().getSenderFileId() != null && !hidef.getMetadata().getSenderFileId().isEmpty()) {
 			hidef.getMetadata().setSenderFileId(hidef.getMetadata().getSenderFileId());
-		}else {
+		}else {*/
 		hidef.getMetadata().setSenderFileId(senderFileIdNew);
-		}
+		/*}*/
 		return hidef;
 	}
 	
 	public HidefVo getMessageRefId(HidefVo hidef,String communicationType){
-		String pattern = "yyyyMMdd";
+		/*String pattern = "yyyyMMdd";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		String date = simpleDateFormat.format(new Date());
 		Messagerefid messageRefId = ctccommonDropdownService.findMessageRefIdByDate(date);
 		String messageRefIdNew = "";
-		String messageRefIdStatic = "MY"+hidef.getMetadata().getTaxYear()+"-"+hidef.getMycbcId()+date;
+		String messageRefIdStatic = communicationType+"_MY"+hidef.getMetadata().getTaxYear()+"-"+hidef.getMycbcId()+date;
 		if(messageRefId != null){
 			
 				int sum = Integer.parseInt(messageRefId.getMessagerefid())+ 1;				
-				messageRefIdNew = messageRefIdStatic+String.valueOf(converToString(sum));			
+				messageRefIdNew = messageRefIdStatic+String.valueOf(converToString(sum));	
+				
 						
 		}else{
 			
 			messageRefId = ctcDataSaveService.saveMessageRefId(date,communicationType);
 			messageRefIdNew = messageRefIdStatic+String.valueOf(messageRefId.getMessagerefid());
+		}*/
+		String pattern = "yyyyMMdd";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		String date = simpleDateFormat.format(new Date());
+		Senderfileid senderFileId = ctccommonDropdownService.findSenderFileIdByDate(date);
+		String messageRefId = "";
+		String messageRefIdStatic = communicationType+"_MY"+hidef.getMetadata().getTaxYear()+"-"+hidef.getMycbcId()+date;
+		if(senderFileId != null){
+			
+				int sum = Integer.parseInt(senderFileId.getSenderfileid())+ 1;				
+				messageRefId = messageRefIdStatic+String.valueOf(converToString(sum+1));	
+				
+			
+			
+		}else{
+			
+			senderFileId = ctcDataSaveService.saveSenderFileId(date, communicationType);
+			messageRefId = messageRefIdStatic+String.valueOf(senderFileId.getSenderfileid());
 		}
 		
 		/*if(hidef.getMetadata() != null && hidef.getMetadata().getMessageRefId() != null && !hidef.getMetadata().getMessageRefId().isEmpty()) {
 			hidef.getMetadata().setMessageRefId(hidef.getMetadata().getMessageRefId());
 		}else {*/
-		hidef.getMetadata().setMessageRefId(messageRefIdNew);
+		hidef.getMetadata().setMessageRefId(messageRefId);
 		/*}*/
 		return hidef;
 	}

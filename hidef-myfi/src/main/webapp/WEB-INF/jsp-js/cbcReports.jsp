@@ -317,9 +317,9 @@
 						<div class="form-group col-md-6">
 							<form:label for="" path="cbcReports.tin">TIN Issued By:</form:label> <form:select class="form-control" id="issuedBy11" path="cbcReports.constituentEntity.issuedBy">
 								<form:option value="0">Please choose</form:option>
-							<c:forEach items="${countryList}" var="country">
-							<form:option value="${country.countryCode}">
-								${country.countryCode}
+							<c:forEach items="${userPropCountryList}" var="country">
+							<form:option value="${country.name}">
+								${country.name}
 							</form:option>
 						</c:forEach>
 							</form:select>
@@ -343,6 +343,7 @@
 						<input type="hidden" id="residentCountry" value='${residentCountry}'/>
 						<input type="hidden" id="nameTypedropdown" value='${nameTypeList}'/>
 						<input type="hidden" id="bizTypedropdown" value='${bizTypeList}'/>
+						<input type="hidden" id="userPropCountry" value='${userPropCountry}'/>
 						
 						<div class="form-group col-md-6">
 						<font color='red'><span id="issuedByError11" class="mandatory-flag"></span></font>
@@ -472,9 +473,9 @@
 					<label for="">Country Code<font color='red'>*</font>:</label> <form:select class="form-control"
 						id="countryCodeReportingFI" path="cbcReports.constituentEntity.addressVo.countryCode">
 						<option value="0">--Choose Country code--</option>
-						<c:forEach items="${tinlist}" var="tin">
-							<form:option value="${tin.countryCode}">
-								${tin.countryCode}
+						<c:forEach items="${userPropCountryList}" var="tin">
+							<form:option value="${tin.name}">
+								${tin.name}
 							</form:option>
 						</c:forEach>
 					</form:select>
@@ -577,9 +578,9 @@
 					<label for="">Country Code<font color='red'>*</font>:</label> <form:select class="form-control"
 						id="countryCodeReportingFI" path="cbcReports.constituentEntity.editAddressVo.countryCode" >
 						<option value="0">--Choose Country code--</option>
-						<c:forEach items="${tinlist}" var="tin">
-							<form:option value="${tin.countryCode}">
-								${tin.countryCode}
+						<c:forEach items="${userPropCountryList}" var="tin">
+							<form:option value="${tin.name}">
+								${tin.name}
 							</form:option>
 						</c:forEach>
 					</form:select>
@@ -685,9 +686,9 @@
 					<form:select class="form-control"
 						id="countryCodeReportingFI" path="cbcReports.constituentEntity.viewAddressVo.countryCode" disabled="true">
 						<option value="0">--Choose Country code--</option>
-						<c:forEach items="${tinlist}" var="tin">
-							<form:option value="${tin.countryCode}">
-								${tin.countryCode}
+						<c:forEach items="${userPropCountryList}" var="tin">
+							<form:option value="${tin.name}">
+								${tin.name}
 							</form:option>
 						</c:forEach>
 					</form:select>
