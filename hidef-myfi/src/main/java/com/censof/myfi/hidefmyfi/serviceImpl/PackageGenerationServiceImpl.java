@@ -2,14 +2,21 @@ package com.censof.myfi.hidefmyfi.serviceImpl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.math.BigInteger;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.PrivateKey;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -19,6 +26,13 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,9 +46,11 @@ import com.censof.myfi.hidef.packaging.FATCAPackager;
 import com.censof.myfi.hidefmyfi.configuration.UtilShared;
 import com.censof.myfi.hidefmyfi.entity.Cbcbizactivitiesreference;
 import com.censof.myfi.hidefmyfi.entity.Cbcnametype;
+import com.censof.myfi.hidefmyfi.entity.Cbcpayldhdr;
 import com.censof.myfi.hidefmyfi.entity.Cbcsummaryreference;
 import com.censof.myfi.hidefmyfi.entity.Crspaymenttype;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
+import com.censof.myfi.hidefmyfi.repository.CbcpayldhdrRepository;
 import com.censof.myfi.hidefmyfi.service.CtcDataSaveService;
 import com.censof.myfi.hidefmyfi.service.PackageGenerationService;
 import com.censof.myfi.hidefmyfi.vo.AccountHolderVo;
@@ -65,6 +81,9 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 
 	@Autowired
 	CtcDataSaveService ctcDataSaveService;
+	
+	@Autowired
+	private CbcpayldhdrRepository cbcpayldhdrRepository;
 
 	@Override
 	public String generateCBCXMLMetData(HidefVo hidef) throws IOException {
@@ -967,6 +986,20 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 		FATCAPackager fatcaPackager = new FATCAPackager();
 		String folderPath = fatcaPackager.signAndCreatePkgStreaming(payloadxml, myPrivateKey, myPublicCert, senderGiin,
 				receiverGiin, receiverPublicCert, taxyear, metadataxml, targetFolderPath);
+		if(folderPath != null){
+			File file = new File(folderPath);
+			if(file.isFile()){
+				String fileName = file.getName();
+				if(hidef.getPayldId() != null){
+					Cbcpayldhdr payldhdr = cbcpayldhdrRepository.getCbcDetailsById(hidef.getPayldId());
+					if(payldhdr != null){
+						System.out.println("Fallowing File name Updated:::>"+fileName+"in PayldID:::>"+payldhdr.getId());
+						payldhdr.setFilename(fileName);
+						cbcpayldhdrRepository.saveAndFlush(payldhdr);
+					}
+				}
+			}
+		}
 		return folderPath;
 	}
 
@@ -2080,6 +2113,184 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 		fileWriter.close();
 
 		return personXMLStringValue;
+	}
+
+	@Override
+	public void writetoExcelFile(HidefVo hidef,String location) throws Exception {
+		// TODO Auto-generated method stub
+		
+       String excelWorkPath = fetchProperties("templateWorkPath");
+		Path FROM = Paths.get(location);
+		Path TO = Paths.get(excelWorkPath);
+		CopyOption[] options = new CopyOption[]{
+				  StandardCopyOption.REPLACE_EXISTING,
+				  StandardCopyOption.COPY_ATTRIBUTES
+				}; 
+		Files.copy(FROM,TO,options);
+		File fileCopy = new File(excelWorkPath);
+		FileInputStream excelFile = new FileInputStream(fileCopy);
+		Workbook workbook = new XSSFWorkbook(excelFile);
+		
+		String sendingCountry = "";
+		String recieivingCountry = "";
+		String communicationType = "10";
+		String fileFormatCode = "";
+		String binaryEncodingSchemeCode = "2";
+		String senderContactEmailAddress = "";
+		String messageType = "10";
+        String sendingCompanyIn = "";
+		
+		if(hidef != null && hidef.getUserprofile() != null) {
+		    	if(hidef.getUserprofile().getSendingcountry() != null) {
+		    		sendingCountry = ""+commonDropDownService.findCountryIdByCountryCode(hidef.getUserprofile().getSendingcountry()).getId();
+		    	}
+		    	
+		    	if(hidef.getUserprofile().getRecievingCountryList() != null) {
+		    		for(int i = 0; i < hidef.getUserprofile().getRecievingCountryList().size();i++) {
+		    			if(i == 0) {
+		    			recieivingCountry = ""+hidef.getUserprofile().getRecievingCountryList().get(i).getRecievingCountry();
+		    			}else {
+		    				recieivingCountry = recieivingCountry+","+hidef.getUserprofile().getRecievingCountryList().get(i).getRecievingCountry();
+		    			}
+		    		}
+		    	}
+		    	
+		    	if(hidef.getUserprofile().getFileformatCode() != null && !hidef.getUserprofile().getFileformatCode().isEmpty()) {
+		    		fileFormatCode = ""+commonDropDownService.findIdByFileFormatCode(hidef.getUserprofile().getFileformatCode()).getId();
+		    	}
+		    	
+		    	if(hidef.getUserprofile().getSendContactEmailAddress() != null && !hidef.getUserprofile().getSendContactEmailAddress().isEmpty()) {
+		    		senderContactEmailAddress = hidef.getUserprofile().getSendContactEmailAddress();
+		    	}
+		    	
+		    	if(hidef.getMycbcId() != null && !hidef.getMycbcId().isEmpty()) {
+		    		sendingCompanyIn = hidef.getMycbcId();
+		    	}
+		    	
+		}
+		
+		  CellStyle unlockedCellStyle = workbook.createCellStyle();
+	        unlockedCellStyle.setLocked(false);
+
+	        CellStyle lockedCellStyle = workbook.createCellStyle();
+	        lockedCellStyle.setLocked(true);
+		
+		
+		Sheet metaDataSheet = workbook.getSheetAt(0);
+		Iterator<Row> metaDatarowIterator = metaDataSheet.iterator();
+		while(metaDatarowIterator.hasNext()) {
+			Row metaDataRow = metaDatarowIterator.next();
+			if(metaDataRow.getRowNum() >= 2) {
+				Iterator<Cell> metaDataCellIterator = metaDataRow.iterator();
+				while(metaDataCellIterator.hasNext()) {
+					Cell metaDataCell = metaDataCellIterator.next();
+					if(metaDataCell.getColumnIndex() == 1) {
+						if(metaDataRow.getRowNum() == 2) {
+							metaDataCell.setCellValue(sendingCountry);
+							lockCell(metaDataCell,lockedCellStyle);
+						}else if(metaDataRow.getRowNum() == 3) {
+							metaDataCell.setCellValue(recieivingCountry);
+							lockCell(metaDataCell,lockedCellStyle);
+						}else if(metaDataRow.getRowNum() == 4) {
+							metaDataCell.setCellValue(communicationType);
+							lockCell(metaDataCell,lockedCellStyle);
+						}else if(metaDataRow.getRowNum() == 5) {
+							lockCell(metaDataCell,lockedCellStyle);
+						}else if(metaDataRow.getRowNum() == 6) {
+							metaDataCell.setCellValue(fileFormatCode);
+							lockCell(metaDataCell,lockedCellStyle);
+						}else if(metaDataRow.getRowNum() == 7) {
+							metaDataCell.setCellValue(binaryEncodingSchemeCode);
+							lockCell(metaDataCell,lockedCellStyle);
+						}else if(metaDataRow.getRowNum() == 8) {
+							lockCell(metaDataCell,lockedCellStyle);
+						}else if(metaDataRow.getRowNum() == 11) {
+							lockCell(metaDataCell,lockedCellStyle);
+						}else if(metaDataRow.getRowNum() == 12) {
+							metaDataCell.setCellValue(senderContactEmailAddress);
+							lockCell(metaDataCell,lockedCellStyle);
+						}else if(metaDataRow.getRowNum() == 13) {
+							metaDataCell.setCellValue(messageType);
+							lockCell(metaDataCell,lockedCellStyle);
+						}else if(metaDataRow.getRowNum() == 17) {
+							metaDataCell.setCellValue(sendingCompanyIn);
+							lockCell(metaDataCell,lockedCellStyle);
+						}else if(metaDataRow.getRowNum() == 20) {
+							lockCell(metaDataCell,lockedCellStyle);
+						}else {
+							metaDataCell.setCellStyle(unlockedCellStyle);
+						}
+					}
+				}
+			}
+		}
+    		
+		metaDataSheet.protectSheet("password"); 	
+		
+		
+		Sheet reportingEntityWorkSheet = workbook.getSheetAt(1);
+		Iterator<Row> reRowIterator = reportingEntityWorkSheet.iterator();
+		while(reRowIterator.hasNext()) {
+			Row currentRow = reRowIterator.next();
+			Iterator<Cell> reCell = currentRow.iterator();
+			while(reCell.hasNext()) {
+				Cell cell = reCell.next();
+				if(cell.getColumnIndex()==5) {
+					lockCell(cell,lockedCellStyle);
+				}else {
+					cell.setCellStyle(unlockedCellStyle);
+				}
+			}
+		}
+		reportingEntityWorkSheet.protectSheet("password");
+		
+		
+		Sheet cbcReportsWorkSheet = workbook.getSheetAt(2);
+		Iterator<Row> reportsRowIterator = cbcReportsWorkSheet.iterator();
+		while(reportsRowIterator.hasNext()) {
+			Row currentRow = reportsRowIterator.next();
+			Iterator<Cell> reCell = currentRow.iterator();
+			while(reCell.hasNext()) {
+				Cell cell = reCell.next();
+				if(cell.getColumnIndex()==1) {
+					lockCell(cell,lockedCellStyle);
+				}else {
+					cell.setCellStyle(unlockedCellStyle);
+				}
+			}
+		}
+		cbcReportsWorkSheet.protectSheet("password");
+		
+		
+		Sheet addInfoWorkSheet = workbook.getSheetAt(3);
+		Iterator<Row> addInfoRowIterator = addInfoWorkSheet.iterator();
+		while(addInfoRowIterator.hasNext()) {
+			Row currentRow = addInfoRowIterator.next();
+			Iterator<Cell> reCell = currentRow.iterator();
+			while(reCell.hasNext()) {
+				Cell cell = reCell.next();
+				if(cell.getColumnIndex()==1) {
+					lockCell(cell,lockedCellStyle);
+				}else {
+					cell.setCellStyle(unlockedCellStyle);
+				}
+			}
+		}
+		addInfoWorkSheet.protectSheet("password");
+		
+		
+		
+		
+		 FileOutputStream fileOut = new FileOutputStream(excelWorkPath);
+	        workbook.write(fileOut);
+	        fileOut.close();
+		
+		workbook.close();
+		excelFile.close();
+	}
+	
+	private void lockCell(Cell cell,CellStyle unlockedCellStyle) {
+		cell.setCellStyle(unlockedCellStyle);
 	}
 
 }

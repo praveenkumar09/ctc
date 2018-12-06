@@ -12,5 +12,7 @@ public interface PackageGenerationService {
 	
 	public String generateCRSXMLMetadata(HidefVo hidef)throws IOException;
 	public String generateCRSXMLPayload(HidefVo hidef)throws IOException;
+	
+	public void writetoExcelFile(HidefVo hidef,String excelLocation) throws Exception;
 
 }

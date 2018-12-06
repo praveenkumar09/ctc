@@ -367,4 +367,22 @@ public class CtccommonDropdownServiceImpl implements CtccommonDropdownService {
 		return messageType;
 	}
 
+	@Override
+	public Hicountry findCountryIdByCountryCode(String countryCode) {
+		// TODO Auto-generated method stub
+		Hicountry country = null;
+		Hicountry optionalCountry = hiCountryRepository.getAllHicountryByCountryCode(countryCode);
+		if (optionalCountry!= null) {
+			country = optionalCountry;
+		}
+		return country;
+	}
+
+	@Override
+	public Cbcfileformatcd findIdByFileFormatCode(String fileFormatCode) {
+		// TODO Auto-generated method stub
+		Cbcfileformatcd fileFormatCodeOb = fileFormatCdRepository.findByFileFormatCode(fileFormatCode);
+		return fileFormatCodeOb;
+	}
+
 }

@@ -6,8 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -18,8 +16,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Random;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -62,6 +58,7 @@ import com.censof.myfi.hidefmyfi.service.PackageGenerationService;
 import com.censof.myfi.hidefmyfi.vo.CbcAdditionalInfo;
 import com.censof.myfi.hidefmyfi.vo.CommonDropdownGridBean;
 import com.censof.myfi.hidefmyfi.vo.HidefVo;
+import com.censof.myfi.hidefmyfi.vo.RecievingCountryVo;
 import com.censof.myfi.hidefmyfi.vo.ResidentCountryVo;
 import com.censof.myfi.hidefmyfi.vo.SummaryVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -134,11 +131,24 @@ public class CbcAdditionalInfoController {
 			hidef.setDocRefId(String.valueOf(Integer.parseInt(hidef.getDocRefId())+1));
 			}
 		}
+		List<CommonDropdownGridBean> fromProfileCountrygridBeans = new ArrayList<>();
+		if(hidef.getUserprofile().getRecievingCountryList() != null && hidef.getUserprofile().getRecievingCountryList().size() > 0){
+		for(RecievingCountryVo residentCountry:hidef.getUserprofile().getRecievingCountryList()) {
+			Hicountry hicountry = ctccommonDropdownService.findCountryById(BigInteger.valueOf(residentCountry.getRecievingCountry()));
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(hicountry.getId());
+			gridBean.setName(hicountry.getCountryCode());
+			fromProfileCountrygridBeans.add(gridBean);			
+
+		}
+		}
+		
 
 		try {
 			String arrayToJson = mapper.writeValueAsString(gridBeans);
 			map.put("residentCountry", arrayToJson);
 			map.put("summeryTypeList", mapper.writeValueAsString(nameTypegridBeans));
+			map.put("userPropCountry", mapper.writeValueAsString(fromProfileCountrygridBeans));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 
@@ -604,21 +614,27 @@ public class CbcAdditionalInfoController {
 	@GetMapping(value = "/admin/cbc/downloadTemplate", produces = MediaType.APPLICATION_XML_VALUE)
 	public ModelAndView generateCBCDownloadTemplate(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
 			Map<String, Object> map, HttpServletResponse response) throws Exception {
-
+		hidef = ctcDataSaveService.getUserProfileByMycbcId(hidef);
+		metaDataGenerationService.writetoExcelFile(hidef,fetchProperties("downloadTemplateLoc"));
 		//response.setContentType("Application/x-msexcel");
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		response.setHeader("Content-Disposition", "attachment;filename=\"CTCTemplate.xlsx\"");
 		//File file = new File(fetchProperties("downloadTemplateLoc"));
 		//metaDataContentInString = metaDataGenerationService.generateCBCPackage(hidef);
-		response.setContentLength(getByte(fetchProperties("downloadTemplateLoc")).length);
+		response.setContentLength(getByte(fetchProperties("templateWorkPath")).length);
+		
 		//File file = new File(fetchProperties("downloadTemplateLoc"));
 		ServletOutputStream outStream = response.getOutputStream();
-		outStream.write(getByte(fetchProperties("downloadTemplateLoc")));
+		outStream.write(getByte(fetchProperties("templateWorkPath")));
 		//outStream.println(metaDataContentInString);
 		outStream.flush();
 		outStream.close();
 		response.flushBuffer();
 		//FileCopyUtils.copy(metaDataContentInString, response.getWriter());
+		
+		File toDeleteFile = new File(fetchProperties("templateWorkPath"));
+		toDeleteFile.delete();
+		
 		return null;
 
 	}
