@@ -3621,6 +3621,31 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 					}
 
 				}
+				
+				/**
+				 * To update the DocRefId
+				 */
+				String pattern = "yyyyMMdd";
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+				String date = simpleDateFormat.format(new Date());
+				Docrefid docrefid = ctccommonDropdownService.findDocRefIdByDate(date);
+				if (docrefid != null) {
+					docrefid.setDocrefid(hidefVo.getDocRefId());
+					docrefid = docrefidRepository.saveAndFlush(docrefid);
+				}
+
+				/**
+				 * To update the senderFileId
+				 */
+				Senderfileid senderFileId = ctccommonDropdownService.findSenderFileIdByDate(date);
+				if (senderFileId != null) {
+					String senderFieIdNew = hidefVo.getMetadata().getSenderFileId();
+					senderFileId.setSenderfileid(senderFieIdNew.substring(senderFieIdNew.length() - 4));
+					senderFileId = senderfileidRepository.saveAndFlush(senderFileId);
+				}
+				if(payldhdr != null){
+				hidefVo.setPayldId(payldhdr.getId());
+				}
 
 			} // metadata
 
