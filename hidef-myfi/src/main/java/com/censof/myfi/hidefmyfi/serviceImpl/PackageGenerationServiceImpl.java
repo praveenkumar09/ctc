@@ -2209,13 +2209,16 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 							lockCell(metaDataCell,lockedCellStyle);
 						}else if(metaDataRow.getRowNum() == 12) {
 							metaDataCell.setCellValue(senderContactEmailAddress);
-							lockCell(metaDataCell,lockedCellStyle);
+							lockCell(metaDataCell,unlockedCellStyle);
 						}else if(metaDataRow.getRowNum() == 13) {
 							metaDataCell.setCellValue(messageType);
 							lockCell(metaDataCell,lockedCellStyle);
 						}else if(metaDataRow.getRowNum() == 17) {
 							metaDataCell.setCellValue(sendingCompanyIn);
 							lockCell(metaDataCell,lockedCellStyle);
+						}else if(metaDataRow.getRowNum() == 18) {
+							metaDataCell.setCellValue("EN");
+							lockCell(metaDataCell,unlockedCellStyle);
 						}else if(metaDataRow.getRowNum() == 20) {
 							lockCell(metaDataCell,lockedCellStyle);
 						}else {
