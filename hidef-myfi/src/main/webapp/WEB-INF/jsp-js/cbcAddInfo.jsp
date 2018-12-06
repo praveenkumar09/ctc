@@ -59,6 +59,7 @@
 				<br />
 				<input type="hidden" id="residentCountry" value='${residentCountry}'/>
 				<input type="hidden" id="summaryTypedropdown" value='${summeryTypeList}'/>
+				<input type="hidden" id="userPropCountry" value='${userPropCountry}'/>
 				<div class="form-group col-md-6" id="gridAddInfoResidentCountry">
 					<div id="addInfoResidentCountryGrid"></div>
 					<div id="pager"></div>

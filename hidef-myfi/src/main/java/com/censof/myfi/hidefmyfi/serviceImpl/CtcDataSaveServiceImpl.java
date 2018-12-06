@@ -605,15 +605,24 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							cbcpayldreport = new Cbcpayldreport();
 						}
 						if (!StringUtils.isEmpty(cbcReports.getAssertAmount())) {
+							if(cbcReports.getAssertAmount().contains("+") || cbcReports.getAssertAmount().contains("-")) {
 							cbcpayldreport.setAssetsAmt(cbcReports.getAssertAmount());
+							}else{
+								cbcpayldreport.setAssetsAmt("+"+cbcReports.getAssertAmount());
+							}
 						}
 						if (!StringUtils.isEmpty(cbcReports.getAssertCurrCode())) {
 							cbcpayldreport.setAssetsCurrCode(cbcReports.getAssertCurrCode());
 						}
 						cbcpayldreport.setBodyID(cbcpayldbody.getId());
 						if (!StringUtils.isEmpty(cbcReports.getCapitalAmount())) {
+							if(cbcReports.getCapitalAmount().contains("+") || cbcReports.getCapitalAmount().contains("-")) {
 							cbcpayldreport
 									.setCapitalAmt(cbcReports.getCapitalAmount());
+							}else{
+								cbcpayldreport
+								.setCapitalAmt("+"+cbcReports.getCapitalAmount());
+							}
 						}
 						if (!StringUtils.isEmpty(hidefVo.getCbcReports().getCapitalCurrCode())) {
 							cbcpayldreport.setCapitalCurrCode(cbcReports.getCapitalCurrCode());
@@ -626,8 +635,13 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							cbcpayldreport.setDocTypeIndic(cbcReports.getDocumentTypeIndicator());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getEarningAmount())) {
+							if(cbcReports.getEarningAmount().contains("+") || cbcReports.getEarningAmount().contains("-")) {
 							cbcpayldreport
 									.setEarningsAmt(cbcReports.getEarningAmount());
+							}else{
+								cbcpayldreport
+								.setEarningsAmt("+"+cbcReports.getEarningAmount());
+							}
 						}
 						if (!StringUtils.isEmpty(cbcReports.getEarningCurrCode())) {
 							cbcpayldreport.setEarningsCurrCode(cbcReports.getEarningCurrCode());
@@ -637,8 +651,13 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							cbcpayldreport.setNbEmployees(Integer.valueOf(cbcReports.getNbEmployees()));
 						}
 						if (!StringUtils.isEmpty(cbcReports.getPrfitotloassAmount())) {
+							if(cbcReports.getPrfitotloassAmount().contains("+") || cbcReports.getPrfitotloassAmount().contains("-")) {
 							cbcpayldreport.setProfitOrLossAmt(
 									cbcReports.getPrfitotloassAmount());
+							}else{
+								cbcpayldreport.setProfitOrLossAmt("+"+
+										cbcReports.getPrfitotloassAmount());
+							}
 						}
 						if (!StringUtils.isEmpty(cbcReports.getProfitorlossCurrCode())) {
 							cbcpayldreport.setProfitOrLossCurrCode(cbcReports.getProfitorlossCurrCode());
@@ -647,36 +666,61 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							cbcpayldreport.setResCountryCode(cbcReports.getResidentCountryCode());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getRelatedAmount())) {
+							if(cbcReports.getRelatedAmount().contains("+") || cbcReports.getRelatedAmount().contains("-")) {
 							cbcpayldreport.setRevenuesRelatedAmt(
 									cbcReports.getRelatedAmount());
+							}else{
+								cbcpayldreport.setRevenuesRelatedAmt("+"+
+										cbcReports.getRelatedAmount());
+							}
 						}
 						if (!StringUtils.isEmpty(cbcReports.getRelatedCurrCode())) {
 							cbcpayldreport.setRevenuesRelatedCurrCode(cbcReports.getRelatedCurrCode());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTotalRevenueAmount())) {
+							if(cbcReports.getTotalRevenueAmount().contains("+") || cbcReports.getTotalRevenueAmount().contains("-")) {
 							cbcpayldreport.setRevenuesTotalAmt(
 									cbcReports.getTotalRevenueAmount());
+							}else{
+								cbcpayldreport.setRevenuesTotalAmt("+"+
+										cbcReports.getTotalRevenueAmount());
+							}
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTotalRevenueCurrCode())) {
 							cbcpayldreport.setRevenuesTotalCurrCode(cbcReports.getTotalRevenueCurrCode());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getUnrelatedAmount())) {
+							if(cbcReports.getUnrelatedAmount().contains("+") || cbcReports.getUnrelatedAmount().contains("-")) {
 							cbcpayldreport.setRevenuesUnrelatedAmt(
 									cbcReports.getUnrelatedAmount());
+							}else{
+								cbcpayldreport.setRevenuesUnrelatedAmt("+"+
+										cbcReports.getUnrelatedAmount());
+							}
 						}
 						if (!StringUtils.isEmpty(cbcReports.getUnrelateCurrCode())) {
 							cbcpayldreport.setRevenuesUnrelatedCurrCode(cbcReports.getUnrelateCurrCode());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTaxaccruedAmount())) {
+							if(cbcReports.getTaxaccruedAmount().contains("+") || cbcReports.getTaxaccruedAmount().contains("-")) {
 							cbcpayldreport.setTaxAccruedAmt(
 									cbcReports.getTaxaccruedAmount());
+							}else{
+								cbcpayldreport.setTaxAccruedAmt("+"+
+										cbcReports.getTaxaccruedAmount());
+							}
 						}
 						if (!StringUtils.isEmpty(hidefVo.getCbcReports().getTaxaccruedCurrCode())) {
 							cbcpayldreport.setTaxAccruedCurrCode(hidefVo.getCbcReports().getTaxaccruedCurrCode());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTaxpaidAmount())) {
+							if(cbcReports.getTaxpaidAmount().contains("+") || cbcReports.getTaxpaidAmount().contains("-")) {
 							cbcpayldreport
 									.setTaxPaidAmt(cbcReports.getTaxpaidAmount());
+							}else{
+								cbcpayldreport
+								.setTaxPaidAmt("+"+cbcReports.getTaxpaidAmount());	
+							}
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTaxpiadCurrCode())) {
 							cbcpayldreport.setTaxPaidCurrCode(cbcReports.getTaxpiadCurrCode());
@@ -1021,6 +1065,9 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 					senderFileId.setSenderfileid(senderFieIdNew.substring(senderFieIdNew.length() - 4));
 					senderFileId = senderfileidRepository.saveAndFlush(senderFileId);
 				}
+				if(payldhdr != null){
+				hidefVo.setPayldId(payldhdr.getId());
+				}
 
 			} // metadata
 
@@ -1047,6 +1094,8 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 			summary.setSendingCountry(payldhdr.getSenderCountryCd());
 			summary.setId(summaryList.size() + 1);
 			summary.setHrdId(payldhdr.getId());
+			summary.setFilename(payldhdr.getFilename());
+			summary.setCreatedDateTime(payldhdr.getCreateDateTime().toString());
 			summaryList.add(summary);
 
 		}

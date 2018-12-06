@@ -94,7 +94,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.unrelatedAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="unrelatedAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.unrelatedAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
+								id="unrelatedAmount" placeholder="Amount(Ex: 12345 or -12345)" path="cbcReports.unrelatedAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="unrelatedAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
@@ -119,7 +119,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.relatedAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="relatedAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.relatedAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
+								id="relatedAmount" placeholder="Amount(Ex: 12345 or -12345)" path="cbcReports.relatedAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="relatedAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
@@ -144,7 +144,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.totalRevenueAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="totalAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.totalRevenueAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
+								id="totalAmount" placeholder="Amount(Ex: 12345 or -12345)" path="cbcReports.totalRevenueAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="totalAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
@@ -169,7 +169,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.prfitotloassAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="profitOrLossAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.prfitotloassAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
+								id="profitOrLossAmount" placeholder="Amount(Ex: 12345 or -12345)" path="cbcReports.prfitotloassAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="profitOrLossAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
@@ -193,7 +193,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.taxpaidAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="taxPaidAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.taxpaidAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
+								id="taxPaidAmount" placeholder="Amount(Ex: 12345 or -12345)" path="cbcReports.taxpaidAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="taxPaidAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
@@ -218,7 +218,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.taxaccruedAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="taxAccruedAmount" placeholder="Amount" path="cbcReports.taxaccruedAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
+								id="taxAccruedAmount" placeholder="Amount(Ex: 12345 or -12345)" path="cbcReports.taxaccruedAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="taxAccruedAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
@@ -242,7 +242,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.capitalAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="capitalAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.capitalAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
+								id="capitalAmount" placeholder="Amount(Ex: 12345 or -12345)" path="cbcReports.capitalAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="capitalAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
@@ -266,7 +266,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.earningAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="earningsAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.earningAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
+								id="earningsAmount" placeholder="Amount(Ex: 12345 or -12345)" path="cbcReports.earningAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="earningsAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
@@ -290,7 +290,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<form:label path="cbcReports.assertAmount">Amount<font color='red'>*</font>:</form:label> <form:input type="text" class="form-control"
-								id="assetsAmount" placeholder="Amount(Ex: +12345 or -12345)" path="cbcReports.assertAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
+								id="assetsAmount" placeholder="Amount(Ex: 12345 or -12345)" path="cbcReports.assertAmount" onkeypress='validate1(event)' maxlength="19"></form:input>
 								<font color='red'><span id="assetsAmountError" class="mandatory-flag"></span></font>
 						</div>
 					</div>
@@ -317,9 +317,9 @@
 						<div class="form-group col-md-6">
 							<form:label for="" path="cbcReports.tin">TIN Issued By:</form:label> <form:select class="form-control" id="issuedBy11" path="cbcReports.constituentEntity.issuedBy">
 								<form:option value="0">Please choose</form:option>
-							<c:forEach items="${countryList}" var="country">
-							<form:option value="${country.countryCode}">
-								${country.countryCode}
+							<c:forEach items="${userPropCountryList}" var="country">
+							<form:option value="${country.name}">
+								${country.name}
 							</form:option>
 						</c:forEach>
 							</form:select>
@@ -343,6 +343,7 @@
 						<input type="hidden" id="residentCountry" value='${residentCountry}'/>
 						<input type="hidden" id="nameTypedropdown" value='${nameTypeList}'/>
 						<input type="hidden" id="bizTypedropdown" value='${bizTypeList}'/>
+						<input type="hidden" id="userPropCountry" value='${userPropCountry}'/>
 						
 						<div class="form-group col-md-6">
 						<font color='red'><span id="issuedByError11" class="mandatory-flag"></span></font>
@@ -472,9 +473,9 @@
 					<label for="">Country Code<font color='red'>*</font>:</label> <form:select class="form-control"
 						id="countryCodeReportingFI" path="cbcReports.constituentEntity.addressVo.countryCode">
 						<option value="0">--Choose Country code--</option>
-						<c:forEach items="${tinlist}" var="tin">
-							<form:option value="${tin.countryCode}">
-								${tin.countryCode}
+						<c:forEach items="${userPropCountryList}" var="tin">
+							<form:option value="${tin.name}">
+								${tin.name}
 							</form:option>
 						</c:forEach>
 					</form:select>
@@ -577,9 +578,9 @@
 					<label for="">Country Code<font color='red'>*</font>:</label> <form:select class="form-control"
 						id="countryCodeReportingFI" path="cbcReports.constituentEntity.editAddressVo.countryCode" >
 						<option value="0">--Choose Country code--</option>
-						<c:forEach items="${tinlist}" var="tin">
-							<form:option value="${tin.countryCode}">
-								${tin.countryCode}
+						<c:forEach items="${userPropCountryList}" var="tin">
+							<form:option value="${tin.name}">
+								${tin.name}
 							</form:option>
 						</c:forEach>
 					</form:select>
@@ -685,9 +686,9 @@
 					<form:select class="form-control"
 						id="countryCodeReportingFI" path="cbcReports.constituentEntity.viewAddressVo.countryCode" disabled="true">
 						<option value="0">--Choose Country code--</option>
-						<c:forEach items="${tinlist}" var="tin">
-							<form:option value="${tin.countryCode}">
-								${tin.countryCode}
+						<c:forEach items="${userPropCountryList}" var="tin">
+							<form:option value="${tin.name}">
+								${tin.name}
 							</form:option>
 						</c:forEach>
 					</form:select>

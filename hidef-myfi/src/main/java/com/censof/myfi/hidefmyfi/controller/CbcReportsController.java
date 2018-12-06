@@ -36,6 +36,7 @@ import com.censof.myfi.hidefmyfi.entity.Cbcbizactivitiesreference;
 import com.censof.myfi.hidefmyfi.entity.Cbcdocumenttypeindicator;
 import com.censof.myfi.hidefmyfi.entity.Cbcnametype;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldaddress;
+import com.censof.myfi.hidefmyfi.entity.Cbcpayldbizactiv;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldin;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldname;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldrescountry;
@@ -55,6 +56,7 @@ import com.censof.myfi.hidefmyfi.vo.CommonDropdownGridBean;
 import com.censof.myfi.hidefmyfi.vo.HidefVo;
 import com.censof.myfi.hidefmyfi.vo.NameVo;
 import com.censof.myfi.hidefmyfi.vo.OrganisationInTypeVo;
+import com.censof.myfi.hidefmyfi.vo.RecievingCountryVo;
 import com.censof.myfi.hidefmyfi.vo.ResidentCountryVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -137,6 +139,17 @@ public class CbcReportsController {
 			BizgridBeans.add(gridBean);
 
 		}
+		List<CommonDropdownGridBean> fromProfileCountrygridBeans = new ArrayList<>();
+		if(hidef.getUserprofile().getRecievingCountryList() != null && hidef.getUserprofile().getRecievingCountryList().size() > 0){
+		for(RecievingCountryVo residentCountry:hidef.getUserprofile().getRecievingCountryList()) {
+			Hicountry hicountry = ctccommonDropdownService.findCountryById(BigInteger.valueOf(residentCountry.getRecievingCountry()));
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(hicountry.getId());
+			gridBean.setName(hicountry.getCountryCode());
+			fromProfileCountrygridBeans.add(gridBean);			
+
+		}
+		}
 
 		try {
 			String arrayToJson = mapper.writeValueAsString(gridBeans);
@@ -146,6 +159,7 @@ public class CbcReportsController {
 			map.put("residentCountry", arrayToJson);
 			map.put("nameTypeList", nameGridJson);
 			map.put("bizTypeList", bizGridJson);
+			map.put("userPropCountry", mapper.writeValueAsString(fromProfileCountrygridBeans));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 
@@ -159,6 +173,7 @@ public class CbcReportsController {
 			}
 		}
 		map.put("countryList", country);
+		map.put("userPropCountryList", fromProfileCountrygridBeans);
 		map.put("currencyList", currencyRef);
 		model.addAttribute("hidef", hidef);
 		return "cbcReports";
@@ -609,6 +624,21 @@ public class CbcReportsController {
 			}
 
 		}
+		List<CommonDropdownGridBean> fromProfileCountrygridBeans = new ArrayList<>();
+		if(hidef.getUserprofile().getRecievingCountryList() != null && hidef.getUserprofile().getRecievingCountryList().size() > 0){
+		for(RecievingCountryVo residentCountry:hidef.getUserprofile().getRecievingCountryList()) {
+			Hicountry hicountry = ctccommonDropdownService.findCountryById(BigInteger.valueOf(residentCountry.getRecievingCountry()));
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(hicountry.getId());
+			gridBean.setName(hicountry.getCountryCode());
+			fromProfileCountrygridBeans.add(gridBean);			
+
+		}
+		}
+		map.put("userPropCountryList", fromProfileCountrygridBeans);
+		
+		
+		
 		String arrayToJson = mapper.writeValueAsString(addressView);
 		List<Hicountry> hicountryList = ctccommonDropdownService.getAllCountries();
 		List<Cbcaddresstype> cbcaddresstype = ctccommonDropdownService.getAllAddressType();
@@ -642,14 +672,27 @@ public class CbcReportsController {
 		String arrayToJson = mapper.writeValueAsString(addressView);
 		List<Hicountry> hicountryList = ctccommonDropdownService.getAllCountries();
 		List<Cbcaddresstype> cbcaddresstype = ctccommonDropdownService.getAllAddressType();
+		List<CommonDropdownGridBean> fromProfileCountrygridBeans = new ArrayList<>();
+		if(hidef.getUserprofile().getRecievingCountryList() != null && hidef.getUserprofile().getRecievingCountryList().size() > 0){
+		for(RecievingCountryVo residentCountry:hidef.getUserprofile().getRecievingCountryList()) {
+			Hicountry hicountry = ctccommonDropdownService.findCountryById(BigInteger.valueOf(residentCountry.getRecievingCountry()));
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(hicountry.getId());
+			gridBean.setName(hicountry.getCountryCode());
+			fromProfileCountrygridBeans.add(gridBean);			
+
+		}
+		}
 		map.put("tinlist", hicountryList);
+		map.put("userPropCountryList", fromProfileCountrygridBeans);
+		//map.put("tinlist", hicountryList);
 		map.put("addressType", cbcaddresstype);
 		model.addAttribute("hidef", hidef);
 		return "cbcReports";
 	}
 
 	@RequestMapping(value = "/admin/cbc/cbcReportseditSaveAddress", method = RequestMethod.GET)
-	public String saveEditAddressGrid(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
+	public String saveEditAddressGrid(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,Map<String, Object> map,
 			HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -704,7 +747,23 @@ public class CbcReportsController {
 			}
 
 		}
+		List<Hicountry> hicountryList = ctccommonDropdownService.getAllCountries();
+		List<Cbcaddresstype> cbcaddresstype = ctccommonDropdownService.getAllAddressType();
+		List<CommonDropdownGridBean> fromProfileCountrygridBeans = new ArrayList<>();
+		if(hidef.getUserprofile().getRecievingCountryList() != null && hidef.getUserprofile().getRecievingCountryList().size() > 0){
+		for(RecievingCountryVo residentCountry:hidef.getUserprofile().getRecievingCountryList()) {
+			Hicountry hicountry = ctccommonDropdownService.findCountryById(BigInteger.valueOf(residentCountry.getRecievingCountry()));
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(hicountry.getId());
+			gridBean.setName(hicountry.getCountryCode());
+			fromProfileCountrygridBeans.add(gridBean);			
 
+		}
+		}
+		map.put("tinlist", hicountryList);
+		map.put("userPropCountryList", fromProfileCountrygridBeans);
+		//map.put("tinlist", hicountryList);
+		map.put("addressType", cbcaddresstype);
 		String arrayToJson = mapper.writeValueAsString(addressView);
 		model.addAttribute("hidef", hidef);
 		return "cbcReports";
@@ -731,7 +790,10 @@ public class CbcReportsController {
 					if(address.getId() != 0) {
 						Optional<Cbcpayldaddress> addressOb = cbcpayldaddressRepository.findById(BigInteger.valueOf(address.getId()));
 						if(addressOb.isPresent()) {
-						cbcpayldaddressRepository.deleteById(BigInteger.valueOf(address.getId()));
+						Cbcpayldaddress cbcpayldaddress =	cbcpayldaddressRepository.getAllPayldAddressById(BigInteger.valueOf(address.getId()));	
+						if(cbcpayldaddress != null){
+						cbcpayldaddressRepository.deleteById(cbcpayldaddress.getId());
+						}
 						}
 					}
 					hidef.getCbcReports().getConstituentEntity().setAddressList(copyList);
@@ -769,7 +831,20 @@ public class CbcReportsController {
 		hidef.getCbcReports().getConstituentEntity().setAddressVo(addressVo);
 		List<Hicountry> hicountryList = ctccommonDropdownService.getAllCountries();
 		List<Cbcaddresstype> cbcaddresstype = ctccommonDropdownService.getAllAddressType();
+		
+		List<CommonDropdownGridBean> fromProfileCountrygridBeans = new ArrayList<>();
+		if(hidef.getUserprofile().getRecievingCountryList() != null && hidef.getUserprofile().getRecievingCountryList().size() > 0){
+		for(RecievingCountryVo residentCountry:hidef.getUserprofile().getRecievingCountryList()) {
+			Hicountry hicountry = ctccommonDropdownService.findCountryById(BigInteger.valueOf(residentCountry.getRecievingCountry()));
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(hicountry.getId());
+			gridBean.setName(hicountry.getCountryCode());
+			fromProfileCountrygridBeans.add(gridBean);			
+
+		}
+		}
 		map.put("tinlist", hicountryList);
+		map.put("userPropCountryList", fromProfileCountrygridBeans);
 		map.put("addressType", cbcaddresstype);
 		model.addAttribute("hidef", hidef);
 		return "cbcReports";
@@ -1078,7 +1153,10 @@ public class CbcReportsController {
 					if (id == bizvo.getId()) {
 						copyList.remove(bizvo);
 						if(hidef.getCbcReports().getConstituentEntity().getConsId() != 0 && bizvo.getId() != 0) {
-							cbcpayldbizactivRepository.deleteById(BigInteger.valueOf(bizvo.getId()));
+							Cbcpayldbizactiv cbcpayldbizactiv =cbcpayldbizactivRepository.getAllBizActivitiesByID(BigInteger.valueOf(bizvo.getId()));
+							if(cbcpayldbizactiv != null){
+							cbcpayldbizactivRepository.deleteById(cbcpayldbizactiv.getId());
+							}
 						}
 						hidef.getCbcReports().getConstituentEntity().setBizActivitiesList(copyList);
 						break;
@@ -1138,6 +1216,17 @@ public class CbcReportsController {
 			BizgridBeans.add(gridBean);
 
 		}
+		List<CommonDropdownGridBean> fromProfileCountrygridBeans = new ArrayList<>();
+		if(hidef.getUserprofile().getRecievingCountryList() != null && hidef.getUserprofile().getRecievingCountryList().size() > 0){
+		for(RecievingCountryVo residentCountry:hidef.getUserprofile().getRecievingCountryList()) {
+			Hicountry hicountry = ctccommonDropdownService.findCountryById(BigInteger.valueOf(residentCountry.getRecievingCountry()));
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(hicountry.getId());
+			gridBean.setName(hicountry.getCountryCode());
+			fromProfileCountrygridBeans.add(gridBean);			
+
+		}
+		}
 
 		try {
 			String arrayToJson = mapper.writeValueAsString(gridBeans);
@@ -1147,11 +1236,12 @@ public class CbcReportsController {
 			map.put("residentCountry", arrayToJson);
 			map.put("nameTypeList", nameGridJson);
 			map.put("bizTypeList", bizGridJson);
+			map.put("userPropCountry", mapper.writeValueAsString(fromProfileCountrygridBeans));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 
 		}
-		
+		map.put("userPropCountryList", fromProfileCountrygridBeans);
 		model.addAttribute("hidef", hidef);
 		
 		return "cbcReports";
@@ -1202,6 +1292,17 @@ public class CbcReportsController {
 			BizgridBeans.add(gridBean);
 
 		}
+		List<CommonDropdownGridBean> fromProfileCountrygridBeans = new ArrayList<>();
+		if(hidef.getUserprofile().getRecievingCountryList() != null && hidef.getUserprofile().getRecievingCountryList().size() > 0){
+		for(RecievingCountryVo residentCountry:hidef.getUserprofile().getRecievingCountryList()) {
+			Hicountry hicountry = ctccommonDropdownService.findCountryById(BigInteger.valueOf(residentCountry.getRecievingCountry()));
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(hicountry.getId());
+			gridBean.setName(hicountry.getCountryCode());
+			fromProfileCountrygridBeans.add(gridBean);			
+
+		}
+		}
 
 		try {
 			String arrayToJson = mapper.writeValueAsString(gridBeans);
@@ -1211,11 +1312,12 @@ public class CbcReportsController {
 			map.put("residentCountry", arrayToJson);
 			map.put("nameTypeList", nameGridJson);
 			map.put("bizTypeList", bizGridJson);
+			map.put("userPropCountry", mapper.writeValueAsString(fromProfileCountrygridBeans));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 
 		}
-		
+		map.put("userPropCountryList", fromProfileCountrygridBeans);
 		model.addAttribute("hidef", hidef);
 		
 		return "cbcReports";
@@ -1258,6 +1360,17 @@ public class CbcReportsController {
 			BizgridBeans.add(gridBean);
 
 		}
+		List<CommonDropdownGridBean> fromProfileCountrygridBeans = new ArrayList<>();
+		if(hidef.getUserprofile().getRecievingCountryList() != null && hidef.getUserprofile().getRecievingCountryList().size() > 0){
+		for(RecievingCountryVo residentCountry:hidef.getUserprofile().getRecievingCountryList()) {
+			Hicountry hicountry = ctccommonDropdownService.findCountryById(BigInteger.valueOf(residentCountry.getRecievingCountry()));
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(hicountry.getId());
+			gridBean.setName(hicountry.getCountryCode());
+			fromProfileCountrygridBeans.add(gridBean);			
+
+		}
+		}
 
 		try {
 			String arrayToJson = mapper.writeValueAsString(gridBeans);
@@ -1267,11 +1380,12 @@ public class CbcReportsController {
 			map.put("residentCountry", arrayToJson);
 			map.put("nameTypeList", nameGridJson);
 			map.put("bizTypeList", bizGridJson);
+			map.put("userPropCountry", mapper.writeValueAsString(fromProfileCountrygridBeans));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 
 		}
-		
+		map.put("userPropCountryList", fromProfileCountrygridBeans);
 		model.addAttribute("hidef", hidef);
 		return "cbcReports";
 	}
@@ -1310,6 +1424,17 @@ public class CbcReportsController {
 			BizgridBeans.add(gridBean);
 
 		}
+		List<CommonDropdownGridBean> fromProfileCountrygridBeans = new ArrayList<>();
+		if(hidef.getUserprofile().getRecievingCountryList() != null && hidef.getUserprofile().getRecievingCountryList().size() > 0){
+		for(RecievingCountryVo residentCountry:hidef.getUserprofile().getRecievingCountryList()) {
+			Hicountry hicountry = ctccommonDropdownService.findCountryById(BigInteger.valueOf(residentCountry.getRecievingCountry()));
+			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
+			gridBean.setId(hicountry.getId());
+			gridBean.setName(hicountry.getCountryCode());
+			fromProfileCountrygridBeans.add(gridBean);			
+
+		}
+		}
 
 		try {
 			String arrayToJson = mapper.writeValueAsString(gridBeans);
@@ -1319,10 +1444,12 @@ public class CbcReportsController {
 			map.put("residentCountry", arrayToJson);
 			map.put("nameTypeList", nameGridJson);
 			map.put("bizTypeList", bizGridJson);
+			map.put("userPropCountry", mapper.writeValueAsString(fromProfileCountrygridBeans));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 
 		}
+		map.put("userPropCountryList", fromProfileCountrygridBeans);
 		model.addAttribute("hidef", hidef);
 		return "cbcReports";
 	}

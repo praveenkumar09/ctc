@@ -29,6 +29,9 @@ public class Cbcpayldhdr implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private BigInteger id;
 
+	@Column(name="filename")
+	private String filename;
+	
 	@Column(name="binaryencodingschemecd")
 	private String binaryEncodingSchemeCd;
 
@@ -340,6 +343,20 @@ public class Cbcpayldhdr implements Serializable {
 	public void setIsdeleted(Integer isdeleted) {
 		this.isdeleted = isdeleted;
 	}
+
+
+
+	public String getFilename() {
+		return filename;
+	}
+
+
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+	
+	
 	
 
 }
