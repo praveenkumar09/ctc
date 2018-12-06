@@ -31,6 +31,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
+import com.censof.myfi.hidefmyfi.controller.CbcAdditionalInfoController;
+import com.censof.myfi.hidefmyfi.controller.CbcMetadataController;
+import com.censof.myfi.hidefmyfi.controller.CbcReportingEntityController;
+import com.censof.myfi.hidefmyfi.controller.CbcReportsController;
 import com.censof.myfi.hidefmyfi.entity.CbcCurrency;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldaddinfo;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldaddress;
@@ -1829,6 +1833,32 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 				}
 			}
 		}
+		
+		
+		//set SENDER FILE ID, FILE CREATION TIMESTAMP, TRANSMISSION ID AND MESSAGE REF ID
+		if(hidefVo!= null && hidefVo.getMetadata() != null && hidefVo.getMetadata().getTaxYear() != null && !hidefVo.getMetadata().getTaxYear().isEmpty()) {
+			CbcMetadataController metaDataController = new CbcMetadataController();
+			hidefVo.setMycbcId(hidef.getMycbcId());
+			hidefVo = metaDataController.getSenderFileID(hidefVo,"CBC");
+			
+			String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+			String fileCreationTimeStamp = sdf.format(new Date());
+			hidefVo.getMetadata().setFormCreationTimeStamp(fileCreationTimeStamp);
+			
+			hidefVo = metaDataController.getMessageRefId(hidefVo,"CBC");
+			
+			
+			if(hidefVo != null && hidefVo.getUserprofile() != null) {
+			String patternForTransmissionId = "yyyyMMdd'T'HHmmssSSS'Z'";
+			  SimpleDateFormat sdfFileName = new SimpleDateFormat(patternForTransmissionId);
+			  String transmissionTimeString = sdfFileName.format(new Date(System.currentTimeMillis()));
+			  hidefVo.getUserprofile().setCtsTransId(hidefVo.getMycbcId()+"_"+hidefVo.getMetadata().getTaxYear()+"_CBC_"+transmissionTimeString);
+			}
+		}
+		
+		
+		
 
 		// reporting Entity Sheet - data pick up code
 		Sheet reportingEntitySheet = workbook.getSheetAt(1);
@@ -2123,6 +2153,15 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							}
 						}
 
+					}else if(currentCell != null && currentCell.getCellType() == Cell.CELL_TYPE_BLANK) {
+						if(currentCell.getColumnIndex() == 5) {
+							if(docReferenceId == 0) {
+								CbcReportingEntityController reportingEntityController = new CbcReportingEntityController();
+								hidefVo = reportingEntityController.getDocRefId(hidefVo,"","CBC");
+								docReferenceId += 1;
+							}
+							
+						}
 					}
 				}
 
@@ -2607,6 +2646,14 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						}
 					}
 
+				} else if(currentCell != null && currentCell.getCellType() == Cell.CELL_TYPE_BLANK){
+					if(currentCell.getColumnIndex() == 1) {
+						CbcReportsController reportsController = new CbcReportsController();
+						if(hidefVo.getDocRefId() != null) {
+						String nextDocRef = reportsController.converToString(Integer.parseInt(hidefVo.getDocRefId())+1);
+						reports.setDocumentRefId(hidefVo.getDocRefIdStaticText()+"R"+nextDocRef);
+						}
+					}
 				}
 			}
 
@@ -2782,6 +2829,14 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							}
 						}
 
+					}else if(currentCell != null && currentCell.getCellType() == Cell.CELL_TYPE_BLANK){
+						if(currentCell.getColumnIndex() == 1) {
+							CbcAdditionalInfoController reportsController = new CbcAdditionalInfoController();
+							if(hidefVo.getDocRefId() != null) {
+							String nextDocRef = reportsController.converToString(Integer.parseInt(hidefVo.getDocRefId())+1);
+							addInfo.setDocumentReferenceId(hidefVo.getDocRefIdStaticText()+"A"+nextDocRef);
+							}
+						}
 					}
 				}
 
