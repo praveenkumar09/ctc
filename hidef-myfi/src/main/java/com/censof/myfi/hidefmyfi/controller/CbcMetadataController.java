@@ -389,6 +389,7 @@ public class CbcMetadataController {
 			messageRefId = ctcDataSaveService.saveMessageRefId(date,communicationType);
 			messageRefIdNew = messageRefIdStatic+String.valueOf(messageRefId.getMessagerefid());
 		}*/
+		
 		String pattern = "yyyyMMdd";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		String date = simpleDateFormat.format(new Date());

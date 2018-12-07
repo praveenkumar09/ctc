@@ -424,6 +424,9 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 					if (!StringUtils.isEmpty(hidefVo.getReportingEntity().getTinType())) {
 						payldentity.setIssuedBy(hidefVo.getReportingEntity().getTinType());
 					}
+					if(!StringUtils.isEmpty(hidefVo.getReportingEntity().getTinIssuedBy())){
+						payldentity.setTintype(hidefVo.getReportingEntity().getTinIssuedBy());
+					}
 					payldentity.setIsdeleted(0);
 					// payldentity.
 					payldentity = cbcpayldentityRepository.saveAndFlush(payldentity);
@@ -714,8 +717,8 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 										cbcReports.getTaxaccruedAmount());
 							}
 						}
-						if (!StringUtils.isEmpty(hidefVo.getCbcReports().getTaxaccruedCurrCode())) {
-							cbcpayldreport.setTaxAccruedCurrCode(hidefVo.getCbcReports().getTaxaccruedCurrCode());
+						if (!StringUtils.isEmpty(cbcReports.getTaxaccruedCurrCode())) {
+							cbcpayldreport.setTaxAccruedCurrCode(cbcReports.getTaxaccruedCurrCode());
 						}
 						if (!StringUtils.isEmpty(cbcReports.getTaxpaidAmount())) {
 							if(cbcReports.getTaxpaidAmount().contains("+") || cbcReports.getTaxpaidAmount().contains("-")) {
@@ -1353,7 +1356,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 				;
 				reportingEntityVo.setDocumentTypeIndicator(reportEntityDetail.getDocTypeIndic());
 				reportingEntityVo.setTin(reportEntityDetail.getTin());
-				reportingEntityVo.setTinIssuedBy(reportEntityDetail.getTin());
+				reportingEntityVo.setTinIssuedBy(reportEntityDetail.getTintype());
 				reportingEntityVo.setTinType(reportEntityDetail.getIssuedBy());
 				reportingEntityVo.setId(reportEntityDetail.getId());
 				reportingEntityVo.setDocumentReferenceId(reportEntityDetail.getDocRefId());
@@ -1529,7 +1532,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 									reportsresidentCountryList.add(residentCountryVo);
 								}
 							}
-							cbcConsEntity.setResidentCountryList(residentCountryList);
+							cbcConsEntity.setResidentCountryList(reportsresidentCountryList);
 
 							List<Cbcpayldname> cbcReporttsnameList = cbcpayldnameRepository
 									.getAllPayldNameDetailsByObjectId(consentity.getId());
@@ -1559,7 +1562,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 									cbcReportsorganisationInTypeList.add(orgVo);
 								}
 							}
-							cbcConsEntity.setOrganisationInTypeList(organisationInTypeList);
+							cbcConsEntity.setOrganisationInTypeList(cbcReportsorganisationInTypeList);
 
 							List<Cbcpayldbizactiv> bizList = cbcpayldbizactivRepository
 									.getAllBizActivitiesByConsentID(consentity.getId());
@@ -1600,7 +1603,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 									cbcReportsaddressList.add(addVo);
 								}
 							}
-							cbcConsEntity.setAddressList(addressList);
+							cbcConsEntity.setAddressList(cbcReportsaddressList);
 							cbcReport.getConstituentEntityList().add(cbcConsEntity);
 						}
 					}
@@ -3971,6 +3974,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 					crspayldacct.setAccountBalance(new BigDecimal(accountHolderVo.getAccountBalance()));
 					}
 					crspayldacct.setAccountCurrCode(accountHolderVo.getCurrency());
+					crspayldacct.setAcctHolderType(accountHolderVo.getAccountHolderType());
 					/*crspayldacct.setAccountHolder(accountHolderVo.getAccountHolderType());*/
 					crspayldacct.setAccountNumber(accountHolderVo.getAccountNumber());
 					/*crspayldacct.setAcctNumberType(accountHolderVo.getA);*/
@@ -4663,9 +4667,108 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 					accountholder.setCitySubEntity(crspayldacctrep.getBirthCitySubent());
 					accountholder.setCurrency(crspayldacctrep.getAccountCurrCode());
 					
+					//Payment Details
+					List<Crspayldpymt> crspaymtList = crspayldpymtRepository.getAllCrspayldpymtByacctRepID(crspayldacctrep.getId());
+					if(crspaymtList != null && crspaymtList.size() > 0){
+						List<PaymentTypeVo> paymentList = new ArrayList<PaymentTypeVo>();
+						for(Crspayldpymt crspaymt : crspaymtList){
+							PaymentTypeVo paymentVo = new PaymentTypeVo();
+							if(crspaymt.getPaymentAmt() != null){
+							paymentVo.setAmount(String.valueOf(crspaymt.getPaymentAmt()));
+							}
+							if(crspaymt.getCurrCode() != null){
+							paymentVo.setCurrency(Integer.parseInt(crspaymt.getCurrCode()));
+							}
+							if(crspaymt.getPaymentType() != null){
+							paymentVo.setPaymentType(Integer.parseInt(crspaymt.getPaymentType()));
+							}
+							paymentVo.setId(crspaymt.getId().intValue());
+							paymentList.add(paymentVo);
+						}
+						accountholder.setPaymentList(paymentList);
+						
+					}
+					
+					if(accountholder.getAccountHolderType() != null && accountholder.getAccountHolderType().equals("individual")){
+						
+					// Individual Resident Country
+						List<Crspayldrescountry> residentCountryList = crspayldrescountryRepository.getAllCrspayldrescountryByObjectID(crspayldacctrep.getId());
+						if(residentCountryList != null &&  residentCountryList.size() >0){
+							List<ResidentCountryVo> residnetList = new ArrayList<ResidentCountryVo>();
+							for(Crspayldrescountry individualRes : residentCountryList){
+								ResidentCountryVo residentVo = new ResidentCountryVo();
+								residentVo.setId(individualRes.getId().intValue());
+								if(individualRes.getResCountryCode() != null){
+								residentVo.setResidentCountryCode(Integer.parseInt(individualRes.getResCountryCode()));
+								}
+								residnetList.add(residentVo);
+							}
+							accountholder.setIndividualResidentCountryList(residnetList);
+						}
+					
+						//Individual IN 
+						List<Crspayldin> crsPayldInList = crspayldinRepository.getAllCrspayldinByObjectID(crspayldacctrep.getId());
+						if(crsPayldInList != null && crsPayldInList.size() >0){
+							List<OrganisationInTypeVo> individualOrgInlist = new ArrayList<OrganisationInTypeVo>();
+							for(Crspayldin crspayldin : crsPayldInList){
+								OrganisationInTypeVo orgIntyleList = new OrganisationInTypeVo();
+								orgIntyleList.setId(crspayldin.getId().intValue());
+								orgIntyleList.setIn(crspayldin.getTin());
+								orgIntyleList.setInType(crspayldin.getINType());
+								if(crspayldin.getIssuedBy() != null){
+								orgIntyleList.setIssuedBy(Integer.parseInt(crspayldin.getIssuedBy()));
+								}
+								individualOrgInlist.add(orgIntyleList);
+							}
+							accountholder.setIndividualOrganisationInTypeList(individualOrgInlist);
+						}
+						
+						List<Crspayldname> CrspayldnameList =  crspayldnameRepository.getAllCrspayldfiByObjectID(crspayldacctrep.getId());
+						if(CrspayldnameList != null && CrspayldnameList.size() > 0){
+							List<NameTypeVo> nameTypeVoList = new ArrayList<NameTypeVo>();
+							for(Crspayldname name:CrspayldnameList){
+								NameTypeVo nameType = new NameTypeVo();
+								nameType.setFirstName(name.getFirstName());
+								nameType.setGeneralSuffix(name.getGeneralSuffix());
+								nameType.setId(name.getId().intValue());
+								nameType.setLastName(name.getLastName());
+								nameType.setNamePrefix(name.getNamePrefix());
+								nameType.setNameType(name.getNamePersonType());
+								nameType.setPrecedingTitle(name.getPrecedingTitle());
+								
+								
+								List<Crspayldnametitle> CrspayldnametitleList = crspayldnametitleRepository.getAllCrspayldnametitleNameID(name.getId());
+								if(CrspayldnametitleList != null && CrspayldnametitleList.size() > 0){
+									for(Crspayldnametitle tittle: CrspayldnametitleList){
+										TitleVo titleVo = new TitleVo();
+										titleVo.setId(tittle.getId().intValue());
+									}
+								}
+								
+								nameTypeVoList.add(nameType);
+								
+							}
+						}
+						
+						
+					
+					}
+					
+					
+					
+					
+					
+					
 				}
 				
 				hidefvo.setAccountholder(accountholder);
+				
+				
+				
+				
+				
+				
+				
 				
 			}
 			

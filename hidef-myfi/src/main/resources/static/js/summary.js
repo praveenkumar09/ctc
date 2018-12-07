@@ -8,7 +8,7 @@ $(document).ready(function() {
               width: "205%",
               inserting: false,
               editing: false,
-              sorting: false,
+              sorting: true,
               paging: true,
               pageSize: 6,
               pageButtonCount: 5,

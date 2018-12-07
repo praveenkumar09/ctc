@@ -61,6 +61,9 @@ public class Cbcpayldentity implements Serializable {
 	@Column(name="tin")
 	private String tin;
 	
+	@Column(name="tintype")
+	private String tintype;
+	
 	@Column(name="is_deleted")
 	private Integer isdeleted;
 
@@ -221,6 +224,28 @@ public class Cbcpayldentity implements Serializable {
 	public void setIsdeleted(Integer isdeleted) {
 		this.isdeleted = isdeleted;
 	}
+
+
+
+
+
+
+
+	public String getTintype() {
+		return tintype;
+	}
+
+
+
+
+
+
+
+	public void setTintype(String tintype) {
+		this.tintype = tintype;
+	}
+	
+	
 	
 
 }
