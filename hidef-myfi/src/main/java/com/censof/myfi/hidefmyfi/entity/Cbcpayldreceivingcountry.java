@@ -121,5 +121,7 @@ public class Cbcpayldreceivingcountry implements Serializable {
 		this.isdeleted = isdeleted;
 	}
 	
+	
+	
 
 }

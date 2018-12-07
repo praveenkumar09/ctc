@@ -248,7 +248,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 	private CrspayldpymtRepository crspayldpymtRepository;
 
 	@Override
-	@Transactional
+	@Transactional	
 	public HidefVo saveCtcData(HidefVo hidefVo) {
 
 		if (hidefVo != null) {
@@ -268,6 +268,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 					}
 					
 					userProfile = userprofileRepository.saveAndFlush(userProfile);
+					
 					
 				}
 			}
@@ -341,6 +342,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 				payldhdr.setIsdeleted(0);
 				payldhdr.setCreateDateTime(new Date());
 				payldhdr = cbcpayldhdrRepository.saveAndFlush(payldhdr);
+				
 				logger.info("Cbcpayldhdr ID::::::>" + payldhdr.getId());
 
 				/**
@@ -354,11 +356,14 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						if (receivingCountry.getId() > 0) {
 							payldreceivingCountry = cbcpayldreceivingcountryRepository
 									.getAllReceivingCountryByid(BigInteger.valueOf(receivingCountry.getId()));
+							if(payldreceivingCountry != null){
+								cbcpayldreceivingcountryRepository.delete(payldreceivingCountry);
+							}
 							logger.info("");
 						}
-						if (payldreceivingCountry == null) {
+						/*if (payldreceivingCountry == null) {*/
 							payldreceivingCountry = new Cbcpayldreceivingcountry();
-						}
+						/*}*/
 						payldreceivingCountry.setCreateDateTime(new Date());
 						payldreceivingCountry.setHdrID(payldhdr.getId());
 						if (!StringUtils.isEmpty(receivingCountry.getRecievingCountry())) {
@@ -449,10 +454,13 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								if (namevo.getId() > 0) {
 									payldname = cbcpayldnameRepository
 											.getAllPayldNameDetailsById(BigInteger.valueOf(namevo.getId()));
+									if(payldname != null){
+										cbcpayldnameRepository.delete(payldname);
+									}
 								}
-								if (payldname == null) {
+							/*	if (payldname == null) {*/
 									payldname = new Cbcpayldname();
-								}
+								/*}*/
 								payldname.setObjectID(payldentity.getId());
 								payldname.setCreateDateTime(new Date());
 								if (!StringUtils.isEmpty(namevo.getFirstName())) {
@@ -475,12 +483,16 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 									.getResidentCountryList()) {
 								Cbcpayldrescountry cbcpayldrescountry = null;
 								if (residentCountry.getId() > 0) {
+									
 									cbcpayldrescountry = cbcpayldrescountryRepository.getAllPayldResidentCountryById(
 											BigInteger.valueOf(residentCountry.getId()));
+									if(cbcpayldrescountry != null){
+										cbcpayldrescountryRepository.delete(cbcpayldrescountry);
+									}
 								}
-								if (cbcpayldrescountry == null) {
+							/*	if (cbcpayldrescountry == null) {*/
 									cbcpayldrescountry = new Cbcpayldrescountry();
-								}
+							/*	}*/
 								cbcpayldrescountry.setCreateDateTime(new Date());
 								cbcpayldrescountry.setObjectID(payldentity.getId());
 								if (!StringUtils.isEmpty(residentCountry.getResidentCountryCode())) {
@@ -507,10 +519,13 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								if (organisation.getId() > 0) {
 									cbcpayldin = cbcpayldinRepository
 											.getAllPayldInDetailsById(BigInteger.valueOf(organisation.getId()));
+									if(cbcpayldin != null){
+										cbcpayldinRepository.delete(cbcpayldin);
+									}
 								}
-								if (cbcpayldin == null) {
+								/*if (cbcpayldin == null) {*/
 									cbcpayldin = new Cbcpayldin();
-								}
+								/*}*/
 								cbcpayldin.setObjectID(payldentity.getId());
 								cbcpayldin.setCreateDateTime(new Date());
 								cbcpayldin.setTin(organisation.getIn());
@@ -539,10 +554,13 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								if (addressVo.getId() > 0) {
 									cbcpayldaddress = cbcpayldaddressRepository
 											.getAllPayldAddressById(BigInteger.valueOf(addressVo.getId()));
+									if(cbcpayldaddress != null){
+										cbcpayldaddressRepository.delete(cbcpayldaddress);
+									}
 								}
-								if (cbcpayldaddress == null) {
+								/*if (cbcpayldaddress == null) {*/
 									cbcpayldaddress = new Cbcpayldaddress();
-								}
+								/*}*/
 								cbcpayldaddress.setObjectID(payldentity.getId());
 								if (!StringUtils.isEmpty(addressVo.getAddressFree())) {
 									cbcpayldaddress.setAddressFree(addressVo.getAddressFree());
@@ -751,6 +769,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						if (consEntity.getConsId() > 0) {
 							cbcpayldconstentity = cbcpayldconstentityRepository
 									.getAllconstentityById(BigInteger.valueOf(consEntity.getConsId()));
+							
 						}
 						if (cbcpayldconstentity == null) {
 							cbcpayldconstentity = new Cbcpayldconstentity();
@@ -785,10 +804,13 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								if (bizActivitiesTypeVo.getId() > 0) {
 									cbcpayldbizactiv = cbcpayldbizactivRepository
 											.getAllBizActivitiesByID(BigInteger.valueOf(bizActivitiesTypeVo.getId()));
+									if(cbcpayldbizactiv != null){
+										cbcpayldbizactivRepository.delete(cbcpayldbizactiv);
+									}
 								}
-								if (cbcpayldbizactiv == null) {
+								/*if (cbcpayldbizactiv == null) {*/
 									cbcpayldbizactiv = new Cbcpayldbizactiv();
-								}
+								/*}*/
 								if (!StringUtils.isEmpty(bizActivitiesTypeVo.getBizType())) {
 									cbcpayldbizactiv.setBizActivities(String.valueOf(bizActivitiesTypeVo.getBizType()));
 								}
@@ -812,10 +834,13 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								if (namevo.getId() > 0) {
 									payldname = cbcpayldnameRepository
 											.getAllPayldNameDetailsById(BigInteger.valueOf(namevo.getId()));
+									if(payldname != null){
+										cbcpayldnameRepository.delete(payldname);
+									}
 								}
-								if (payldname == null) {
+								/*if (payldname == null) {*/
 									payldname = new Cbcpayldname();
-								}
+								/*}*/
 								payldname.setObjectID(cbcpayldconstentity.getId());
 								payldname.setCreateDateTime(new Date());
 								if (!StringUtils.isEmpty(namevo.getFirstName())) {
@@ -838,10 +863,13 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								if (residentCountry.getId() > 0) {
 									cbcpayldrescountry = cbcpayldrescountryRepository.getAllPayldResidentCountryById(
 											BigInteger.valueOf(residentCountry.getId()));
+									if(cbcpayldrescountry != null){
+										cbcpayldrescountryRepository.delete(cbcpayldrescountry);
+									}
 								}
-								if (cbcpayldrescountry == null) {
+							/*	if (cbcpayldrescountry == null) {*/
 									cbcpayldrescountry = new Cbcpayldrescountry();
-								}
+								/*}*/
 								cbcpayldrescountry.setCreateDateTime(new Date());
 								cbcpayldrescountry.setObjectID(cbcpayldconstentity.getId());
 								if (!StringUtils.isEmpty(residentCountry.getResidentCountryCode())) {
@@ -867,10 +895,13 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								if (organisation.getId() > 0) {
 									cbcpayldin = cbcpayldinRepository
 											.getAllPayldInDetailsById(BigInteger.valueOf(organisation.getId()));
+									if(cbcpayldin != null){
+										cbcpayldinRepository.delete(cbcpayldin);
+									}
 								}
-								if (cbcpayldin == null) {
+								/*if (cbcpayldin == null) {*/
 									cbcpayldin = new Cbcpayldin();
-								}
+								/*}*/
 								cbcpayldin.setObjectID(cbcpayldconstentity.getId());
 								cbcpayldin.setCreateDateTime(new Date());
 								if (!StringUtils.isEmpty(organisation.getIn())) {
@@ -900,10 +931,13 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								if (addressVo.getId() > 0) {
 									cbcpayldaddress = cbcpayldaddressRepository
 											.getAllPayldAddressById(BigInteger.valueOf(addressVo.getId()));
+									if(cbcpayldaddress != null){
+										cbcpayldaddressRepository.delete(cbcpayldaddress);
+									}
 								}
-								if (cbcpayldaddress == null) {
+							/*	if (cbcpayldaddress == null) {*/
 									cbcpayldaddress = new Cbcpayldaddress();
-								}
+							/*	}*/
 								cbcpayldaddress.setObjectID(cbcpayldconstentity.getId());
 								if (!StringUtils.isEmpty(addressVo.getAddressFree())) {
 									cbcpayldaddress.setAddressFree(addressVo.getAddressFree());
@@ -1003,10 +1037,13 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								if (residentCountry.getId() > 0) {
 									cbcpayldrescountry = cbcpayldrescountryRepository.getAllPayldResidentCountryById(
 											BigInteger.valueOf(residentCountry.getId()));
+									if(cbcpayldrescountry != null){
+										cbcpayldrescountryRepository.delete(cbcpayldrescountry);
+									}
 								}
-								if (cbcpayldrescountry == null) {
+								/*if (cbcpayldrescountry == null) {*/
 									cbcpayldrescountry = new Cbcpayldrescountry();
-								}
+								/*}*/
 								cbcpayldrescountry.setCreateDateTime(new Date());
 								cbcpayldrescountry.setObjectID(sddInfo.getId());
 								if (!StringUtils.isEmpty(residentCountry.getResidentCountryCode())) {
@@ -1031,10 +1068,13 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								if (summary.getId() > 0) {
 									summaryRef = cbcpayldsumrefRepository
 											.getAllSummaryById(BigInteger.valueOf(summary.getId()));
+									if(summaryRef != null){
+										cbcpayldsumrefRepository.delete(summaryRef);
+									}
 								}
-								if (summaryRef == null) {
+								/*if (summaryRef == null) {*/
 									summaryRef = new Cbcpayldsumref();
-								}
+								/*}*/
 								summaryRef.setAddinfoID(sddInfo.getId());
 								summaryRef.setCreateDateTime(new Date());
 								if (!StringUtils.isEmpty(summary.getSummeryReference())) {
