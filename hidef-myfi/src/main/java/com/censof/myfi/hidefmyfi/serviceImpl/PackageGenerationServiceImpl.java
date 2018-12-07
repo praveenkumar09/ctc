@@ -2138,7 +2138,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 		String fileFormatCode = "";
 		String binaryEncodingSchemeCode = "2";
 		String senderContactEmailAddress = "";
-		String messageType = "10";
+		String messageType = "2";
         String sendingCompanyIn = "";
 		
 		if(hidef != null && hidef.getUserprofile() != null) {

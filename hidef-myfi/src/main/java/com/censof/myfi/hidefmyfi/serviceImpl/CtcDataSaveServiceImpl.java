@@ -1880,16 +1880,15 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 		
 		//set SENDER FILE ID, FILE CREATION TIMESTAMP, TRANSMISSION ID AND MESSAGE REF ID
 		if(hidefVo!= null && hidefVo.getMetadata() != null && hidefVo.getMetadata().getTaxYear() != null && !hidefVo.getMetadata().getTaxYear().isEmpty()) {
-			CbcMetadataController metaDataController = new CbcMetadataController();
 			hidefVo.setMycbcId(hidef.getMycbcId());
-			hidefVo = metaDataController.getSenderFileID(hidefVo,"CBC");
+			hidefVo = getSenderFileID(hidefVo,"CBC");
 			
 			String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 			String fileCreationTimeStamp = sdf.format(new Date());
 			hidefVo.getMetadata().setFormCreationTimeStamp(fileCreationTimeStamp);
 			
-			hidefVo = metaDataController.getMessageRefId(hidefVo,"CBC");
+			hidefVo = getMessageRefId(hidefVo,"CBC");
 			
 			
 			if(hidefVo != null && hidefVo.getUserprofile() != null) {
@@ -2199,8 +2198,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 					}else if(currentCell != null && currentCell.getCellType() == Cell.CELL_TYPE_BLANK) {
 						if(currentCell.getColumnIndex() == 5) {
 							if(docReferenceId == 0) {
-								CbcReportingEntityController reportingEntityController = new CbcReportingEntityController();
-								hidefVo = reportingEntityController.getDocRefId(hidefVo,"","CBC");
+								hidefVo = getDocRefId(hidefVo,"","CBC");
 								docReferenceId += 1;
 							}
 							
@@ -2691,9 +2689,8 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 
 				} else if(currentCell != null && currentCell.getCellType() == Cell.CELL_TYPE_BLANK){
 					if(currentCell.getColumnIndex() == 1) {
-						CbcReportsController reportsController = new CbcReportsController();
 						if(hidefVo.getDocRefId() != null) {
-						String nextDocRef = reportsController.converToString(Integer.parseInt(hidefVo.getDocRefId())+1);
+						String nextDocRef = converToString(Integer.parseInt(hidefVo.getDocRefId())+1);
 						reports.setDocumentRefId(hidefVo.getDocRefIdStaticText()+"R"+nextDocRef);
 						}
 					}
@@ -2874,9 +2871,8 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 
 					}else if(currentCell != null && currentCell.getCellType() == Cell.CELL_TYPE_BLANK){
 						if(currentCell.getColumnIndex() == 1) {
-							CbcAdditionalInfoController reportsController = new CbcAdditionalInfoController();
 							if(hidefVo.getDocRefId() != null) {
-							String nextDocRef = reportsController.converToString(Integer.parseInt(hidefVo.getDocRefId())+1);
+							String nextDocRef = converToString(Integer.parseInt(hidefVo.getDocRefId())+1);
 							addInfo.setDocumentReferenceId(hidefVo.getDocRefIdStaticText()+"A"+nextDocRef);
 							}
 						}
@@ -4822,5 +4818,135 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 		}
 		return hidefvo;
 	}
+	
+	public String converToString(int i){
+		String convertedNum = "";
+	    if(String.valueOf(i).length() == 1){
+	    	convertedNum ="000"+i;
+	    } else if (String.valueOf(i).length() == 2){
+	    	convertedNum ="00"+i;
+	    }
+	    else if (String.valueOf(i).length() == 3){
+	    	convertedNum ="0"+i;
+	    } 
+	    
+	    else {
+	    	convertedNum =String.valueOf(i);
+	    }
+
+	    return convertedNum;
+	}
+	
+	
+	public HidefVo getSenderFileID(HidefVo hidef,String communicationType){
+		String pattern = "yyyyMMdd";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		String date = simpleDateFormat.format(new Date());
+		Senderfileid senderFileId = ctccommonDropdownService.findSenderFileIdByDate(date);
+		String senderFileIdNew = "";
+		String senderFileIdStatic = communicationType+"_MY"+hidef.getMetadata().getTaxYear()+"-"+hidef.getMycbcId()+date;
+		if(senderFileId != null){
+			
+				int sum = Integer.parseInt(senderFileId.getSenderfileid())+ 1;				
+				senderFileIdNew = senderFileIdStatic+String.valueOf(converToString(sum));	
+				
+			
+			
+		}else{
+			
+			senderFileId = saveSenderFileId(date, communicationType);
+			senderFileIdNew = senderFileIdStatic+String.valueOf(senderFileId.getSenderfileid());
+		}
+		
+		/*if(hidef.getMetadata() != null && hidef.getMetadata().getSenderFileId() != null && !hidef.getMetadata().getSenderFileId().isEmpty()) {
+			hidef.getMetadata().setSenderFileId(hidef.getMetadata().getSenderFileId());
+		}else {*/
+		hidef.getMetadata().setSenderFileId(senderFileIdNew);
+		/*}*/
+		return hidef;
+	}
+	
+	public HidefVo getMessageRefId(HidefVo hidef,String communicationType){
+		/*String pattern = "yyyyMMdd";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		String date = simpleDateFormat.format(new Date());
+		Messagerefid messageRefId = ctccommonDropdownService.findMessageRefIdByDate(date);
+		String messageRefIdNew = "";
+		String messageRefIdStatic = communicationType+"_MY"+hidef.getMetadata().getTaxYear()+"-"+hidef.getMycbcId()+date;
+		if(messageRefId != null){
+			
+				int sum = Integer.parseInt(messageRefId.getMessagerefid())+ 1;				
+				messageRefIdNew = messageRefIdStatic+String.valueOf(converToString(sum));	
+				
+						
+		}else{
+			
+			messageRefId = ctcDataSaveService.saveMessageRefId(date,communicationType);
+			messageRefIdNew = messageRefIdStatic+String.valueOf(messageRefId.getMessagerefid());
+		}*/
+		
+		String pattern = "yyyyMMdd";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		String date = simpleDateFormat.format(new Date());
+		Senderfileid senderFileId = ctccommonDropdownService.findSenderFileIdByDate(date);
+		String messageRefId = "";
+		String messageRefIdStatic = communicationType+"_MY"+hidef.getMetadata().getTaxYear()+"-"+hidef.getMycbcId()+date;
+		if(senderFileId != null){
+			
+				int sum = Integer.parseInt(senderFileId.getSenderfileid())+ 1;				
+				messageRefId = messageRefIdStatic+String.valueOf(converToString(sum+1));	
+				
+			
+			
+		}else{
+			
+			senderFileId = saveSenderFileId(date, communicationType);
+			messageRefId = messageRefIdStatic+String.valueOf(senderFileId.getSenderfileid());
+		}
+		
+		/*if(hidef.getMetadata() != null && hidef.getMetadata().getMessageRefId() != null && !hidef.getMetadata().getMessageRefId().isEmpty()) {
+			hidef.getMetadata().setMessageRefId(hidef.getMetadata().getMessageRefId());
+		}else {*/
+		hidef.getMetadata().setMessageRefId(messageRefId);
+		/*}*/
+		return hidef;
+	}
+	public HidefVo getDocRefId(HidefVo hidef,String Type,String communicationType){
+		String pattern = "yyyyMMdd";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		String date = simpleDateFormat.format(new Date());
+		Docrefid docrefid = ctccommonDropdownService.findDocRefIdByDate(date);
+		String docRefId = "";
+		String docRefIdStatic = "MY"+hidef.getMycbcId()+date;
+		if(docrefid != null){
+			if(docrefid.getDocrefid().equals("0001")){
+				docRefId = docRefIdStatic+"E"+String.valueOf(docrefid.getDocrefid());	
+			hidef.setDocRefId(String.valueOf(docrefid.getDocrefid()));
+			hidef.setDocRefIdStaticText(docRefIdStatic);
+			}else{
+				int sum = Integer.parseInt(docrefid.getDocrefid())+ 1;
+				
+				docRefId = docRefIdStatic+"E"+String.valueOf(converToString(sum));
+				hidef.setDocRefId(String.valueOf(converToString(sum)));
+				hidef.setDocRefIdStaticText(docRefIdStatic);
+			
+			}
+			
+		}else{
+			
+			docrefid =saveDocRefIdDetails(date,communicationType);
+			docRefId = docRefIdStatic+"E"+String.valueOf(docrefid.getDocrefid());
+			hidef.setDocRefId(String.valueOf(docrefid.getDocrefid()));
+			hidef.setDocRefIdStaticText(docRefIdStatic);
+		}
+		
+		if(hidef.getReportingEntity().getDocumentReferenceId() != null && !hidef.getReportingEntity().getDocumentReferenceId().isEmpty()) {
+			hidef.getReportingEntity().setDocumentReferenceId(hidef.getReportingEntity().getDocumentReferenceId());
+		}else {
+		hidef.getReportingEntity().setDocumentReferenceId(docRefId);
+		}
+		return hidef;
+	}
+
 	
 }
