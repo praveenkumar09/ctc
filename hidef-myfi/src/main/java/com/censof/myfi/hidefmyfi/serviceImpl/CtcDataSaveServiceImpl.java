@@ -1562,7 +1562,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							List<Cbcpayldrescountry> cbcReportsresidentCountry = cbcpayldrescountryRepository
 									.getAllPayldResidentCountryByObjectId(consentity.getId());
 							if (cbcReportsresidentCountry != null && cbcReportsresidentCountry.size() > 0) {
-								for (Cbcpayldrescountry resident : residentCountry) {
+								for (Cbcpayldrescountry resident : cbcReportsresidentCountry) {
 									ResidentCountryVo residentCountryVo = new ResidentCountryVo();
 									residentCountryVo.setId(resident.getId().intValue());
 									if (resident.getResCountryCode() != null) {
@@ -1578,7 +1578,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 									.getAllPayldNameDetailsByObjectId(consentity.getId());
 							List<NameVo> cbcReportsnameVoList = new ArrayList<NameVo>();
 							if (cbcReporttsnameList != null && cbcReporttsnameList.size() > 0) {
-								for (Cbcpayldname name : nameList) {
+								for (Cbcpayldname name : cbcReporttsnameList) {
 									NameVo nameVO = new NameVo();
 									nameVO.setFirstName(name.getNameOrganisation());
 									nameVO.setId(name.getId().intValue());
@@ -1591,7 +1591,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							List<Cbcpayldin> cbcreportsPayldin = cbcpayldinRepository
 									.getAllPayldInDetailsByObjectId(consentity.getId());
 							if (cbcreportsPayldin != null && cbcreportsPayldin.size() > 0) {
-								for (Cbcpayldin cbcpayld : cbcPayldin) {
+								for (Cbcpayldin cbcpayld : cbcreportsPayldin) {
 									OrganisationInTypeVo orgVo = new OrganisationInTypeVo();
 									orgVo.setId(cbcpayld.getId().intValue());
 									orgVo.setIn(cbcpayld.getTin());
@@ -1623,7 +1623,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 									.getAllPayldAddressByObjectId(consentity.getId());
 							List<AddressVo> cbcReportsaddressList = new ArrayList<AddressVo>();
 							if (cbcreportspayldaddress != null && cbcreportspayldaddress.size() > 0) {
-								for (Cbcpayldaddress address : cbcpayldaddress) {
+								for (Cbcpayldaddress address : cbcreportspayldaddress) {
 									AddressVo addVo = new AddressVo();
 									addVo.setAddressFree(address.getAddressFree());
 									addVo.setAddressType(address.getLegalAddressType());
@@ -1675,7 +1675,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						List<Cbcpayldrescountry> cbcReportsresidentCountry = cbcpayldrescountryRepository
 								.getAllPayldResidentCountryByObjectId(add.getId());
 						if (cbcReportsresidentCountry != null && cbcReportsresidentCountry.size() > 0) {
-							for (Cbcpayldrescountry resident : residentCountry) {
+							for (Cbcpayldrescountry resident : cbcReportsresidentCountry) {
 								ResidentCountryVo residentCountryVo = new ResidentCountryVo();
 								residentCountryVo.setId(resident.getId().intValue());
 								if (resident.getResCountryCode() != null) {
@@ -1685,7 +1685,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								reportsresidentCountryList.add(residentCountryVo);
 							}
 						}
-						sddVo.setResidentCountryList(residentCountryList);
+						sddVo.setResidentCountryList(reportsresidentCountryList);
 
 						List<Cbcpayldsumref> summaryList = cbcpayldsumrefRepository
 								.getAllSummaryByAddinfoIDId(add.getId());
@@ -2023,11 +2023,11 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
 
 								int residentId = Math.toIntExact(Math.round(currentCell.getNumericCellValue()));
-								residentVo.setId(residentId);
+								residentVo.setResidentCountryCode(residentId);
 
 							} else if (currentCell.getCellTypeEnum() == CellType.STRING) {
 								int residentId = Integer.parseInt(currentCell.getStringCellValue());
-								residentVo.setId(residentId);
+								residentVo.setResidentCountryCode(residentId);
 
 							}
 						}
@@ -2261,14 +2261,29 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 			NameVo nameVo = null;
 			OrganisationInTypeVo orgINVo = null;
 			AddressVo addressVo = null;
-			
+						
 			while (cellIterator.hasNext()) {
 				Cell currentCell = cellIterator.next();
 				if (currentCell != null && currentCell.getCellType() != Cell.CELL_TYPE_BLANK) {
 
 					if (currentCell.getColumnIndex() == 0) {
 						
-						if (reports == null) {
+                        if(currentRow.getRowNum() != 2) {
+                        	if(reports != null) {
+							hidefVo.getListCBCReports().add(reports);
+                        	}
+							reports = null;
+						}
+						reports = new CBCRepotsVo();
+						reports.setConstituentEntityList(new ArrayList<CbcConstituentEntityVO>());
+						reports.setConstituentEntity(new CbcConstituentEntityVO());
+						reports.getConstituentEntity().setBizActivitiesList(new ArrayList<BizActivitiesTypeVo>());
+						reports.getConstituentEntity().setResidentCountryList(new ArrayList<ResidentCountryVo>());
+						reports.getConstituentEntity().setNameList(new ArrayList<NameVo>());
+						reports.getConstituentEntity().setOrganisationInTypeList(new ArrayList<OrganisationInTypeVo>());
+						reports.getConstituentEntity().setAddressList(new ArrayList<AddressVo>());
+						
+						/*if (reports == null) {
 							reports = new CBCRepotsVo();
 							reports.setExcelId(reports.getExcelId()+1);
 							if(reports.getConstituentEntity() == null) {
@@ -2289,7 +2304,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								reports.getConstituentEntity().setExcelId(ceExcelId+1);
 							}
 						
-						}
+						}*/
 						
 						
 						if (currentCell.getCellTypeEnum() == CellType.STRING) {
@@ -2459,35 +2474,56 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							reports.setAssertAmount("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 24) {
+					
+					//Consttituent Entity Excel
+					if(currentCell.getColumnIndex() == 24) {						
+						if(currentRow.getRowNum() != 2) {
+                        	if(reports != null && reports.getConstituentEntity() != null) {
+                        	if(reports.getConstituentEntityList() != null) {	
+                        		reports.getConstituentEntityList().add(reports.getConstituentEntity());
+                        	}else {
+                        		reports.setConstituentEntityList(new ArrayList<CbcConstituentEntityVO>());
+                        		reports.getConstituentEntityList().add(reports.getConstituentEntity());
+                        	}
+                        	}
+							reports.setConstituentEntity(null);
+							reports.setConstituentEntity(new CbcConstituentEntityVO());
+						}else {
+							reports.setConstituentEntity(null);
+							reports.setConstituentEntity(new CbcConstituentEntityVO());
+						}
+					}
+					
+					
+					if (currentCell.getColumnIndex() == 25) {
 						if (currentCell.getCellTypeEnum() == CellType.STRING) {
 							reports.getConstituentEntity().setTin(currentCell.getStringCellValue());
 						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
 							reports.getConstituentEntity().setTin("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 25) {
+					if (currentCell.getColumnIndex() == 26) {
 						if (currentCell.getCellTypeEnum() == CellType.STRING) {
 							reports.getConstituentEntity().setIssuedBy(currentCell.getStringCellValue());
 						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
 							reports.getConstituentEntity().setIssuedBy("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 26) {
+					if (currentCell.getColumnIndex() == 27) {
 						if (currentCell.getCellTypeEnum() == CellType.STRING) {
 							reports.getConstituentEntity().setTinType(currentCell.getStringCellValue());
 						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
 							reports.getConstituentEntity().setTinType("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 27) {
+					if (currentCell.getColumnIndex() == 28) {
 						if (currentCell.getCellTypeEnum() == CellType.STRING) {
 							reports.getConstituentEntity().setIncorpCountryCode(currentCell.getStringCellValue());
 						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
 							reports.getConstituentEntity().setIncorpCountryCode("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 28) {
+					if (currentCell.getColumnIndex() == 29) {
 						if (currentCell.getCellTypeEnum() == CellType.STRING) {
 							reports.getConstituentEntity().setOtherEntityInfo(currentCell.getStringCellValue());
 						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
@@ -2495,7 +2531,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						}
 					}
 
-					if (currentCell.getColumnIndex() == 29) {
+					if (currentCell.getColumnIndex() == 30) {
 						if (bizActivitiesVo == null) {
 							bizActivitiesVo = new BizActivitiesTypeVo();
 						}
@@ -2509,20 +2545,20 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						}
 					}
 
-					if (currentCell.getColumnIndex() == 30) {
+					if (currentCell.getColumnIndex() == 31) {
 						if (residentVo == null) {
 							residentVo = new ResidentCountryVo();
 						}
 						if (currentCell.getCellTypeEnum() == CellType.STRING) {
 
 							int residentId = Integer.parseInt(currentCell.getStringCellValue());
-							residentVo.setId(residentId);
+							residentVo.setResidentCountryCode(residentId);
 						} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
 							int residentId = Integer.parseInt("" + Math.round(currentCell.getNumericCellValue()));
-							residentVo.setId(residentId);
+							residentVo.setResidentCountryCode(residentId);
 						}
 					}
-					if (currentCell.getColumnIndex() == 31) {
+					if (currentCell.getColumnIndex() == 32) {
 						if (nameVo == null) {
 							nameVo = new NameVo();
 						}
@@ -2534,7 +2570,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						}
 					}
 
-					if (currentCell.getColumnIndex() == 32) {
+					if (currentCell.getColumnIndex() == 33) {
 						if (orgINVo == null) {
 							orgINVo = new OrganisationInTypeVo();
 						}
@@ -2544,7 +2580,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							orgINVo.setIn("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 33) {
+					if (currentCell.getColumnIndex() == 34) {
 						if (orgINVo == null) {
 							orgINVo = new OrganisationInTypeVo();
 						}
@@ -2554,7 +2590,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							orgINVo.setInType("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 34) {
+					if (currentCell.getColumnIndex() == 35) {
 						if (orgINVo == null) {
 							orgINVo = new OrganisationInTypeVo();
 						}
@@ -2566,7 +2602,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						}
 					}
 
-					if (currentCell.getColumnIndex() == 35) {
+					if (currentCell.getColumnIndex() == 36) {
 						if (addressVo == null) {
 							addressVo = new AddressVo();
 						}
@@ -2576,7 +2612,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							addressVo.setCountryCode("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 36) {
+					if (currentCell.getColumnIndex() == 37) {
 						if (addressVo == null) {
 							addressVo = new AddressVo();
 						}
@@ -2586,7 +2622,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							addressVo.setAddressType("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 37) {
+					if (currentCell.getColumnIndex() == 38) {
 						if (addressVo == null) {
 							addressVo = new AddressVo();
 						}
@@ -2596,7 +2632,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							addressVo.setAddressFree("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 38) {
+					if (currentCell.getColumnIndex() == 39) {
 						if (addressVo == null) {
 							addressVo = new AddressVo();
 						}
@@ -2606,7 +2642,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							addressVo.setStreet("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 39) {
+					if (currentCell.getColumnIndex() == 40) {
 						if (addressVo == null) {
 							addressVo = new AddressVo();
 						}
@@ -2616,7 +2652,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							addressVo.setBuildingIdentifier("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 40) {
+					if (currentCell.getColumnIndex() == 41) {
 						if (addressVo == null) {
 							addressVo = new AddressVo();
 						}
@@ -2626,7 +2662,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							addressVo.setSuitIdentifier("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 41) {
+					if (currentCell.getColumnIndex() == 42) {
 						if (addressVo == null) {
 							addressVo = new AddressVo();
 						}
@@ -2636,7 +2672,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							addressVo.setFloorIdentifier("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 42) {
+					if (currentCell.getColumnIndex() == 43) {
 						if (addressVo == null) {
 							addressVo = new AddressVo();
 						}
@@ -2646,7 +2682,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							addressVo.setDistrictName("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 43) {
+					if (currentCell.getColumnIndex() == 44) {
 						if (addressVo == null) {
 							addressVo = new AddressVo();
 						}
@@ -2656,7 +2692,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							addressVo.setPob("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 44) {
+					if (currentCell.getColumnIndex() == 45) {
 						if (addressVo == null) {
 							addressVo = new AddressVo();
 						}
@@ -2666,7 +2702,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							addressVo.setPostCode("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 45) {
+					if (currentCell.getColumnIndex() == 46) {
 						if (addressVo == null) {
 							addressVo = new AddressVo();
 						}
@@ -2676,7 +2712,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							addressVo.setCity("" + Math.round(currentCell.getNumericCellValue()));
 						}
 					}
-					if (currentCell.getColumnIndex() == 46) {
+					if (currentCell.getColumnIndex() == 47) {
 						if (addressVo == null) {
 							addressVo = new AddressVo();
 						}
@@ -2691,6 +2727,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 					if(currentCell.getColumnIndex() == 1) {
 						if(hidefVo.getDocRefId() != null) {
 						String nextDocRef = converToString(Integer.parseInt(hidefVo.getDocRefId())+1);
+						hidefVo.setDocRefId(nextDocRef);
 						reports.setDocumentRefId(hidefVo.getDocRefIdStaticText()+"R"+nextDocRef);
 						}
 					}
@@ -2742,7 +2779,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 				}
 			}
 			
-			if(reports != null && reports.getConstituentEntity() != null) {
+			/*if(reports != null && reports.getConstituentEntity() != null) {
 				
 				Iterator<CbcConstituentEntityVO> iteratorCE = reports.getConstituentEntityList().iterator();
 				
@@ -2755,10 +2792,10 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 				
 				if(reports.getConstituentEntity().getExcelId() != 0) {
 				reports.getConstituentEntityList().add(reports.getConstituentEntity());
-				}
-			}
+//				}
+			}*/
 
-			if (reports != null) {					
+			/*if (reports != null) {					
 					Iterator<CBCRepotsVo> reportListIterator = hidefVo.getListCBCReports().iterator();
 					
 					while(reportListIterator.hasNext()) {						
@@ -2771,9 +2808,22 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 				if(reports.getExcelId() != 0) {	
 				hidefVo.getListCBCReports().add(reports);
 				}
-			}
+			}*/
 		}
 	}
+		if(reports != null && reports.getConstituentEntity() != null) {
+			if(reports.getConstituentEntityList() != null) {
+				reports.getConstituentEntityList().add(reports.getConstituentEntity());
+			}else {
+				reports.setConstituentEntityList(new ArrayList<CbcConstituentEntityVO>());
+				reports.getConstituentEntityList().add(reports.getConstituentEntity());
+			}
+			
+		}
+		
+		if(reports != null) {
+			hidefVo.getListCBCReports().add(reports);
+		}
 
 		Sheet additionalInfoSheet = workbook.getSheetAt(3);
 		Iterator<Row> additionalInfo = additionalInfoSheet.iterator();
@@ -2792,8 +2842,18 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 
 						if (currentCell.getColumnIndex() == 0) {
 							
-							
-							if (addInfo == null) {
+							   if(currentRow.getRowNum() != 2) {
+								   if(addInfo!= null) {
+									hidefVo.getAddInfoList().add(addInfo);
+								   }
+									addInfo = null;
+								}
+							    
+							   addInfo = new CbcAdditionalInfo();
+							   addInfo.setResidentCountryList(new ArrayList<ResidentCountryVo>());
+							   addInfo.setSummaryList(new ArrayList<SummaryVo>());
+								
+							/*if (addInfo == null) {
 								addInfo = new CbcAdditionalInfo();
 								int excelId = addInfo.getExcelId()+1;								
 								addInfo.setExcelId(excelId);
@@ -2802,7 +2862,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								addInfo = null;
 								addInfo = new CbcAdditionalInfo();
 								addInfo.setExcelId(excelId);
-							}
+							}*/
 							if (currentCell.getCellTypeEnum() == CellType.STRING) {
 								addInfo.setDocumentTypeIndic(currentCell.getStringCellValue());
 							} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
@@ -2838,34 +2898,27 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							}
 						}
 						if (currentCell.getColumnIndex() == 5) {
-							if (currentCell.getCellTypeEnum() == CellType.STRING) {
-								addInfo.setOtherInfo(currentCell.getStringCellValue());
-							} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
-								addInfo.setOtherInfo("" + Math.round(currentCell.getNumericCellValue()));
-							}
-						}
-						if (currentCell.getColumnIndex() == 6) {
 							if (residentVo == null) {
 								residentVo = new ResidentCountryVo();
 							}
 							if (currentCell.getCellTypeEnum() == CellType.STRING) {
 								int residentId = Integer.parseInt(currentCell.getStringCellValue());
-								residentVo.setId(residentId);
+								residentVo.setResidentCountryCode(residentId);
 							} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
 								int residentId = Integer.parseInt("" + Math.round(currentCell.getNumericCellValue()));
-								residentVo.setId(residentId);
+								residentVo.setResidentCountryCode(residentId);
 							}
 						}
-						if (currentCell.getColumnIndex() == 7) {
+						if (currentCell.getColumnIndex() == 6) {
 							if (summaryVo == null) {
 								summaryVo = new SummaryVo();
 							}
 							if (currentCell.getCellTypeEnum() == CellType.STRING) {
 								int summaryId = Integer.parseInt(currentCell.getStringCellValue());
-								summaryVo.setSummeryReference(summaryId);
+								summaryVo.setId(summaryId);
 							} else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
 								int summaryId = Integer.parseInt("" + Math.round(currentCell.getNumericCellValue()));
-								summaryVo.setSummeryReference(summaryId);
+								summaryVo.setId(summaryId);
 							}
 						}
 
@@ -2873,6 +2926,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						if(currentCell.getColumnIndex() == 1) {
 							if(hidefVo.getDocRefId() != null) {
 							String nextDocRef = converToString(Integer.parseInt(hidefVo.getDocRefId())+1);
+							hidefVo.setDocRefId(nextDocRef);
 							addInfo.setDocumentReferenceId(hidefVo.getDocRefIdStaticText()+"A"+nextDocRef);
 							}
 						}
@@ -2896,22 +2950,12 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						addInfo.getSummaryList().add(summaryVo);
 					}
 				}
-
-				if (addInfo != null) {
-					   Iterator<CbcAdditionalInfo> iteratorAI = hidefVo.getAddInfoList().iterator();
-					   while(iteratorAI.hasNext()) {
-						   CbcAdditionalInfo addInfoOb = iteratorAI.next();
-						 if(addInfoOb.getExcelId() == addInfo.getExcelId()) {
-							 iteratorAI.remove();
-						 }
-						 
-						if(addInfo.getExcelId() != 0) { 
-						hidefVo.getAddInfoList().add(addInfo);
-						}
-					   }
-				}
 			}
 		}
+		
+		if(addInfo != null) {
+			hidefVo.getAddInfoList().add(addInfo);
+		} 
 
 		workbook.close();
 		file.delete();
@@ -2943,7 +2987,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 					payldhdr.setMessageTypeIndic(hidefVo.getMetadata().getMessageTypeIndic());
 				}
 				if (!StringUtils.isEmpty(hidefVo.getMetadata().getMsgType())) {
-					payldhdr.setMessageType(commonDropDownService.findMessageTypeById(Integer.parseInt(hidefVo.getMetadata().getMsgType())).getMsgType());
+					payldhdr.setMessageType("CBC");
 				}
 				if (!StringUtils.isEmpty(hidefVo.getMetadata().getWarning())) {
 					payldhdr.setWarning(hidefVo.getMetadata().getWarning());
@@ -3079,7 +3123,10 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 					}
 					if (!StringUtils.isEmpty(hidefVo.getReportingEntity().getTinType())) {
 						payldentity.setIssuedBy(
-								findCountryCodeConvertStringToBigInt(hidefVo.getReportingEntity().getTinType()));
+								findCountryCodeConvertStringToBigInt(hidefVo.getReportingEntity().getTinIssuedBy()));
+					}
+					if (!StringUtils.isEmpty(hidefVo.getReportingEntity().getTinType())) {
+						payldentity.setTintype(hidefVo.getReportingEntity().getTinType());
 					}
 					payldentity.setIsdeleted(0);
 					// payldentity.
@@ -3137,8 +3184,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								}
 								cbcpayldrescountry.setCreateDateTime(new Date());
 								cbcpayldrescountry.setObjectID(payldentity.getId());
-								cbcpayldrescountry.setResCountryCode(
-										findCountryCodeById(BigInteger.valueOf(residentCountry.getId())));// TODO
+								cbcpayldrescountry.setResCountryCode(""+residentCountry.getResidentCountryCode());// TODO
 								cbcpayldrescountry.setSrcType("1");// TODO
 								cbcpayldrescountry.setIsdeleted(0);
 								cbcpayldrescountry = cbcpayldrescountryRepository.saveAndFlush(cbcpayldrescountry);
@@ -3286,6 +3332,11 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						if (!StringUtils.isEmpty(cbcReports.getDocumentTypeIndicator())) {
 							cbcpayldreport.setDocTypeIndic(cbcReports.getDocumentTypeIndicator());
 						}
+						
+						if(!StringUtils.isEmpty(cbcReports.getDocumentRefId())) {
+							cbcpayldreport.setDocRefId(cbcReports.getDocumentRefId());
+						}
+						
 						if (!StringUtils.isEmpty(cbcReports.getEarningAmount())) {
 							cbcpayldreport
 									.setEarningsAmt(cbcReports.getEarningAmount());
@@ -3402,8 +3453,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								if (cbcpayldbizactiv == null) {
 									cbcpayldbizactiv = new Cbcpayldbizactiv();
 								}
-								cbcpayldbizactiv.setBizActivities(commonDropDownService
-										.findBizActivitiesById(bizActivitiesTypeVo.getId()).getBizType());
+								cbcpayldbizactiv.setBizActivities(""+bizActivitiesTypeVo.getId());
 								cbcpayldbizactiv.setConsentID(cbcpayldconstentity.getId());
 								cbcpayldbizactiv.setCreateDateTime(new Date());
 								cbcpayldbizactiv.setIsdeleted(0);
@@ -3456,9 +3506,8 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								}
 								cbcpayldrescountry.setCreateDateTime(new Date());
 								cbcpayldrescountry.setObjectID(cbcpayldconstentity.getId());
-								if (!StringUtils.isEmpty("" + residentCountry.getId())) {
-									cbcpayldrescountry.setResCountryCode(
-											findCountryCodeById(BigInteger.valueOf(residentCountry.getId())));// TODO
+								if (!StringUtils.isEmpty("" + residentCountry.getResidentCountryCode())) {
+									cbcpayldrescountry.setResCountryCode(""+residentCountry.getResidentCountryCode());// TODO
 								}
 								cbcpayldrescountry.setSrcType("1");// TODO
 								cbcpayldrescountry.setIsdeleted(0);
@@ -3622,8 +3671,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								}
 								cbcpayldrescountry.setCreateDateTime(new Date());
 								cbcpayldrescountry.setObjectID(sddInfo.getId());
-								cbcpayldrescountry.setResCountryCode(
-										findCountryCodeById(BigInteger.valueOf(residentCountry.getId())));// TODO
+								cbcpayldrescountry.setResCountryCode(""+residentCountry.getResidentCountryCode());// TODO
 								cbcpayldrescountry.setSrcType("1");// TODO
 								cbcpayldrescountry.setIsdeleted(0);
 								cbcpayldrescountry = cbcpayldrescountryRepository.saveAndFlush(cbcpayldrescountry);
@@ -3648,8 +3696,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								}
 								summaryRef.setAddinfoID(sddInfo.getId());
 								summaryRef.setCreateDateTime(new Date());
-								summaryRef.setSummaryRef(
-										commonDropDownService.findSummaryReferenceById(summary.getId()).getRefType());
+								summaryRef.setSummaryRef(""+summary.getId());
 								summaryRef.setIsdeleted(0);
 								summaryRef = cbcpayldsumrefRepository.saveAndFlush(summaryRef);
 								logger.info("cbcpayldsumref ID::::::>" + summaryRef.getId());

@@ -2236,6 +2236,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 		Iterator<Row> reRowIterator = reportingEntityWorkSheet.iterator();
 		while(reRowIterator.hasNext()) {
 			Row currentRow = reRowIterator.next();
+			if(currentRow.getRowNum() >= 2) {
 			Iterator<Cell> reCell = currentRow.iterator();
 			while(reCell.hasNext()) {
 				Cell cell = reCell.next();
@@ -2245,6 +2246,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 					cell.setCellStyle(unlockedCellStyle);
 				}
 			}
+			}
 		}
 		reportingEntityWorkSheet.protectSheet("password");
 		
@@ -2253,6 +2255,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 		Iterator<Row> reportsRowIterator = cbcReportsWorkSheet.iterator();
 		while(reportsRowIterator.hasNext()) {
 			Row currentRow = reportsRowIterator.next();
+			if(currentRow.getRowNum() >= 2) {
 			Iterator<Cell> reCell = currentRow.iterator();
 			while(reCell.hasNext()) {
 				Cell cell = reCell.next();
@@ -2262,6 +2265,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 					cell.setCellStyle(unlockedCellStyle);
 				}
 			}
+			}
 		}
 		cbcReportsWorkSheet.protectSheet("password");
 		
@@ -2270,6 +2274,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 		Iterator<Row> addInfoRowIterator = addInfoWorkSheet.iterator();
 		while(addInfoRowIterator.hasNext()) {
 			Row currentRow = addInfoRowIterator.next();
+			if(currentRow.getRowNum() >= 2) {
 			Iterator<Cell> reCell = currentRow.iterator();
 			while(reCell.hasNext()) {
 				Cell cell = reCell.next();
@@ -2278,6 +2283,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 				}else {
 					cell.setCellStyle(unlockedCellStyle);
 				}
+			}
 			}
 		}
 		addInfoWorkSheet.protectSheet("password");

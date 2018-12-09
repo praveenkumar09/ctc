@@ -260,7 +260,9 @@ public class LoginController {
 	@ResponseBody
 	public String viewCBCSummaryGrid(@ModelAttribute("hidef") HidefVo hidef, @RequestParam String id, BindingResult result,
 			ModelMap model, Map<String, Object> map) throws JsonParseException, JsonMappingException, IOException {
-		hidef = ctcDataSaveService.viewAllDatabyCBCId(hidef, id);
+		HidefVo hidefVo = new HidefVo();
+		hidefVo.setMycbcId(hidef.getMycbcId());
+		hidef = ctcDataSaveService.viewAllDatabyCBCId(hidefVo, id);
 		hidef.setIsSummaryView("true");
 		model.addAttribute("hidef", hidef);
 		return "success";
@@ -270,7 +272,9 @@ public class LoginController {
 	@ResponseBody
 	public String editCBCSummaryGrid(@ModelAttribute("hidef") HidefVo hidef, @RequestParam String id, BindingResult result,
 			ModelMap model, Map<String, Object> map) throws JsonParseException, JsonMappingException, IOException {
-		hidef = ctcDataSaveService.viewAllDatabyCBCId(hidef, id);
+		HidefVo hidefVo = new HidefVo();
+		hidefVo.setMycbcId(hidef.getMycbcId());
+		hidef = ctcDataSaveService.viewAllDatabyCBCId(hidefVo, id);
 		hidef.setIsSummaryView("false");
 		model.addAttribute("hidef", hidef);
 		return "success";

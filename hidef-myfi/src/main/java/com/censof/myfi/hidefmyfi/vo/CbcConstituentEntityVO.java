@@ -24,6 +24,7 @@ public class CbcConstituentEntityVO implements Serializable {
 	private AddressVo viewAddressVo;
 	private AddressVo editAddressVo;
 	private int excelId;
+	private String ceIndicator;
 	
 	public String getTin() {
 		return tin;
@@ -114,6 +115,12 @@ public class CbcConstituentEntityVO implements Serializable {
 	}
 	public void setExcelId(int excelId) {
 		this.excelId = excelId;
+	}
+	public String getCeIndicator() {
+		return ceIndicator;
+	}
+	public void setCeIndicator(String ceIndicator) {
+		this.ceIndicator = ceIndicator;
 	}
 
 }
