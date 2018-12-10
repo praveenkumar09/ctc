@@ -4762,8 +4762,10 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 				
 				
 				Crspayldacctrep crspayldacctrep = crspayldacctrepRepository.getAllCrspayldacctrepByBodyID(crsbody.getHdrID());
-				AccountHolderVo accountholder = new AccountHolderVo();
+				
 				if(crspayldacctrep != null){
+					AccountHolderVo accountholder = new AccountHolderVo();
+					List<AccountHolderVo> accountHolderList = new ArrayList<AccountHolderVo>();
 					accountholder.setAccountHolderType(crspayldacctrep.getAcctHolderType());
 					accountholder.setAccountNumber(crspayldacctrep.getAccountNumber());
 					accountholder.setBirthDate(crspayldacctrep.getBirthDate());
@@ -4792,6 +4794,163 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						accountholder.setPaymentList(paymentList);
 						
 					}
+					
+					//Controlling Person List
+					
+					List<Crspayldctrlperson> crspayldctrlpersonList = crspayldctrlpersonRepository.getAllCrspayldctrlpersonAcctRepID(crspayldacctrep.getId());
+					if(crspayldctrlpersonList != null && crspayldctrlpersonList.size() > 0){
+						List<ControllingPersonVo> controllingPersonList = new ArrayList<ControllingPersonVo>();
+						for(Crspayldctrlperson ctrlPerson : crspayldctrlpersonList){
+						ControllingPersonVo ctrlPersonVo = new  ControllingPersonVo();
+						ctrlPersonVo.setBirthDate(ctrlPerson.getBirthDate());
+						ctrlPersonVo.setCity(ctrlPerson.getBirthCity());
+						ctrlPersonVo.setCitySubEntity(ctrlPerson.getBirthCitySubent());
+						ctrlPersonVo.setCountryCode(ctrlPerson.getBirthCountry());
+						ctrlPersonVo.setCountryName(ctrlPerson.getBirthFormerCountry());
+						ctrlPersonVo.setId(ctrlPerson.getId().intValue());
+						
+						// Controlling Person Resident Country
+						List<Crspayldrescountry> residentCountryList = crspayldrescountryRepository.getAllCrspayldrescountryByObjectID(ctrlPerson.getId());
+						if(residentCountryList != null &&  residentCountryList.size() >0){
+							List<ResidentCountryVo> residnetList = new ArrayList<ResidentCountryVo>();
+							for(Crspayldrescountry individualRes : residentCountryList){
+								ResidentCountryVo residentVo = new ResidentCountryVo();
+								residentVo.setId(individualRes.getId().intValue());
+								if(individualRes.getResCountryCode() != null){
+								residentVo.setResidentCountryCode(Integer.parseInt(individualRes.getResCountryCode()));
+								}
+								residnetList.add(residentVo);
+							}
+							ctrlPersonVo.setControllingResidentCountryList(residnetList);
+						}
+						
+						//Controlling Person IN 
+						List<Crspayldin> crsPayldInList = crspayldinRepository.getAllCrspayldinByObjectID(ctrlPerson.getId());
+						if(crsPayldInList != null && crsPayldInList.size() >0){
+							List<OrganisationInTypeVo> individualOrgInlist = new ArrayList<OrganisationInTypeVo>();
+							for(Crspayldin crspayldin : crsPayldInList){
+								OrganisationInTypeVo orgIntyleList = new OrganisationInTypeVo();
+								orgIntyleList.setId(crspayldin.getId().intValue());
+								orgIntyleList.setIn(crspayldin.getTin());
+								orgIntyleList.setInType(crspayldin.getINType());
+								if(crspayldin.getIssuedBy() != null){
+								orgIntyleList.setIssuedBy(Integer.parseInt(crspayldin.getIssuedBy()));
+								}
+								individualOrgInlist.add(orgIntyleList);
+							}
+							ctrlPersonVo.setControllingOrganisationInTypeList(individualOrgInlist);
+						}
+						
+						
+						//Controlling Person Name Grid
+						List<Crspayldname> CrspayldnameList =  crspayldnameRepository.getAllCrspayldfiByObjectID(ctrlPerson.getId());
+						if(CrspayldnameList != null && CrspayldnameList.size() > 0){
+							List<NameTypeVo> nameTypeVoList = new ArrayList<NameTypeVo>();
+							for(Crspayldname name:CrspayldnameList){
+								NameTypeVo nameType = new NameTypeVo();
+								nameType.setFirstName(name.getFirstName());
+								nameType.setGeneralSuffix(name.getGeneralSuffix());
+								nameType.setId(name.getId().intValue());
+								nameType.setLastName(name.getLastName());
+								nameType.setNamePrefix(name.getNamePrefix());
+								nameType.setNameType(name.getNamePersonType());
+								nameType.setPrecedingTitle(name.getPrecedingTitle());
+								
+								List<TitleVo> titleList = new ArrayList<TitleVo>();
+								List<Crspayldnametitle> CrspayldnametitleList = crspayldnametitleRepository.getAllCrspayldnametitleNameID(name.getId());
+								if(CrspayldnametitleList != null && CrspayldnametitleList.size() > 0){
+									for(Crspayldnametitle tittle: CrspayldnametitleList){
+										TitleVo titleVo = new TitleVo();
+										titleVo.setId(tittle.getId().intValue());
+										titleList.add(titleVo);
+									}
+								}
+								nameType.setTitleList(titleList);
+								
+								List<MiddleNameVo> middlevo = new ArrayList<MiddleNameVo>();
+								List<Crspayldnamemiddle> middleNameList = crspayldnamemiddleRepository.getAllCrspayldnamemiddleNameID(name.getId());
+								if(middleNameList != null && middleNameList.size() > 0){
+									for(Crspayldnamemiddle middleNameVo : middleNameList){
+										MiddleNameVo middleName = new MiddleNameVo();
+										middleName.setId(middleNameVo.getId().intValue());
+										middleName.setMiddleName(middleNameVo.getMiddleName());
+										middlevo.add(middleName);
+									}
+								}
+								nameType.setMiddlenameList(middlevo);
+								
+								List<GenerationIdentifierVo> generateList = new ArrayList<GenerationIdentifierVo>();
+								List<Crspayldnamegeneration> crspayldnamegenerationList = crspayldnamegenerationRepository.getAllCrspayldnamegenerationNameID(name.getId());
+								if(crspayldnamegenerationList != null && crspayldnamegenerationList.size()>0){
+									for(Crspayldnamegeneration generate:crspayldnamegenerationList){
+										GenerationIdentifierVo generateId = new GenerationIdentifierVo();
+										generateId.setId(generate.getId().intValue());
+										generateId.setGenerateIdentifier(generate.getGenerationIdentifier());
+										generateList.add(generateId);
+									}
+								}
+								nameType.setGenerateIdentifilerList(generateList);
+								
+								List<SuffixVo> suffixList = new ArrayList<SuffixVo>();
+								List<Crspayldnamesuffix> crspayldnamesuffixList = crspayldnamesuffixRepository.getAllCrspayldnamesuffixNameID(name.getId());
+								if(crspayldnamesuffixList != null && crspayldnamesuffixList.size() >0){
+									for(Crspayldnamesuffix suffix : crspayldnamesuffixList){
+										SuffixVo suffixVo = new SuffixVo();
+										suffixVo.setId(suffix.getId().intValue());
+										suffixVo.setSuffix(suffix.getSuffix());
+										suffixList.add(suffixVo);
+									}
+								}
+								nameType.setSuffixList(suffixList);
+								
+								nameTypeVoList.add(nameType);
+								
+								
+							}
+							ctrlPersonVo.setNameTypeList(nameTypeVoList);
+							
+						}
+						
+						//Address Grid
+						List<AddressVo> addressList= new ArrayList<AddressVo>();
+						List<Crspayldaddress> crsReposrtingFiaddress = crspayldaddressRepository.getAllCrspayldaddressByObjectID(ctrlPerson.getId());
+						if(crsReposrtingFiaddress != null && crsReposrtingFiaddress.size() >0){
+							for(Crspayldaddress address : crsReposrtingFiaddress){
+								AddressVo addressVo = new AddressVo();
+								addressVo.setAddressFree(address.getAddressFree());
+								addressVo.setAddressType(address.getLegalAddressType());
+								addressVo.setAddressTypeId(address.getLegalAddressType());
+								addressVo.setBuildingIdentifier(address.getBuildingIdentifier());
+								addressVo.setCity(address.getCity());
+								addressVo.setCountryCode(address.getCountryCode());
+								addressVo.setCountryCodeId(address.getCountryCode());
+								addressVo.setCountrySubentity(address.getCountrySubentity());
+								addressVo.setDistrictName(address.getDistrictName());
+								addressVo.setFloorIdentifier(address.getFloorIdentifier());
+								addressVo.setId(address.getId().intValue());
+								addressVo.setPob(address.getPob());
+								addressVo.setPostCode(address.getPostCode());
+								addressVo.setStreet(address.getStreet());
+								addressVo.setSuitIdentifier(address.getSuiteIdentifier());
+								addressList.add(addressVo);
+							}
+							ctrlPersonVo.setControllingPersonAddressList(addressList);
+						}		
+						
+						controllingPersonList.add(ctrlPersonVo);
+						
+						}//For end
+						
+						accountholder.setControllingPersonList(controllingPersonList);
+					}
+					
+					
+					
+					
+					
+					
+					
+					
 					
 					if(accountholder.getAccountHolderType() != null && accountholder.getAccountHolderType().equals("individual")){
 						
@@ -4826,7 +4985,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							}
 							accountholder.setIndividualOrganisationInTypeList(individualOrgInlist);
 						}
-						
+						//Name Grid
 						List<Crspayldname> CrspayldnameList =  crspayldnameRepository.getAllCrspayldfiByObjectID(crspayldacctrep.getId());
 						if(CrspayldnameList != null && CrspayldnameList.size() > 0){
 							List<NameTypeVo> nameTypeVoList = new ArrayList<NameTypeVo>();
@@ -4840,50 +4999,180 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								nameType.setNameType(name.getNamePersonType());
 								nameType.setPrecedingTitle(name.getPrecedingTitle());
 								
-								
+								List<TitleVo> titleList = new ArrayList<TitleVo>();
 								List<Crspayldnametitle> CrspayldnametitleList = crspayldnametitleRepository.getAllCrspayldnametitleNameID(name.getId());
 								if(CrspayldnametitleList != null && CrspayldnametitleList.size() > 0){
 									for(Crspayldnametitle tittle: CrspayldnametitleList){
 										TitleVo titleVo = new TitleVo();
 										titleVo.setId(tittle.getId().intValue());
+										titleList.add(titleVo);
 									}
 								}
+								nameType.setTitleList(titleList);
+								
+								List<MiddleNameVo> middlevo = new ArrayList<MiddleNameVo>();
+								List<Crspayldnamemiddle> middleNameList = crspayldnamemiddleRepository.getAllCrspayldnamemiddleNameID(name.getId());
+								if(middleNameList != null && middleNameList.size() > 0){
+									for(Crspayldnamemiddle middleNameVo : middleNameList){
+										MiddleNameVo middleName = new MiddleNameVo();
+										middleName.setId(middleNameVo.getId().intValue());
+										middleName.setMiddleName(middleNameVo.getMiddleName());
+										middlevo.add(middleName);
+									}
+								}
+								nameType.setMiddlenameList(middlevo);
+								
+								List<GenerationIdentifierVo> generateList = new ArrayList<GenerationIdentifierVo>();
+								List<Crspayldnamegeneration> crspayldnamegenerationList = crspayldnamegenerationRepository.getAllCrspayldnamegenerationNameID(name.getId());
+								if(crspayldnamegenerationList != null && crspayldnamegenerationList.size()>0){
+									for(Crspayldnamegeneration generate:crspayldnamegenerationList){
+										GenerationIdentifierVo generateId = new GenerationIdentifierVo();
+										generateId.setId(generate.getId().intValue());
+										generateId.setGenerateIdentifier(generate.getGenerationIdentifier());
+										generateList.add(generateId);
+									}
+								}
+								nameType.setGenerateIdentifilerList(generateList);
+								
+								List<SuffixVo> suffixList = new ArrayList<SuffixVo>();
+								List<Crspayldnamesuffix> crspayldnamesuffixList = crspayldnamesuffixRepository.getAllCrspayldnamesuffixNameID(name.getId());
+								if(crspayldnamesuffixList != null && crspayldnamesuffixList.size() >0){
+									for(Crspayldnamesuffix suffix : crspayldnamesuffixList){
+										SuffixVo suffixVo = new SuffixVo();
+										suffixVo.setId(suffix.getId().intValue());
+										suffixVo.setSuffix(suffix.getSuffix());
+										suffixList.add(suffixVo);
+									}
+								}
+								nameType.setSuffixList(suffixList);
 								
 								nameTypeVoList.add(nameType);
 								
+								
 							}
+							accountholder.setIndividualNameList(nameTypeVoList);
+							
 						}
 						
+						//Address Grid
+						List<AddressVo> addressList= new ArrayList<AddressVo>();
+						List<Crspayldaddress> crsReposrtingFiaddress = crspayldaddressRepository.getAllCrspayldaddressByObjectID(crspayldacctrep.getId());
+						if(crsReposrtingFiaddress != null && crsReposrtingFiaddress.size() >0){
+							for(Crspayldaddress address : crsReposrtingFiaddress){
+								AddressVo addressVo = new AddressVo();
+								addressVo.setAddressFree(address.getAddressFree());
+								addressVo.setAddressType(address.getLegalAddressType());
+								addressVo.setAddressTypeId(address.getLegalAddressType());
+								addressVo.setBuildingIdentifier(address.getBuildingIdentifier());
+								addressVo.setCity(address.getCity());
+								addressVo.setCountryCode(address.getCountryCode());
+								addressVo.setCountryCodeId(address.getCountryCode());
+								addressVo.setCountrySubentity(address.getCountrySubentity());
+								addressVo.setDistrictName(address.getDistrictName());
+								addressVo.setFloorIdentifier(address.getFloorIdentifier());
+								addressVo.setId(address.getId().intValue());
+								addressVo.setPob(address.getPob());
+								addressVo.setPostCode(address.getPostCode());
+								addressVo.setStreet(address.getStreet());
+								addressVo.setSuitIdentifier(address.getSuiteIdentifier());
+								addressList.add(addressVo);
+							}
+							accountholder.setIndividualAddressList(addressList);
+						}		
+					
+					}//Individual End
+					
+					//Organisation
+					if(accountholder.getAccountHolderType() != null && accountholder.getAccountHolderType().equals("organization")){
+						// Organisation Resident Country
+						List<Crspayldrescountry> residentCountryList = crspayldrescountryRepository.getAllCrspayldrescountryByObjectID(crspayldacctrep.getId());
+						if(residentCountryList != null &&  residentCountryList.size() >0){
+							List<ResidentCountryVo> residnetList = new ArrayList<ResidentCountryVo>();
+							for(Crspayldrescountry individualRes : residentCountryList){
+								ResidentCountryVo residentVo = new ResidentCountryVo();
+								residentVo.setId(individualRes.getId().intValue());
+								if(individualRes.getResCountryCode() != null){
+								residentVo.setResidentCountryCode(Integer.parseInt(individualRes.getResCountryCode()));
+								}
+								residnetList.add(residentVo);
+							}
+							accountholder.setOrganisationResidentCountryList(residnetList);
+						}
 						
+						//Organisation IN 
+						List<Crspayldin> crsPayldInList = crspayldinRepository.getAllCrspayldinByObjectID(crspayldacctrep.getId());
+						if(crsPayldInList != null && crsPayldInList.size() >0){
+							List<OrganisationInTypeVo> orgInlist = new ArrayList<OrganisationInTypeVo>();
+							for(Crspayldin crspayldin : crsPayldInList){
+								OrganisationInTypeVo orgIntyleList = new OrganisationInTypeVo();
+								orgIntyleList.setId(crspayldin.getId().intValue());
+								orgIntyleList.setIn(crspayldin.getTin());
+								orgIntyleList.setInType(crspayldin.getINType());
+								if(crspayldin.getIssuedBy() != null){
+								orgIntyleList.setIssuedBy(Integer.parseInt(crspayldin.getIssuedBy()));
+								}
+								orgInlist.add(orgIntyleList);
+							}
+							accountholder.setOrgOrganisationInTypeList(orgInlist);
+						}
+						
+						//Org Organisation
+						List<Crspayldname> payldName= crspayldnameRepository.getAllCrspayldfiByObjectID(crspayldacctrep.getId());
+						List<NameVo> nameList = new ArrayList<NameVo>();
+						if(payldName != null && payldName.size()>0){
+							
+							for(Crspayldname name:payldName){
+								NameVo nameVo = new NameVo();
+								nameVo.setFirstName(name.getNameOrganisation());
+								if(name.getNamePersonType() != null){
+								nameVo.setNameType(Integer.parseInt(name.getNamePersonType()));
+								}
+								nameVo.setId(name.getId().intValue());
+								nameList.add(nameVo);
+							}
+							accountholder.setOrganisationList(nameList);
+						}
+						//Address Grid
+						List<AddressVo> addressList= new ArrayList<AddressVo>();
+						List<Crspayldaddress> crsReposrtingFiaddress = crspayldaddressRepository.getAllCrspayldaddressByObjectID(crspayldacctrep.getId());
+						if(crsReposrtingFiaddress != null && crsReposrtingFiaddress.size() >0){
+							for(Crspayldaddress address : crsReposrtingFiaddress){
+								AddressVo addressVo = new AddressVo();
+								addressVo.setAddressFree(address.getAddressFree());
+								addressVo.setAddressType(address.getLegalAddressType());
+								addressVo.setAddressTypeId(address.getLegalAddressType());
+								addressVo.setBuildingIdentifier(address.getBuildingIdentifier());
+								addressVo.setCity(address.getCity());
+								addressVo.setCountryCode(address.getCountryCode());
+								addressVo.setCountryCodeId(address.getCountryCode());
+								addressVo.setCountrySubentity(address.getCountrySubentity());
+								addressVo.setDistrictName(address.getDistrictName());
+								addressVo.setFloorIdentifier(address.getFloorIdentifier());
+								addressVo.setId(address.getId().intValue());
+								addressVo.setPob(address.getPob());
+								addressVo.setPostCode(address.getPostCode());
+								addressVo.setStreet(address.getStreet());
+								addressVo.setSuitIdentifier(address.getSuiteIdentifier());
+								addressList.add(addressVo);
+							}
+							accountholder.setOrganisationAddressList(addressList);
+						}			
+						
+					}//Organisation End
 					
-					}
+	
+					//hidefvo.setAccountholder(accountholder);
 					
+					accountHolderList.add(accountholder);
 					
+					hidefvo.setAccountHolderList(accountHolderList);
 					
-					
-					
-					
-				}
-				
-				hidefvo.setAccountholder(accountholder);
-				
-				
-				
-				
-				
-				
-				
-				
-			}
+				}//Account Holder If End
 			
+				
+			}	//CRS Body
 			
-			
-			
-			
-			
-			
-			
-		}
+		}//PayLoad Hdr If End
 		return hidefvo;
 	}
 	
