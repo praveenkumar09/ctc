@@ -2145,7 +2145,7 @@ public class CrsAccountHolderController {
 		Random rand = new Random();
 		accountHolderVO = hidef.getAccountholder();
 		accountHolderVO.setId(rand.nextInt(10000));
-		accountHolderVO.setControllingPersonList(hidef.getControllingPersonList());
+		//accountHolderVO.setControllingPersonList(hidef.getAccountholder().getControllingPersonList());
 		if (hidef.getAccountholder() != null && hidef.getAccountHolderList() != null && hidef.getAccountHolderList().size() >0) {
 			hidef.getAccountHolderList().add(accountHolderVO);
 		} else {

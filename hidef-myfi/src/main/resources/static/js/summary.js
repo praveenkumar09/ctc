@@ -316,7 +316,7 @@ $(document).ready(function() {
                                  /* alert("ID: " +
                                       item.id);*/
                                   e.stopPropagation();
-                                  editCBCSummaryGrid(item);
+                                  editCRSSummaryGrid(item);
                                   return false;
                               });
 
@@ -522,6 +522,26 @@ function viewCRSSummaryGrid(item){
            newCRSOnClick();
           // $('#cbcmetadata *').prop('disabled',true);
            
+       },
+       error: function(
+           request,
+           error) {
+           console.log(error);
+       }
+   });
+
+}
+function editCRSSummaryGrid(item){
+	$
+   .ajax({
+
+       url: 'crs/editSummaryGrid?id='+item.hrdId,
+       type: 'GET',
+       async: false,
+       success: function(data) {
+           console
+               .log("data ====>"+data);
+           newCBCOnClick();
        },
        error: function(
            request,
