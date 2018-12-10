@@ -1,6 +1,7 @@
 package com.censof.myfi.hidefmyfi.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -320,7 +321,7 @@ public class CrsUserProfileController {
 	
 	@RequestMapping(value ="/admin/crs/import/excel", method = RequestMethod.POST)
 	public String saveExcel(@ModelAttribute("hidef")HidefVo hidef,  HttpServletRequest request,	
-		      BindingResult result, ModelMap model,Map<String, Object> map) throws IllegalStateException, IOException {
+		      BindingResult result, ModelMap model,Map<String, Object> map) throws IllegalStateException, IOException, ParseException {
 		HidefVo newHidefVo = new HidefVo();
 		MultipartHttpServletRequest multipartRequest=(MultipartHttpServletRequest)request;
         Iterator<String> it=multipartRequest.getFileNames();

@@ -2,6 +2,7 @@ package com.censof.myfi.hidefmyfi.service;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.text.ParseException;
 
 import com.censof.myfi.hidefmyfi.entity.Docrefid;
 import com.censof.myfi.hidefmyfi.entity.Messagerefid;
@@ -14,7 +15,7 @@ public interface CtcDataSaveService {
 	public HidefVo getAllDatabyCBCId(HidefVo hidefvo);
 	public HidefVo viewAllDatabyCBCId(HidefVo hidefvo,String id);
 	public HidefVo saveUserprofileData(HidefVo hidefvo);
-	public HidefVo saveExcelFile(HidefVo hidef) throws IllegalStateException, IOException;
+	public HidefVo saveExcelFile(HidefVo hidef) throws IllegalStateException, IOException, ParseException;
 	public HidefVo saveCtcExcelData(HidefVo hidefVo);
 	
 	public HidefVo deleteSummaryGrid(HidefVo hidefvo,BigInteger hrdId);

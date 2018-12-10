@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -1719,7 +1720,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public HidefVo saveExcelFile(HidefVo hidef) throws IllegalStateException, IOException {
+	public HidefVo saveExcelFile(HidefVo hidef) throws IllegalStateException, IOException, ParseException {
 		// TODO Auto-generated method stub
 		HidefVo hidefVo = new HidefVo();
 		String excelWorkPath = fetchProperties("excelWorkPath");
@@ -1841,10 +1842,24 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								hidefVo.getMetadata().setContact(currentCell.getStringCellValue());
 							} else if (currentRow.getRowNum() == 16) {
 								if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
-									hidefVo.getMetadata()
-											.setReportingPeriod("" + Math.round(currentCell.getNumericCellValue()));
+																
+									String fromExcelPattern = "yyyy-MM-dd";
+									SimpleDateFormat sdf = new SimpleDateFormat(fromExcelPattern);
+									String date = sdf.format(currentCell.getDateCellValue());
+									
+									/*String pattern = "yyyy-MM-dd";	
+									SimpleDateFormat sdf_todb = new SimpleDateFormat(pattern);*/
+									hidefVo.getMetadata().setReportingPeriod(date);
+									
+									
 								} else if (currentCell.getCellTypeEnum() == CellType.STRING) {
-									hidefVo.getMetadata().setReportingPeriod(currentCell.getStringCellValue());
+									String fromExcelPattern = "MM/dd/yyyy";
+									SimpleDateFormat sdf = new SimpleDateFormat(fromExcelPattern);
+									Date date = sdf.parse(currentCell.getStringCellValue());
+									
+									String pattern = "yyyy-MM-dd";	
+									SimpleDateFormat sdf_todb = new SimpleDateFormat(pattern);
+									hidefVo.getMetadata().setReportingPeriod(sdf_todb.format(date));
 								}
 							} else if (currentRow.getRowNum() == 17) {
 								if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
