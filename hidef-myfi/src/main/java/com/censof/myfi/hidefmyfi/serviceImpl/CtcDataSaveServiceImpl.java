@@ -2285,6 +2285,12 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						
                         if(currentRow.getRowNum() != 2) {
                         	if(reports != null) {
+                        	if(reports.getConstituentEntity() != null && reports.getConstituentEntityList() != null) {
+                        		reports.getConstituentEntityList().add(reports.getConstituentEntity());
+                        	}else {
+                        		reports.setConstituentEntityList(new ArrayList<CbcConstituentEntityVO>());
+                        		reports.getConstituentEntityList().add(reports.getConstituentEntity());
+                        	}	
 							hidefVo.getListCBCReports().add(reports);
                         	}
 							reports = null;
@@ -2493,7 +2499,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 					//Consttituent Entity Excel
 					if(currentCell.getColumnIndex() == 24) {						
 						if(currentRow.getRowNum() != 2) {
-                        	if(reports != null && reports.getConstituentEntity() != null) {
+                        	if(reports != null && reports.getConstituentEntity() != null && reports.getConstituentEntity().getBizActivitiesList() != null && reports.getConstituentEntity().getBizActivitiesList().size() > 0) {
                         	if(reports.getConstituentEntityList() != null) {	
                         		reports.getConstituentEntityList().add(reports.getConstituentEntity());
                         	}else {
