@@ -4767,6 +4767,25 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 					accountholder.setCity(crspayldacctrep.getBirthCity());
 					accountholder.setCitySubEntity(crspayldacctrep.getBirthCitySubent());
 					accountholder.setCurrency(crspayldacctrep.getAccountCurrCode());
+					accountholder.setDocumentTypeIndic(crspayldacctrep.getDocTypeIndic());
+					accountholder.setCorMessageDocRefId(crspayldacctrep.getCorrDocRefId());
+					accountholder.setCorMessageRefId(crspayldacctrep.getCorrDocRefId());
+					accountholder.setCountryCode(crspayldacctrep.getBirthCountry());
+					accountholder.setCountryName(crspayldacctrep.getBirthFormerCountry());
+					accountholder.setCurrency(crspayldacctrep.getAccountCurrCode());
+					accountholder.setDocumentRefId(crspayldacctrep.getDocRefId());
+					accountholder.setId(crspayldacctrep.getId().intValue());
+					List<String> accountType = new ArrayList<String>();
+					if(crspayldacctrep.getDormantAccount() != null && crspayldacctrep.getDormantAccount().equals("Y")){
+						accountType.add("Dormant");
+					}if(crspayldacctrep.getClosedAccount() != null && crspayldacctrep.getClosedAccount().equals("Y")){
+						accountType.add("Closed");
+					}if(crspayldacctrep.getUndocumentedAccount() != null && crspayldacctrep.getUndocumentedAccount().equals("Y")){
+						accountType.add("Undocumented");
+					}
+					if(accountType != null && accountType.size() >0){
+						accountholder.setAccountNumberType(accountType);
+					}
 					
 					//Payment Details
 					List<Crspayldpymt> crspaymtList = crspayldpymtRepository.getAllCrspayldpymtByacctRepID(crspayldacctrep.getId());
