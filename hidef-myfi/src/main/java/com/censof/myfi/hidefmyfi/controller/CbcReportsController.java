@@ -944,8 +944,7 @@ public class CbcReportsController {
 	@ResponseBody
 	public String validateConstiituentEntityGrids(@ModelAttribute("hidef") HidefVo hidef, BindingResult result,
 			ModelMap model, Map<String, Object> map) {
-		String errorFlag = "false";
-		
+		String errorFlag = "false";		
 		CbcConstituentEntityVO constituentEntityVo = hidef.getCbcReports().getConstituentEntity();
 		
 		if(constituentEntityVo.getBizActivitiesList() == null || constituentEntityVo.getBizActivitiesList().isEmpty()) {
