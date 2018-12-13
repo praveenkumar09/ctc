@@ -141,12 +141,12 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 
 				}
 
-				if (hidef.getUserprofile().getCtsTransId() != null
+				/*if (hidef.getUserprofile().getCtsTransId() != null
 						&& !hidef.getUserprofile().getCtsTransId().isEmpty()) {
 					Element transmissionId = doc.createElement("OriginalCTSTransmissionId");
 					transmissionId.appendChild(doc.createTextNode(hidef.getUserprofile().getCtsTransId()));
 					rootElement.appendChild(transmissionId);
-				}
+				}*/
 
 				if (hidef.getUserprofile().getFileformatCode() != null
 						&& !hidef.getUserprofile().getFileformatCode().isEmpty()) {
