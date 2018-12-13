@@ -376,6 +376,18 @@ public class LoginController {
 		model.addAttribute("hidef", hidef);
 		return "success";
 	}
+	@GetMapping(value = "/admin/crs/editSummaryGrid")
+	@ResponseBody
+	public String editCRSSummaryGrid(@ModelAttribute("hidef") HidefVo hidef, @RequestParam String id, BindingResult result,
+			ModelMap model, Map<String, Object> map) throws JsonParseException, JsonMappingException, IOException {
+		HidefVo hidefVo = new HidefVo();
+		hidefVo.setMycbcId(hidef.getMycbcId());
+		hidef = ctcDataSaveService.viewAllDatabyCRSId(hidefVo, id);
+		hidef.setIsSummaryView("false");
+		model.addAttribute("hidef", hidef);
+		return "success";
+	}
+	
 	
 
 

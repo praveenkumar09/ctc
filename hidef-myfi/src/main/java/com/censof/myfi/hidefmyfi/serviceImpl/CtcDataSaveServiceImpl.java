@@ -32,10 +32,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
-import com.censof.myfi.hidefmyfi.controller.CbcAdditionalInfoController;
-import com.censof.myfi.hidefmyfi.controller.CbcMetadataController;
-import com.censof.myfi.hidefmyfi.controller.CbcReportingEntityController;
-import com.censof.myfi.hidefmyfi.controller.CbcReportsController;
 import com.censof.myfi.hidefmyfi.entity.CbcCurrency;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldaddinfo;
 import com.censof.myfi.hidefmyfi.entity.Cbcpayldaddress;
@@ -3874,7 +3870,6 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 		}
 		
 	*/}
-
 	@Override
 	public HidefVo savecrsData(HidefVo hidefVo) {
 		logger.info("<<<<<<<<<<<<<<CRS Saving part begin>>>>>>>>>>>>>>>>>");
@@ -4416,8 +4411,8 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							crsctrlperson.setAcctRepID(crspayldacct.getId());
 							crsctrlperson.setBirthCity(controlingPersonVo.getCity());
 							crsctrlperson.setBirthCitySubent(controlingPersonVo.getCitySubEntity());
-							crsctrlperson.setBirthCountry(controlingPersonVo.getCountryName());
-							crsctrlperson.setBirthFormerCountry(controlingPersonVo.getCountryCode());
+							crsctrlperson.setBirthCountry(controlingPersonVo.getCountryCode());
+							crsctrlperson.setBirthFormerCountry(controlingPersonVo.getCountryName());
 							crsctrlperson.setCreateDateTime(new Date());
 							crsctrlperson.setCtrlgPersonType(controlingPersonVo.getControllingPersonType());
 							crsctrlperson = crspayldctrlpersonRepository.saveAndFlush(crsctrlperson);
@@ -4426,7 +4421,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							
 							
 							//Controlling Person Address
-							if(controlingPersonVo.getControllingPersonAddressList() != null && accountHolderVo.getControllingPersonAddressList().size()  > 0){
+							if(controlingPersonVo.getControllingPersonAddressList() != null && controlingPersonVo.getControllingPersonAddressList().size()  > 0){
 							
 								logger.info("<<<<<<<<<<<Controlling Person Address[Crspayldaddress] Begin saving>>>>>>>>>>>>>>>");
 								for(AddressVo addressVo :controlingPersonVo.getControllingPersonAddressList()){

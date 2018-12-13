@@ -1,6 +1,9 @@
 $(document).ready(function() {
 	
-	
+	 	$.fn.datepicker.defaults.format = "yyyy-mm-dd";
+	    $.fn.datepicker.defaults.autoclose = true;
+	    var datepicker = $.fn.datepicker.noConflict(); // return $.fn.datepicker to previously assigned value
+	    $.fn.bootstrapDP = datepicker; 
 	
 });
 
