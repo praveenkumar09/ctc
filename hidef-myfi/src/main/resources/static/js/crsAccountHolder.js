@@ -9449,7 +9449,7 @@ function viewAccountHolderMain(item){
        success: function(data) {
            console
                .log("data ====>"+data);
-           ReportingFiNext(0,0,1);
+           viewAccountHolder(0,0,1);
        },
        error: function(
            request,
@@ -9468,7 +9468,7 @@ function doneViewAccounts(newForm,editForm,viewForm){
        type: 'GET',
        async: false,
        success: function(data) {
-    	   ReportingFiNext(1,0,0);       	
+    	   viewAccountHolder(1,0,0);       	
        },
        error: function(
            request,
@@ -9490,7 +9490,7 @@ function doneEditAccounts(){
 				console.log(data);
 				/*$("#cbcReportsGrid").jsGrid("insertItem", data).done(function() {
 					console.log("insertion completed");*/
-				ReportingFiNext(1,0,0);
+				viewAccountHolder(1,0,0);
 			},error : function(request, error) {
 				alert("Request: " + JSON.stringify(request));
 			}
@@ -9509,7 +9509,7 @@ function editAccountHolderMain(item){
        success: function(data) {
            console
                .log("data ====>"+data);
-           ReportingFiNext(0,1,0);
+           viewAccountHolder(0,1,0);
            return false;
        },
        error: function(

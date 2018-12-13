@@ -4756,7 +4756,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 				}
 				
 				
-				Crspayldacctrep crspayldacctrep = crspayldacctrepRepository.getAllCrspayldacctrepByBodyID(crsbody.getHdrID());
+				Crspayldacctrep crspayldacctrep = crspayldacctrepRepository.getAllCrspayldacctrepByBodyID(crsbody.getId());
 				
 				if(crspayldacctrep != null){
 					AccountHolderVo accountholder = new AccountHolderVo();
