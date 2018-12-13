@@ -9283,15 +9283,73 @@ function controllingPersonEditSaveAddress() {
 	});
 }
 
+function validateAccountholder(){
+	var errorFlag = false;
+	var sendingCountryId = $('#documentTypeIndicator').val();
+	if (sendingCountryId == '0') {
+		$("#documentTypeIndicatorError").empty().append("Document Type Indicator not empty!");
+		errorFlag = true;
+	} else {
+		$("#documentTypeIndicatorError").empty();
+	}
+	if ($("#documentReferenceId").val() == '') {
+		$("#documentReferenceIdError").empty()
+				.append("Document Reference Id not empty!");
+		errorFlag = true;
+	} else {
+		$("#documentReferenceIdError").empty();
+	}
+	if ($("#accountNumber").val() == '') {
+		$("#accountNumberError").empty()
+				.append("Account Number not empty!");
+		errorFlag = true;
+	} else {
+		$("#accountNumberError").empty();
+	}
+	var accountNumberType = $('#multi-select-account-type').val();
+	if (accountNumberType == null) {
+		$("#multi-select-account-typeError").empty().append("Account Number Type not empty!");
+		errorFlag = true;
+	} else {
+		$("#multi-select-account-typeError").empty();
+	}
+	var currency = $('#currencyV').val();
+	if (currency == '0') {
+		$("#currencyError").empty().append("Currency not empty!");
+		errorFlag = true;
+	} else {
+		$("#currencyError").empty();
+	}
+	if ($("#accoutBalance").val() == '') {
+		$("#accoutBalanceError").empty()
+				.append("Account Balance not empty!");
+		errorFlag = true;
+	} else {
+		$("#accoutBalanceError").empty();
+	}
+	var items = $("#accountHolderControlingPersonPaymentGrid").jsGrid("option", "data");
+	var arrayLength = items.length;
+	if(arrayLength == 0){
+		$("#paymentGridError").empty().append("Payment Details not empty!");
+		errorFlag = true;
+	}else{
+		$("#paymentGridError").empty();
+	}
+	
+	
+	
+	
+	return errorFlag;
+	
+	
+}
+
 
 function saveAccountHolderMain(){
 	
-/*	var errorFlag = false; 
-	errorFlag = validateCbcReports();
-	 $("#cbcReportsError").empty();
-	if(!errorFlag){*/
 	
-	
+	var errorFlag = validateAccountholder();
+	if(!errorFlag){
 	 var form_data = $('#crsaccountholder').serialize();
 		$.ajax({
 			url : 'crs/insertAcountHolderMain',
@@ -9308,7 +9366,7 @@ function saveAccountHolderMain(){
 				alert("Request: " + JSON.stringify(request));
 			}
 		});	
-/*	}*/
+	}
 }
 
 function viewAccountHolderMain(item){
