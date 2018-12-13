@@ -31,7 +31,7 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 			<div class="panel-body">
 				<br />
 				<div class="form-group col-md-6">
-					<label for="language">Document Type Indicator: </label><form:select
+					<label for="language">Document Type Indicator<font color='red'>*</font>: </label><form:select
 						class="form-control" id="documentTypeIndicator" path="accountholder.documentTypeIndic">
 						<option value="0">--Choose Document Type Indicator--</option>
 						<!-- <option value="1">OECD0</option>
@@ -49,40 +49,48 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 						</c:forEach>
 						
 					</form:select>
+					<font color='red'><span id="documentTypeIndicatorError"
+								class="mandatory-flag"></span></font>
 				</div>
 				<div class="form-group col-md-6">
-					<label for="accountNumber">Document Reference Id:</label> <form:input
-						class="form-control" id="accountNumber"
-						placeholder="Enter Account Number" name="accountNumber" path="accountholder.documentRefId"></form:input>
+					<label for="documentRefId">Document Reference Id<font color='red'>*</font>:</label> <form:input
+						class="form-control" id="documentRefId"
+						placeholder="Enter Account Number" name="documentRefId" path="accountholder.documentRefId"></form:input>
+						<font color='red'><span id="documentReferenceIdError"
+								class="mandatory-flag"></span></font>
 				</div>
 				<div class="form-group col-md-6">
 					<label for="accountNumber">Cor Message Reference Id:</label> <form:input
-						class="form-control" id="accountNumber"
+						class="form-control" id="cormessRefId"
 						placeholder="Enter Account Number" name="accountNumber" path="accountholder.corMessageRefId"></form:input>
 				</div>
 				<div class="form-group col-md-6">
 					<label for="accountNumber">Cor Document Reference Id:</label> <form:input
-						class="form-control" id="accountNumber"
+						class="form-control" id="corMessDocRefId"
 						placeholder="Enter Account Number" name="accountNumber" path="accountholder.corMessageDocRefId"></form:input>
 				</div>
 				<div class="form-group col-md-6">
-					<label for="accountNumber">Account Number:</label> <form:input
+					<label for="accountNumber">Account Number<font color='red'>*</font>:</label> <form:input
 						class="form-control" id="accountNumber"
 						placeholder="Enter Account Number" name="accountNumber" path="accountholder.accountNumber"></form:input>
+						<font color='red'><span id="accountNumberError"
+								class="mandatory-flag"></span></font>
 				</div>
 				<div class="form-group col-md-6">
-					<label for="sel1">Account Number Type:</label> <br />
+					<label for="sel1">Account Number Type<font color='red'>*</font>:</label> <br />
 				    <form:select id="multi-select-account-type" multiple="multiple" path="accountholder.accountNumberType">
 						<option value="Undocumented">Undocumented Account</option>
 						<option value="Closed">Closed Account</option>
 						<option value="Dormant">Dormant Account</option>
 					</form:select>
+					<font color='red'><span id="multi-select-account-typeError"
+								class="mandatory-flag"></span></font>
 
 				</div>
 				<div class="clearfix"></div>
 				<div class="form-group col-md-6">
-					<label for="language">Currency: </label><form:select
-						class="form-control" id="docTypeIndicatorReportingFI" path="accountholder.currency">
+					<label for="language">Currency<font color='red'>*</font>: </label><form:select
+						class="form-control" id="currencyV" path="accountholder.currency">
 						<option value="0">--Choose Currency--</option>
 						<!-- <option value="1">AED</option>
 						<option value="2">AFN</option>
@@ -95,11 +103,15 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 							</form:option>
 						</c:forEach>
 					</form:select>
+					<font color='red'><span id="currencyError"
+								class="mandatory-flag"></span></font>
 				</div>
 				<div class="form-group col-md-6">
-					<label for="accoutBalance">Account Balance:</label> <form:input
+					<label for="accoutBalance">Account Balance<font color='red'>*</font>:</label> <form:input
 						class="form-control" id="accoutBalance"
 						placeholder="Enter Account Balance" name="accoutBalance" path="accountholder.accountBalance"></form:input>
+						<font color='red'><span id="accoutBalanceError"
+								class="mandatory-flag"></span></font>
 				</div>
 				<div class="clearfix"></div>
 				<input type="hidden" id="paymentType" value='${paymentType}'/>
@@ -109,9 +121,13 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 					<div class="form-group">
 						<div class="form-group col-md-6">
 							<div id="accountHolderControlingPersonPaymentGrid"></div>
+							<font color='red'><span id="paymentGridError"
+							class="mandatory-flag"></span></font>
 							<div id="pager"></div>
 						</div>
+						
 					</div>
+				
 				</fieldset>
 				<div class="clearfix"></div>
 				<br />

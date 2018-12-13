@@ -16,7 +16,10 @@
 				<div class="form-group col-md-6">
 					<div id="reportingFINameGrid"></div>
 					<div id="pager"></div>
+					<font color='red'><span id="crsNameGridError" class="mandatory-flag"></span></font>
 				</div>
+				
+				
 				<div class="clearfix"></div>
 								<br /> <br />
 				<div class="form-group col-md-6">
@@ -36,12 +39,16 @@
 							</form:option>
 						</c:forEach>
 						</form:select>
+						<font color='red'><span id="docTypeIndicatorReportingFIError"
+								class="mandatory-flag"></span></font>
 				</div>
 
 				<div class="form-group col-md-6">
 					<label for="language">Doc Ref Id<font color='red'>*</font>:</label> <form:input
 						class="form-control" id="docRefId" placeholder="Doc Ref Id" path="crsreportingfi.docRefId"
 						name="language"></form:input>
+						<font color='red'><span id="docRefIdFIError"
+								class="mandatory-flag"></span></font>
 				</div>
 				<div class="form-group col-md-6">
 					<label for="language">Cor Message Ref Id:</label> <form:input
