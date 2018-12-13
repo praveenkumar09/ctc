@@ -313,6 +313,8 @@ public class UserProfileController {
 	@RequestMapping(value ="/admin/import/excel", method = RequestMethod.POST)
 	public String saveExcel(@ModelAttribute("hidef")HidefVo hidef,  HttpServletRequest request,	
 		      BindingResult result, ModelMap model,Map<String, Object> map) throws IllegalStateException, IOException, ParseException {
+		
+		try {
 		HidefVo newHidefVo = new HidefVo();
 		MultipartHttpServletRequest multipartRequest=(MultipartHttpServletRequest)request;
         Iterator<String> it=multipartRequest.getFileNames();
@@ -327,6 +329,12 @@ public class UserProfileController {
         newHidefVo = ctcDataSaveService.saveExcelFile(hidef);
         ctcDataSaveService.saveCtcExcelData(newHidefVo);
         model.addAttribute("hidef",hidef);
+		}catch(Exception e) {
+			e.printStackTrace();
+			map.put("messageType","CBC");
+			model.addAttribute("hidef",hidef);
+			return "excelTemplateError";
+		}
 		return "redirect:/admin/home";		
 	}
 	
