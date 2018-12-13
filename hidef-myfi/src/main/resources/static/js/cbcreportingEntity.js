@@ -118,6 +118,32 @@ function validateReportingEntity(){
 		$("#reportingRoleError").empty();
 	}
 	
+	var docTypeIndic = $("#reDocTypeIndic").val();
+	if(docTypeIndic == '0'){
+		$("#docTypeIndicReportingEntityError").empty().append("Document Type Indicator cannot be empty!");
+		errorFlag = true;
+	}else{
+		$("#docTypeIndicReportingEntityError").empty();
+	}
+	
+	var form_data = $('#reportingentity').serialize();
+	
+	$.ajax({
+		url : 'cbc/validateReportingEntityGrids',
+		type : 'GET',
+		data: form_data,
+		success : function(data) {
+			if(data == "true"){
+				 $("#reportingEntityGridError").empty().append("Organisation Name Grid cannot be empty!.");
+				 errorFlag = true;
+			}else{
+				$("#reportingEntityGridError").empty();
+			}
+		},error : function(request, error) {
+			alert("Request: " + JSON.stringify(request));
+		}
+	});
+	
 	
 	return errorFlag;
 }

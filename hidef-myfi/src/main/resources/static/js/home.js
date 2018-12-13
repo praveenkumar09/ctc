@@ -673,7 +673,7 @@ function viewReportingEntity() {
 														validate : "required"
 													},
 													{
-														title : "IN Type<font color='red'>*</font>",
+														title : "IN Type",
 														name : "inType",
 														type : "text",
 														width : 150
@@ -1421,7 +1421,7 @@ function showReportingEntity() {
 														validate : "required"
 													},
 													{
-														title : "IN Type<font color='red'>*</font>",
+														title : "IN Type",
 														name : "inType",
 														type : "text",
 														width : 150
@@ -2251,7 +2251,7 @@ function showCbcReportsPrevious(newForm, editForm, viewForm) {
 														validate : "required"
 													},
 													{
-														title : "IN Type<font color='red'>*</font>",
+														title : "IN Type",
 														name : "inType",
 														type : "text",
 														width : 150
@@ -2560,8 +2560,62 @@ function additionalInfoPrevious() {
 	}
 
 }
-
+function validateCrsMetadata(){
+	var errorFlag = false;
+	var sendingCountryId = $('#sendingCountry').val();
+	if (sendingCountryId == '0') {
+		$("#sendingCountryError").empty().append("Sending Country not empty!");
+		errorFlag = true;
+	} else {
+		$("#sendingCountryError").empty();
+	}
+	var sendingCountryId = $('#receivingCountry').val();
+	if (sendingCountryId == '0') {
+		$("#receivingCountryError").empty().append("Receiving Country not empty!");
+		errorFlag = true;
+	} else {
+		$("#receivingCountryError").empty();
+	}
+	if ($("#reportingPeriod").val() == '') {
+		$("#reportingPeriodError").empty()
+				.append("Reporting Period not empty!");
+		errorFlag = true;
+	} else {
+		$("#reportingPeriodError").empty();
+	}
+	var year = $('#taxYear').val();
+	if(year == null || year ==''){
+		$("#taxYearError").empty().append("Year not empty!");
+		errorFlag = true;
+	}else{
+		$("#taxYearError").empty();
+	}
+	if ($("#formCreationTimeStamp").val() == '') {
+		$("#formCreationTimeStampError").empty().append(
+				"File Creation Time Stamp not empty!");
+		errorFlag = true;
+	} else {
+		$("#formCreationTimeStampError").empty();
+	}
+	if ($("#senderFileId").val() == '') {
+		$("#senderFileIdError").empty().append("Sender File Id not empty!");
+		errorFlag = true;
+	} else {
+		$("#senderFileIdError").empty();
+	}
+	if ($("#messageRefId").val() == '') {
+		$("#messageRefIdError").empty().append("Sender File Id not empty!");
+		errorFlag = true;
+	} else {
+		$("#messageRefIdError").empty();
+	}
+	return errorFlag;
+	
+}
 function showReportingFI() {
+	
+	var errorFlag = validateCrsMetadata();
+	if(!errorFlag){
 	$("#metaData").hide();
 	$("#reportingFI").addClass("active");
 	$("#metadataBtn").removeClass("active");
@@ -2581,6 +2635,7 @@ function showReportingFI() {
 					alert("Request: " + JSON.stringify(request));
 				}
 			});
+	}
 }
 
 function accountHolderPrevious() {
@@ -3812,6 +3867,8 @@ function doenloadExcel() {
 	window.location.href = downloadUrl;
 }
 function ReportingFiPrevious() {
+	var errorFlag = validateReportingFi();
+	if(!errorFlag){
 	$("#userProfile").hide();
 	$("#reportingFI").removeClass("active");
 	$("#metadataBtn").addClass("active");
@@ -3820,7 +3877,7 @@ function ReportingFiPrevious() {
 	
 	$.ajax({
 
-		url : 'crs/reportingFiNextOrPrevious?previous1=previous',
+		url : 'crs/reportingFiNextOrPrevious?previous1=previous&newForm=3',
 		type : 'POST',
 		data : $('#crsreportingfi').serialize(),
 		success : function(data) {
@@ -3831,8 +3888,42 @@ function ReportingFiPrevious() {
 			alert("Request: " + JSON.stringify(request));
 		}
 	});
+	}
 }
+
+function validateReportingFi(){
+	
+	var items = $("#reportingFINameGrid").jsGrid("option", "data");
+	var arrayLength = items.length;
+	var errorFlag = false;
+	if(arrayLength == 0){
+		$("#crsNameGridError").empty().append("Organisation Grid not empty!");
+		errorFlag = true;
+	}else{
+		$("#crsNameGridError").empty();
+	}
+	var sendingCountryId = $('#docTypeIndicatorReportingFI').val();
+	if (sendingCountryId == '0') {
+		$("#docTypeIndicatorReportingFIError").empty().append("Document Indicator not empty!");
+		errorFlag = true;
+	} else {
+		$("#docTypeIndicatorReportingFIError").empty();
+	}
+	if ($("#docRefId").val() == '') {
+		$("#docRefIdFIError").empty()
+				.append("DocRefId not empty!");
+		errorFlag = true;
+	} else {
+		$("#docRefIdFIError").empty();
+	}
+	return errorFlag;
+	
+	
+}
+
 function ReportingFiNext(newForm, editForm, viewForm) {
+	var errorFlag = validateReportingFi();
+	if(!errorFlag){
 	$("#userProfile").hide();
 	$("#reportingFI").removeClass("active");
 	$("#metadataBtn").removeClass("active");
@@ -3892,6 +3983,7 @@ function ReportingFiNext(newForm, editForm, viewForm) {
 			alert("Request: " + JSON.stringify(request));
 		}
 	});
+	}
 }
 
 

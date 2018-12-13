@@ -539,6 +539,8 @@ function validateCbcConstituentEntity(form_data){
 			if(data == "true"){
 				 $("#issuedByError11").empty().append("Please fill up all the mandatory Grids!.");
 				 errorFlag = true;
+			}else{
+				$("#issuedByError11").empty();
 			}
 		},error : function(request, error) {
 			alert("Request: " + JSON.stringify(request));

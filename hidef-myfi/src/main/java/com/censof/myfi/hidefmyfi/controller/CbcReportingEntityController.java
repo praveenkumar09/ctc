@@ -761,6 +761,18 @@ public class CbcReportingEntityController {
 		return docRefId;
 	}
 	
+	@GetMapping(value ="/admin/cbc/validateReportingEntityGrids")
+	@ResponseBody
+	public String validateReportingEntityGrids(@ModelAttribute("hidef")HidefVo hidef, 
+		      BindingResult result, ModelMap model,HttpServletRequest request, HttpServletResponse response,Map<String, Object> map) throws JsonProcessingException {
+		String errorFlag = "False";
+		
+		if(hidef != null && hidef.getReportingEntity() != null && (hidef.getReportingEntity().getNameList() == null || hidef.getReportingEntity().getNameList().isEmpty() )) {
+			errorFlag = "true";
+		}		
+		return errorFlag;
+	}
+	
 	public String converToString(int i){
 		String convertedNum = "";
 	    if(String.valueOf(i).length() == 1){

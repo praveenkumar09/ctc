@@ -79,6 +79,7 @@
 								disabled="true"></form:input>
 						</div>
 					</div>
+					<div class="clearfix"></div>
 					<br />
 					<div class="form-group">
 						<div class="form-group col-md-6">
@@ -86,9 +87,8 @@
 							<form:textarea class="form-control" path="metadata.warning"
 								rows="5" id="warning" placeholder="Warning"></form:textarea>
 						</div>
-					</div>
-					<br />
-					<div class="form-group">
+					<!-- </div>
+					<div class="form-group"> -->
 						<div class="form-group col-md-6">
 							<form:label path="metadata.contact">Contact:</form:label>
 							<form:textarea class="form-control" path="metadata.contact"
@@ -96,6 +96,7 @@
 							<form:errors path="metadata.contact" cssClass="error" />
 						</div>
 					</div>
+					<div class="clearfix"></div>
 					<br />
 					<div class="form-group">
 						<div class="form-group col-md-6">
@@ -106,10 +107,10 @@
 									id="reportingPeriod" placeholder="Reporting Period"
 									path="metadata.reportingPeriod"></form:input>
 								<span class="input-group-addon"> <span
-									class="glyphicon glyphicon-calendar"></span>
-								</span> <font color='red'><span id="reportingPeriodError"
-									class="mandatory-flag"></span></font>
+									class="glyphicon glyphicon-calendar"></span></span>								
 							</div>
+							<font color='red'><span id="reportingPeriodError"
+									class="mandatory-flag"></span></font>
 						</div>
 						<div class="form-group col-md-6">
 							<form:label class="" path="metadata.taxYear">Tax Year<font
@@ -121,6 +122,8 @@
 									class="mandatory-flag"></span></font>
 						</div>
 					</div>
+					<div class="clearfix"></div>
+					<br/>
 					<div class="form-group">
 						<div class="form-group col-md-6">
 							<form:label class="" path="metadata.formCreationTimeStamp">File Creation Time Stamp<font
@@ -140,12 +143,15 @@
 								placeholder="Communication Type" disabled="true"></form:input>
 						</div>
 					</div>
+					<div class="clearfix"></div>
+					<br/>
 					<div class="form-group">
 						<div class="form-group col-md-6">
 							<form:label class="" path="metadata.senderFileId">Sender File Id<font
 									color='red'>*</font>:</form:label>
 							<form:input type="text" class="form-control" id="senderFileId"
 								path="metadata.senderFileId" placeholder="Sender File Id"
+								data-toggle="tooltip" title="Please key in Tax year for Sender File id to be auto generated"
 								readonly="true"></form:input>
 							<font color='red'><span id="senderFileIdError"
 								class="mandatory-flag"></span></font>
@@ -169,25 +175,9 @@
 							</form:select>
 						</div>
 					</div>
+					<div class="clearfix"></div>
+					<br/>
 					<div class="form-group">
-						<%-- <div class="form-group col-md-6">
-							<form:label for="" path="metadata.binaryEncoding">Binary Encoding:</form:label>
-							<form:select class="form-control" id="binaryEncoding"
-								path="metadata.binaryEncoding" disabled="true">
-								<form:option value="0">Please choose</form:option>
-									<form:option value="1">MY</form:option>
-							<form:option value="2">SG</form:option>
-							<form:option value="3">CN</form:option>
-							<form:option value="4">AU</form:option>
-							<form:option value="5">US</form:option>
-								<c:forEach items="${binaryencodingList}"
-									var="binaryencodingList">
-									<form:option value="${binaryencodingList.type}">
-								${binaryencodingList.type}
-							</form:option>
-								</c:forEach>
-							</form:select>
-						</div> --%>
 						<div class="form-group col-md-6">
 						<form:label path="metadata.binaryEncoding">Binary Encoding:</form:label>
 						<form:input type="text" class="form-control"
@@ -202,6 +192,8 @@
 								placeholder="Message Reference Id" disabled="true"></form:input>
 						</div>
 					</div>
+					<div class="clearfix"></div>
+					<br/>
 					<div class="form-group col-md-6">
 						<form:label class="" path="metadata.senderContactEmailAddress">Sender Contact Email Address:</form:label>
 						<form:input type="text" class="form-control"
@@ -215,7 +207,8 @@
 							placeholder="Sending Company IN" path="metadata.sendingCompanyIN"
 							readonly="true"></form:input>
 					</div>
-
+                    <div class="clearfix"></div>
+                    <br/>
 					<div class="form-group col-md-6">
 						<form:label class="" path="metadata.language">Language:</form:label>
 						<form:input type="text" maxlength="2" class="form-control"
@@ -273,8 +266,8 @@
 							</div>
 						</c:otherwise>
 					</c:choose>
-				</div>
+					</div>
 			</form:form>
+				</div>
 		</div>
 	</div>
-</div>

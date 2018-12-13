@@ -58,8 +58,8 @@
 				<br />
 				<div class="form-group">
 					<div class="form-group col-md-6">
-						<form:label path="reportingEntity.documentTypeIndicator">Document Type Indicator:</form:label>
-						 <form:select class="form-control" id="docTypeIndic" path="reportingEntity.documentTypeIndicator">
+						<form:label path="reportingEntity.documentTypeIndicator">Document Type Indicator<font color='red'>*</font>:</form:label>
+						 <form:select class="form-control" id="reDocTypeIndic" path="reportingEntity.documentTypeIndicator">
 							<form:option value="0">Please choose</form:option>
 							<c:forEach items="${documentTypeIndicator}" var="documenttypeindic">
 							<form:option value="${documenttypeindic.CBCDocumentType}">
@@ -67,6 +67,7 @@
 							</form:option>
 						</c:forEach>
 						</form:select>
+						<font color='red'><span id="docTypeIndicReportingEntityError" class="mandatory-flag"></span></font>
 					</div>
 					<div class="form-group col-md-6">
 						<form:label path="reportingEntity.documentReferenceId">Document Reference Id:</form:label> <form:input type="text" path="reportingEntity.documentReferenceId"
@@ -101,6 +102,7 @@
 				<div class="clearfix"></div>
 				<br /> <br />
 				<div class="form-group col-md-6">
+				<font color="red"><span id="reportingEntityGridError" class="mandatory-flag"></span></font><br/><br/>
 					<div id="reportingEntityNameGrid"></div>
 					<div id="pager"></div>
 				</div>
