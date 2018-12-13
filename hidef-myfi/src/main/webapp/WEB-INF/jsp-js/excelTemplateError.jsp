@@ -18,6 +18,7 @@
 	href="${pageContext.request.contextPath}/css/jsgrid.min.css" />
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/jsgrid-theme.min.css" />
+	
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/jsgrid.min.js"></script>
 <script type="text/javascript"
