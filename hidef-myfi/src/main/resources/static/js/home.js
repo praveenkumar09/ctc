@@ -2639,6 +2639,19 @@ function showReportingFI() {
 }
 
 function accountHolderPrevious() {
+	var errorFlag = false;
+	var accountHolderMain = $("#accountHolderGrid").jsGrid("option", "data");
+	var accountHolderMainarrayLength = accountHolderMain.length;
+	if(accountHolderMainarrayLength == 0){
+		$("#accountHolderGridError").empty().append("Account Holder Details not empty!");
+		errorFlag = true;
+	}else{
+		$("#accountHolderGridError").empty();
+	}
+
+	
+	if(!errorFlag){
+	
 	$("#metaData").hide();
 	$("#reportingFI").addClass("active");
 	$("#metadataBtn").removeClass("active");
@@ -2658,6 +2671,7 @@ function accountHolderPrevious() {
 					alert("Request: " + JSON.stringify(request));
 				}
 			});
+	}
 }
 
 //venki
