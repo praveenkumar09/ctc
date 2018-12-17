@@ -103,6 +103,7 @@ public class LoginController {
 		List<Messagetype>  messageTypes = ctccommonDropdownService.findAllMessageTypes();
 		map.put("messageType", messageTypes);
 		
+		
         model.addAttribute("user", new UserVo());
         return "registration";
     }

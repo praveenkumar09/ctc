@@ -551,4 +551,11 @@ function editCRSSummaryGrid(item){
    });
 
 }
+function doenloadcrsExcel() {
+	var downloadUrl = "crs/downloadTemplate";
+	window.location.href = downloadUrl;
+}
+function onClickCrsImportExcelCalled() {
+	$("#importCrsExcel").submit();
+}
 

@@ -38,7 +38,6 @@ import com.censof.myfi.hidefmyfi.entity.Cbcbinaryencodingschemecd;
 import com.censof.myfi.hidefmyfi.entity.Cbcfileformatcd;
 import com.censof.myfi.hidefmyfi.entity.Cbcfiletypeindic;
 import com.censof.myfi.hidefmyfi.entity.Ctscommunicationtypecd;
-import com.censof.myfi.hidefmyfi.entity.Docrefid;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
 import com.censof.myfi.hidefmyfi.entity.Messagerefid;
 import com.censof.myfi.hidefmyfi.service.CtcDataSaveService;

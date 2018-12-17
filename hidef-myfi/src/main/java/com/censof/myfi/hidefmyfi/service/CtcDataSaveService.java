@@ -30,5 +30,9 @@ public interface CtcDataSaveService {
 	public HidefVo getAllDatabyCRSId(HidefVo hidefvo);
 	public HidefVo viewAllDatabyCRSId(HidefVo hidefvo, String id);
 	
+	public HidefVo saveCrsExcelFile(HidefVo hidef) throws IllegalStateException, IOException, ParseException;
+	public HidefVo saveCrsCtcExcelData(HidefVo hidefVo);
+	
+	
 
 }

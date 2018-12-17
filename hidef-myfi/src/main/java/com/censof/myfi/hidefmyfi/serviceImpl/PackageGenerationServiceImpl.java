@@ -2326,4 +2326,189 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 		cell.setCellStyle(unlockedCellStyle);
 	}
 
+	@Override
+	public void crsWritetoExcelFile(HidefVo hidef, String excelLocation)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	       String excelWorkPath = fetchProperties("templateCrsWorkPath");
+			Path FROM = Paths.get(excelLocation);
+			Path TO = Paths.get(excelWorkPath);
+			CopyOption[] options = new CopyOption[]{
+					  StandardCopyOption.REPLACE_EXISTING,
+					  StandardCopyOption.COPY_ATTRIBUTES
+					}; 
+			Files.copy(FROM,TO,options);
+			File fileCopy = new File(excelWorkPath);
+			FileInputStream excelFile = new FileInputStream(fileCopy);
+			Workbook workbook = new XSSFWorkbook(excelFile);
+			
+			String sendingCountry = "";
+			String recieivingCountry = "";
+			String communicationType = "10";
+			String fileFormatCode = "";
+			String binaryEncodingSchemeCode = "2";
+			String senderContactEmailAddress = "";
+			String messageType = "2";
+	        String sendingCompanyIn = "";
+			
+			if(hidef != null && hidef.getUserprofile() != null) {
+			    	if(hidef.getUserprofile().getSendingcountry() != null) {
+			    		sendingCountry = ""+commonDropDownService.findCountryIdByCountryCode(hidef.getUserprofile().getSendingcountry()).getId();
+			    	}
+			    	
+			    	if(hidef.getUserprofile().getRecievingCountryList() != null) {
+			    		for(int i = 0; i < hidef.getUserprofile().getRecievingCountryList().size();i++) {
+			    			if(i == 0) {
+			    			recieivingCountry = ""+hidef.getUserprofile().getRecievingCountryList().get(i).getRecievingCountry();
+			    			}else {
+			    				recieivingCountry = recieivingCountry+","+hidef.getUserprofile().getRecievingCountryList().get(i).getRecievingCountry();
+			    			}
+			    		}
+			    	}
+			    	
+			    	if(hidef.getUserprofile().getFileformatCode() != null && !hidef.getUserprofile().getFileformatCode().isEmpty()) {
+			    		fileFormatCode = ""+commonDropDownService.findIdByFileFormatCode(hidef.getUserprofile().getFileformatCode()).getId();
+			    	}
+			    	
+			    	if(hidef.getUserprofile().getSendContactEmailAddress() != null && !hidef.getUserprofile().getSendContactEmailAddress().isEmpty()) {
+			    		senderContactEmailAddress = hidef.getUserprofile().getSendContactEmailAddress();
+			    	}
+			    	
+			    	if(hidef.getMycbcId() != null && !hidef.getMycbcId().isEmpty()) {
+			    		sendingCompanyIn = hidef.getMycbcId();
+			    	}
+			    	
+			}
+			
+			  CellStyle unlockedCellStyle = workbook.createCellStyle();
+		        unlockedCellStyle.setLocked(false);
+
+		        CellStyle lockedCellStyle = workbook.createCellStyle();
+		        lockedCellStyle.setLocked(true);
+			
+			
+			Sheet metaDataSheet = workbook.getSheetAt(0);
+			Iterator<Row> metaDatarowIterator = metaDataSheet.iterator();
+			while(metaDatarowIterator.hasNext()) {
+				Row metaDataRow = metaDatarowIterator.next();
+				if(metaDataRow.getRowNum() >= 2) {
+					Iterator<Cell> metaDataCellIterator = metaDataRow.iterator();
+					while(metaDataCellIterator.hasNext()) {
+						Cell metaDataCell = metaDataCellIterator.next();
+						if(metaDataCell.getColumnIndex() == 1) {
+							if(metaDataRow.getRowNum() == 2) {
+								metaDataCell.setCellValue(sendingCountry);
+								lockCell(metaDataCell,lockedCellStyle);
+							}else if(metaDataRow.getRowNum() == 3) {
+								metaDataCell.setCellValue(recieivingCountry);
+								lockCell(metaDataCell,lockedCellStyle);
+							}else if(metaDataRow.getRowNum() == 4) {
+								metaDataCell.setCellValue(communicationType);
+								lockCell(metaDataCell,lockedCellStyle);
+							}else if(metaDataRow.getRowNum() == 5) {
+								lockCell(metaDataCell,lockedCellStyle);
+							}else if(metaDataRow.getRowNum() == 6) {
+								metaDataCell.setCellValue(fileFormatCode);
+								lockCell(metaDataCell,lockedCellStyle);
+							}else if(metaDataRow.getRowNum() == 7) {
+								metaDataCell.setCellValue(binaryEncodingSchemeCode);
+								lockCell(metaDataCell,lockedCellStyle);
+							}else if(metaDataRow.getRowNum() == 8) {
+								lockCell(metaDataCell,lockedCellStyle);
+							}else if(metaDataRow.getRowNum() == 11) {
+								lockCell(metaDataCell,lockedCellStyle);
+							}else if(metaDataRow.getRowNum() == 12) {
+								metaDataCell.setCellValue(senderContactEmailAddress);
+								lockCell(metaDataCell,unlockedCellStyle);
+							}else if(metaDataRow.getRowNum() == 13) {
+								metaDataCell.setCellValue(messageType);
+								lockCell(metaDataCell,lockedCellStyle);
+							}else if(metaDataRow.getRowNum() == 17) {
+								metaDataCell.setCellValue(sendingCompanyIn);
+								lockCell(metaDataCell,lockedCellStyle);
+							}else if(metaDataRow.getRowNum() == 18) {
+								metaDataCell.setCellValue("EN");
+								lockCell(metaDataCell,unlockedCellStyle);
+							}else if(metaDataRow.getRowNum() == 20) {
+								lockCell(metaDataCell,lockedCellStyle);
+							}else {
+								metaDataCell.setCellStyle(unlockedCellStyle);
+							}
+						}
+					}
+				}
+			}
+	    		
+			metaDataSheet.protectSheet("password"); 	
+			
+			
+			Sheet reportingEntityWorkSheet = workbook.getSheetAt(1);
+			Iterator<Row> reRowIterator = reportingEntityWorkSheet.iterator();
+			while(reRowIterator.hasNext()) {
+				Row currentRow = reRowIterator.next();
+				if(currentRow.getRowNum() >= 2) {
+				Iterator<Cell> reCell = currentRow.iterator();
+				while(reCell.hasNext()) {
+					Cell cell = reCell.next();
+					if(cell.getColumnIndex()==5) {
+						lockCell(cell,lockedCellStyle);
+					}else {
+						cell.setCellStyle(unlockedCellStyle);
+					}
+				}
+				}
+			}
+			reportingEntityWorkSheet.protectSheet("password");
+			
+			
+			Sheet cbcReportsWorkSheet = workbook.getSheetAt(2);
+			Iterator<Row> reportsRowIterator = cbcReportsWorkSheet.iterator();
+			while(reportsRowIterator.hasNext()) {
+				Row currentRow = reportsRowIterator.next();
+				if(currentRow.getRowNum() >= 2) {
+				Iterator<Cell> reCell = currentRow.iterator();
+				while(reCell.hasNext()) {
+					Cell cell = reCell.next();
+					if(cell.getColumnIndex()==1) {
+						lockCell(cell,lockedCellStyle);
+					}else {
+						cell.setCellStyle(unlockedCellStyle);
+					}
+				}
+				}
+			}
+			cbcReportsWorkSheet.protectSheet("password");
+			
+			
+			Sheet addInfoWorkSheet = workbook.getSheetAt(3);
+			Iterator<Row> addInfoRowIterator = addInfoWorkSheet.iterator();
+			while(addInfoRowIterator.hasNext()) {
+				Row currentRow = addInfoRowIterator.next();
+				if(currentRow.getRowNum() >= 2) {
+				Iterator<Cell> reCell = currentRow.iterator();
+				while(reCell.hasNext()) {
+					Cell cell = reCell.next();
+					if(cell.getColumnIndex()==1) {
+						lockCell(cell,lockedCellStyle);
+					}else {
+						cell.setCellStyle(unlockedCellStyle);
+					}
+				}
+				}
+			}
+			addInfoWorkSheet.protectSheet("password");
+			
+			
+			
+			
+			 FileOutputStream fileOut = new FileOutputStream(excelWorkPath);
+		        workbook.write(fileOut);
+		        fileOut.close();
+			
+			workbook.close();
+			excelFile.close();
+		
+	}
+
 }
