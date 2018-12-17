@@ -41,6 +41,8 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.censof.myfi.hidef.packaging.FATCAPackager;
 import com.censof.myfi.hidefmyfi.configuration.UtilShared;
@@ -913,6 +915,11 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 
 				}
 			}
+			
+			NodeList childNodes = doc.getChildNodes();
+			for(int i=0; i < childNodes.getLength();i++) {
+				deleteNullNode(childNodes.item(i));
+			}
 
 			TransformerFactory tf = TransformerFactory.newInstance();
 			Transformer transformer = tf.newTransformer();
@@ -934,6 +941,22 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 
 		return personXMLStringValue;
 	}
+	
+	public void deleteNullNode(Node racine)
+    {
+        NodeList nl = racine.getChildNodes();
+        for (int i = 0; i < nl.getLength(); i++)
+        {
+            if (nl.item(i).getNodeType() == Node.TEXT_NODE && nl.item(i).getNodeValue() == null)
+            {
+                nl.item(i).getParentNode().removeChild(nl.item(i));
+            }
+            else
+            {
+                deleteNullNode(nl.item(i));
+            }
+        }
+    }
 
 	public String fetchProperties(String propertyName) {
 		Properties properties = new Properties();
