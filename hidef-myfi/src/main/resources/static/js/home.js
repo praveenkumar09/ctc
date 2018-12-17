@@ -2639,6 +2639,19 @@ function showReportingFI() {
 }
 
 function accountHolderPrevious() {
+	var errorFlag = false;
+	var accountHolderMain = $("#accountHolderGrid").jsGrid("option", "data");
+	var accountHolderMainarrayLength = accountHolderMain.length;
+	if(accountHolderMainarrayLength == 0){
+		$("#accountHolderGridError").empty().append("Account Holder Details not empty!");
+		errorFlag = true;
+	}else{
+		$("#accountHolderGridError").empty();
+	}
+
+	
+	if(!errorFlag){
+	
 	$("#metaData").hide();
 	$("#reportingFI").addClass("active");
 	$("#metadataBtn").removeClass("active");
@@ -2658,6 +2671,7 @@ function accountHolderPrevious() {
 					alert("Request: " + JSON.stringify(request));
 				}
 			});
+	}
 }
 
 //venki
@@ -3984,6 +3998,70 @@ function ReportingFiNext(newForm, editForm, viewForm) {
 		}
 	});
 	}
+}
+function viewAccountHolder(newForm, editForm, viewForm) {
+	/*var errorFlag = validateReportingFi();
+	if(!errorFlag){*/
+	$("#userProfile").hide();
+	$("#reportingFI").removeClass("active");
+	$("#metadataBtn").removeClass("active");
+	$("#accountHolder").addClass("active");
+	/*$("#config").removeClass("active");*/
+	$.ajax({
+
+		url : 'crs/reportingFiNextOrPrevious?next1=next&newForm='
+			+ newForm,
+		type : 'POST',
+		success : function(data) {
+			$("#metaData").show();
+			$("#metaData").html(data);
+			if (newForm == 1 && editForm == 0 && viewForm == 0) {
+				$("#viewAccountDone").hide();
+				$("#saveaccountholder").show();
+				$("#editAccountDone").hide();
+				$("#editCancelAccountDone").hide();
+				
+				$('#saveControllingPersonButton').show();
+		        $('#viewControllingDone').hide();
+		        $('#editviewControllingDoneDone').hide();
+		        $('#editCancelviewControllingDoneDone').hide();
+				/*$("#viewNextTab").hide();*/
+			} else if (newForm == 0 && editForm == 0
+					&& viewForm == 1) {
+				debugger;
+				$("#saveaccountholder").hide();
+				$("#viewAccountDone").show();
+				$("#editAccountDone").hide();
+				$("#editCancelAccountDone").hide();
+				$('#crsaccountholder *').prop('readOnly', true);
+				$('#crsaccountholder *').prop('disabled', true);
+				$("#viewAccountDone").prop('disabled', false);
+				/*$("#gridCbcReportsList").prop('disabled', false);
+				$("#viewNextTab").prop('disabled',false);*/
+			} else if (newForm == 0 && editForm == 1
+					&& viewForm == 0) {
+				$("#viewAccountDone").hide();
+				$("#saveaccountholder").hide();
+				$("#editAccountDone").show();
+				$("#editCancelAccountDone").show();
+				/*$("#viewNextTab").hide();*/
+			}else{
+				$("#viewAccountDone").hide();
+				$("#saveaccountholder").show();
+				$("#editAccountDone").hide();
+				$("#editCancelAccountDone").hide();
+				
+				$('#saveControllingPersonButton').show();
+		        $('#viewControllingDone').hide();
+		        $('#editviewControllingDoneDone').hide();
+		        $('#editCancelviewControllingDoneDone').hide();
+			}
+		},
+		error : function(request, error) {
+			alert("Request: " + JSON.stringify(request));
+		}
+	});
+	/*}*/
 }
 
 

@@ -9335,10 +9335,76 @@ function validateAccountholder(){
 	}else{
 		$("#paymentGridError").empty();
 	}
+	/*var radio1 = $("#defaultUnchecked1").val();
+	alert('@@@@@@@@@@'+radio1)
+	var radio2 = $("#defaultUnchecked2").val();
+	alert('@@@@@@@@@@'+radio2)*/
 	
+	var individual = document.getElementById("defaultUnchecked1").checked;
+	var organisation= document.getElementById("defaultUnchecked2").checked;
+	if(individual){
+		var reident = $("#accountHolderResidentCountryGrid").jsGrid("option", "data");
+		var reidentarrayLength = reident.length;
+		if(reidentarrayLength == 0){
+			$("#indresidentGridError").empty().append("Resident Country Code not empty!");
+			errorFlag = true;
+		}else{
+			$("#indresidentGridError").empty();
+		}
+		
+		var nameGrid = $("#accountHolderNameGrid").jsGrid("option", "data");
+		var nameGridarrayLength = nameGrid.length;
+		if(nameGridarrayLength == 0){
+			$("#accountHolderNameGridError").empty().append("Name and NameType not empty!");
+			errorFlag = true;
+		}else{
+			$("#accountHolderNameGridError").empty();
+		}
+		var addressGrid = $("#accountHolderAddressGrid").jsGrid("option", "data");
+		var addressGridarrayLength = addressGrid.length;
+		if(addressGridarrayLength == 0){
+			$("#accountHolderaddressGridError").empty().append("Address not empty!");
+			errorFlag = true;
+		}else{
+			$("#accountHolderaddressGridError").empty();
+		}
+		
+		
+		
+		
+		
+		
+		
+	}
+	if(organisation){
+		
+		var nameGrid = $("#accountHolderOrganisationNameTypeGrid").jsGrid("option", "data");
+		var nameGridarrayLength = nameGrid.length;
+		if(nameGridarrayLength == 0){
+			$("#accountHolderOrganisationNameTypeGridError").empty().append("Name and NameType not empty!");
+			errorFlag = true;
+		}else{
+			$("#accountHolderOrganisationNameTypeGridError").empty();
+		}
+		var addressGrid = $("#accountHolderOrganisationAddressGrid").jsGrid("option", "data");
+		var addressGridarrayLength = addressGrid.length;
+		if(addressGridarrayLength == 0){
+			$("#accountHolderOrganisationAddressGridError").empty().append("Address not empty!");
+			errorFlag = true;
+		}else{
+			$("#accountHolderOrganisationAddressGridError").empty();
+		}
+		var accountHolderType = $('#accountHoldertype1').val();
+		if (accountHolderType == '0') {
+			$("#accountHoldertypeError").empty().append("Account Holder Type not empty!");
+			errorFlag = true;
+		} else {
+			$("#accountHoldertypeError").empty();
+		}
+		
+	}
 	
-	
-	
+
 	return errorFlag;
 	
 	
@@ -9346,7 +9412,10 @@ function validateAccountholder(){
 
 
 function saveAccountHolderMain(){
-	
+
+	$("#accountHolderControlingPersonResidentCountryGridError").empty();
+	$("#accountHolderControllingPersonNameGridError").empty();
+	$("#accountHolderControllingPersonAddressGridError").empty();
 	
 	var errorFlag = validateAccountholder();
 	if(!errorFlag){
@@ -9380,7 +9449,7 @@ function viewAccountHolderMain(item){
        success: function(data) {
            console
                .log("data ====>"+data);
-           ReportingFiNext(0,0,1);
+           viewAccountHolder(0,0,1);
        },
        error: function(
            request,
@@ -9399,7 +9468,7 @@ function doneViewAccounts(newForm,editForm,viewForm){
        type: 'GET',
        async: false,
        success: function(data) {
-    	   ReportingFiNext(1,0,0);       	
+    	   viewAccountHolder(1,0,0);       	
        },
        error: function(
            request,
@@ -9410,11 +9479,8 @@ function doneViewAccounts(newForm,editForm,viewForm){
 }
 function doneEditAccounts(){
 	
-	/*var errorFlag = false; 
-	errorFlag = validateCbcReports();*/
-	
-	
-	/*if(!errorFlag){*/
+	var errorFlag = validateAccountholder();
+	if(!errorFlag){
 	 var form_data = $('#crsaccountholder').serialize();
 		$.ajax({
 			url : 'crs/saveEditedData',
@@ -9424,12 +9490,12 @@ function doneEditAccounts(){
 				console.log(data);
 				/*$("#cbcReportsGrid").jsGrid("insertItem", data).done(function() {
 					console.log("insertion completed");*/
-				ReportingFiNext(1,0,0);
+				viewAccountHolder(1,0,0);
 			},error : function(request, error) {
 				alert("Request: " + JSON.stringify(request));
 			}
 		});	
-	/*}*/
+	}
 } 
 
 function editAccountHolderMain(item){
@@ -9443,7 +9509,7 @@ function editAccountHolderMain(item){
        success: function(data) {
            console
                .log("data ====>"+data);
-           ReportingFiNext(0,1,0);
+           viewAccountHolder(0,1,0);
            return false;
        },
        error: function(
@@ -9486,13 +9552,70 @@ function proceedAccDelete(){
    });
 	}
 }
-
-function saveCtrlPersonMain(){
+function validateControllingPerson(){
 	
-	/*	var errorFlag = false; 
-		errorFlag = validateCbcReports();
-		 $("#cbcReportsError").empty();
-		if(!errorFlag){*/
+	/*var errorFlag = false;
+	var sendingCountryId = $('#documentTypeIndicator').val();
+	if (sendingCountryId == '0') {
+		$("#documentTypeIndicatorError").empty().append("Document Type Indicator not empty!");
+		errorFlag = true;
+	} else {
+		$("#documentTypeIndicatorError").empty();
+	}
+	if ($("#documentReferenceId").val() == '') {
+		$("#documentReferenceIdError").empty()
+				.append("Document Reference Id not empty!");
+		errorFlag = true;
+	} else {
+		$("#documentReferenceIdError").empty();
+	}*/
+	var errorFlag = false;
+	var resident = $("#accountHolderControlingPersonResidentCountryGrid").jsGrid("option", "data");
+	var residentarrayLength = resident.length;
+	if(residentarrayLength == 0){
+		$("#accountHolderControlingPersonResidentCountryGridError").empty().append("Resident Country not empty!");
+		errorFlag = true;
+	}else{
+		$("#accountHolderControlingPersonResidentCountryGridError").empty();
+	}
+	var name = $("#accountHolderControllingPersonNameGrid").jsGrid("option", "data");
+	var namearrayLength = name.length;
+	if(namearrayLength == 0){
+		$("#accountHolderControllingPersonNameGridError").empty().append("Name and NameType not empty!");
+		errorFlag = true;
+	}else{
+		$("#accountHolderControllingPersonNameGridError").empty();
+	}
+	
+	var name = $("#accountHolderControllingPersonAddressGrid").jsGrid("option", "data");
+	var namearrayLength = name.length;
+	if(namearrayLength == 0){
+		$("#accountHolderControllingPersonAddressGridError").empty().append("Address not empty!");
+		errorFlag = true;
+	}else{
+		$("#accountHolderControllingPersonAddressGridError").empty();
+	}
+	
+	return errorFlag;
+	
+}
+function saveCtrlPersonMain(){
+	$("#documentTypeIndicatorError").empty();
+	$("#documentReferenceIdError").empty();
+	$("#accountNumberError").empty();
+	$("#multi-select-account-typeError").empty();
+	$("#currencyError").empty();
+	$("#accoutBalanceError").empty();
+	$("#paymentGridError").empty();
+	$("#indresidentGridError").empty();
+	$("#accountHolderNameGridError").empty();
+	$("#accountHolderaddressGridError").empty();
+	$("#accountHolderOrganisationNameTypeGridError").empty();
+	$("#accountHolderOrganisationAddressGridError").empty();
+	$("#accountHoldertypeError").empty();
+		
+	var	errorFlag = validateControllingPerson();
+		if(!errorFlag){
 		 var form_data = $('#crsaccountholder').serialize();
 			$.ajax({
 				url : 'crs/insertCtrlPersonMain',
@@ -9500,7 +9623,7 @@ function saveCtrlPersonMain(){
 				data : form_data,
 				success : function(data) {
 					console.log(data);
-					$("#accountHolderGrid").jsGrid("insertItem", data).done(function() {
+					$("#accountHolderControllingPersonGrid").jsGrid("insertItem", data).done(function() {
 						console.log("insertion completed");
 						ReportingFiNext(0,0,0);
 					});
@@ -9508,7 +9631,8 @@ function saveCtrlPersonMain(){
 					alert("Request: " + JSON.stringify(request));
 				}
 			});	
-	/*	}*/
+		}
+	
 	}
 
 function controllingPersonEditSaveName() {
@@ -9682,6 +9806,16 @@ function editControllingPersonMain(id){
 
 function saveAllCRSData(){
 	/*alert('@@@@@@@@@@@@@@');*/
+	var errorFlag = false;
+	var accountHolderMain = $("#accountHolderGrid").jsGrid("option", "data");
+	var accountHolderMainarrayLength = accountHolderMain.length;
+	if(accountHolderMainarrayLength == 0){
+		$("#accountHolderGridError").empty().append("Account Holder Details not empty!");
+		errorFlag = true;
+	}else{
+		$("#accountHolderGridError").empty();
+	}
+	if(!errorFlag){
 	$
    .ajax({
 
@@ -9702,6 +9836,7 @@ function saveAllCRSData(){
            console.log(error);
        }
    });
+	}
 
 }
 
@@ -10546,7 +10681,8 @@ function doneViewControllingPerson(){
 }
 
 function doneEditSaveControllingPerson(){
-	
+	var	errorFlag = validateControllingPerson();
+	if(!errorFlag){
 	$
 	   .ajax({
 
@@ -10573,6 +10709,7 @@ function doneEditSaveControllingPerson(){
 	           console.log(error);
 	       }
 	   });	
+	}
 }
 
 function deleteControllingPersonMain(item){

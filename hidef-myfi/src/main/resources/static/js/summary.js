@@ -541,7 +541,7 @@ function editCRSSummaryGrid(item){
        success: function(data) {
            console
                .log("data ====>"+data);
-           newCBCOnClick();
+           newCRSOnClick();
        },
        error: function(
            request,

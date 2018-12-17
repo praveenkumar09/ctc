@@ -169,6 +169,8 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 						<br />
 						<div class="form-group col-md-6">
 							<div id="accountHolderControlingPersonResidentCountryGrid"></div>
+							<font color='red'><span id="accountHolderControlingPersonResidentCountryGridError"
+							class="mandatory-flag"></span></font>
 							<div id="pager"></div>
 						</div>
 						<div class="clearfix"></div>
@@ -181,12 +183,16 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 						<br />
 						<div class="form-group col-md-6">
 							<div id="accountHolderControllingPersonNameGrid"></div>
+								<font color='red'><span id="accountHolderControllingPersonNameGridError"
+							class="mandatory-flag"></span></font>
 							<div id="pager"></div>
 						</div>
 						<div class="clearfix"></div>
 						<br />
 						<div class="form-group col-md-6">
 							<div id="accountHolderControllingPersonAddressGrid"></div>
+							<font color='red'><span id="accountHolderControllingPersonAddressGridError"
+							class="mandatory-flag"></span></font>
 							<div id="pager"></div>
 						</div>
 						<div class="clearfix"></div>
@@ -294,6 +300,8 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 					<br />
 					<div class="form-group col-md-6">
 						<div id="accountHolderResidentCountryGrid"></div>
+						<font color='red'><span id="indresidentGridError"
+							class="mandatory-flag"></span></font>
 						<div id="pager"></div>
 					</div>
 					<div class="clearfix"></div>
@@ -306,12 +314,16 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 					<br />
 					<div class="form-group col-md-6">
 						<div id="accountHolderNameGrid"></div>
+						<font color='red'><span id="accountHolderNameGridError"
+							class="mandatory-flag"></span></font>
 						<div id="pager"></div>
 					</div>
 					<div class="clearfix"></div>
 					<br />
 					<div class="form-group col-md-6">
 						<div id="accountHolderAddressGrid"></div>
+						<font color='red'><span id="accountHolderaddressGridError"
+							class="mandatory-flag"></span></font>
 						<div id="pager"></div>
 					</div>
 					<div class="clearfix"></div>
@@ -368,8 +380,8 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 				<div id="Organization">
 					<br />
 					<div class="form-group col-md-6">
-						<label for="language">Account Holder Type: </label><form:select path="accountholder.individualaccountHolderType"
-							class="form-control" id="docTypeIndicatorReportingFI">
+						<label for="language">Account Holder Type<font color='red'>*</font>: </label><form:select path="accountholder.individualaccountHolderType"
+							class="form-control" id="accountHoldertype1">
 							<option value="0">--Choose Account Holder Type--</option>
 							<!-- <option value="1">CRS101</option>
 							<option value="2">CRS102</option>
@@ -380,6 +392,8 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 							</form:option>
 						</c:forEach>
 						</form:select>
+						<font color='red'><span id="accountHoldertypeError"
+							class="mandatory-flag"></span></font>
 					</div>
 					<div class="clearfix"></div>
 					<input type="hidden" id="nameTypedropdown" value='${nameTypeList}'/>
@@ -398,12 +412,16 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 					<br />
 					<div class="form-group col-md-6">
 						<div id="accountHolderOrganisationNameTypeGrid"></div>
+						<font color='red'><span id="accountHolderOrganisationNameTypeGridError"
+							class="mandatory-flag"></span></font>
 						<div id="pager"></div>
 					</div>
 					<div class="clearfix"></div>
 					<br />
 					<div class="form-group col-md-6">
 						<div id="accountHolderOrganisationAddressGrid"></div>
+						<font color='red'><span id="accountHolderOrganisationAddressGridError"
+							class="mandatory-flag"></span></font>
 						<div id="pager"></div>
 					</div>
 					<div class="clearfix"></div>
@@ -430,6 +448,8 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 				<div class="form-group col-md-6">
 					<label for="language">Account Holder Details: </label><br /> <br />
 					<div id="accountHolderGrid"></div>
+					<font color='red'><span id="accountHolderGridError"
+							class="mandatory-flag"></span></font>
 					<div id="pager"></div>
 				</div>
 				<div class="clearfix"></div>
@@ -443,7 +463,7 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 							class="btn btn-danger">Validate</button> -->
 						<!-- <button id="singlebutton" name="singlebutton" onClick="#"
 							class="btn btn-danger">Reset</button> -->
-						<button id="saveCRSDataButton" name="singlebutton" onClick="saveAllCRSData();"
+						<button id="saveCRSDataButton" name="singlebutton" onClick="saveAllCRSData();return false;"
 						class="btn btn-success">Save</button> <br/><br/>
 						<button id="singlebutton" name="singlebutton" onClick="#"
 							class="btn btn-success">Generate Package</button>
