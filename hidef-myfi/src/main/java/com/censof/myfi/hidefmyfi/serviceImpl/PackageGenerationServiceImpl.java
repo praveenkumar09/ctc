@@ -1319,7 +1319,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 						addressFree.appendChild(doc.createTextNode(address.getAddressFree()));
 						addressElement.appendChild(addressFree);
 
-						if (!address.getAddressType().equals("Address Free")) {
+						if (address.getAddressType() != null && !address.getAddressType().equals("Address Free")) {
 							Element addressFix = doc.createElement("crs:AddressFix");
 							addressElement.appendChild(addressFix);
 
@@ -1894,9 +1894,11 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 									Element orgResidentCountry = doc.createElement("crs:ResCountryCode");
 									Hicountry findCountryById = commonDropDownService.findCountryById(
 											BigInteger.valueOf(residentCountry.getResidentCountryCode()));
+									if(findCountryById != null){
 									orgResidentCountry
 											.appendChild(doc.createTextNode(findCountryById.getCountryCode()));
 									controllingPerson.appendChild(orgResidentCountry);
+									}
 								}
 							}
 
@@ -2508,6 +2510,58 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 			
 			workbook.close();
 			excelFile.close();
+		
+	}
+
+	@Override
+	public String generateCRSPackage(HidefVo hidef) throws Exception {
+		String privarecert = fetchProperties("privatecertpath");
+		String publiccertpath = fetchProperties("publiccertpath");
+		String metaDataPath = fetchProperties("metadataPath");
+		String payloadPath = fetchProperties("payloadPath");
+		String payloadxml = payloadPath + "/" + hidef.getPayloadFileName();
+		String metadataxml = metaDataPath + "/" + hidef.getMetaDataFileName();
+		String keystoretype = fetchProperties("confCertType");
+		String keystorefile = "";
+		keystorefile = hidef.getUserprofile().getConfigurationFileText();
+		String keystorepwd = fetchProperties("confCertKeyStorePwd");
+		String keypwd = fetchProperties("confCertKeyPwd");
+		String alias = fetchProperties("confCertAlias");
+		PrivateKey myPrivateKey = null;
+		X509Certificate myPublicCert = null;
+		X509Certificate receiverPublicCert = null;
+		String senderGiin = hidef.getMycbcId();
+		String receiverGiin =  hidef.getMycbcId();
+		int taxyear = 2017;
+		String targetFolderPath = fetchProperties("packageTargetFolder");
+		String publicCertPath = "";
+		publicCertPath = hidef.getUserprofile().getPublicCertFileName();
+		receiverPublicCert = (X509Certificate) CertificateFactory.getInstance("X.509")
+				.generateCertificate(new FileInputStream(publicCertPath));
+
+		myPrivateKey = UtilShared.getPrivateKeyOriginal(keystoretype.trim(), keystorefile.trim(), keystorepwd.trim(),
+				keypwd.trim(), alias.trim());
+		System.out.println("Private Key =======>" + myPrivateKey.getEncoded());
+		myPublicCert = UtilShared.getCert(keystoretype.trim(), keystorefile.trim(), keystorepwd.trim(), alias.trim());
+		System.out.println("myPublicCert =======>" + myPublicCert.getEncoded());
+		FATCAPackager fatcaPackager = new FATCAPackager();
+		String folderPath = fatcaPackager.signAndCreatePkgStreaming(payloadxml, myPrivateKey, myPublicCert, senderGiin,
+				receiverGiin, receiverPublicCert, taxyear, metadataxml, targetFolderPath);
+		if(folderPath != null){
+			File file = new File(folderPath);
+			if(file.isFile()){
+				String fileName = file.getName();
+				if(hidef.getPayldId() != null){
+					Cbcpayldhdr payldhdr = cbcpayldhdrRepository.getCbcDetailsById(hidef.getPayldId());
+					if(payldhdr != null){
+						System.out.println("Fallowing File name Updated:::>"+fileName+"in PayldID:::>"+payldhdr.getId());
+						payldhdr.setFilename(fileName);
+						cbcpayldhdrRepository.saveAndFlush(payldhdr);
+					}
+				}
+			}
+		}
+		return folderPath;
 		
 	}
 

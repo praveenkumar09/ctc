@@ -16,4 +16,9 @@ public interface CrspayldfiRepository extends JpaRepository<Crspayldfi, BigInteg
 	@Query(FIND_BY_BODY_ID)
 	public Crspayldfi getAllCrspayldfiByBodyID(@Param("bodyID") BigInteger bodyID);
 	
+	public static String FIND_BY_ID = "select e from Crspayldfi e where e.id=:id";
+	
+	@Query(FIND_BY_ID)
+	public Crspayldfi getAllCrspayldfiByID(@Param("id") BigInteger id);
+	
 }

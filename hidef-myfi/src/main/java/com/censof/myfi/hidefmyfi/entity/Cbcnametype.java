@@ -1,7 +1,10 @@
 package com.censof.myfi.hidefmyfi.entity;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+
 import javax.persistence.*;
+
 import java.util.Date;
 
 
@@ -15,7 +18,7 @@ public class Cbcnametype implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private String id;
+	private BigInteger id;
 
 	@Column(name="createby")
 	private String createBy;
@@ -37,16 +40,25 @@ public class Cbcnametype implements Serializable {
 	public Cbcnametype() {
 	}
 
-	public String getId() {
+	/*public String getId() {
 		return this.id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
-	}
+	}*/
+	
 
 	public String getCreateBy() {
 		return this.createBy;
+	}
+
+	public BigInteger getId() {
+		return id;
+	}
+
+	public void setId(BigInteger id) {
+		this.id = id;
 	}
 
 	public void setCreateBy(String createBy) {

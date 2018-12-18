@@ -16,5 +16,10 @@ public static String FIND_BY_BODY_ID = "select e from Crspayldacctrep e where e.
 	
 	@Query(FIND_BY_BODY_ID)
 	public Crspayldacctrep getAllCrspayldacctrepByBodyID(@Param("bodyID") BigInteger bodyID);
+	
+public static String FIND_BY_ID = "select e from Crspayldacctrep e where e.id=:id";
+	
+	@Query(FIND_BY_ID)
+	public Crspayldacctrep getAllCrspayldacctrepByID(@Param("id") BigInteger id);
 
 }

@@ -458,15 +458,26 @@ if('${hidef.accountholder.accountHolderType}' == 'organization,0' || '${hidef.ac
 					<div class="text-center">
 						<br />
 						<button id="singlebutton" name="singlebutton"
-							onClick="accountHolderPrevious();return false;" class="btn btn-warning">Previous</button>
-						<!-- <button id="singlebutton" name="singlebutton" onClick="#"
-							class="btn btn-danger">Validate</button> -->
+							onClick="accountHolderPrevious();return false;" class="btn btn-warning">Previous</button>	
+						 <button id="saveCRSDataButton" name="singlebutton" onClick="saveAllCRSData();return false;"
+							class="btn btn-success">Save</button> <br/><br/>
 						<!-- <button id="singlebutton" name="singlebutton" onClick="#"
 							class="btn btn-danger">Reset</button> -->
-						<button id="saveCRSDataButton" name="singlebutton" onClick="saveAllCRSData();return false;"
-						class="btn btn-success">Save</button> <br/><br/>
-						<button id="singlebutton" name="singlebutton" onClick="#"
-							class="btn btn-success">Generate Package</button>
+							<br/><br/>
+						<button id="generateCRSMetadata" name="singlebutton"
+							onClick="generateCRSMetaData();return false;" class="btn btn-primary">Generate
+							MetaData</button>
+							<button id="generateCRSPayload" name="singlebutton"
+							onClick="generateCRSPayload1();return false;" class="btn btn-primary">Generate
+							Payload</button>
+						<!-- <button id="generateCRSPayload" name="singlebutton"
+							onClick="generateCRSPayload();return false;" class="btn btn-primary">Generate
+							Payload</button> -->
+							<br/>
+							<br/>
+							<button id="generateCRSPackage" name="singlebutton"
+							onClick="generateCRSPackage();return false;" class="btn btn-primary">Generate
+							Package</button>
 					</div>
 				</div>
 

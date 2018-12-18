@@ -6,7 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -16,9 +20,12 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JsonParseException;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ResourceUtils;
@@ -79,6 +86,11 @@ public class CrsAccountHolderController {
 	@Autowired
 	private PackageGenerationService metaDataGenerationService;
 	
+	@Autowired
+	private PackageGenerationService packageGenerationService;
+	
+	protected SimpleDateFormat sdfFileName = new SimpleDateFormat("yyyyMMdd'T'HHmmssSSS'Z'");
+	
 	@ModelAttribute("hidef")
     public HidefVo getmetadata () {
         return new HidefVo(); 
@@ -127,7 +139,7 @@ public class CrsAccountHolderController {
 		List<CommonDropdownGridBean> nameTypegridBeans = new ArrayList<>();
 		for(Cbcnametype nameType:cbcnametype) {
 			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
-			gridBean.setId(new BigInteger(nameType.getId()));
+			gridBean.setId(nameType.getId());
 			gridBean.setName(nameType.getNameType());
 			nameTypegridBeans.add(gridBean);			
 
@@ -3186,7 +3198,94 @@ public class CrsAccountHolderController {
 	
 	
 	
-	
+	 @GetMapping(value = "/admin/crs/generateCRSMetaData", produces = MediaType.APPLICATION_XML_VALUE)
+		public ModelAndView generateCRSMetaData(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
+				Map<String, Object> map, HttpServletResponse response) throws IOException {
+
+			String metaDataContentInString = "";
+			response.setContentType("application/xml");
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String metaDataFileName = auth.getName()+"_"+hidef.getUserprofile().getCommunicationType()+"_Metadata.xml";
+			response.setHeader("Content-Disposition", "attachment;filename=\""+metaDataFileName+"\"");
+			metaDataContentInString = packageGenerationService.generateCRSXMLMetadata(hidef);
+			response.setContentLength(metaDataContentInString.length());
+			ServletOutputStream outStream = response.getOutputStream();
+			outStream.write(metaDataContentInString.getBytes());
+			//outStream.println(metaDataContentInString);
+			outStream.flush();
+			outStream.close();
+			response.flushBuffer();
+			
+			
+			//ctcDataSaveService.saveCtcData(hidef);
+			
+			
+			
+			//FileCopyUtils.copy(metaDataContentInString, response.getWriter());
+			return null;
+
+		}
+		
+		@GetMapping(value = "/admin/crs/generateCRSPayload", produces = MediaType.APPLICATION_XML_VALUE)
+		public ModelAndView generateCRSPayload(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
+				Map<String, Object> map, HttpServletResponse response) throws IOException {
+
+			String payloadContentInString = "";
+			response.setContentType("application/xml");
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String payloadFileName = auth.getName()+"_"+hidef.getUserprofile().getCommunicationType()+"_Payload.xml";
+			response.setHeader("Content-Disposition", "attachment;filename=\""+payloadFileName+"\"");
+			payloadContentInString = packageGenerationService.generateCRSXMLPayload(hidef);
+			response.setContentLength(payloadContentInString.length());
+			ServletOutputStream outStream = response.getOutputStream();
+			outStream.write(payloadContentInString.getBytes());
+			outStream.flush();
+			outStream.close();
+			response.flushBuffer();
+			
+			
+			//ctcDataSaveService.saveCtcData(hidef);
+			
+			
+			
+			//FileCopyUtils.copy(metaDataContentInString, response.getWriter());
+			return null;
+
+		}
+		
+		@GetMapping(value = "/admin/crs/generateCRSPackage", produces = MediaType.APPLICATION_XML_VALUE)
+		public ModelAndView generateCBCPackage(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
+				Map<String, Object> map, HttpServletResponse response) throws Exception {
+			//ctcDataSaveService.saveCtcData(hidef);		
+			String packageFolderPath = "";
+			response.setContentType("application/zip");
+			String packageFileName = hidef.getUserprofile().getSendingcountry()+"_"+hidef.getUserprofile().getCommunicationType()+"_"+sdfFileName.format(new Date(System.currentTimeMillis()))+".zip";
+			packageFolderPath = metaDataGenerationService.generateCRSPackage(hidef);
+			
+		     //Path sourcePath = sourceFile.toPath();
+		     Path sourcePath = Paths.get(packageFolderPath);
+		     response.setHeader("Content-Disposition", "attachment;filename=\""+sourcePath.getFileName()+"\"");
+		     /*ZipOutputStream outZip = new ZipOutputStream(response.getOutputStream(),StandardCharsets.UTF_8);
+
+		     outZip.putNextEntry(new ZipEntry(sourcePath.getFileName().toString()));
+		     Files.copy(sourcePath, outZip);
+		     outZip.closeEntry();
+		     outZip.finish();
+		     outZip.close();*/
+		     
+		     // download zip file code
+		     File zipFile = new File(packageFolderPath);
+		     InputStream ioStream = new FileInputStream(zipFile);
+		     IOUtils.copy(ioStream, response.getOutputStream());
+		     response.flushBuffer();
+		     
+		     ioStream.close();
+			
+			//FileCopyUtils.copy(metaDataContentInString, response.getWriter());
+			return null;
+
+		}
+		
 	
 	
 	

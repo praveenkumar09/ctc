@@ -126,7 +126,7 @@ public class CbcReportsController {
 		List<CommonDropdownGridBean> nameTypegridBeans = new ArrayList<>();
 		for (Cbcnametype nameType : cbcnametype) {
 			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
-			gridBean.setId(new BigInteger(nameType.getId()));
+			gridBean.setId(nameType.getId());
 			gridBean.setName(nameType.getNameType());
 			nameTypegridBeans.add(gridBean);
 
@@ -1202,7 +1202,7 @@ public class CbcReportsController {
 		List<CommonDropdownGridBean> nameTypegridBeans = new ArrayList<>();
 		for (Cbcnametype nameType : cbcnametype) {
 			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
-			gridBean.setId(new BigInteger(nameType.getId()));
+			gridBean.setId(nameType.getId());
 			gridBean.setName(nameType.getNameType());
 			nameTypegridBeans.add(gridBean);
 
@@ -1278,7 +1278,7 @@ public class CbcReportsController {
 		List<CommonDropdownGridBean> nameTypegridBeans = new ArrayList<>();
 		for (Cbcnametype nameType : cbcnametype) {
 			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
-			gridBean.setId(new BigInteger(nameType.getId()));
+			gridBean.setId(nameType.getId());
 			gridBean.setName(nameType.getNameType());
 			nameTypegridBeans.add(gridBean);
 
@@ -1346,7 +1346,7 @@ public class CbcReportsController {
 		List<CommonDropdownGridBean> nameTypegridBeans = new ArrayList<>();
 		for (Cbcnametype nameType : cbcnametype) {
 			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
-			gridBean.setId(new BigInteger(nameType.getId()));
+			gridBean.setId(nameType.getId());
 			gridBean.setName(nameType.getNameType());
 			nameTypegridBeans.add(gridBean);
 
@@ -1410,7 +1410,7 @@ public class CbcReportsController {
 		List<CommonDropdownGridBean> nameTypegridBeans = new ArrayList<>();
 		for (Cbcnametype nameType : cbcnametype) {
 			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
-			gridBean.setId(new BigInteger(nameType.getId()));
+			gridBean.setId(nameType.getId());
 			gridBean.setName(nameType.getNameType());
 			nameTypegridBeans.add(gridBean);
 

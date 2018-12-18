@@ -3945,9 +3945,15 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 		
 		if(crspayld != null){
 			logger.info("<<<<<<<<<<<Body[Crspayldbody] Begin saving>>>>>>>>>>>>>>>");
-			Crspayldbody crsbody = new Crspayldbody();
+			Crspayldbody crsbody = null;
+			if(metadata.getId() != null){
+				crsbody = crspayldbodyRepository.getAllCrsBodyDetailsByHrdid(metadata.getId());
+			}else{
+				crsbody = new Crspayldbody();
+			}
 			crsbody.setHdrID(crspayld.getId());
 			crsbody.setCreateDateTime(new Date());
+			
 			crsbody = crspayldbodyRepository.saveAndFlush(crsbody);
 			logger.info("<<<<<<<<<<<Body[Crspayldbody] End saving>>>>>>>>>>>>>>>"+crsbody.getId());
 			
@@ -3956,13 +3962,19 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 				if(hidefVo.getCrsreportingfi() != null){
 				logger.info("<<<<<<<<<<<ReportingFI[Crspayldfi] Begin saving>>>>>>>>>>>>>>>");
 				CrsReportingFiVo reportingFi = hidefVo.getCrsreportingfi();
-				Crspayldfi crspayldFi = new Crspayldfi();
+				Crspayldfi crspayldFi = null;
+				if(reportingFi.getId() != null){
+					crspayldFi = crspayldfiRepository.getAllCrspayldfiByID(reportingFi.getId());
+				}else{
+					crspayldFi = new Crspayldfi();
+				}
 				crspayldFi.setBodyID(crsbody.getId());
 				crspayldFi.setCorrDocRefId(reportingFi.getCorDocRefId());
 				crspayldFi.setCreateDateTime(new Date());
 				crspayldFi.setDocRefId(reportingFi.getDocRefId());
 				crspayldFi.setDocTypeIndic(reportingFi.getDocumentTypeIndic());
 				crspayldFi.setHdrID(crspayld.getId());
+				
 				crspayldFi = crspayldfiRepository.saveAndFlush(crspayldFi);
 				logger.info("<<<<<<<<<<<ReportingFI[Crspayldfi] End saving>>>>>>>>>>>>>>>"+crspayldFi.getId());
 				
@@ -4075,7 +4087,12 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 				List<AccountHolderVo> accountHolderList = 	hidefVo.getAccountHolderList();
 				for(AccountHolderVo accountHolderVo : accountHolderList){
 					
-					Crspayldacctrep crspayldacct = new Crspayldacctrep();
+					Crspayldacctrep crspayldacct =null;
+					if(accountHolderVo.getId() > 0){
+						crspayldacct = crspayldacctrepRepository.getAllCrspayldacctrepByID(BigInteger.valueOf(accountHolderVo.getId()));
+					}else{
+						crspayldacct = new Crspayldacctrep();
+					}
 					if(!StringUtils.isEmpty(accountHolderVo.getAccountBalance())){
 					crspayldacct.setAccountBalance(new BigDecimal(accountHolderVo.getAccountBalance()));
 					}
@@ -4807,6 +4824,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							paymentVo.setAmount(String.valueOf(crspaymt.getPaymentAmt()));
 							}
 							if(crspaymt.getCurrCode() != null){
+							
 							paymentVo.setCurrency(Integer.parseInt(crspaymt.getCurrCode()));
 							}
 							if(crspaymt.getPaymentType() != null){
@@ -5451,8 +5469,10 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 									if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
 										hidefVo.getCrsmetadata()
 												.setSendingCompanyIn("" + Math.round(currentCell.getNumericCellValue()));
+										hidefVo.setMycbcId("" + Math.round(currentCell.getNumericCellValue()));
 									} else if (currentCell.getCellTypeEnum() == CellType.STRING) {
 										hidefVo.getCrsmetadata().setSendingCompanyIn(currentCell.getStringCellValue());
+										hidefVo.setMycbcId(currentCell.getStringCellValue());
 									}
 								} 
 								/*else if (currentRow.getRowNum() == 18) {
@@ -5494,7 +5514,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 						NameVo nameVo = null;
 						ResidentCountryVo residentVo = null;
 						OrganisationInTypeVo orgINVo = null;
-						AddressVo addressVo = null;;
+						AddressVo addressVo = null;
 						Iterator<Cell> cellIterator = currentRow.iterator();
 
 						while (cellIterator.hasNext()) {
@@ -6952,6 +6972,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								}
 								}
 								
+								
 								if(individualResidentVo != null){
 								if(hidefVo.getAccountholder() != null && hidefVo.getAccountholder().getIndividualResidentCountryList() != null
 										&& !hidefVo.getAccountholder().getIndividualResidentCountryList().isEmpty()){
@@ -7027,6 +7048,23 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 							
 							}
 						}
+						if(hidefVo.getAccountholder().getControllingPersonVo() != null){
+							if(hidefVo.getAccountholder().getControllingPersonList() != null && !hidefVo.getAccountholder().getControllingPersonList().isEmpty()){
+								hidefVo.getAccountholder().getControllingPersonList().add(hidefVo.getAccountholder().getControllingPersonVo());
+							}else{
+								hidefVo.getAccountholder().setControllingPersonList(new ArrayList<ControllingPersonVo>());
+								hidefVo.getAccountholder().getControllingPersonList().add(hidefVo.getAccountholder().getControllingPersonVo());
+							}
+						}
+						
+						if(hidefVo.getAccountholder() != null){
+							if(hidefVo.getAccountHolderList() != null && !hidefVo.getAccountHolderList().isEmpty()){
+								hidefVo.getAccountHolderList().add(hidefVo.getAccountholder());
+							}else{
+								hidefVo.setAccountHolderList(new ArrayList<AccountHolderVo>());
+								hidefVo.getAccountHolderList().add(hidefVo.getAccountholder());
+							}
+						}
 				
 			
 		System.out.println("Metadata Object =====> " + hidefVo);
@@ -7045,7 +7083,7 @@ logger.info("<<<<<<<<<<<<<<CRS Saving part begin>>>>>>>>>>>>>>>>>");
 		crspayld.setBinaryEncodingSchemeCd(metadata.getBinaryEncoding());
 		}
 		if(!StringUtils.isEmpty(metadata.getCommunicationType())){
-		crspayld.setCommunicationTypeCd(metadata.getCommunicationType());
+		crspayld.setCommunicationTypeCd("CRS");
 		}
 		if(!StringUtils.isEmpty(metadata.getContact())){
 		crspayld.setContact(metadata.getContact());
@@ -7067,12 +7105,12 @@ logger.info("<<<<<<<<<<<<<<CRS Saving part begin>>>>>>>>>>>>>>>>>");
 		crspayld.setMessageRefId(metadata.getMessageReferenceId());
 		}
 		if(!StringUtils.isEmpty(metadata.getMessageType())){
-		crspayld.setMessageType(metadata.getMessageType());
+		crspayld.setMessageType("CRS");
 		}
 		
 		crspayld.setMsgTimestamp(new Date());
 		if(!StringUtils.isEmpty(metadata.getReceivingCountry())){
-		crspayld.setReceiverCountryCd(metadata.getReceivingCountry());
+		crspayld.setReceiverCountryCd(findCountryCodeConvertStringToBigInt(metadata.getReceivingCountry()));
 		}
 		if(!StringUtils.isEmpty(metadata.getReportingPeriod())){
 		crspayld.setReportingPeriod(metadata.getReportingPeriod());
@@ -7081,7 +7119,7 @@ logger.info("<<<<<<<<<<<<<<CRS Saving part begin>>>>>>>>>>>>>>>>>");
 		crspayld.setSenderContactEmailAddressTxt(metadata.getSenderContactEmail());
 		}
 		if(!StringUtils.isEmpty(metadata.getSendingCountry())){
-		crspayld.setSenderCountryCd(metadata.getSendingCountry());
+		crspayld.setSenderCountryCd(findCountryCodeConvertStringToBigInt(metadata.getSendingCountry()));
 		}
 		if(!StringUtils.isEmpty(metadata.getSenderFileId())){
 		crspayld.setSenderFileId(metadata.getSenderFileId());
@@ -7095,6 +7133,9 @@ logger.info("<<<<<<<<<<<<<<CRS Saving part begin>>>>>>>>>>>>>>>>>");
 		if(!StringUtils.isEmpty(metadata.getWarning())){
 		crspayld.setWarning(metadata.getWarning());
 		}
+		if(!StringUtils.isEmpty(metadata.getMessageTypeIndic())){
+			crspayld.setMessageTypeIndic(metadata.getMessageTypeIndic());
+			}
 		crspayld = crspayldhdrRepository.saveAndFlush(crspayld);
 		logger.info("<<<<<<<<<<<Metadata[Crspayldhdr] End saving>>>>>>>>>>>>>>>"+crspayld.getId());
 		
@@ -7188,7 +7229,7 @@ logger.info("<<<<<<<<<<<<<<CRS Saving part begin>>>>>>>>>>>>>>>>>");
 						address.setCity(addressVo.getCity());
 						}
 						if(!StringUtils.isEmpty(addressVo.getCountryCode())){
-						address.setCountryCode(addressVo.getCountryCode());
+						address.setCountryCode(findCountryCodeConvertStringToBigInt(addressVo.getCountryCode()));
 						}
 						if(!StringUtils.isEmpty(addressVo.getCountrySubentity())){
 						address.setCountrySubentity(addressVo.getCountrySubentity());
