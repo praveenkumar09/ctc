@@ -142,6 +142,14 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 					rootElement.appendChild(communicationType);
 
 				}
+				
+				if (hidef.getMetadata() != null) {
+					if (hidef.getMetadata().getSenderFileId() != null && !hidef.getMetadata().getSenderFileId().isEmpty()) {
+						Element senderFileId = doc.createElement("SenderFileId");
+						senderFileId.appendChild(doc.createTextNode(hidef.getMetadata().getSenderFileId()));
+						rootElement.appendChild(senderFileId);
+					}
+				}
 
 				/*if (hidef.getUserprofile().getCtsTransId() != null
 						&& !hidef.getUserprofile().getCtsTransId().isEmpty()) {
@@ -163,7 +171,35 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 					binaryEncoding.appendChild(doc.createTextNode("NONE"));
 					rootElement.appendChild(binaryEncoding);
 				}
+				
+				if (hidef.getMetadata().getFormCreationTimeStamp() != null
+						&& !hidef.getMetadata().getFormCreationTimeStamp().isEmpty()) {
+					Element fileCreationTS = doc.createElement("FileCreateTs");
+					fileCreationTS.appendChild(doc.createTextNode(hidef.getMetadata().getFormCreationTimeStamp()));
+					rootElement.appendChild(fileCreationTS);
+				}
+				
+				if (hidef.getMetadata().getTaxYear() != null && !hidef.getMetadata().getTaxYear().isEmpty()) {
+					Element taxYear = doc.createElement("TaxYear");
+					taxYear.appendChild(doc.createTextNode(hidef.getMetadata().getTaxYear()));
+					rootElement.appendChild(taxYear);
+				}
 
+				if (hidef.getUserprofile().getFileTypeIndic() != null
+						&& !hidef.getUserprofile().getFileTypeIndic().isEmpty()) {
+					Element fileTypeIndic = doc.createElement("FileRevisionInd");
+					//fileTypeIndic.appendChild(doc.createTextNode(hidef.getUserprofile().getFileTypeIndic()));
+					if(hidef.getUserprofile().getFileTypeIndic().equals("0")){
+					fileTypeIndic.appendChild(doc.createTextNode("false"));
+					}else if(hidef.getUserprofile().getFileTypeIndic().equals("1")){
+						fileTypeIndic.appendChild(doc.createTextNode("true"));
+					}
+					else{
+						fileTypeIndic.appendChild(doc.createTextNode(hidef.getUserprofile().getFileTypeIndic()));
+					}
+					rootElement.appendChild(fileTypeIndic);
+				}
+				
 				if (hidef.getUserprofile().getSendContactEmailAddress() != null
 						&& !hidef.getUserprofile().getSendContactEmailAddress().isEmpty()) {
 					Element senderContactEmailAddress = doc.createElement("SenderContactEmailAddressTxt");
@@ -172,41 +208,10 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 					rootElement.appendChild(senderContactEmailAddress);
 				}
 
-				if (hidef.getUserprofile().getFileTypeIndic() != null
-						&& !hidef.getUserprofile().getFileTypeIndic().isEmpty()) {
-					Element fileTypeIndic = doc.createElement("FileRevisionInd");
-				/*	if(hidef.getUserprofile().getFileTypeIndic().equals("1")){*/
-					fileTypeIndic.appendChild(doc.createTextNode(hidef.getUserprofile().getFileTypeIndic()));
-					/*}else if(hidef.getUserprofile().getFileTypeIndic().equals("2")){
-						fileTypeIndic.appendChild(doc.createTextNode(hidef.getUserprofile().getFileTypeIndic()));
-					}
-					else{
-						fileTypeIndic.appendChild(doc.createTextNode(""));
-					}*/
-					rootElement.appendChild(fileTypeIndic);
-				}
 
-			}
+				
 
-			if (hidef.getMetadata() != null) {
-				if (hidef.getMetadata().getSenderFileId() != null && !hidef.getMetadata().getSenderFileId().isEmpty()) {
-					Element senderFileId = doc.createElement("SenderFileId");
-					senderFileId.appendChild(doc.createTextNode(hidef.getMetadata().getSenderFileId()));
-					rootElement.appendChild(senderFileId);
-				}
-
-				if (hidef.getMetadata().getFormCreationTimeStamp() != null
-						&& !hidef.getMetadata().getFormCreationTimeStamp().isEmpty()) {
-					Element fileCreationTS = doc.createElement("FileCreateTs");
-					fileCreationTS.appendChild(doc.createTextNode(hidef.getMetadata().getFormCreationTimeStamp()));
-					rootElement.appendChild(fileCreationTS);
-				}
-
-				if (hidef.getMetadata().getTaxYear() != null && !hidef.getMetadata().getTaxYear().isEmpty()) {
-					Element taxYear = doc.createElement("TaxYear");
-					taxYear.appendChild(doc.createTextNode(hidef.getMetadata().getTaxYear()));
-					rootElement.appendChild(taxYear);
-				}
+				
 			}
 			// Transform Document to XML String
 			TransformerFactory tf = TransformerFactory.newInstance();
@@ -252,7 +257,8 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 			rootElement.setAttribute("xmlns:iso", "urn:oecd:ties:isocbctypes:v1");
 			rootElement.setAttribute("xmlns:stf", "urn:oecd:ties:stf:v4");
 			rootElement.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-			rootElement.setAttribute("xsi:schemaLocation", "urn:oecd:ties:cbc:v1 CbcXML_v1.0.1.xsd");
+			rootElement.setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
+			//rootElement.setAttribute("xsi:schemaLocation", "urn:oecd:ties:cbc:v1 CbcXML_v1.0.1.xsd");
 			doc.appendChild(rootElement);
 
 			if (hidef.getMetadata() != null) {
@@ -311,7 +317,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 
 				if (hidef.getMetadata().getMessageRefId() != null && !hidef.getMetadata().getMessageRefId().isEmpty()) {
 					Element messageRefId = doc.createElement("cbc:MessageRefId");
-					messageRefId.appendChild(doc.createTextNode(hidef.getMetadata().getMessageRefId()));
+					messageRefId.appendChild(doc.createTextNode(hidef.getMetadata().getMessageRefId().replace("CBC_","")));
 					messageSpec.appendChild(messageRefId);
 				}
 
@@ -364,7 +370,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 				if (hidef.getReportingEntity().getTin() != null && !hidef.getReportingEntity().getTin().isEmpty()) {
 					Element tin = doc.createElement("cbc:TIN");
 					if(!StringUtils.isEmpty(hidef.getReportingEntity().getTinIssuedBy())){
-					tin.setAttribute("TINType", hidef.getReportingEntity().getTinIssuedBy());
+					//tin.setAttribute("TINType", hidef.getReportingEntity().getTinIssuedBy());
 					}
 					if(!StringUtils.isEmpty(hidef.getReportingEntity().getTinType())){
 					tin.setAttribute("issuedBy", hidef.getReportingEntity().getTinType());
@@ -413,12 +419,13 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 						Element addressCountryCode = doc.createElement("cbc:CountryCode");
 						addressCountryCode.appendChild(doc.createTextNode(address.getCountryCode()));
 						addressElement.appendChild(addressCountryCode);
-
+                        
+						if(address.getAddressFree() != null && !address.getAddressFree().isEmpty()) {
 						Element addressFree = doc.createElement("cbc:AddressFree");
 						addressFree.appendChild(doc.createTextNode(address.getAddressFree()));
 						addressElement.appendChild(addressFree);
 
-						if (!address.getAddressType().equals("Address Free")) {
+						if (!(address.getAddressType().equals("Address Free") || address.getAddressType().equals("10"))) {
 							Element addressFix = doc.createElement("cbc:AddressFix");
 							addressElement.appendChild(addressFix);
 
@@ -477,6 +484,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 							}
 
 						}
+						}
 					}
 				}
 
@@ -523,9 +531,11 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 			}
 
 			if (hidef.getListCBCReports() != null && !hidef.getListCBCReports().isEmpty()) {
-				Element cbcReportsElement = doc.createElement("cbc:CbcReports");
-				cbcBodyElement.appendChild(cbcReportsElement);
+				
 				for (CBCRepotsVo reports : hidef.getListCBCReports()) {
+					
+					Element cbcReportsElement = doc.createElement("cbc:CbcReports");
+					cbcBodyElement.appendChild(cbcReportsElement);
 
 					Element docSpecRE = doc.createElement("cbc:DocSpec");
 					cbcReportsElement.appendChild(docSpecRE);
@@ -691,9 +701,10 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 					}
 
 					if(reports.getConstituentEntityList() != null && !reports.getConstituentEntityList().isEmpty()) {
+						
+					for(CbcConstituentEntityVO consEntity :reports.getConstituentEntityList()) {
 						Element reportsConstEntities = doc.createElement("cbc:ConstEntities");
 						cbcReportsElement.appendChild(reportsConstEntities);
-					for(CbcConstituentEntityVO consEntity :reports.getConstituentEntityList()) {
 					Element reportsConstEntity = doc.createElement("cbc:ConstEntity");
 					reportsConstEntities.appendChild(reportsConstEntity);
 
@@ -710,7 +721,7 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 					if (consEntity.getTin() != null && !consEntity.getTin().isEmpty()) {
 						Element reportsTIN = doc.createElement("cbc:TIN");
 						if(consEntity.getTinType() != null && !consEntity.getTinType().isEmpty()) {
-						reportsTIN.setAttribute("TINType", consEntity.getTinType());
+						//reportsTIN.setAttribute("TINType", consEntity.getTinType());
 						}
 						if(consEntity.getIssuedBy() != null && !consEntity.getIssuedBy().isEmpty()) {
 						reportsTIN.setAttribute("issuedBy", consEntity.getIssuedBy());
@@ -756,12 +767,14 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 							Element addressCountryCode = doc.createElement("cbc:CountryCode");
 							addressCountryCode.appendChild(doc.createTextNode(address.getCountryCode()));
 							addressElement.appendChild(addressCountryCode);
-
+							
+							
+                            if(address.getAddressFree() != null && !address.getAddressFree().isEmpty()) {
 							Element addressFree = doc.createElement("cbc:AddressFree");
 							addressFree.appendChild(doc.createTextNode(address.getAddressFree()));
 							addressElement.appendChild(addressFree);
 
-							if (!address.getAddressType().equals("Address Free")) {
+							if (!(address.getAddressType().equals("Address Free") || address.getAddressType().equals("10"))) {
 								Element addressFix = doc.createElement("cbc:AddressFix");
 								addressElement.appendChild(addressFix);
 
@@ -821,13 +834,14 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 								}
 
 							}
+                            }
 						}
 					}
 					
 					if (consEntity.getIncorpCountryCode() != null && !consEntity.getIncorpCountryCode().isEmpty()) {
 						Element reportsIncorpCountryCode = doc.createElement("cbc:IncorpCountryCode");
 						reportsIncorpCountryCode.appendChild(doc.createTextNode(consEntity.getIncorpCountryCode()));
-						reportsConstEntity.appendChild(reportsIncorpCountryCode);
+						reportsConstEntities.appendChild(reportsIncorpCountryCode);
 					}
 
 					if (consEntity.getBizActivitiesList() != null && !consEntity.getBizActivitiesList().isEmpty()) {
@@ -836,14 +850,14 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 							Cbcbizactivitiesreference bizActivitiesById = commonDropDownService
 									.findBizActivitiesById(bizActivitiesVO.getBizType());
 							bizActivities.appendChild(doc.createTextNode(bizActivitiesById.getBizType()));
-							reportsConstEntity.appendChild(bizActivities);
+							reportsConstEntities.appendChild(bizActivities);
 						}
 					}
 
 					if (consEntity.getOtherEntityInfo() != null && !consEntity.getOtherEntityInfo().isEmpty()) {
 						Element reportsOtherEntityInfo = doc.createElement("cbc:OtherEntityInfo");
 						reportsOtherEntityInfo.appendChild(doc.createTextNode(consEntity.getOtherEntityInfo()));
-						reportsConstEntity.appendChild(reportsOtherEntityInfo);
+						reportsConstEntities.appendChild(reportsOtherEntityInfo);
 					}
 
 					
@@ -851,15 +865,14 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 					
 					
 					}
-
 				}
 			}
 
 			if (hidef.getAddInfoList() != null && !hidef.getAddInfoList().isEmpty()) {
-				Element cbcAddInfoElement = doc.createElement("cbc:AdditionalInfo");
-				cbcBodyElement.appendChild(cbcAddInfoElement);
+				
 				for (CbcAdditionalInfo addInfo : hidef.getAddInfoList()) {
-
+					Element cbcAddInfoElement = doc.createElement("cbc:AdditionalInfo");
+					cbcBodyElement.appendChild(cbcAddInfoElement);
 					Element docSpecRE = doc.createElement("cbc:DocSpec");
 					cbcAddInfoElement.appendChild(docSpecRE);
 
