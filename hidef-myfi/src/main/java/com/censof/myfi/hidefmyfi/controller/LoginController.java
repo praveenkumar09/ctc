@@ -126,8 +126,8 @@ public class LoginController {
 	    try {
 	    	String url = fetchProperties("emailPath");
 	    	String content = url+token;
-			sendmail(userVo.getEmail(), content);
-		} catch (MessagingException | IOException e) {
+			sendNewmail(userVo.getEmail(), content,userVo.getMyCBCId());
+		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -138,6 +138,8 @@ public class LoginController {
 	    return "registrationEmail";
 	}
 	
+	
+
 	@RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
 	public String regitrationConfirm(@RequestParam String token, HttpServletRequest request) {
 		
@@ -302,6 +304,41 @@ public class LoginController {
 		model.addAttribute("hidef", hidef);
 		return "success";
 	}
+	
+	private void sendNewmail(String username, String content, String myCBCId) throws AddressException, MessagingException {
+		   Properties props = new Properties();
+		   props.put("mail.smtp.auth", "true");
+		   props.put("mail.smtp.starttls.enable", "true");
+		   props.put("mail.smtp.host", "smtp.gmail.com");
+		   props.put("mail.smtp.port", "587");
+		   props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+		   
+		   Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+		      protected PasswordAuthentication getPasswordAuthentication() {
+		         return new PasswordAuthentication("hidefcensof@gmail.com", "hidef@123");
+		      }
+		   });
+		   Message msg = new MimeMessage(session);
+		   msg.setFrom(new InternetAddress("hidefcensof@gmail.com", false));
+
+		  
+		   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(username));
+		   msg.setSubject("New Registration Request Notification for - "+myCBCId);
+		   msg.setContent(content, "text/html");
+		   msg.setSentDate(new Date());
+
+		 /*  MimeBodyPart messageBodyPart = new MimeBodyPart();
+		   messageBodyPart.setContent("Tutorials point email", "text/html");
+
+		   Multipart multipart = new MimeMultipart();
+		   multipart.addBodyPart(messageBodyPart);
+		   MimeBodyPart attachPart = new MimeBodyPart();
+
+		   attachPart.attachFile("/var/tmp/image19.png");
+		   multipart.addBodyPart(attachPart);
+		   msg.setContent(multipart);*/
+		   Transport.send(msg);   
+		}
 	
 	private void sendmail(String username, String content) throws AddressException, MessagingException, IOException {
 		   Properties props = new Properties();
