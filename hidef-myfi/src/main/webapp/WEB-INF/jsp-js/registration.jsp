@@ -72,6 +72,7 @@ function getType(){
 						<br />
 					</div>
 				</spring:bind>
+				
 				<%-- <spring:bind path="myCBCId">
 				<div class="form-group ${status.error ? 'has-error' : ''}" id='crs' style="display: none">
 						<form:input type="text" id="crsId" class="form-control"
