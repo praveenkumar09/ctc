@@ -127,7 +127,7 @@
 						<br/>
 						<br/>
 							<button id="singlebutton" name="singlebutton"
-								onClick="doenloadExcel()" class="btn btn-primary">Click here to download
+								onClick="doenloadcrsExcel()" class="btn btn-primary">Click here to download
 								Excel Template</button>
 						</div>
 						<br/>
@@ -156,7 +156,8 @@
 		});
 	</script>
 
-
+	<c:choose>
+	<c:when test="${messageType eq 'CBC'}">
 	<div class="modal fade" id="importpopup" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
@@ -196,6 +197,49 @@
 			</form:form>
 		</div>
 	</div>
+	</c:when>
+		<c:otherwise>
+		<div class="modal fade" id="importpopup" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<form:form modelAttribute="hidef" enctype="multipart/form-data"
+				action="crs/import/excel" id="importCrsExcel" method="POST">
+				<div class="modal-content">
+					<div class="modal-header" id="popUpModelHeader">
+						<h5 class="modal-title" id="exampleModalLabel">
+							<strong><font color="white">IMPORT XML</font></strong>
+						</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="clearfix"></div>
+
+						<div class="input-group input-file" name="Fichier1">
+							<form:input type="text" path="importExcelFileName"
+								class="form-control" placeholder='Choose a file...' />
+							<%-- 										<form:input name="configurationFile" path="userprofile.configurationFile" type="file"  style="display: none;"/> --%>
+							<span class="input-group-btn">
+								<button class="btn btn-default btn-choose"
+									onclick="bs_input_file();" type="button">Choose XML</button>
+							</span>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						<button type="button" onClick="onClickCrsImportExcelCalled();"
+							class="btn btn-success" data-dismiss="modal">Save</button>
+					</div>
+				</div>
+			</form:form>
+		</div>
+	</div>
+		</c:otherwise>
+		</c:choose>
 
 
 

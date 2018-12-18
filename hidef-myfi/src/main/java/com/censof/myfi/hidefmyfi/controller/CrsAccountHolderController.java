@@ -1,19 +1,34 @@
 package com.censof.myfi.hidefmyfi.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Random;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JsonParseException;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.censof.myfi.hidefmyfi.CTSConstants;
@@ -38,10 +54,9 @@ import com.censof.myfi.hidefmyfi.entity.Crspaymenttype;
 import com.censof.myfi.hidefmyfi.entity.Hicountry;
 import com.censof.myfi.hidefmyfi.service.CtcDataSaveService;
 import com.censof.myfi.hidefmyfi.service.CtccommonDropdownService;
+import com.censof.myfi.hidefmyfi.service.PackageGenerationService;
 import com.censof.myfi.hidefmyfi.vo.AccountHolderVo;
 import com.censof.myfi.hidefmyfi.vo.AddressVo;
-import com.censof.myfi.hidefmyfi.vo.CBCRepotsVo;
-import com.censof.myfi.hidefmyfi.vo.CbcConstituentEntityVO;
 import com.censof.myfi.hidefmyfi.vo.CommonDropdownGridBean;
 import com.censof.myfi.hidefmyfi.vo.ControllingPersonVo;
 import com.censof.myfi.hidefmyfi.vo.GenerationIdentifierVo;
@@ -67,6 +82,14 @@ public class CrsAccountHolderController {
 	
 	@Autowired
 	private CtcDataSaveService ctcDataSaveService;
+	
+	@Autowired
+	private PackageGenerationService metaDataGenerationService;
+	
+	@Autowired
+	private PackageGenerationService packageGenerationService;
+	
+	protected SimpleDateFormat sdfFileName = new SimpleDateFormat("yyyyMMdd'T'HHmmssSSS'Z'");
 	
 	@ModelAttribute("hidef")
     public HidefVo getmetadata () {
@@ -116,7 +139,7 @@ public class CrsAccountHolderController {
 		List<CommonDropdownGridBean> nameTypegridBeans = new ArrayList<>();
 		for(Cbcnametype nameType:cbcnametype) {
 			CommonDropdownGridBean gridBean = new CommonDropdownGridBean();
-			gridBean.setId(new BigInteger(nameType.getId()));
+			gridBean.setId(nameType.getId());
 			gridBean.setName(nameType.getNameType());
 			nameTypegridBeans.add(gridBean);			
 
@@ -3118,9 +3141,151 @@ public class CrsAccountHolderController {
 		return "crsAccountHolder";
 	}
 	
+	@GetMapping(value = "/admin/crs/downloadTemplate", produces = MediaType.APPLICATION_XML_VALUE)
+	public ModelAndView generateCBCDownloadTemplate(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
+			Map<String, Object> map, HttpServletResponse response) throws Exception {
+		hidef = ctcDataSaveService.getUserProfileByMycbcId(hidef);
+		metaDataGenerationService.crsWritetoExcelFile(hidef,fetchProperties("downloadCrsTemplateLoc"));
+		//response.setContentType("Application/x-msexcel");
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		response.setHeader("Content-Disposition", "attachment;filename=\"CRSTemplate.xlsx\"");
+		//File file = new File(fetchProperties("downloadTemplateLoc"));
+		//metaDataContentInString = metaDataGenerationService.generateCBCPackage(hidef);
+		response.setContentLength(getByte(fetchProperties("templateCrsWorkPath")).length);
+		
+		//File file = new File(fetchProperties("downloadTemplateLoc"));
+		ServletOutputStream outStream = response.getOutputStream();
+		outStream.write(getByte(fetchProperties("templateCrsWorkPath")));
+		//outStream.println(metaDataContentInString);
+		outStream.flush();
+		outStream.close();
+		response.flushBuffer();
+		//FileCopyUtils.copy(metaDataContentInString, response.getWriter());
+		
+		File toDeleteFile = new File(fetchProperties("templateCrsWorkPath"));
+		toDeleteFile.delete();
+		
+		return null;
+
+	}
+	public String fetchProperties(String propertyName) {
+		Properties properties = new Properties();
+		String value = null;
+		try {
+			File file = ResourceUtils.getFile("classpath:application.properties");
+			InputStream in = new FileInputStream(file);
+			properties.load(in);
+			value = properties.getProperty(propertyName);
+		} catch (IOException e) {
+		}
+		return value;
+	}
+	 private byte[] getByte(String path) {
+		    byte[] getBytes = {};
+		    try {
+		        File file = new File(path);
+		        getBytes = new byte[(int) file.length()];
+		        InputStream is = new FileInputStream(file);
+		        is.read(getBytes);
+		        is.close();
+		    } catch (FileNotFoundException e) {
+		        e.printStackTrace();
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    }
+		    return getBytes;
+		}
 	
 	
 	
+	 @GetMapping(value = "/admin/crs/generateCRSMetaData", produces = MediaType.APPLICATION_XML_VALUE)
+		public ModelAndView generateCRSMetaData(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
+				Map<String, Object> map, HttpServletResponse response) throws IOException {
+
+			String metaDataContentInString = "";
+			response.setContentType("application/xml");
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String metaDataFileName = auth.getName()+"_"+hidef.getUserprofile().getCommunicationType()+"_Metadata.xml";
+			response.setHeader("Content-Disposition", "attachment;filename=\""+metaDataFileName+"\"");
+			metaDataContentInString = packageGenerationService.generateCRSXMLMetadata(hidef);
+			response.setContentLength(metaDataContentInString.length());
+			ServletOutputStream outStream = response.getOutputStream();
+			outStream.write(metaDataContentInString.getBytes());
+			//outStream.println(metaDataContentInString);
+			outStream.flush();
+			outStream.close();
+			response.flushBuffer();
+			
+			
+			//ctcDataSaveService.saveCtcData(hidef);
+			
+			
+			
+			//FileCopyUtils.copy(metaDataContentInString, response.getWriter());
+			return null;
+
+		}
+		
+		@GetMapping(value = "/admin/crs/generateCRSPayload", produces = MediaType.APPLICATION_XML_VALUE)
+		public ModelAndView generateCRSPayload(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
+				Map<String, Object> map, HttpServletResponse response) throws IOException {
+
+			String payloadContentInString = "";
+			response.setContentType("application/xml");
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String payloadFileName = auth.getName()+"_"+hidef.getUserprofile().getCommunicationType()+"_Payload.xml";
+			response.setHeader("Content-Disposition", "attachment;filename=\""+payloadFileName+"\"");
+			payloadContentInString = packageGenerationService.generateCRSXMLPayload(hidef);
+			response.setContentLength(payloadContentInString.length());
+			ServletOutputStream outStream = response.getOutputStream();
+			outStream.write(payloadContentInString.getBytes());
+			outStream.flush();
+			outStream.close();
+			response.flushBuffer();
+			
+			
+			//ctcDataSaveService.saveCtcData(hidef);
+			
+			
+			
+			//FileCopyUtils.copy(metaDataContentInString, response.getWriter());
+			return null;
+
+		}
+		
+		@GetMapping(value = "/admin/crs/generateCRSPackage", produces = MediaType.APPLICATION_XML_VALUE)
+		public ModelAndView generateCBCPackage(@ModelAttribute("hidef") HidefVo hidef, BindingResult result, ModelMap model,
+				Map<String, Object> map, HttpServletResponse response) throws Exception {
+			//ctcDataSaveService.saveCtcData(hidef);		
+			String packageFolderPath = "";
+			response.setContentType("application/zip");
+			String packageFileName = hidef.getUserprofile().getSendingcountry()+"_"+hidef.getUserprofile().getCommunicationType()+"_"+sdfFileName.format(new Date(System.currentTimeMillis()))+".zip";
+			packageFolderPath = metaDataGenerationService.generateCRSPackage(hidef);
+			
+		     //Path sourcePath = sourceFile.toPath();
+		     Path sourcePath = Paths.get(packageFolderPath);
+		     response.setHeader("Content-Disposition", "attachment;filename=\""+sourcePath.getFileName()+"\"");
+		     /*ZipOutputStream outZip = new ZipOutputStream(response.getOutputStream(),StandardCharsets.UTF_8);
+
+		     outZip.putNextEntry(new ZipEntry(sourcePath.getFileName().toString()));
+		     Files.copy(sourcePath, outZip);
+		     outZip.closeEntry();
+		     outZip.finish();
+		     outZip.close();*/
+		     
+		     // download zip file code
+		     File zipFile = new File(packageFolderPath);
+		     InputStream ioStream = new FileInputStream(zipFile);
+		     IOUtils.copy(ioStream, response.getOutputStream());
+		     response.flushBuffer();
+		     
+		     ioStream.close();
+			
+			//FileCopyUtils.copy(metaDataContentInString, response.getWriter());
+			return null;
+
+		}
+		
 	
 	
 	

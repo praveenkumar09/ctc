@@ -333,8 +333,8 @@ public class CrsUserProfileController {
         	hidef.setImportExcelFileName(fileName);
         	hidef.setImportExcelFile(file);
         }
-        newHidefVo = ctcDataSaveService.saveExcelFile(hidef);
-        ctcDataSaveService.saveCtcExcelData(newHidefVo);
+        newHidefVo = ctcDataSaveService.saveCrsExcelFile(hidef);
+        ctcDataSaveService.saveCrsCtcExcelData(newHidefVo);
         model.addAttribute("hidef",hidef);
 		return "redirect:/admin/home";		
 	}

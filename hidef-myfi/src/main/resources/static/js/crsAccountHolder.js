@@ -9825,9 +9825,10 @@ function saveAllCRSData(){
        success: function(data) {
            console
                .log("data ====>"+data);
+           $("#saveCRSDataButton").hide();
+           $("#generateCRSMetadata").show();
            return false;
-         /*  $("#saveCBCDataButton").hide();
-           $("#generateCBCMetadata").show();*/
+          
            //showCbcAddInfo(0,0,1);
        },
        error: function(
@@ -10768,6 +10769,58 @@ function deleteControllingPersonMain(item){
 	           console.log(error);
 	       }
 	   });
+}
+
+function generateCRSPayload1() {
+	debugger;
+	var items = $("#accountHolderGrid").jsGrid("option", "data");
+	var arrayLength = items.length;
+	var errorFlag = false;
+	if (arrayLength <= 0) {
+		$("#accountHolderGridError").empty().append("Account Holder Details not empty!");
+		errorFlag = true;
+	}
+
+	if (!errorFlag) {
+	    $("#generateCRSPayload").hide();
+		$("#generateCRSPackage").show();
+		var downloadUrl = "crs/generateCRSPayload";
+		window.location.href = downloadUrl;
+		return false;
+	}
+}
+
+function generateCRSMetaData() {
+	debugger;
+	var items = $("#accountHolderGrid").jsGrid("option", "data");
+	var arrayLength = items.length;
+	var errorFlag = false;
+	if (arrayLength <= 0) {
+		$("#accountHolderGridError").empty().append("Account Holder Details not empty!");
+		errorFlag = true;
+	}
+
+	if (!errorFlag) {
+		$("#generateCRSMetadata").hide();
+		$("#generateCRSPayload").show();
+		var downloadUrl = "crs/generateCRSMetaData";
+		window.location.href = downloadUrl;
+	}
+}
+function generateCRSPackage() {
+	var items = $("#accountHolderGrid").jsGrid("option", "data");
+	var arrayLength = items.length;
+	var errorFlag = false;
+	if (arrayLength <= 0) {
+		$("#accountHolderGridError").empty().append("Account Holder Details not empty!");
+		errorFlag = true;
+	}
+
+	if (!errorFlag) {
+		$("#generateCRSPackage").hide();
+		var downloadUrl = "crs/generateCRSPackage";
+		window.location.href = downloadUrl;
+	}
 }
 
 

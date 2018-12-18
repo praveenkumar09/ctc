@@ -3961,6 +3961,14 @@ function ReportingFiNext(newForm, editForm, viewForm) {
 		        $('#viewControllingDone').hide();
 		        $('#editviewControllingDoneDone').hide();
 		        $('#editCancelviewControllingDoneDone').hide();
+		        
+		        $('#saveCRSDataButton').show();
+		        $('#generateCRSMetadata').hide();
+		        $('#generateCRSPayload').hide();
+		        $('#generateCRSPackage').hide();
+		        
+		        
+		        
 				/*$("#viewNextTab").hide();*/
 			} else if (newForm == 0 && editForm == 0
 					&& viewForm == 1) {
