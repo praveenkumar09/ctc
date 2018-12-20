@@ -1,6 +1,8 @@
 package com.censof.myfi.hidefmyfi.entity;
 
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -45,6 +47,9 @@ public class User {
 	
 	@Column(name = "messagetype")
 	private String messageType;
+	
+	@Column(name = "dateofexpiry")
+	private Date dateOfExpiry;
 	
 
 	public Long getId() {
@@ -124,6 +129,16 @@ public class User {
 
 	public void setMessageType(String messageType) {
 		this.messageType = messageType;
+	}
+
+
+	public Date getDateOfExpiry() {
+		return dateOfExpiry;
+	}
+
+
+	public void setDateOfExpiry(Date dateOfExpiry) {
+		this.dateOfExpiry = dateOfExpiry;
 	}
 	
 	

@@ -18,6 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	public User findByName(String name);
 	public User findByNameAndStatus(String name,int status);
 	public User findByMyCbcIdAndStatus(String myCBCId,int status);
+	public User findByMyCbcId(String myCBCId);
 	public static String GET_USER = "select e from User e where e.myCbcId=:myCbcId";
 	
 	@Query(GET_USER)

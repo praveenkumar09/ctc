@@ -1,6 +1,8 @@
 package com.censof.myfi.hidefmyfi.serviceImpl;
 
 
+import java.util.Date;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,6 +155,14 @@ public class UserServiceImpl implements UserService{
 		return userVo;
 		}
 		return userVo;
+	}
+
+
+	@Override
+	public void updateDOE(User user) {
+		// TODO Auto-generated method stub
+		user.setDateOfExpiry(new Date());
+		userRepository.save(user);
 	}
 
 

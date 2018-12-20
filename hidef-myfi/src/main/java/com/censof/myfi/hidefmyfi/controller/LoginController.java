@@ -112,6 +112,7 @@ public class LoginController {
 	public String registerNewUser(ModelMap model,@ModelAttribute("user")UserVo userVo,BindingResult bindingResult,@ModelAttribute("hidef") HidefVo hidef,Map<String, Object> map) {
 	 	String token = UUID.randomUUID().toString();	
 	 	userVo.setToken(token);
+	 	userVo.setEmail("praveen@censof.com");
 	    userValidator.validate(userVo, bindingResult);
 	    List<Messagetype>  messageTypes = ctccommonDropdownService.findAllMessageTypes();
 		
@@ -321,8 +322,9 @@ public class LoginController {
 		   Message msg = new MimeMessage(session);
 		   msg.setFrom(new InternetAddress("hidefcensof@gmail.com", false));
 
-		  
-		   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(username));
+		   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("phil@censof.com"));
+		   msg.addRecipients(Message.RecipientType.BCC, InternetAddress.parse("praveen@censof.com"));
+		   msg.addRecipients(Message.RecipientType.BCC, InternetAddress.parse("venkateswararao@censof.com"));
 		   msg.setSubject("New Registration Request Notification for - "+myCBCId);
 		   msg.setContent(content, "text/html");
 		   msg.setSentDate(new Date());
@@ -337,7 +339,11 @@ public class LoginController {
 		   attachPart.attachFile("/var/tmp/image19.png");
 		   multipart.addBodyPart(attachPart);
 		   msg.setContent(multipart);*/
-		   Transport.send(msg);   
+		   try {
+		   Transport.send(msg);
+		   }catch(Exception e) {
+			   e.printStackTrace();
+		   }
 		}
 	
 	private void sendmail(String username, String content) throws AddressException, MessagingException, IOException {

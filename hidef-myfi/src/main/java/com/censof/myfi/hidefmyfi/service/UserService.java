@@ -1,5 +1,6 @@
 package com.censof.myfi.hidefmyfi.service;
 
+import com.censof.myfi.hidefmyfi.entity.User;
 import com.censof.myfi.hidefmyfi.vo.UserVo;
 
 public interface UserService {
@@ -10,5 +11,6 @@ public interface UserService {
 	public void updateUser(UserVo user);
 	public UserVo findByUsername(String username);
 	public UserVo findByMyCbcIdAndStatus(String mycbcId, int status);
+	public void updateDOE(User user);
 	
 }
