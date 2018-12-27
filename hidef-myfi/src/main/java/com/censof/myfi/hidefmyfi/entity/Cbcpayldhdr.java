@@ -114,6 +114,9 @@ public class Cbcpayldhdr implements Serializable {
 	
 	@Column(name="is_deleted")
 	private Integer isdeleted;
+	
+	@Column(name="filetypeindic")
+	private String filetypeindic;
 
 	public Cbcpayldhdr() {
 	}
@@ -355,6 +358,20 @@ public class Cbcpayldhdr implements Serializable {
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
+
+
+
+	public String getFiletypeindic() {
+		return filetypeindic;
+	}
+
+
+
+	public void setFiletypeindic(String filetypeindic) {
+		this.filetypeindic = filetypeindic;
+	}
+	
+	
 	
 	
 	

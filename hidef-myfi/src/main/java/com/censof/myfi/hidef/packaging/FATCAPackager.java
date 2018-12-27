@@ -696,16 +696,17 @@ public class FATCAPackager implements IPackager {
 	}
 
 	//creates an file following IDES pkg naming convention 
-	protected synchronized String getIDESFileName(String folder, String senderGiin , String receiverGiin) throws Exception {
+	protected synchronized String getIDESFileName(String folder, String senderGiin , String receiverGiin,int year) throws Exception {
 		logger.debug("--> getIDESFileName(). folder=" + folder + ", senderGiin=" + senderGiin);
 		if (!"".equals(folder) && !folder.endsWith("/") && !folder.endsWith("\\"))
 			folder += File.separator;
 		File file;
 		String outfile;
 		int attempts = maxAttemptsToCreateNewFile;
+		String [] fileName = senderGiin.split("_");
 		while(true) {
 			//outfile = folder + sdfFileName.format(new Date(System.currentTimeMillis())) + "_" + senderGiin + ".zip";
-			outfile = folder +senderGiin + "_" + sdfFileName.format(new Date(System.currentTimeMillis())) + ".zip";
+			outfile = folder +fileName[0]+"_"+year+"_" +fileName[1]+ "_" + sdfFileName.format(new Date(System.currentTimeMillis())) + ".zip";
 			file = new File(outfile);
 			if (!file.exists()) {
 				if (file.createNewFile() || attempts-- <= 0)
@@ -1747,7 +1748,7 @@ public class FATCAPackager implements IPackager {
 			//String folder = new File(xmlzipFilename).getAbsoluteFile().getParent();
 			String folder = targetFolderPath.trim();
 			Date date = new Date();
-			String idesOutFile = getIDESFileName(folder, senderGiin ,receiverGiin.split("_")[0]);
+			String idesOutFile = getIDESFileName(folder, senderGiin ,receiverGiin.split("_")[0],taxyear);
 			File file = new File(idesOutFile);
 			String senderFileId = file.getName();
 			String metadatafile = myMetaXml.trim();
@@ -1813,7 +1814,7 @@ public class FATCAPackager implements IPackager {
 		//String folder = new File(xmlzipFilename).getAbsoluteFile().getParent();
 		String folder = "C:\\Users\\Lenovo\\Documents\\LHDN\\TargetFolder\\";
 		Date date = new Date();
-		String idesOutFile = getIDESFileName(folder, senderGiin , receiverGiin);
+		String idesOutFile = getIDESFileName(folder, senderGiin , receiverGiin,taxyear);
 		File file = new File(idesOutFile);
 		String senderFileId = file.getName();
 		String metadatafile = "C:\\Users\\Lenovo\\Documents\\LHDN\\SourceFolder\\000000.00000.TA.124_Metadata.xml";

@@ -1,6 +1,4 @@
 $(document).ready(function() {
-
-	
     var recievingCountry = $("#recievingCountry").val();
     recievingCountry = $.parseJSON(recievingCountry);
     $.fn.datepicker.defaults.format = "yyyy-mm-dd";

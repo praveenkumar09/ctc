@@ -5,6 +5,22 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/cbcmetadata.js"></script>
+	
+<script type="text/javascript">
+/* if('${hidef.metadata.fileTypeIndic}' == 'true'){
+		$('[name="fileTypeIndic"]').first().val("true");
+
+if('${hidef.metadata.fileTypeIndic}' == 'false'){
+	$('[name="fileTypeIndic"]').first().val("false");
+} */
+var fileTypeIndic = '${hidef.metadata.fileTypeIndic}';
+if(fileTypeIndic == 'true'){
+	document.getElementById("fileTypeIndic").selectedIndex = 1;
+}if(fileTypeIndic == 'false'){
+	document.getElementById("fileTypeIndic").selectedIndex = 2;
+}
+</script>
+	
 <div class="container">
 	<div class="row">
 		<br /> <br />
@@ -215,9 +231,9 @@
 							id="language" placeholder="Language" path="metadata.language"></form:input>
 					</div>
 					<div class="form-group col-md-6">
-						<form:label for="" path="userprofile.fileTypeIndic">File Type Indicator:</form:label>
-						<form:select class="form-control" id="binaryEncoding"
-							path="userprofile.fileTypeIndic">
+						<form:label for="" path="metadata.fileTypeIndic">File Type Indicator:</form:label>
+						<form:select class="form-control" id="fileTypeIndic"
+							path="userprofile.fileTypeIndic" name="fileTypeIndic">
 							<form:option value="0">Please choose</form:option>
 							<%-- 	<form:option value="1">MY</form:option>
 							<form:option value="2">SG</form:option>

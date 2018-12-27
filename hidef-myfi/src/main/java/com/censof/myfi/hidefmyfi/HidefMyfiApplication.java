@@ -44,7 +44,7 @@ public class HidefMyfiApplication extends SpringBootServletInitializer{
 	@Bean
 	public Trigger userCheckerJobControllerTrigger() {
 		SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
-				.withIntervalInSeconds(2).repeatForever();
+				.withIntervalInSeconds(300).repeatForever();
 
 		return TriggerBuilder.newTrigger().forJob(userCheckerJobControllerDetail())
 				.withIdentity("userCheckerJobControllerTrigger").withSchedule(scheduleBuilder).build();

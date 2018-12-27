@@ -336,6 +336,9 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 				if (!StringUtils.isEmpty(hidefVo.getMycbcId())) {
 					payldhdr.setMyCBCID(hidefVo.getMycbcId());
 				}
+				if(!StringUtils.isEmpty(hidefVo.getMetadata().getFileTypeIndic())){
+					payldhdr.setFiletypeindic(hidefVo.getMetadata().getFileTypeIndic());
+				}
 				payldhdr.setIsdeleted(0);
 				payldhdr.setCreateDateTime(new Date());
 				payldhdr = cbcpayldhdrRepository.saveAndFlush(payldhdr);
@@ -1365,6 +1368,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 			metaData.setSendingCompanyIN(payldhdr.getSendingEntityIN());
 			metaData.setSendingCountry(payldhdr.getSenderCountryCd());
 			metaData.setWarning(payldhdr.getWarning());
+			metaData.setFileTypeIndic(payldhdr.getFiletypeindic());
 			if (payldhdr.getTaxYear() > 0) {
 				metaData.setTaxYear(String.valueOf(payldhdr.getTaxYear()));
 			}
@@ -1720,7 +1724,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 		// TODO Auto-generated method stub
 		HidefVo hidefVo = new HidefVo();
 		String excelWorkPath = fetchProperties("excelWorkPath");
-		File file = new File(excelWorkPath + "/" + hidef.getImportExcelFileName());
+		File file = new File(excelWorkPath + "/" +hidef.getImportExcelFileName());
 		hidef.getImportExcelFile().transferTo(file);
 		FileInputStream excelFile = new FileInputStream(file);
 		Workbook workbook = new XSSFWorkbook(excelFile);
@@ -1815,7 +1819,7 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 								} else {
 									fileTypeIndic = "false";
 								}
-								hidefVo.getUserprofile().setFileTypeIndic(fileTypeIndic);
+								hidefVo.getMetadata().setFileTypeIndic(fileTypeIndic);
 							} else if (currentRow.getRowNum() == 11) {
 								if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
 									hidefVo.getUserprofile()
@@ -3055,6 +3059,9 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 				}
 				if (!StringUtils.isEmpty(hidefVo.getMycbcId())) {
 					payldhdr.setMyCBCID(hidefVo.getMycbcId());
+				}
+				if(!StringUtils.isEmpty(hidefVo.getMetadata().getFileTypeIndic())){
+					payldhdr.setFiletypeindic(hidefVo.getMetadata().getFileTypeIndic());
 				}
 				payldhdr.setIsdeleted(0);
 				payldhdr.setCreateDateTime(new Date());

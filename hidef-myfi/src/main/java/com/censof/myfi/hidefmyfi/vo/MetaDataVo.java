@@ -29,6 +29,7 @@ public class MetaDataVo{
 	private String sendingCompanyIN;
 	private String language;
 	private BigInteger id;
+	private String fileTypeIndic;
 	public String getSendingCountry() {
 		return sendingCountry;
 	}
@@ -149,6 +150,13 @@ public class MetaDataVo{
 	public void setId(BigInteger id) {
 		this.id = id;
 	}
+	public String getFileTypeIndic() {
+		return fileTypeIndic;
+	}
+	public void setFileTypeIndic(String fileTypeIndic) {
+		this.fileTypeIndic = fileTypeIndic;
+	}
+	
 	
 	
 	

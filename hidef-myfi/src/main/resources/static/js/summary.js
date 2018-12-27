@@ -72,7 +72,7 @@ $(document).ready(function() {
                       title: "PackageName",
                       name: "filename",
                       type: "text",
-                      width: 50,
+                      width: 60,
                       /*,
                       items: object.countryCode,*/
                       visible: true

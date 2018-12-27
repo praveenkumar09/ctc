@@ -1008,6 +1008,9 @@ public class PackageGenerationServiceImpl implements PackageGenerationService {
 		String senderGiin = hidef.getMycbcId();
 		String receiverGiin =  hidef.getMycbcId();
 		int taxyear = 2017;
+		if(hidef.getMetadata() != null && hidef.getMetadata().getTaxYear() != null){
+			taxyear = Integer.parseInt(hidef.getMetadata().getTaxYear());
+		}
 		String targetFolderPath = fetchProperties("packageTargetFolder");
 		String publicCertPath = "";
 		publicCertPath = hidef.getUserprofile().getPublicCertFileName();
