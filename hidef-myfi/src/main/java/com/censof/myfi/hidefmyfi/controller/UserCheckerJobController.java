@@ -86,12 +86,17 @@ public class UserCheckerJobController extends QuartzJobBean {
 		   msg.setFrom(new InternetAddress("hidefcensof@gmail.com", false));
 
 		  
-		   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("phil@censof.com"));
-		   msg.addRecipients(Message.RecipientType.BCC, InternetAddress.parse("praveen@censof.com"));
-		   msg.addRecipients(Message.RecipientType.BCC, InternetAddress.parse("venkateswararao@censof.com"));
+		/*
+		 * msg.setRecipients(Message.RecipientType.TO,
+		 * InternetAddress.parse("phil@censof.com"));
+		 * msg.addRecipients(Message.RecipientType.BCC,
+		 * InternetAddress.parse("praveen@censof.com"));
+		 * msg.addRecipients(Message.RecipientType.BCC,
+		 * InternetAddress.parse("venkateswararao@censof.com"));
+		 */
 		   
-		  /* msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("venkateswararao@censof.com"));
-		   msg.addRecipients(Message.RecipientType.BCC, InternetAddress.parse("venkateswararao@censof.com"));*/
+		   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("venkateswararao@censof.com"));
+		   msg.addRecipients(Message.RecipientType.BCC, InternetAddress.parse("venkateswararao@censof.com"));
 		  
 		   msg.setSubject(subject);
 		   msg.setContent(content, "text/html");

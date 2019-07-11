@@ -86,7 +86,7 @@ function getType(){
 				<spring:bind path="email">
 					<div class="form-group ${status.error ? 'has-error' : ''}">
 						<form:input type="text" id="email" class="form-control"
-							path="email" placeholder="Email Address" required="required" value="phil@censof.com" readonly="true" disabled="true"/>
+							path="email" placeholder="Email Address" required="required"/>
 							<form:errors path="email"></form:errors>
 						<br />
 					</div>

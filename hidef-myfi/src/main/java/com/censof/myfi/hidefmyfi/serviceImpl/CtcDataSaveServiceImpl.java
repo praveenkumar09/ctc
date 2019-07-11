@@ -5323,7 +5323,8 @@ public class CtcDataSaveServiceImpl implements CtcDataSaveService {
 		String date = simpleDateFormat.format(new Date());
 		Docrefid docrefid = ctccommonDropdownService.findDocRefIdByDate(date);
 		String docRefId = "";
-		String docRefIdStatic = "MY"+hidef.getMycbcId()+date;
+		//String docRefIdStatic = "MY"+hidef.getMycbcId()+date;
+		String docRefIdStatic = "MY"+hidef.getMetadata().getTaxYear()+"-"+hidef.getMycbcId()+date;
 		if(docrefid != null){
 			if(docrefid.getDocrefid().equals("0001")){
 				docRefId = docRefIdStatic+"E"+String.valueOf(docrefid.getDocrefid());	

@@ -308,11 +308,10 @@ public class LoginController {
 	
 	private void sendNewmail(String username, String content, String myCBCId) throws AddressException, MessagingException {
 		   Properties props = new Properties();
-		   props.put("mail.smtp.auth", "true");
-		   props.put("mail.smtp.starttls.enable", "true");
-		   props.put("mail.smtp.host", "smtp.gmail.com");
-		   props.put("mail.smtp.port", "587");
-		   props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+		    props.put("mail.smtp.host", "smtp.gmail.com");
+		    props.put("mail.smtp.port", "587");
+	        props.put("mail.smtp.auth", "true");
+	        props.put("mail.smtp.starttls.enable", "true"); //TLS
 		   
 		   Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 		      protected PasswordAuthentication getPasswordAuthentication() {
@@ -322,8 +321,8 @@ public class LoginController {
 		   Message msg = new MimeMessage(session);
 		   msg.setFrom(new InternetAddress("hidefcensof@gmail.com", false));
 
-		   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("phil@censof.com"));
-		   msg.addRecipients(Message.RecipientType.BCC, InternetAddress.parse("praveen@censof.com"));
+		   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("venkateswararao@censof.com"));
+		   msg.addRecipients(Message.RecipientType.BCC, InternetAddress.parse("venkateswararao@censof.com"));
 		   msg.addRecipients(Message.RecipientType.BCC, InternetAddress.parse("venkateswararao@censof.com"));
 		   msg.setSubject("New Registration Request Notification for - "+myCBCId);
 		   msg.setContent(content, "text/html");
@@ -347,26 +346,23 @@ public class LoginController {
 		}
 	
 	private void sendmail(String username, String content) throws AddressException, MessagingException, IOException {
-		   Properties props = new Properties();
-		   props.put("mail.smtp.auth", "true");
-		   props.put("mail.smtp.starttls.enable", "true");
-		   props.put("mail.smtp.host", "smtp.gmail.com");
-		   props.put("mail.smtp.port", "587");
-		   props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-		   
-		   Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-		      protected PasswordAuthentication getPasswordAuthentication() {
-		         return new PasswordAuthentication("hidefcensof@gmail.com", "hidef@123");
-		      }
-		   });
-		   Message msg = new MimeMessage(session);
-		   msg.setFrom(new InternetAddress("hidefcensof@gmail.com", false));
-
-		  
-		   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(username));
-		   msg.setSubject("Email Notification");
-		   msg.setContent(content, "text/html");
-		   msg.setSentDate(new Date());
+		/*
+		 * Properties props = new Properties(); props.put("mail.smtp.auth", "true");
+		 * props.put("mail.smtp.starttls.enable", "true"); props.put("mail.smtp.host",
+		 * "smtp.gmail.com"); props.put("mail.smtp.port", "587");
+		 * props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+		 * 
+		 * Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+		 * protected PasswordAuthentication getPasswordAuthentication() { return new
+		 * PasswordAuthentication("hidefcensof@gmail.com", "hidef@123"); } }); Message
+		 * msg = new MimeMessage(session); msg.setFrom(new
+		 * InternetAddress("hidefcensof@gmail.com", false));
+		 * 
+		 * 
+		 * msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(username));
+		 * msg.setSubject("Email Notification"); msg.setContent(content, "text/html");
+		 * msg.setSentDate(new Date());
+		 */
 
 		 /*  MimeBodyPart messageBodyPart = new MimeBodyPart();
 		   messageBodyPart.setContent("Tutorials point email", "text/html");
@@ -378,7 +374,42 @@ public class LoginController {
 		   attachPart.attachFile("/var/tmp/image19.png");
 		   multipart.addBodyPart(attachPart);
 		   msg.setContent(multipart);*/
-		   Transport.send(msg);   
+		
+		final String username1 = "hidefcensof@gmail.com";
+        final String password1 = "hidef@123";
+
+        Properties prop = new Properties();
+		prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.put("mail.smtp.port", "587");
+        prop.put("mail.smtp.auth", "true");
+        prop.put("mail.smtp.starttls.enable", "true"); //TLS
+        
+        Session session = Session.getInstance(prop,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username1, password1);
+                    }
+                });
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username1));
+            message.setRecipients(
+                    Message.RecipientType.TO,
+                    InternetAddress.parse(username)
+            );
+            message.setSubject("Email Notification");
+            message.setText(content);
+
+            Transport.send(message);
+
+            System.out.println("Done");
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        
 		}
 	
 	public String fetchProperties(String propertyName) {

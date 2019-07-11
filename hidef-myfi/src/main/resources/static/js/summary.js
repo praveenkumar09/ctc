@@ -54,7 +54,7 @@ $(document).ready(function() {
                       title: "Sending Country",
                       name: "sendingCountry",
                       type: "text",
-                      width: 10
+                      width: 5
                       ,
                       /*items: object.addressType,*/
                       visible: true
@@ -63,7 +63,7 @@ $(document).ready(function() {
                       title: "Message Type",
                       name: "messageType",
                       type: "text",
-                      width: 10,
+                      width: 5,
                       /*,
                       items: object.countryCode,*/
                       visible: true
@@ -72,7 +72,7 @@ $(document).ready(function() {
                       title: "PackageName",
                       name: "filename",
                       type: "text",
-                      width: 60,
+                      width: 75,
                       /*,
                       items: object.countryCode,*/
                       visible: true
